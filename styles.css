@@ -71,8 +71,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1rem;
-    max-width: 1200px;
+    padding: 1rem 0.3rem;
+    max-width: 93%;
     margin: 0 auto;
 }
 
@@ -105,7 +105,7 @@ body {
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 1.7rem;
 }
 
 .nav-link {
