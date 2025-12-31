@@ -1,21 +1,15 @@
-# Asstar - 探索未知的边界
+# Cybertar - 探索未知
 
 <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
-  <img src="./images/Asstar.jpg" alt="Asstar Logo" style="width: 300px; height: 300px; flex: 0 0 auto;">
+  <img src="./images/Cybertar.png" alt="Cybertar Logo" style="width: 300px; height: 300px; flex: 0 0 auto;">
   <div style="flex: 1; min-width: 300px;">
-    Asstar是一个为创作者、开发者与创新者打造的智能平台。我们聚合并解析全球前沿动态，将海量信息转化为您的清晰行动指南，助您高效探索、激发灵感并保持技术领先。
+    Cybertar是一个为创作者、开发者与创新者打造的智能平台。我们聚合并解析全球前沿动态，将海量信息转化为您的清晰行动指南，助您高效探索、激发灵感并保持技术领先。
   </div>
 </div>
 
 ---
 
-## 🌟 关于 Asstar
-
-Asstar 是一个以探索为核心的网站，通过前沿技术、沉浸式体验和多样化内容，带你发现科学、艺术、技术等领域的无限魅力。我们希望每位用户都能在这里找到灵感，点燃好奇心，开启属于自己的探索之旅。
-
-- **核心理念**: 探索、发现、创造
-- **目标用户**: 好奇心驱动的探险家、创作者和终身学习者
-- **愿景**: 打破常规，连接未知，激发无限可能
+## 🌟 关于 Cybertar
 
 ---
 
@@ -33,15 +27,15 @@ Asstar 是一个以探索为核心的网站，通过前沿技术、沉浸式体�
 
 ## 📸 网站预览
 
-![网站截图](./images/website_photo.jpg) <!-- 替换为你的网站截图链接 -->
+![网站截图](./images/website_p.png.jpg) <!-- 替换为你的网站截图链接 -->
 
-> **立即体验**: 访问 [Asstar 官网](https://cybertar.youngood.tech/) 开启你的探索之旅！ <!-- 替换为你的网站链接 -->
+> **立即体验**: 访问 [Cybertar 官网](https://cybertar.youngood.tech/) 开启你的探索之旅！ <!-- 替换为你的网站链接 -->
 
 ---
 
 ## 📖 如何开始
 
-**访问网站**: 打开 [Asstar 官网](https://cybertar.youngood.tech/) 开始探索。
+**访问网站**: 打开 [Cybertar 官网](https://cybertar.youngood.tech/) 开始探索。
 
 ### 🤖 Prompt高级提示词优化功能
 
@@ -73,9 +67,9 @@ Asstar 是一个以探索为核心的网站，通过前沿技术、沉浸式体�
 
 我们欢迎每一位热爱探索的用户！通过以下方式与我们互动：
 
-- **官网**: [Asstar](https://cybertar.youngood.tech/)
-- **邮箱**: asstarx7@gmail.com
-- **社区**: WX：AiSpinLab
+- **官网**: [Cybertar](https://cybertar.youngood.tech/)
+- **邮箱**: tourists0007@gmail.com
+- **社区**: QQ: 571266595
 - **反馈**: 在 GitHub Issues 中提交建议或想法
 
 ---
@@ -87,6 +81,6 @@ Asstar 是一个以探索为核心的网站，通过前沿技术、沉浸式体�
 ---
 
 ## 📄 Reference
-Powered By [Asstar](https://github.com/Asstar-X/Asstar-X.github.io)
-**Asstar - 探索未知的边界**  
+Powered By [ASSTAR](https://github.com/ASSTAR-X/ASSTAR-X.github.io)
+**Cybertar - 探索未知的边界**  
 与我们一起，踏上发现之旅，探索无限可能！
