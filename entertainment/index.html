@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AsVox | Immersive Audio</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Load Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Load Controllers -->
+    <script src="threeDScene.js"></script>
+    <script src="playlistControl.js"></script>
+    <script src="lxControl.js"></script>
+    <script src="systemAudioControl.js"></script>
+</head>
+<body>
+
+    <div id="ui-layer">
+        <!-- TOP ROW -->
+        <header class="header">
+            <div class="brand">AsVox</div>
+            <div class="track-info">
+                <div class="track-name" id="track-name">NO DATA</div>
+            </div>
+        </header>
+        <a href="../index.html" class="back-button glass-panel">← 返回首页</a>
+
+        <!-- BOTTOM ROW -->
+        <footer class="footer">
+            <!-- Left: Empty for balance -->
+            <div class="footer-left">
+                <div class="monitor-label">FREQ_MONITOR // R-22</div>
+                <canvas id="mini-monitor" width="480" height="80"></canvas>
+            </div>
+
+            <!-- Center: Controls -->
+            <div class="footer-center">
+                <label class="upload-btn">
+                    Select Audio
+                    <input type="file" id="audio-input" accept="audio/*" multiple>
+                </label>
+                <label class="upload-btn" id="system-audio-label">
+                    From Device
+                    <input type="button" id="system-audio-btn" style="display: none;">
+                </label>
+            </div>
+            <script>
+                // Label click handler for system audio button
+                const systemAudioLabel = document.getElementById('system-audio-label');
+                
+                systemAudioLabel.addEventListener('click', (e) => {
+                    const systemAudioBtn = document.getElementById('system-audio-btn');
+                    if (systemAudioBtn && !e.target.closest('input')) {
+                        e.preventDefault();
+                        systemAudioBtn.click();
+                    }
+                });
+            </script>
+
+            <!-- Right: Frequency Monitor -->
+            <div class="footer-right">
+            </div>
+        </footer>
+    </div>
+
+    <div id="canvas-container"></div>
+    <audio id="audio-element" loop></audio>
+    
+    <!-- Playlist toggle button -->
+    <button class="playlist-toggle" id="playlist-toggle">☰</button>
+    
+    <!-- Playlist container -->
+    <div class="playlist-container" id="playlist-container" style="display: none;">
+        <div class="playlist-header">PLAYLIST</div>
+        <ul class="playlist" id="playlist"></ul>
+    </div>
+
+    <script>
+        // Wait for DOM to be fully loaded before initializing
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize 3D scene
+            const threeDScene = new ThreeDScene('canvas-container');
+            
+            // Audio element and context
+            const audioElement = document.getElementById('audio-element');
+            let audioContext = null;
+            let analyser = null;
+            let dataArray = null;
+            let isAudioInit = false;
+            
+            // LX Music controller instance
+            let lxMusicController = null;
+            
+            // Track the current active audio source
+            let currentAudioSource = null; // 'local', 'system', or 'lxmusic'
+
+            // Function to switch audio sources with confirmation
+            function switchAudioSource(newSource) {
+                if (currentAudioSource && currentAudioSource !== newSource) {
+                    const sourceNames = {
+                        'local': 'Local Audio',
+                        'system': 'System Audio',
+                        'lxmusic': 'LX Music'
+                    };
+                    
+                    const confirmMsg = `Currently using ${sourceNames[currentAudioSource]}. Switch to ${sourceNames[newSource]}?`;
+                    
+                    if (!confirm(confirmMsg)) {
+                        return false; // User cancelled the switch
+                    }
+                    
+                    // Clean up the current source
+                    if (currentAudioSource === 'system') {
+                        if (systemAudioController) {
+                            systemAudioController.stopSystemAudio();
+                        }
+                    } else if (currentAudioSource === 'lxmusic') {
+                        if (lxMusicController) {
+                            lxMusicController.disconnect();
+                        }
+                    } else if (currentAudioSource === 'local') {
+                        // For local audio, stop the current track
+                        audioElement.pause();
+                        audioElement.src = '';
+                        if (window.currentSource) {
+                            window.currentSource.disconnect();
+                            window.currentSource = null;
+                        }
+                    }
+                }
+                
+                // Set the new source as active
+                currentAudioSource = newSource;
+                return true;
+            }
+
+            // Initialize LX Music controller
+            lxMusicController = new LXMusicController();
+            
+            // Initialize playlist controller
+            const playlistController = new PlaylistController(
+                audioElement, 
+                audioContext, 
+                analyser, 
+                threeDScene,
+                lxMusicController  // Pass LX Music controller to playlist controller
+            );
+            
+            // Update audio context after playlist controller initialization
+            audioContext = playlistController.audioContext;
+            analyser = playlistController.analyser;
+            dataArray = playlistController.dataArray;
+            isAudioInit = playlistController.isAudioInit;
+            
+            // Integrate LX Music with playlist
+            lxMusicController.integrateWithPlaylist(playlistController);
+            
+            // System audio controller instance
+            let systemAudioController = null;
+            
+            // Initialize System Audio Controller
+            systemAudioController = new SystemAudioController(
+                audioContext, 
+                analyser, 
+                playlistController.getTracks(), 
+                playlistController.renderPlaylist.bind(playlistController),
+                function(trackName) {
+                    document.getElementById('track-name').textContent = trackName;
+                    document.getElementById('track-name').style.opacity = '1';
+                },
+                playlistController.playTrack.bind(playlistController)
+            );
+            
+            // Set LX Music controller in the 3D scene for integration
+            threeDScene.setLXMusicController(lxMusicController);
+            
+            // Add LX Music toggle button
+            const lxMusicToggle = document.createElement('button');
+            lxMusicToggle.className = 'lx-music-toggle';
+            lxMusicToggle.textContent = 'LX';
+            lxMusicToggle.style.cssText = `
+                position: fixed !important;
+                top: 20px !important;
+                left: 30px !important;
+                z-index: 1000 !important;
+                display: flex !important;
+                pointer-events: auto !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            `;
+            document.body.appendChild(lxMusicToggle);
+            
+            console.log('LX Music toggle button created and added to DOM');
+
+            // Ensure playlist toggle button is visible
+            const playlistToggle = document.getElementById('playlist-toggle');
+            if (playlistToggle) {
+                playlistToggle.style.cssText += `
+                    position: fixed !important;
+                    top: 20px !important;
+                    right: 20px !important;
+                    z-index: 1000 !important;
+                    display: flex !important;
+                    pointer-events: auto !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                `;
+                console.log('Playlist toggle button found and styled');
+            } else {
+                console.error('Playlist toggle button not found');
+            }
+            
+            // Toggle LX Music panel
+            lxMusicToggle.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent the event from bubbling up and triggering the outside click handler
+                if (!switchAudioSource('lxmusic')) {
+                    return;
+                }
+                
+                const container = document.querySelector('.lx-music-container');
+                const isOpen = container.style.display === 'block';
+                
+                if (isOpen) {
+                    container.style.display = 'none';
+                    document.body.classList.remove('lx-music-open');
+                    
+                    // Show the LX button again when closing the panel
+                    lxMusicToggle.style.display = 'flex';
+                } else {
+                    container.style.display = 'block';
+                    document.body.classList.add('lx-music-open');
+                    
+                    // Hide the LX button when opening the panel
+                    lxMusicToggle.style.display = 'none';
+                }
+            });
+            
+            // Start the 3D scene animation
+            threeDScene.animate();
+            
+            // Close LX Music panel and playlist when clicking outside
+            document.addEventListener('click', (e) => {
+                const lxContainer = document.querySelector('.lx-music-container');
+                const isLXContainerVisible = lxContainer && lxContainer.style.display === 'block';
+                
+                const playlistContainer = document.getElementById('playlist-container');
+                const isPlaylistContainerVisible = playlistContainer && playlistContainer.style.display === 'block';
+                
+                // Check if LX Music panel is open and clicked outside of it
+                if (isLXContainerVisible && 
+                    !lxContainer.contains(e.target) && 
+                    e.target !== document.querySelector('.lx-music-toggle')) {
+                    
+                    lxContainer.style.display = 'none';
+                    document.body.classList.remove('lx-music-open'); // Remove the class to restore layout
+                    
+                    // Show the LX button again when closing the panel
+                    const lxMusicToggle = document.querySelector('.lx-music-toggle');
+                    if (lxMusicToggle) {
+                        lxMusicToggle.style.display = 'flex';
+                    }
+                }
+                
+                // Check if Playlist panel is open and clicked outside of it
+                if (isPlaylistContainerVisible && 
+                    !playlistContainer.contains(e.target) && 
+                    e.target !== document.getElementById('playlist-toggle')) {
+                    
+                    playlistContainer.style.display = 'none';
+                }
+            });
+            
+            // Debug: Check if buttons are visible after a short delay
+            setTimeout(() => {
+                const lxButton = document.querySelector('.lx-music-toggle');
+                const playlistButton = document.querySelector('.playlist-toggle');
+                
+                console.log('LX Button:', lxButton ? 'Found' : 'Not found');
+                console.log('Playlist Button:', playlistButton ? 'Found' : 'Not found');
+                
+                if (lxButton) {
+                    const lxStyles = window.getComputedStyle(lxButton);
+                    console.log('LX Button styles:', {
+                        display: lxStyles.display,
+                        position: lxStyles.position,
+                        zIndex: lxStyles.zIndex,
+                        opacity: lxStyles.opacity,
+                        visibility: lxStyles.visibility
+                    });
+                }
+                
+                if (playlistButton) {
+                    const playlistStyles = window.getComputedStyle(playlistButton);
+                    console.log('Playlist Button styles:', {
+                        display: playlistStyles.display,
+                        position: playlistStyles.position,
+                        zIndex: playlistStyles.zIndex,
+                        opacity: playlistStyles.opacity,
+                        visibility: playlistStyles.visibility
+                    });
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

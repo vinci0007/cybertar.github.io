@@ -1,0 +1,24 @@
+name = "cybertar-model-verify-api"
+main = "src/index.js"
+compatibility_date = "2026-06-05"
+compatibility_flags = ["nodejs_compat"]
+
+[placement]
+mode = "smart"
+
+[vars]
+MODEL_VERIFY_TABLE = "model_verify_reports"
+CORS_ALLOW_ORIGINS = "https://cybertar.youngood.tech,https://cybertar.github.io,http://localhost:4177,http://localhost:4178"
+MAX_REPORT_BYTES = "120000"
+
+# Recommended for Cockroach Cloud:
+# 1. Create a Hyperdrive config:
+#    npx wrangler hyperdrive create cybertar-model-verify-db --connection-string="postgresql://..."
+# 2. Uncomment and set the generated id.
+#
+# [[hyperdrive]]
+# binding = "HYPERDRIVE"
+# id = "replace-with-hyperdrive-id"
+#
+# Quick fallback without Hyperdrive:
+# npx wrangler secret put DATABASE_URL

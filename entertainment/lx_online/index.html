@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LX Music 在线版</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>LX Music 在线版</h1>
+            <p class="subtitle">基于 lx-music-desktop 的在线音乐播放器</p>
+        </header>
+
+        <!-- 左侧：音源管理 -->
+        <div class="source-manager">
+            <h2 class="section-title">音源管理</h2>
+            <button class="scan-btn" id="scanSourcesBtn">扫描音源</button>
+            <div class="source-selector">
+                <div class="source-option active" data-source="kw">酷我音乐</div>
+                <div class="source-option" data-source="kg">酷狗音乐</div>
+                <div class="source-option" data-source="tx">QQ音乐</div>
+                <div class="source-option" data-source="wy">网易云音乐</div>
+                <div class="source-option" data-source="mg">咪咕音乐</div>
+            </div>
+            <ul class="source-list" id="sourceList">
+                <li class="loading">点击"扫描音源"按钮获取音源列表</li>
+            </ul>
+        </div>
+
+        <!-- 中间：搜索和播放器 -->
+        <div class="main-content">
+            <div class="search-section">
+                <div class="search-box">
+                    <input type="text" class="search-input" id="searchInput" placeholder="搜索歌曲、歌手或专辑...">
+                    <button class="search-btn" id="searchBtn">搜索</button>
+                </div>
+                <div class="source-selector">
+                    <div class="source-option active" data-source="kw">酷我</div>
+                    <div class="source-option" data-source="kg">酷狗</div>
+                    <div class="source-option" data-source="tx">QQ音乐</div>
+                    <div class="source-option" data-source="wy">网易云</div>
+                    <div class="source-option" data-source="mg">咪咕</div>
+                </div>
+            </div>
+
+            <div class="player-section">
+                <div class="track-info">
+                    <div class="album-art">🎵</div>
+                    <div class="track-details">
+                        <div class="track-title" id="currentTitle">暂无歌曲</div>
+                        <div class="track-artist" id="currentArtist">-</div>
+                        <div class="track-album" id="currentAlbum">-</div>
+                    </div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBarContainer">
+                        <div class="progress" id="progressBar"></div>
+                    </div>
+                    <div class="time-info">
+                        <span id="currentTime">00:00</span>
+                        <span id="totalTime">00:00</span>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="control-btn" id="prevBtn">⏮</button>
+                    <button class="control-btn play-pause" id="playBtn">▶</button>
+                    <button class="control-btn" id="nextBtn">⏭</button>
+                    <button class="control-btn" id="likeBtn">❤</button>
+                    <button class="control-btn" id="volumeBtn">🔊</button>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <h2 class="section-title">搜索结果</h2>
+                <ul class="search-results" id="searchResults">
+                    <li class="loading">请输入关键词搜索音乐</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 右侧：播放列表 -->
+        <div class="playlist-section">
+            <h2 class="section-title">播放列表</h2>
+            <div class="playlist-controls">
+                <button class="playlist-btn active" id="currentPlaylistBtn">当前列表</button>
+                <button class="playlist-btn" id="createPlaylistBtn">创建列表</button>
+            </div>
+            <ul class="playlist" id="playlist">
+                <li class="loading">播放列表为空</li>
+            </ul>
+        </div>
+    </div>
+
+    <audio id="audioPlayer"></audio>
+
+    <script src="/entertainment/lxmusic-api/api.js"></script>
+    <script src="sourceManager.js"></script>
+    <script>
+        // 音乐播放器类
+        class MusicPlayer {
+            constructor() {
+                this.currentTrack = null;
+                this.isPlaying = false;
+                this.currentPlaylist = [];
+                this.playlists = {
+                    current: []
+                };
+                this.currentSource = 'kw';
+                this.audio = document.getElementById('audioPlayer');
+                this.audio.volume = 0.7; // 默认音量70%
+                this.sourceManager = new SourceManager();
+                
+                this.initEventListeners();
+                this.loadDemoPlaylist();
+            }
+            
+            initEventListeners() {
+                // 播放/暂停按钮
+                document.getElementById('playBtn').addEventListener('click', () => this.togglePlay());
+                
+                // 上一首/下一首
+                document.getElementById('prevBtn').addEventListener('click', () => this.playPrev());
+                document.getElementById('nextBtn').addEventListener('click', () => this.playNext());
+                
+                // 搜索功能
+                document.getElementById('searchBtn').addEventListener('click', () => this.performSearch());
+                document.getElementById('searchInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.performSearch();
+                });
+                
+                // 进度条拖拽
+                const progressBarContainer = document.getElementById('progressBarContainer');
+                progressBarContainer.addEventListener('click', (e) => {
+                    const rect = progressBarContainer.getBoundingClientRect();
+                    const pos = (e.clientX - rect.left) / rect.width;
+                    this.audio.currentTime = pos * this.audio.duration;
+                });
+                
+                // 音量控制
+                document.getElementById('volumeBtn').addEventListener('click', () => {
+                    this.audio.muted = !this.audio.muted;
+                    document.getElementById('volumeBtn').textContent = this.audio.muted ? '🔇' : '🔊';
+                });
+                
+                // 音源选择
+                document.querySelectorAll('.source-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        document.querySelectorAll('.source-option').forEach(o => o.classList.remove('active'));
+                        option.classList.add('active');
+                        this.currentSource = option.dataset.source;
+                    });
+                });
+                
+                // 扫描音源按钮
+                document.getElementById('scanSourcesBtn').addEventListener('click', () => {
+                    this.scanAndRenderSources();
+                });
+                
+                // 播放列表切换
+                document.getElementById('currentPlaylistBtn').addEventListener('click', () => {
+                    document.querySelectorAll('.playlist-btn').forEach(btn => btn.classList.remove('active'));
+                    document.getElementById('currentPlaylistBtn').classList.add('active');
+                    this.renderPlaylist();
+                });
+                
+                document.getElementById('createPlaylistBtn').addEventListener('click', () => {
+                    document.querySelectorAll('.playlist-btn').forEach(btn => btn.classList.remove('active'));
+                    document.getElementById('createPlaylistBtn').classList.add('active');
+                    this.showCreatePlaylist();
+                });
+                
+                // 音频事件监听
+                this.audio.addEventListener('timeupdate', () => this.updateProgress());
+                this.audio.addEventListener('ended', () => this.playNext());
+                this.audio.addEventListener('loadedmetadata', () => {
+                    document.getElementById('totalTime').textContent = this.formatTime(this.audio.duration);
+                });
+            }
+            
+            // 扫描并渲染音源列表
+            async scanAndRenderSources() {
+                const scanBtn = document.getElementById('scanSourcesBtn');
+                scanBtn.disabled = true;
+                scanBtn.textContent = '扫描中...';
+                
+                try {
+                    const sources = await this.sourceManager.scanSources();
+                    this.renderSources(sources);
+                } catch (error) {
+                    console.error('扫描音源失败:', error);
+                    alert('扫描音源失败，请检查控制台了解详情');
+                } finally {
+                    scanBtn.disabled = false;
+                    scanBtn.textContent = '重新扫描音源';
+                }
+            }
+            
+            // 渲染音源列表
+            renderSources(sources) {
+                const sourceList = document.getElementById('sourceList');
+                
+                if (sources.length === 0) {
+                    sourceList.innerHTML = '<li class="loading">未找到音源文件</li>';
+                    return;
+                }
+                
+                sourceList.innerHTML = '';
+                
+                sources.forEach(source => {
+                    const li = document.createElement('li');
+                    li.className = 'source-item';
+                    li.innerHTML = `
+                        <div class="source-info">
+                            <div class="source-name">${source.name}</div>
+                            <div class="source-desc">${source.description}</div>
+                            <div class="source-version">版本: ${source.version}</div>
+                        </div>
+                        <div class="source-toggle" 
+                             data-source-id="${source.id}"></div>
+                    `;
+                    
+                    // 添加切换事件
+                    const toggle = li.querySelector('.source-toggle');
+                    toggle.addEventListener('click', () => {
+                        toggle.classList.toggle('active');
+                        if (toggle.classList.contains('active')) {
+                            this.sourceManager.enableSource(source.id);
+                        } else {
+                            this.sourceManager.disableSource(source.id);
+                        }
+                    });
+                    
+                    sourceList.appendChild(li);
+                });
+            }
+            
+            // 加载演示播放列表
+            loadDemoPlaylist() {
+                // 这里使用模拟数据，实际应用中应从API获取
+                this.playlists.current = [
+                    {
+                        id: '1',
+                        title: '夜曲',
+                        artist: '周杰伦',
+                        album: '十一月的萧邦',
+                        duration: 218,
+                        source: '网易云',
+                        url: 'https://music.163.com/song/media/outer/url?id=22705034.mp3' // 示例链接
+                    },
+                    {
+                        id: '2',
+                        title: '青花瓷',
+                        artist: '周杰伦',
+                        album: '我很忙',
+                        duration: 265,
+                        source: 'QQ音乐',
+                        url: 'https://music.163.com/song/media/outer/url?id=22705035.mp3' // 示例链接
+                    },
+                    {
+                        id: '3',
+                        title: '稻香',
+                        artist: '周杰伦',
+                        album: '魔杰座',
+                        duration: 295,
+                        source: '酷狗',
+                        url: 'https://music.163.com/song/media/outer/url?id=22705036.mp3' // 示例链接
+                    },
+                    {
+                        id: '4',
+                        title: '七里香',
+                        artist: '周杰伦',
+                        album: '七里香',
+                        duration: 282,
+                        source: '咪咕',
+                        url: 'https://music.163.com/song/media/outer/url?id=22705037.mp3' // 示例链接
+                    },
+                    {
+                        id: '5',
+                        title: '告白气球',
+                        artist: '周杰伦',
+                        album: '周杰伦的床边故事',
+                        duration: 201,
+                        source: '酷我',
+                        url: 'https://music.163.com/song/media/outer/url?id=22705038.mp3' // 示例链接
+                    }
+                ];
+                
+                this.renderPlaylist();
+            }
+            
+            // 显示创建播放列表界面
+            showCreatePlaylist() {
+                // 创建输入框和按钮
+                const playlistEl = document.getElementById('playlist');
+                playlistEl.innerHTML = `
+                    <li>
+                        <input type="text" id="newPlaylistName" placeholder="输入播放列表名称" style="width: 100%; padding: 8px; margin-bottom: 10px; background: rgba(0,0,0,0.3); border: 1px solid #4d9eff; border-radius: 4px; color: white;">
+                        <button id="savePlaylistBtn" style="width: 100%; padding: 10px; background: #4d9eff; border: none; border-radius: 4px; color: white; cursor: pointer;">创建播放列表</button>
+                    </li>
+                `;
+                
+                // 添加事件监听器
+                document.getElementById('savePlaylistBtn').addEventListener('click', () => {
+                    const name = document.getElementById('newPlaylistName').value.trim();
+                    if (name) {
+                        this.createPlaylist(name);
+                    }
+                });
+            }
+            
+            // 创建新播放列表
+            createPlaylist(name) {
+                if (!name) return;
+                
+                // 检查是否已存在同名播放列表
+                if (this.playlists[name]) {
+                    alert('播放列表已存在！');
+                    return;
+                }
+                
+                this.playlists[name] = [];
+                
+                // 切换回当前播放列表视图
+                document.querySelectorAll('.playlist-btn').forEach(btn => btn.classList.remove('active'));
+                document.getElementById('currentPlaylistBtn').classList.add('active');
+                this.renderPlaylist();
+            }
+            
+            // 播放指定歌曲
+            async playTrack(track) {
+                // 如果track没有url属性，尝试从API获取
+                if (!track.url) {
+                    const musicUrl = await this.sourceManager.getMusicUrl(track);
+                    if (musicUrl) {
+                        this.currentTrack = {...track, url: musicUrl};
+                    } else {
+                        console.error('无法获取音乐播放地址');
+                        alert(`无法播放 "${track.title}"，请尝试其他歌曲`);
+                        return;
+                    }
+                } else {
+                    this.currentTrack = track;
+                }
+                
+                this.audio.src = this.currentTrack.url;
+                
+                // 更新界面
+                document.getElementById('currentTitle').textContent = this.currentTrack.title;
+                document.getElementById('currentArtist').textContent = this.currentTrack.artist;
+                document.getElementById('currentAlbum').textContent = this.currentTrack.album;
+                
+                // 更新播放列表显示
+                this.renderPlaylist();
+                
+                // 播放
+                this.audio.play()
+                    .then(() => {
+                        this.isPlaying = true;
+                        document.getElementById('playBtn').textContent = '⏸';
+                    })
+                    .catch(e => {
+                        console.error('播放失败:', e);
+                        // 尝试使用备用链接
+                        this.tryBackupSource(this.currentTrack);
+                    });
+            }
+            
+            // 尝试备用音源
+            tryBackupSource(track) {
+                // 这里可以尝试使用其他音源API获取播放链接
+                console.log(`尝试使用备用音源获取 ${track.title} 的播放链接`);
+                
+                // 模拟获取备用链接
+                const backupUrl = `https://music.163.com/song/media/outer/url?id=${track.id.split('_').pop() || '22705034'}.mp3`;
+                this.audio.src = backupUrl;
+                
+                this.audio.play()
+                    .then(() => {
+                        this.isPlaying = true;
+                        document.getElementById('playBtn').textContent = '⏸';
+                    })
+                    .catch(e => {
+                        console.error('备用音源播放失败:', e);
+                        alert(`无法播放 "${track.title}"，请尝试其他歌曲`);
+                    });
+            }
+            
+            // 播放/暂停切换
+            togglePlay() {
+                if (!this.currentTrack) {
+                    if (this.playlists.current.length > 0) {
+                        this.playTrack(this.playlists.current[0]);
+                    }
+                    return;
+                }
+                
+                if (this.isPlaying) {
+                    this.audio.pause();
+                    this.isPlaying = false;
+                    document.getElementById('playBtn').textContent = '▶';
+                } else {
+                    this.audio.play()
+                        .then(() => {
+                            this.isPlaying = true;
+                            document.getElementById('playBtn').textContent = '⏸';
+                        })
+                        .catch(e => {
+                            console.error('播放失败:', e);
+                        });
+                }
+            }
+            
+            // 播放下一首
+            playNext() {
+                if (this.playlists.current.length === 0) return;
+                
+                const currentIndex = this.playlists.current.findIndex(track => track.id === this.currentTrack?.id);
+                const nextIndex = (currentIndex + 1) % this.playlists.current.length;
+                this.playTrack(this.playlists.current[nextIndex]);
+            }
+            
+            // 播放上一首
+            playPrev() {
+                if (this.playlists.current.length === 0) return;
+                
+                const currentIndex = this.playlists.current.findIndex(track => track.id === this.currentTrack?.id);
+                const prevIndex = (currentIndex - 1 + this.playlists.current.length) % this.playlists.current.length;
+                this.playTrack(this.playlists.current[prevIndex]);
+            }
+            
+            // 更新播放进度
+            updateProgress() {
+                if (this.audio.duration) {
+                    const progress = (this.audio.currentTime / this.audio.duration) * 100;
+                    document.getElementById('progressBar').style.width = `${progress}%`;
+                    document.getElementById('currentTime').textContent = this.formatTime(this.audio.currentTime);
+                }
+            }
+            
+            // 格式化时间（秒转分:秒）
+            formatTime(seconds) {
+                if (isNaN(seconds)) return '00:00';
+                
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+            
+            // 渲染播放列表
+            renderPlaylist() {
+                const playlistEl = document.getElementById('playlist');
+                
+                // 获取当前选中的播放列表
+                let tracks = this.playlists.current;
+                
+                if (document.getElementById('currentPlaylistBtn').classList.contains('active')) {
+                    tracks = this.playlists.current;
+                } else {
+                    // 如果显示其他播放列表，这里可以扩展
+                    tracks = this.playlists.current;
+                }
+                
+                if (tracks.length === 0) {
+                    playlistEl.innerHTML = '<li class="loading">播放列表为空</li>';
+                    return;
+                }
+                
+                playlistEl.innerHTML = '';
+                tracks.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.className = `playlist-item ${this.currentTrack && this.currentTrack.id === item.id ? 'playing' : ''}`;
+                    li.innerHTML = `
+                        <span class="playlist-item-title">${item.title} - ${item.artist}</span>
+                        <span class="playlist-item-duration">${this.formatTime(item.duration)}</span>
+                    `;
+                    
+                    li.addEventListener('click', () => {
+                        this.playTrack(item);
+                    });
+                    
+                    playlistEl.appendChild(li);
+                });
+            }
+            
+            // 执行搜索
+            async performSearch() {
+                const query = document.getElementById('searchInput').value.trim();
+                if (!query) return;
+                
+                // 显示加载状态
+                const resultsEl = document.getElementById('searchResults');
+                resultsEl.innerHTML = '<li class="loading">搜索中...</li>';
+                
+                try {
+                    // 使用当前选择的音源进行搜索
+                    const selectedSource = this.currentSource;
+                    console.log(`使用音源 ${selectedSource} 搜索: ${query}`);
+                    
+                    // 调用音源管理器的搜索功能
+                    const searchResults = await this.sourceManager.searchMusic(query, selectedSource);
+                    
+                    if (searchResults.length > 0) {
+                        this.renderSearchResults(searchResults);
+                    } else {
+                        resultsEl.innerHTML = '<li class="loading">未找到相关歌曲</li>';
+                    }
+                } catch (error) {
+                    console.error('搜索失败:', error);
+                    resultsEl.innerHTML = '<li class="loading">搜索失败，请稍后重试</li>';
+                }
+            }
+            
+            // 渲染搜索结果
+            renderSearchResults(results) {
+                const resultsEl = document.getElementById('searchResults');
+                resultsEl.innerHTML = '';
+                
+                results.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'result-item';
+                    li.innerHTML = `
+                        <span class="result-item-title">${item.title} - ${item.artist}</span>
+                        <span class="result-item-source">${item.source}</span>
+                    `;
+                    
+                    li.addEventListener('click', async () => {
+                        // 添加到当前播放列表
+                        if (!this.playlists.current.some(track => track.id === item.id)) {
+                            this.playlists.current.push(item);
+                            this.renderPlaylist();
+                        }
+                        // 播放这首歌
+                        await this.playTrack(item);
+                    });
+                    
+                    resultsEl.appendChild(li);
+                });
+            }
+        }
+
+        // 页面加载完成后初始化播放器
+        document.addEventListener('DOMContentLoaded', () => {
+            const player = new MusicPlayer();
+            
+            // 页面加载后自动扫描音源
+            setTimeout(() => {
+                player.scanAndRenderSources();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

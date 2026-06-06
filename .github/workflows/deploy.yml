@@ -1,0 +1,84 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: database
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies (if any)
+      run: |
+        if [ -f package.json ]; then
+          npm install
+        fi
+        
+    - name: Build app package (if needed)
+      run: |
+        if [ -f package.json ] && npm run build; then
+          echo "Build completed"
+        else
+          echo "No build step required"
+        fi
+
+    - name: Build model verification share config
+      run: node scripts/generate-model-verify-config.js
+      env:
+        MODEL_VERIFY_SHARE_TYPE: ${{ secrets.MODEL_VERIFY_SHARE_TYPE }}
+        MODEL_VERIFY_SUPABASE_URL: ${{ secrets.MODEL_VERIFY_SUPABASE_URL }}
+        MODEL_VERIFY_SUPABASE_ANON_KEY: ${{ secrets.MODEL_VERIFY_SUPABASE_ANON_KEY }}
+        MODEL_VERIFY_SUPABASE_TABLE: ${{ secrets.MODEL_VERIFY_SUPABASE_TABLE }}
+        MODEL_VERIFY_CUSTOM_ENDPOINT: ${{ secrets.MODEL_VERIFY_CUSTOM_ENDPOINT || vars.MODEL_VERIFY_CUSTOM_ENDPOINT }}
+        MODEL_VERIFY_PROXY_ENDPOINT: ${{ secrets.MODEL_VERIFY_PROXY_ENDPOINT || vars.MODEL_VERIFY_PROXY_ENDPOINT }}
+        MODEL_VERIFY_FEED_SOURCE: ${{ vars.MODEL_VERIFY_FEED_SOURCE }}
+        MODEL_VERIFY_COCKROACH_DATABASE_URL: ${{ secrets.MODEL_VERIFY_COCKROACH_DATABASE_URL }}
+        MODEL_VERIFY_COCKROACH_PASSWORD: ${{ secrets.COCKROACHLABS_CLOUD_DB1 }}
+        MODEL_VERIFY_COCKROACH_HOST: ${{ vars.MODEL_VERIFY_COCKROACH_HOST }}
+        MODEL_VERIFY_COCKROACH_USER: ${{ vars.MODEL_VERIFY_COCKROACH_USER }}
+        MODEL_VERIFY_COCKROACH_DATABASE: ${{ vars.MODEL_VERIFY_COCKROACH_DATABASE }}
+        MODEL_VERIFY_COCKROACH_TABLE: ${{ vars.MODEL_VERIFY_COCKROACH_TABLE }}
+        MODEL_VERIFY_COCKROACH_PORT: ${{ vars.MODEL_VERIFY_COCKROACH_PORT }}
+        MODEL_VERIFY_COCKROACH_SSL_REJECT_UNAUTHORIZED: ${{ vars.MODEL_VERIFY_COCKROACH_SSL_REJECT_UNAUTHORIZED }}
+
+    - name: Build model verification feed
+      run: node scripts/generate-model-verify-feed.js
+      env:
+        MODEL_VERIFY_FEED_SOURCE: ${{ vars.MODEL_VERIFY_FEED_SOURCE }}
+        MODEL_VERIFY_SUPABASE_URL: ${{ secrets.MODEL_VERIFY_SUPABASE_URL }}
+        MODEL_VERIFY_SUPABASE_ANON_KEY: ${{ secrets.MODEL_VERIFY_SUPABASE_ANON_KEY }}
+        MODEL_VERIFY_SUPABASE_TABLE: ${{ secrets.MODEL_VERIFY_SUPABASE_TABLE }}
+        MODEL_VERIFY_COCKROACH_DATABASE_URL: ${{ secrets.MODEL_VERIFY_COCKROACH_DATABASE_URL }}
+        MODEL_VERIFY_COCKROACH_PASSWORD: ${{ secrets.COCKROACHLABS_CLOUD_DB1 }}
+        MODEL_VERIFY_COCKROACH_HOST: ${{ vars.MODEL_VERIFY_COCKROACH_HOST }}
+        MODEL_VERIFY_COCKROACH_USER: ${{ vars.MODEL_VERIFY_COCKROACH_USER }}
+        MODEL_VERIFY_COCKROACH_DATABASE: ${{ vars.MODEL_VERIFY_COCKROACH_DATABASE }}
+        MODEL_VERIFY_COCKROACH_TABLE: ${{ vars.MODEL_VERIFY_COCKROACH_TABLE }}
+        MODEL_VERIFY_COCKROACH_PORT: ${{ vars.MODEL_VERIFY_COCKROACH_PORT }}
+        MODEL_VERIFY_COCKROACH_SSL_REJECT_UNAUTHORIZED: ${{ vars.MODEL_VERIFY_COCKROACH_SSL_REJECT_UNAUTHORIZED }}
+
+    - name: Build clean URLs
+      run: node scripts/build-clean-urls.js
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./_site
+        publish_branch: gh-pages
+        force_orphan: true

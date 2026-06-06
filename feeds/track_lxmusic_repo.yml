@@ -1,0 +1,57 @@
+name: Track wzh15802/lxmusic Repository
+
+on:
+  schedule:
+    # 每周检查一次更新 (每周日凌晨2点)
+    - cron: '0 2 * * 0'
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout current repository
+      uses: actions/checkout@v4
+      with:
+        path: main-repo
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Check for wzh15802/lxmusic repository updates
+      id: check_updates
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+        repo_path="./entertainment/lxmusic-api"
+        if [ ! -d "$repo_path" ]; then
+          mkdir -p "$repo_path"
+        fi
+        # 检查wzh15802/lxmusic仓库的最新提交
+        git clone --depth 1 https://github.com/wzh15802/lxmusic.git repo_path
+        cd repo_path
+        LATEST_COMMIT=$(git rev-parse HEAD)
+        echo "latest_commit=$LATEST_COMMIT" >> $GITHUB_OUTPUT
+        
+        # 检查最近的提交信息
+        COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
+        echo "commit_message=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
+        
+        # 获取仓库的更新日期
+        UPDATE_DATE=$(git log -1 --format=%cd)
+        echo "update_date=$UPDATE_DATE" >> $GITHUB_OUTPUT
+        
+        # 检查是否有更新
+        cd ../main-repo
+        if [ -f "entertainment/lxmusic-api/lxmusic-last-commit.txt" ]; then
+          PREVIOUS_COMMIT=$(cat entertainment/lxmusic-api/lxmusic-last-commit.txt)
+          if [ "$PREVIOUS_COMMIT" = "$LATEST_COMMIT" ]; then
+            echo "Repository has not changed, exiting"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+        fi
+        
+        echo "has_changes=true" >> $GITHUB_OUTPUT
+        echo "New changes detected in wzh15802/lxmusic repository"
+    

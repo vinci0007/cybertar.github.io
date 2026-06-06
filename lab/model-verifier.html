@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型验真 | CyberTAR</title>
+    <link rel="icon" type="image/jpeg" href="../images/Cybertar.png">
+    <link rel="stylesheet" href="../styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            background: #050505 !important;
+        }
+
+        #canvas-container {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        #canvas-container canvas {
+            display: block;
+        }
+
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            opacity: 0.05;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .glass-panel {
+            background: rgba(10, 15, 30, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 300;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .back-button:hover {
+            border-color: #fff;
+            text-shadow: 0 0 10px #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .verifier-shell {
+            position: relative;
+            z-index: 10;
+            width: min(1680px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 6.5rem 0 3rem;
+        }
+
+        .verifier-header {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(300px, 0.32fr);
+            gap: 1.5rem;
+            align-items: end;
+            margin-bottom: 1rem;
+        }
+
+        .eyebrow {
+            color: rgba(255, 255, 255, 0.56);
+            font-family: var(--font-display);
+            letter-spacing: 0.22rem;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .verifier-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.2rem, 5vw, 4.8rem);
+            line-height: 1;
+            color: #fff;
+            margin-bottom: 0.85rem;
+        }
+
+        .verifier-subtitle {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 880px;
+        }
+
+        .notice {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 12px;
+            padding: 0.95rem;
+            color: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.05);
+            line-height: 1.65;
+            font-size: 0.9rem;
+        }
+
+        .verifier-grid {
+            display: grid;
+            grid-template-columns: minmax(430px, 500px) minmax(0, 1fr);
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .page-tabs {
+            display: flex;
+            gap: 0.65rem;
+            margin: 0.15rem 0 0.35rem;
+            min-height: 3rem;
+            align-items: center;
+            position: relative;
+            z-index: 20;
+        }
+
+        .page-tab {
+            position: relative;
+            overflow: hidden;
+            min-width: 8.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.045);
+            color: rgba(255, 255, 255, 0.72);
+            padding: 0.78rem 1rem;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .page-tab.active {
+            background: #fff;
+            color: #000;
+        }
+
+        .page-panel {
+            display: none;
+            padding: 0;
+        }
+
+        .page-panel.active {
+            display: block;
+        }
+
+        .shared-ranking-panel {
+            min-height: 56vh;
+        }
+
+        .panel {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.045);
+            padding: 1.05rem;
+        }
+
+        .panel h2 {
+            color: #fff;
+            font-size: 1rem;
+            margin: 0 0 0.75rem;
+        }
+
+        .field {
+            display: block;
+            color: rgba(255, 255, 255, 0.68);
+            font-size: 0.82rem;
+            margin-bottom: 0.65rem;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            margin-top: 0.32rem;
+            padding: 0.68rem 0.75rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(0, 0, 0, 0.32);
+            color: #fff;
+            outline: none;
+            font: inherit;
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 58px;
+        }
+
+        .grid2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.65rem;
+        }
+
+        .test-options {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .switch {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-height: 36px;
+            padding: 0.5rem 0.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 9px;
+            background: rgba(0, 0, 0, 0.2);
+            color: rgba(255, 255, 255, 0.76);
+            font-size: 0.82rem;
+            cursor: pointer;
+        }
+
+        .switch input {
+            width: 16px;
+            height: 16px;
+            accent-color: #7cff00;
+        }
+
+        .actions,
+        .report-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 0.85rem;
+        }
+
+        .action-btn {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: #fff;
+            color: #000;
+            padding: 0.72rem 0.9rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn.secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-tab::before,
+        .action-btn::before,
+        .report-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+            transition: left 0.5s ease;
+            pointer-events: none;
+        }
+
+        .page-tab:hover::before,
+        .action-btn:not(:disabled):hover::before,
+        .report-tab:hover::before {
+            left: 100%;
+        }
+
+        .page-tab:hover,
+        .action-btn:not(:disabled):hover,
+        .report-tab:hover {
+            border-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .action-btn:disabled::before {
+            display: none;
+        }
+
+        .page-tab:focus-visible,
+        .action-btn:focus-visible,
+        .report-tab:focus-visible {
+            outline: 2px solid rgba(255, 255, 255, 0.85);
+            outline-offset: 2px;
+        }
+
+        .verify-ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: verify-ripple 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes verify-ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        .status-row {
+            display: grid;
+            grid-template-columns: 1fr 0.9fr 0.9fr 1.25fr;
+            gap: 0.65rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-tile,
+        .summary-tile {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 0.78rem;
+            background: rgba(0, 0, 0, 0.22);
+        }
+
+        .stat-tile span,
+        .summary-tile span {
+            display: block;
+            color: rgba(255, 255, 255, 0.52);
+            font-size: 0.74rem;
+            margin-bottom: 0.28rem;
+        }
+
+        .stat-tile strong,
+        .summary-tile strong {
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .shared-summary {
+            margin-bottom: 0;
+        }
+
+        .shared-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 0.55rem;
+        }
+
+        .shared-head h2 {
+            margin: 0;
+        }
+
+        .shared-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.55rem;
+        }
+
+        .shared-list {
+            display: grid;
+            gap: 0.5rem;
+            margin-top: 0.55rem;
+            max-height: 52vh;
+            overflow: auto;
+        }
+
+        .shared-item {
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) 0.8fr 0.55fr 0.9fr auto;
+            gap: 0.7rem;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 9px;
+            padding: 0.62rem 0.7rem;
+            background: rgba(255, 255, 255, 0.035);
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 0.84rem;
+        }
+
+        .shared-item strong {
+            display: block;
+            color: #fff;
+        }
+
+        .shared-item a {
+            color: #fff;
+        }
+
+        .report-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .report-tab {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 999px;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.72);
+            padding: 0.5rem 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .report-tab.active {
+            background: #fff;
+            color: #000;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .verify-empty,
+        .log-view {
+            min-height: 220px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.26);
+            color: rgba(255, 255, 255, 0.72);
+            padding: 0.85rem;
+            line-height: 1.55;
+            white-space: pre-wrap;
+            overflow: auto;
+        }
+
+        .verify-card {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.24);
+            padding: 0.78rem;
+            margin-bottom: 0.55rem;
+        }
+
+        .verify-overview {
+            display: grid;
+            grid-template-columns: 168px minmax(0, 1fr);
+            gap: 0.9rem;
+            align-items: center;
+        }
+
+        .score-ring {
+            position: relative;
+            width: 156px;
+            height: 156px;
+        }
+
+        .score-ring svg {
+            width: 156px;
+            height: 156px;
+            transform: rotate(-90deg);
+        }
+
+        .score-ring circle {
+            fill: none;
+            stroke-width: 18;
+        }
+
+        .score-ring .track {
+            stroke: rgba(255, 255, 255, 0.12);
+        }
+
+        .score-ring .value {
+            stroke-linecap: round;
+            filter: drop-shadow(0 0 12px rgba(124, 255, 0, 0.32));
+        }
+
+        .score-ring div {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1;
+            gap: 0.18rem;
+        }
+
+        .score-ring strong {
+            font-size: 2.2rem;
+            color: #fff;
+        }
+
+        .score-ring span {
+            color: rgba(255, 255, 255, 0.56);
+            margin-top: 0;
+            font-size: 0.82rem;
+        }
+
+        .verify-summary h3 {
+            color: #fff;
+            margin: 0.15rem 0 0.65rem;
+            line-height: 1.35;
+        }
+
+        .verify-kicker,
+        .section-note {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.76rem;
+            letter-spacing: 0.08rem;
+            text-transform: uppercase;
+            margin: 0 0 0.55rem;
+        }
+
+        .metric-row,
+        .evidence-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.58rem;
+        }
+
+        .metric-row div,
+        .evidence-item {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 0.68rem;
+            background: rgba(255, 255, 255, 0.035);
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .metric-row span,
+        .evidence-item span {
+            display: block;
+            color: rgba(255, 255, 255, 0.46);
+            font-size: 0.72rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-row strong,
+        .evidence-item strong {
+            color: #fff;
+        }
+
+        .evidence-item p {
+            margin: 0.35rem 0 0;
+            line-height: 1.45;
+        }
+
+        .probe-row {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.38rem 0;
+            display: grid;
+            grid-template-columns: minmax(150px, 1.25fr) 78px minmax(140px, 0.9fr) minmax(150px, 1fr) auto;
+            gap: 0.5rem;
+            align-items: center;
+            min-height: 0;
+        }
+
+        .probe-row:first-child {
+            border-top: 0;
+            padding-top: 0;
+        }
+
+        .probe-name,
+        .probe-meta {
+            display: flex;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+            color: rgba(255, 255, 255, 0.72);
+            min-width: 0;
+        }
+
+        .probe-name {
+            flex-direction: column;
+            gap: 0.12rem;
+        }
+
+        .probe-name strong {
+            color: #fff;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .probe-name span {
+            color: rgba(255, 255, 255, 0.48);
+            font-size: 0.75rem;
+        }
+
+        .probe-score strong {
+            color: #fff;
+            font-size: 0.88rem;
+        }
+
+        .probe-score {
+            align-self: center;
+            min-width: 0;
+        }
+
+        .probe-bar {
+            height: 5px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            margin: 0.25rem 0 0;
+        }
+
+        .probe-bar i {
+            display: block;
+            height: 100%;
+            border-radius: inherit;
+            background: var(--score-color);
+        }
+
+        .probe-row p {
+            margin: 0;
+            line-height: 1.35;
+            color: rgba(255, 255, 255, 0.68);
+            font-size: 0.82rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .probe-row pre,
+        .raw-json {
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .probe-row pre {
+            max-height: 112px;
+            overflow: auto;
+            margin: 0;
+            padding: 0.5rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.045);
+            color: rgba(255, 255, 255, 0.68);
+        }
+
+        .probe-preview {
+            justify-self: end;
+            color: rgba(255, 255, 255, 0.62);
+            font-size: 0.8rem;
+            min-width: 0;
+        }
+
+        .probe-preview summary {
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .raw-json {
+            max-height: 520px;
+            overflow: auto;
+            color: rgba(255, 255, 255, 0.74);
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: none;
+            place-items: center;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.68);
+        }
+
+        .modal.open {
+            display: grid;
+        }
+
+        .modal-card {
+            width: min(720px, 100%);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 14px;
+            background: rgba(8, 10, 16, 0.96);
+            padding: 1.1rem;
+            box-shadow: 0 18px 70px rgba(0, 0, 0, 0.55);
+        }
+
+        .modal-card h2 {
+            color: #fff;
+            margin-bottom: 0.4rem;
+        }
+
+        .modal-card p {
+            color: rgba(255, 255, 255, 0.68);
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+        }
+
+        #shareModal .modal-card {
+            width: min(540px, 100%);
+        }
+
+        .shared-modal-card {
+            width: min(980px, 100%);
+            max-height: 86vh;
+            overflow: auto;
+        }
+
+        .share-status {
+            min-height: 1.25rem;
+            color: rgba(255, 255, 255, 0.68);
+            font-size: 0.84rem;
+            line-height: 1.45;
+        }
+
+        @media (max-width: 1050px) {
+            .verifier-header,
+            .verifier-grid,
+            .status-row,
+            .metric-row,
+            .evidence-grid,
+            .shared-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .verify-overview,
+            .shared-item {
+                grid-template-columns: 1fr;
+            }
+
+            .probe-row {
+                grid-template-columns: 1fr;
+                align-items: start;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .verifier-shell {
+                width: min(100% - 24px, 1500px);
+                padding-top: 6rem;
+            }
+
+            .test-options,
+            .grid2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="noise-overlay"></div>
+    <div id="canvas-container"></div>
+    <a href="../index.html" class="back-button glass-panel">← 返回首页</a>
+
+    <main class="verifier-shell">
+        <header class="verifier-header">
+            <div>
+                <p class="eyebrow">LLM Model Verify</p>
+                <h1 class="verifier-title">模型验真</h1>
+                <p class="verifier-subtitle">
+                    对大模型接口做声明层、模型列表层、响应字段层、能力探针、稳定性和并发一致性检查。报告可下载，也可由用户手动分享到公开汇总；API Key 不会进入分享内容。
+                </p>
+            </div>
+            <aside class="notice">
+                浏览器直连 API 可能被 CORS 拦截，也会让密钥进入当前页面环境。生产验真建议使用只允许本工具访问的临时 Key，或通过你自己的本地代理运行。
+            </aside>
+        </header>
+
+        <nav class="page-tabs" aria-label="模型验真页面切换">
+            <button class="page-tab active" type="button" data-page="testPage">测试页</button>
+            <button class="page-tab" type="button" data-page="sharedPage">汇总排行</button>
+        </nav>
+
+        <section id="testPage" class="page-panel active">
+            <section class="verifier-grid">
+                <aside class="panel">
+                <h2>接口配置</h2>
+                <label class="field">提供方
+                    <select id="provider">
+                        <option value="openai">OpenAI Compatible</option>
+                        <option value="anthropic">Anthropic Messages</option>
+                    </select>
+                </label>
+                <label class="field">协议
+                    <select id="protocol">
+                        <option value="chat_completions">Chat Completions</option>
+                        <option value="responses" selected>Responses</option>
+                        <option value="messages">Anthropic Messages</option>
+                    </select>
+                </label>
+                <div class="grid2">
+                    <label class="field">检测模式
+                        <select id="detectionMode">
+                            <option value="full">完整检测 21 项</option>
+                            <option value="standard">标准检测</option>
+                            <option value="quick">快速检测</option>
+                        </select>
+                    </label>
+                    <label class="field">执行方式
+                        <select id="executionMode">
+                            <option value="serial">串行稳态</option>
+                            <option value="parallel">并行加速</option>
+                        </select>
+                    </label>
+                </div>
+                <label class="field">Base URL
+                    <input id="baseUrl" value="https://api.openai.com" autocomplete="off">
+                </label>
+                <div class="grid2">
+                    <label class="field">模型 ID
+                        <input id="model" value="gpt-5.5" autocomplete="off">
+                    </label>
+                    <label class="field">超时秒数
+                        <input id="timeout" value="60" inputmode="numeric">
+                    </label>
+                </div>
+                <label class="field">最大输出 Token
+                    <input id="maxTokens" value="256" inputmode="numeric">
+                </label>
+                <label class="field">API Key
+                    <input id="apiKey" type="password" autocomplete="off">
+                </label>
+                <label class="field">系统提示词
+                    <textarea id="systemPrompt" placeholder="可选"></textarea>
+                </label>
+
+                <h2>测试项</h2>
+                <div class="test-options">
+                    <label class="switch"><input id="testModelList" type="checkbox" checked>模型列表</label>
+                    <label class="switch"><input id="testIdentity" type="checkbox" checked>模型身份</label>
+                    <label class="switch"><input id="testCapability" type="checkbox" checked>能力探针</label>
+                    <label class="switch"><input id="testJsonTooling" type="checkbox" checked>JSON/工具</label>
+                    <label class="switch"><input id="testSafety" type="checkbox" checked>边界安全</label>
+                    <label class="switch"><input id="testPerformance" type="checkbox" checked>性能</label>
+                    <label class="switch"><input id="testStreaming" type="checkbox" checked>流式响应</label>
+                    <label class="switch"><input id="testMultiTurn" type="checkbox" checked>多轮一致性</label>
+                    <label class="switch"><input id="testStability" type="checkbox" checked>稳定性</label>
+                    <label class="switch"><input id="testConcurrent" type="checkbox" checked>并发一致性</label>
+                </div>
+                <div class="grid2">
+                    <label class="field">稳定性轮次
+                        <input id="stabilityRounds" value="3" inputmode="numeric">
+                    </label>
+                    <label class="field">并发请求数
+                        <input id="concurrency" value="5" inputmode="numeric">
+                    </label>
+                </div>
+                <label class="switch"><input id="includePreview" type="checkbox" checked>报告保留响应摘要</label>
+
+                <h2>报告导入</h2>
+                <label class="field">导入 model-verify JSON
+                    <input id="reportFile" type="file" accept="application/json,.json">
+                </label>
+
+                <div class="actions">
+                    <button id="runBtn" class="action-btn">运行验真</button>
+                    <button id="sampleBtn" class="action-btn secondary" type="button">示例报告</button>
+                    <button id="downloadBtn" class="action-btn secondary" type="button" disabled>下载 JSON</button>
+                    <button id="shareBtn" class="action-btn secondary" type="button" disabled>分享报告</button>
+                    <button id="sharedBtn" class="action-btn secondary" type="button">共享汇总</button>
+                </div>
+                </aside>
+
+                <section class="panel">
+                    <div class="status-row">
+                        <div class="stat-tile"><span>状态</span><strong id="state">待命</strong></div>
+                        <div class="stat-tile"><span>得分</span><strong id="score">--</strong></div>
+                        <div class="stat-tile"><span>探针</span><strong id="probeCount">0/0</strong></div>
+                        <div class="stat-tile"><span>返回模型</span><strong id="returnedModel">--</strong></div>
+                    </div>
+
+                    <div class="report-tabs">
+                        <button class="report-tab active" type="button" data-panel="reportPanel">报告</button>
+                        <button class="report-tab" type="button" data-panel="logPanel">日志</button>
+                        <button class="report-tab" type="button" data-panel="rawPanel">JSON</button>
+                    </div>
+
+                    <div id="reportPanel" class="tab-panel active">
+                        <div id="reportView" class="verify-empty">配置接口后运行验真，或导入已有 JSON 报告。</div>
+                    </div>
+                    <div id="logPanel" class="tab-panel">
+                        <pre id="logView" class="log-view">等待运行...</pre>
+                    </div>
+                    <div id="rawPanel" class="tab-panel">
+                        <pre id="rawView" class="verify-empty raw-json">暂无 JSON 报告。</pre>
+                    </div>
+                </section>
+            </section>
+        </section>
+
+        <section id="sharedPage" class="page-panel">
+            <section class="panel shared-ranking-panel">
+                <div class="shared-head">
+                    <div>
+                        <h2 id="sharedPanelTitle">用户手动分享汇总</h2>
+                        <p>按官网域名去重展示最新报告；点击查看会把该报告载入测试页。</p>
+                    </div>
+                    <span id="shareBackendLabel" class="report-tab">在线汇总未连接</span>
+                </div>
+                <div class="shared-grid">
+                    <div class="summary-tile"><span>已汇总域名</span><strong id="sharedDomainCount">--</strong></div>
+                    <div class="summary-tile"><span>最高得分</span><strong id="sharedBestScore">--</strong></div>
+                    <div class="summary-tile"><span>更新时间</span><strong id="sharedUpdatedAt">--</strong></div>
+                </div>
+                <div id="sharedReports" class="shared-list">
+                    <div class="verify-empty">正在准备公开分享报告...</div>
+                </div>
+                <div class="report-actions">
+                    <button id="refreshSharedBtn" class="action-btn" type="button">手动刷新</button>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <div id="shareModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="shareModalTitle">
+        <div class="modal-card">
+            <h2 id="shareModalTitle">分享测试报告</h2>
+            <p>分享会提交到已配置的在线分享接口。只提交服务商信息与脱敏后的测试报告，API Key 不会写入分享内容。</p>
+            <label class="field">服务商名称 *
+                <input id="shareProviderName" autocomplete="organization" placeholder="例如 OpenAI / Anthropic / 某某中转服务">
+            </label>
+            <label class="field">官网地址 *
+                <input id="shareHomepage" autocomplete="url" placeholder="https://example.com">
+            </label>
+            <p id="shareStatus" class="share-status"></p>
+            <div class="report-actions">
+                <button id="confirmShareBtn" class="action-btn" type="button">确认分享</button>
+                <button id="cancelShareBtn" class="action-btn secondary" type="button">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+    <script src="model-verify-share-config.js?v=20260606"></script>
+    <script src="model-verifier.js?v=2026060602"></script>
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-clean-urls.js"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}
+

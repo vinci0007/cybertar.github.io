@@ -1,0 +1,61 @@
+name: Update All Feeds Data
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # UTC 00:00 (北京 08:00)
+    - cron: '30 5 * * *' # UTC 05:30 (北京 13:30)
+  workflow_dispatch:
+
+jobs:
+  update-feeds:
+    runs-on: ubuntu-latest
+    environment: database
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          pip install -r scripts/requirements.txt
+          npm install
+
+      - name: Run all scrapers
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MODEL_VERIFY_FEED_SOURCE: ${{ vars.MODEL_VERIFY_FEED_SOURCE }}
+          MODEL_VERIFY_SUPABASE_URL: ${{ secrets.MODEL_VERIFY_SUPABASE_URL }}
+          MODEL_VERIFY_SUPABASE_ANON_KEY: ${{ secrets.MODEL_VERIFY_SUPABASE_ANON_KEY }}
+          MODEL_VERIFY_SUPABASE_TABLE: ${{ secrets.MODEL_VERIFY_SUPABASE_TABLE }}
+          MODEL_VERIFY_COCKROACH_DATABASE_URL: ${{ secrets.MODEL_VERIFY_COCKROACH_DATABASE_URL }}
+          MODEL_VERIFY_COCKROACH_PASSWORD: ${{ secrets.COCKROACHLABS_CLOUD_DB1 }}
+          MODEL_VERIFY_COCKROACH_HOST: ${{ vars.MODEL_VERIFY_COCKROACH_HOST }}
+          MODEL_VERIFY_COCKROACH_USER: ${{ vars.MODEL_VERIFY_COCKROACH_USER }}
+          MODEL_VERIFY_COCKROACH_DATABASE: ${{ vars.MODEL_VERIFY_COCKROACH_DATABASE }}
+          MODEL_VERIFY_COCKROACH_TABLE: ${{ vars.MODEL_VERIFY_COCKROACH_TABLE }}
+          MODEL_VERIFY_COCKROACH_PORT: ${{ vars.MODEL_VERIFY_COCKROACH_PORT }}
+          MODEL_VERIFY_COCKROACH_SSL_REJECT_UNAUTHORIZED: ${{ vars.MODEL_VERIFY_COCKROACH_SSL_REJECT_UNAUTHORIZED }}
+        run: |
+          python scripts/fetch_all.py all
+          node scripts/generate-model-verify-feed.js
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add feeds/
+          # 只有当有变更时才提交
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update all feeds data [skip ci]"
+          git push
