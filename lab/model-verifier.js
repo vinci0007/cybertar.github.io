@@ -7,6 +7,7 @@
     const isDefaultShareHost = defaultShareHosts.has(window.location.hostname) || window.location.hostname.endsWith('.youngood.tech');
     const sharedCacheKey = 'cybertar:model-verifier:shared-reports:v2';
     const sharedCacheTtlMs = 60 * 60 * 1000;
+    const authTokenKey = 'cybertar:model-verifier:auth-token:v1';
     const shareConfig = {
         type: 'supabase',
         supabaseUrl: '',
@@ -26,6 +27,11 @@
     if (!shareConfig.modelProxyEndpoint && shareConfig.customEndpoint) {
         shareConfig.modelProxyEndpoint = shareConfig.customEndpoint.replace(/\/model-verify-reports\/?$/i, '/model-verify-proxy');
     }
+    const shareApiRoot = () => shareConfig.customEndpoint ? shareConfig.customEndpoint.replace(/\/model-verify-reports\/?$/i, '') : '';
+    const shareApiUrl = (path) => `${shareApiRoot()}${path}`;
+    let authToken = localStorage.getItem(authTokenKey) || '';
+    let authUser = null;
+    let selectedDiscussionItem = null;
 
     const testGroups = {
         model_list: { label: '模型列表', defaultOn: true },
@@ -827,11 +833,9 @@
 
     function scoreColor(score) {
         const value = clamp(score, 0, 100);
-        if (value >= 88) return '#2ee66b';
-        if (value >= 72) return '#98e84f';
-        if (value >= 56) return '#3fc7ff';
-        if (value >= 38) return '#ffb238';
-        return '#ff4a78';
+        const hue = Math.round(value * 1.2);
+        const lightness = Math.round(48 + value * 0.08);
+        return `hsl(${hue}, 82%, ${lightness}%)`;
     }
 
     function applyScoreCaps(rawScore, channel) {
@@ -950,7 +954,7 @@
                             </linearGradient>
                         </defs>
                         <circle class="track" cx="84" cy="84" r="58"></circle>
-                        <circle class="value" cx="84" cy="84" r="58" stroke="url(#scoreGradient)" stroke-dasharray="${circumference.toFixed(2)}" stroke-dashoffset="${offset.toFixed(2)}"></circle>
+                        <circle class="value" cx="84" cy="84" r="58" stroke="${scoreColor(score)}" stroke-dasharray="${circumference.toFixed(2)}" stroke-dashoffset="${offset.toFixed(2)}"></circle>
                     </svg>
                     <div class="score-center"><strong>${score}</strong><span>/100</span></div>
                 </div>
@@ -1310,6 +1314,83 @@
         }
     }
 
+    function authHeaders() {
+        return authToken ? { Authorization: `Bearer ${authToken}` } : {};
+    }
+
+    function parseAuthRedirect() {
+        const params = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+        const token = params.get('mv_auth_token');
+        const error = params.get('mv_auth_error');
+        if (token) {
+            authToken = token;
+            localStorage.setItem(authTokenKey, token);
+            history.replaceState(null, document.title, window.location.pathname + window.location.search);
+        } else if (error) {
+            setState(`GitHub login failed: ${error}`);
+            history.replaceState(null, document.title, window.location.pathname + window.location.search);
+        }
+    }
+
+    function updateAuthUi() {
+        if ($('authUserLabel')) {
+            $('authUserLabel').textContent = authUser
+                ? `${authUser.login}${authUser.role === 'admin' ? ' · admin' : ''}`
+                : 'Guest';
+        }
+        if ($('githubLoginBtn')) $('githubLoginBtn').hidden = Boolean(authUser);
+        if ($('githubLogoutBtn')) $('githubLogoutBtn').hidden = !authUser;
+        if ($('postDiscussionBtn')) $('postDiscussionBtn').disabled = !authUser || !selectedDiscussionItem;
+    }
+
+    async function loadAuthUser() {
+        parseAuthRedirect();
+        if (!shareApiRoot() || !authToken) {
+            authUser = null;
+            updateAuthUi();
+            return null;
+        }
+        try {
+            const response = await fetch(shareApiUrl('/model-verify-auth/me'), {
+                headers: { ...authHeaders(), Accept: 'application/json' },
+                cache: 'no-store'
+            });
+            const payload = await response.json().catch(() => ({}));
+            authUser = response.ok ? payload.user : null;
+            if (!authUser) localStorage.removeItem(authTokenKey);
+        } catch {
+            authUser = null;
+        }
+        updateAuthUi();
+        return authUser;
+    }
+
+    function startGitHubLogin() {
+        if (!shareApiRoot()) {
+            alert('GitHub login requires the online share API.');
+            return;
+        }
+        const returnTo = encodeURIComponent(window.location.href.split('#')[0]);
+        window.location.href = shareApiUrl(`/model-verify-auth/github/login?return_to=${returnTo}`);
+    }
+
+    async function logoutGitHub() {
+        if (shareApiRoot() && authToken) {
+            await fetch(shareApiUrl('/model-verify-auth/logout'), {
+                method: 'POST',
+                headers: { ...authHeaders(), Accept: 'application/json' }
+            }).catch(() => null);
+        }
+        authToken = '';
+        authUser = null;
+        localStorage.removeItem(authTokenKey);
+        updateAuthUi();
+    }
+
+    function canAdminDelete() {
+        return authUser?.role === 'admin';
+    }
+
     function openShareModal() {
         if (!currentReport) {
             alert('请先运行、导入或加载示例报告。');
@@ -1362,7 +1443,7 @@
         if (shareConfig.customEndpoint) {
             const response = await fetch(shareConfig.customEndpoint, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', ...authHeaders() },
                 body: JSON.stringify(payload)
             });
             const data = await response.json().catch(() => ({}));
@@ -1431,6 +1512,125 @@
         }
     }
 
+    async function deleteSharedReport(item) {
+        if (!shareConfig.customEndpoint || !item) return;
+        const targetModel = reportTargetModel(item.report) || item.targetModel || 'unknown';
+        const adminPassword = canAdminDelete() ? '' : prompt('Admin password required to delete this report.');
+        if (!canAdminDelete() && !adminPassword) return;
+        if (!confirm(`Delete report for ${item.domain} / ${targetModel}?`)) return;
+        const response = await fetch(shareConfig.customEndpoint, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json', ...authHeaders() },
+            body: JSON.stringify({ domain: item.domain, targetModel, adminPassword })
+        });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            alert(payload.error || `Delete failed: HTTP ${response.status}`);
+            return;
+        }
+        localStorage.removeItem(sharedCacheKey);
+        await loadSharedReports({ force: true });
+    }
+
+    async function loadDiscussions(item) {
+        selectedDiscussionItem = item || null;
+        updateAuthUi();
+        const list = $('discussionList');
+        if (!list || !item) {
+            if (list) list.innerHTML = '<div class="verify-empty">No report selected.</div>';
+            if ($('discussionTitle')) $('discussionTitle').textContent = 'Select a report to discuss';
+            return [];
+        }
+        const targetModel = reportTargetModel(item.report) || item.targetModel || 'unknown';
+        if ($('discussionTitle')) $('discussionTitle').textContent = `${item.domain} / ${targetModel}`;
+        if (!shareApiRoot()) {
+            list.innerHTML = '<div class="verify-empty">Discussion requires the online share API.</div>';
+            return [];
+        }
+        list.innerHTML = '<div class="verify-empty">Loading discussion...</div>';
+        try {
+            const url = shareApiUrl(`/model-verify-discussions?domain=${encodeURIComponent(item.domain)}&targetModel=${encodeURIComponent(targetModel)}`);
+            const response = await fetch(url, { headers: { Accept: 'application/json' }, cache: 'no-store' });
+            const payload = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(payload.error || `HTTP ${response.status}`);
+            renderDiscussions(payload.items || [], item);
+            return payload.items || [];
+        } catch (error) {
+            list.innerHTML = `<div class="verify-empty">Discussion load failed: ${escapeHtml(error.message)}</div>`;
+            return [];
+        }
+    }
+
+    function renderDiscussions(items, item) {
+        const list = $('discussionList');
+        if (!list) return;
+        const normalized = asArray(items);
+        if (!normalized.length) {
+            list.innerHTML = '<div class="verify-empty">No discussion yet.</div>';
+            return;
+        }
+        list.innerHTML = normalized.map((entry) => {
+            const author = entry.author || {};
+            const canDelete = authUser?.role === 'admin' || String(author.login || '').toLowerCase() === String(authUser?.login || '').toLowerCase();
+            const created = entry.createdAt ? new Date(entry.createdAt).toLocaleString() : '';
+            return `
+                <article class="discussion-item">
+                    <header>
+                        <span>${escapeHtml(author.login || 'github-user')} · ${escapeHtml(created)}</span>
+                        ${canDelete ? `<button class="report-tab" type="button" data-discussion-delete="${escapeHtml(entry.id)}">Delete</button>` : ''}
+                    </header>
+                    <p>${escapeHtml(entry.body || '')}</p>
+                </article>
+            `;
+        }).join('');
+        list.querySelectorAll('[data-discussion-delete]').forEach((button) => {
+            button.addEventListener('click', async () => {
+                await deleteDiscussion(button.dataset.discussionDelete);
+                await loadDiscussions(item);
+            });
+        });
+    }
+
+    async function postDiscussion() {
+        if (!authUser) {
+            startGitHubLogin();
+            return;
+        }
+        if (!selectedDiscussionItem) return;
+        const body = $('discussionBody')?.value.trim();
+        if (!body) return;
+        const targetModel = reportTargetModel(selectedDiscussionItem.report) || selectedDiscussionItem.targetModel || 'unknown';
+        const button = $('postDiscussionBtn');
+        button.disabled = true;
+        try {
+            const response = await fetch(shareApiUrl('/model-verify-discussions'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', ...authHeaders() },
+                body: JSON.stringify({ domain: selectedDiscussionItem.domain, targetModel, body })
+            });
+            const payload = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(payload.error || `HTTP ${response.status}`);
+            $('discussionBody').value = '';
+            await loadDiscussions(selectedDiscussionItem);
+        } catch (error) {
+            alert(`Post failed: ${error.message}`);
+        } finally {
+            updateAuthUi();
+        }
+    }
+
+    async function deleteDiscussion(id) {
+        if (!id || !authUser || !shareApiRoot()) return;
+        if (!confirm('Delete this discussion post?')) return;
+        const response = await fetch(shareApiUrl('/model-verify-discussions'), {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json', ...authHeaders() },
+            body: JSON.stringify({ id })
+        });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) alert(payload.error || `Delete failed: HTTP ${response.status}`);
+    }
+
     function normalizeSharedItem(item) {
         if (!item) return null;
         return {
@@ -1491,6 +1691,11 @@
                     <span>${escapeHtml(item.targetModel || channel.targetModel || '未声明模型')}</span>
                     <strong style="color:${scoreColor(score)}">${Number.isFinite(score) ? score : '--'}/100</strong>
                     <span>${escapeHtml(sharedAt)}</span>
+                    <div class="shared-actions">
+                        <button class="report-tab" type="button" data-shared-key="${escapeHtml(sharedItemKey(item))}">View</button>
+                        <button class="report-tab" type="button" data-discuss-key="${escapeHtml(sharedItemKey(item))}">Discuss</button>
+                        <button class="report-tab" type="button" data-delete-key="${escapeHtml(sharedItemKey(item))}">Delete</button>
+                    </div>
                     <button class="report-tab" type="button" data-shared-key="${escapeHtml(sharedItemKey(item))}">查看</button>
                 </article>
             `;
@@ -1502,6 +1707,18 @@
                 activatePage('testPage');
                 activatePanel('reportPanel');
                 setState('共享报告');
+            });
+        });
+        grid.querySelectorAll('[data-discuss-key]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const item = sharedItems.find((entry) => sharedItemKey(entry) === button.dataset.discussKey);
+                loadDiscussions(item);
+            });
+        });
+        grid.querySelectorAll('[data-delete-key]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const item = sharedItems.find((entry) => sharedItemKey(entry) === button.dataset.deleteKey);
+                deleteSharedReport(item);
             });
         });
     }
@@ -1615,8 +1832,12 @@
     $('cancelShareBtn').addEventListener('click', closeShareModal);
     $('confirmShareBtn').addEventListener('click', shareReport);
     $('refreshSharedBtn')?.addEventListener('click', () => loadSharedReports({ force: true }));
+    $('githubLoginBtn')?.addEventListener('click', startGitHubLogin);
+    $('githubLogoutBtn')?.addEventListener('click', logoutGitHub);
+    $('postDiscussionBtn')?.addEventListener('click', postDiscussion);
     $('reportFile').addEventListener('change', importReport);
     setupInteractiveEffects();
+    loadAuthUser();
     document.querySelectorAll('.page-tab[data-page]').forEach((button) => {
         button.addEventListener('click', () => {
             activatePage(button.dataset.page);

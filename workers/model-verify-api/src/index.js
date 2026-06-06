@@ -4,10 +4,20 @@ const DEFAULT_MAX_REPORT_BYTES = 120000;
 const DEFAULT_TABLE = 'model_verify_reports';
 const DEFAULT_PENDING_TABLE = 'model_verify_pending_reports';
 const DEFAULT_RATE_TABLE = 'model_verify_submission_limits';
+const DEFAULT_SESSION_TABLE = 'model_verify_sessions';
+const DEFAULT_DISCUSSION_TABLE = 'model_verify_discussions';
 const MODEL_PROXY_PATH = '/model-verify-proxy';
 const REPORTS_PATH = '/model-verify-reports';
+const DISCUSSIONS_PATH = '/model-verify-discussions';
+const AUTH_LOGIN_PATH = '/model-verify-auth/github/login';
+const AUTH_CALLBACK_PATH = '/model-verify-auth/github/callback';
+const AUTH_ME_PATH = '/model-verify-auth/me';
+const AUTH_LOGOUT_PATH = '/model-verify-auth/logout';
 const DEFAULT_PROXY_HOSTS = ['api.openai.com', 'api.anthropic.com'];
 const PENDING_TTL_MS = 24 * 60 * 60 * 1000;
+const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+const OAUTH_COOKIE = 'mv_oauth_state';
+const OAUTH_RETURN_COOKIE = 'mv_oauth_return_to';
 
 function json(data, init = {}) {
   return new Response(JSON.stringify(data), {
@@ -28,8 +38,8 @@ function corsHeaders(request, env) {
   const allowOrigin = allowed.includes('*') || allowed.includes(origin) ? origin : allowed[0] || '*';
   return {
     'access-control-allow-origin': allowOrigin,
-    'access-control-allow-methods': 'GET,POST,OPTIONS',
-    'access-control-allow-headers': 'content-type',
+    'access-control-allow-methods': 'GET,POST,DELETE,OPTIONS',
+    'access-control-allow-headers': 'content-type,authorization',
     'access-control-max-age': '86400',
     vary: 'Origin'
   };
@@ -59,6 +69,107 @@ async function sha256(value) {
   const data = new TextEncoder().encode(String(value || ''));
   const hash = await crypto.subtle.digest('SHA-256', data);
   return [...new Uint8Array(hash)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
+function base64Url(bytes) {
+  const raw = String.fromCharCode(...bytes);
+  return btoa(raw).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+}
+
+function randomToken(byteLength = 32) {
+  const bytes = new Uint8Array(byteLength);
+  crypto.getRandomValues(bytes);
+  return base64Url(bytes);
+}
+
+function parseCookies(request) {
+  return Object.fromEntries(String(request.headers.get('cookie') || '')
+    .split(';')
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .map((item) => {
+      const index = item.indexOf('=');
+      return index === -1 ? [item, ''] : [item.slice(0, index), decodeURIComponent(item.slice(index + 1))];
+    }));
+}
+
+function cookie(name, value, options = {}) {
+  const parts = [
+    `${name}=${encodeURIComponent(value)}`,
+    `Path=${options.path || '/'}`,
+    `Max-Age=${Number(options.maxAge || 0)}`,
+    'Secure',
+    `SameSite=${options.sameSite || 'Lax'}`
+  ];
+  if (options.httpOnly !== false) parts.push('HttpOnly');
+  return parts.join('; ');
+}
+
+function authTokenFromRequest(request) {
+  const header = String(request.headers.get('authorization') || '');
+  const match = header.match(/^Bearer\s+(.+)$/i);
+  return match ? match[1].trim() : '';
+}
+
+function siteOwner(env) {
+  return String(env.GITHUB_SITE_OWNER || 'vinci0007').trim().toLowerCase();
+}
+
+function userRole(login, env) {
+  return String(login || '').trim().toLowerCase() === siteOwner(env) ? 'admin' : 'user';
+}
+
+function siteUrl(env, request, fallbackPath = '/lab/model-verifier/') {
+  const configured = String(env.MODEL_VERIFY_SITE_URL || 'https://cybertar.youngood.tech/lab/model-verifier/').trim();
+  try {
+    return new URL(configured).toString();
+  } catch {
+    return new URL(fallbackPath, request.url).toString();
+  }
+}
+
+function safeReturnTo(value, env, request) {
+  if (!value) return siteUrl(env, request);
+  try {
+    const target = new URL(value);
+    const allowed = String(env.CORS_ALLOW_ORIGINS || '')
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean);
+    const configuredSite = new URL(siteUrl(env, request));
+    if (target.origin === configuredSite.origin || allowed.includes(target.origin)) return target.toString();
+  } catch {}
+  return siteUrl(env, request);
+}
+
+function redirectResponse(location, init = {}) {
+  const headers = new Headers(init.headers || {});
+  headers.set('location', location);
+  asArray(init.cookies).forEach((item) => headers.append('set-cookie', item));
+  return new Response(null, {
+    status: init.status || 302,
+    headers
+  });
+}
+
+function timingSafeEqualText(left, right) {
+  const leftHash = new TextEncoder().encode(String(left || ''));
+  const rightHash = new TextEncoder().encode(String(right || ''));
+  if (leftHash.length !== rightHash.length) return false;
+  let diff = 0;
+  for (let index = 0; index < leftHash.length; index += 1) diff |= leftHash[index] ^ rightHash[index];
+  return diff === 0;
+}
+
+async function adminPasswordMatches(password, env) {
+  const value = String(password || '');
+  if (!value) return false;
+  const configuredHash = String(env.ADMIN_DELETE_PASSWORD_SHA256 || '').trim().toLowerCase();
+  if (configuredHash) {
+    return timingSafeEqualText(await sha256(value), configuredHash);
+  }
+  const configured = String(env.ADMIN_DELETE_PASSWORD || '').trim();
+  return Boolean(configured) && timingSafeEqualText(await sha256(value), await sha256(configured));
 }
 
 function clientIp(request) {
@@ -337,6 +448,8 @@ async function ensureSubmissionTables(client, env) {
   const table = quoteIdent(env.MODEL_VERIFY_TABLE);
   const pendingTable = quoteIdent(env.MODEL_VERIFY_PENDING_TABLE || DEFAULT_PENDING_TABLE);
   const rateTable = quoteIdent(env.MODEL_VERIFY_RATE_TABLE || DEFAULT_RATE_TABLE);
+  const sessionTable = quoteIdent(env.MODEL_VERIFY_SESSION_TABLE || DEFAULT_SESSION_TABLE);
+  const discussionTable = quoteIdent(env.MODEL_VERIFY_DISCUSSION_TABLE || DEFAULT_DISCUSSION_TABLE);
   await client.query(`
     create table if not exists ${table} (
       domain string not null,
@@ -381,6 +494,34 @@ async function ensureSubmissionTables(client, env) {
       updated_at timestamptz not null default now()
     )
   `);
+  await client.query(`
+    create table if not exists ${sessionTable} (
+      session_hash string primary key,
+      github_id string not null,
+      github_login string not null,
+      github_name string not null default '',
+      avatar_url string not null default '',
+      role string not null default 'user',
+      created_at timestamptz not null default now(),
+      last_seen_at timestamptz not null default now(),
+      expires_at timestamptz not null
+    )
+  `);
+  await client.query(`
+    create table if not exists ${discussionTable} (
+      id string primary key,
+      domain string not null,
+      target_model string not null,
+      body string not null,
+      author_id string not null,
+      author_login string not null,
+      author_name string not null default '',
+      author_avatar_url string not null default '',
+      created_at timestamptz not null default now(),
+      updated_at timestamptz not null default now(),
+      deleted_at timestamptz
+    )
+  `);
 }
 
 async function enforceSubmissionRateLimit(client, env, request) {
@@ -402,6 +543,159 @@ async function enforceSubmissionRateLimit(client, env, request) {
   }
   await client.query(`delete from ${rateTable} where updated_at < now() - interval '10 minutes'`);
   return submitterHash;
+}
+
+function publicUser(row) {
+  if (!row) return null;
+  return {
+    githubId: row.github_id || row.id || '',
+    login: row.github_login || row.login || '',
+    name: row.github_name || row.name || '',
+    avatarUrl: row.avatar_url || row.avatar_url || '',
+    role: row.role || 'user'
+  };
+}
+
+async function userFromSession(client, env, request) {
+  const token = authTokenFromRequest(request);
+  if (!token) return null;
+  const sessionTable = quoteIdent(env.MODEL_VERIFY_SESSION_TABLE || DEFAULT_SESSION_TABLE);
+  const sessionHash = await sha256(token);
+  const result = await client.query(`
+    update ${sessionTable}
+    set last_seen_at = now()
+    where session_hash = $1 and expires_at > now()
+    returning github_id, github_login, github_name, avatar_url, role
+  `, [sessionHash]);
+  return publicUser(result.rows[0]);
+}
+
+async function createSession(client, env, githubUser) {
+  const sessionTable = quoteIdent(env.MODEL_VERIFY_SESSION_TABLE || DEFAULT_SESSION_TABLE);
+  const token = randomToken(32);
+  const role = userRole(githubUser.login, env);
+  const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
+  await client.query(`
+    upsert into ${sessionTable} (session_hash, github_id, github_login, github_name, avatar_url, role, last_seen_at, expires_at)
+    values ($1, $2, $3, $4, $5, $6, now(), $7)
+  `, [
+    await sha256(token),
+    String(githubUser.id || ''),
+    String(githubUser.login || ''),
+    String(githubUser.name || ''),
+    String(githubUser.avatar_url || ''),
+    role,
+    expiresAt
+  ]);
+  return {
+    token,
+    user: {
+      githubId: String(githubUser.id || ''),
+      login: String(githubUser.login || ''),
+      name: String(githubUser.name || ''),
+      avatarUrl: String(githubUser.avatar_url || ''),
+      role
+    }
+  };
+}
+
+async function logoutSession(client, env, request) {
+  const token = authTokenFromRequest(request);
+  if (!token) return;
+  const sessionTable = quoteIdent(env.MODEL_VERIFY_SESSION_TABLE || DEFAULT_SESSION_TABLE);
+  await client.query(`delete from ${sessionTable} where session_hash = $1`, [await sha256(token)]);
+}
+
+async function requireAdmin(client, env, request, payload = {}) {
+  const user = await userFromSession(client, env, request);
+  if (user?.role === 'admin') return user;
+  if (await adminPasswordMatches(payload.adminPassword || payload.password, env)) {
+    return { login: 'password-admin', role: 'admin' };
+  }
+  throw new HttpError(403, 'admin permission or delete password is required');
+}
+
+async function exchangeGitHubCode(code, env) {
+  const clientId = String(env.GITHUB_OAUTH_CLIENT_ID || '').trim();
+  const clientSecret = String(env.GITHUB_OAUTH_CLIENT_SECRET || '').trim();
+  if (!clientId || !clientSecret) throw new HttpError(503, 'GitHub login is not configured');
+
+  const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      accept: 'application/json'
+    },
+    body: JSON.stringify({
+      client_id: clientId,
+      client_secret: clientSecret,
+      code
+    })
+  });
+  const tokenPayload = await tokenResponse.json().catch(() => ({}));
+  if (!tokenResponse.ok || !tokenPayload.access_token) {
+    throw new HttpError(401, tokenPayload.error_description || tokenPayload.error || 'GitHub OAuth exchange failed');
+  }
+
+  const userResponse = await fetch('https://api.github.com/user', {
+    headers: {
+      authorization: `Bearer ${tokenPayload.access_token}`,
+      accept: 'application/vnd.github+json',
+      'user-agent': 'cybertar-model-verify-api'
+    }
+  });
+  const user = await userResponse.json().catch(() => ({}));
+  if (!userResponse.ok || !user.login) throw new HttpError(401, 'GitHub user lookup failed');
+  return user;
+}
+
+async function handleGitHubLogin(request, env) {
+  const clientId = String(env.GITHUB_OAUTH_CLIENT_ID || '').trim();
+  if (!clientId) return errorResponse(request, env, 503, 'GitHub login is not configured');
+  const url = new URL(request.url);
+  const state = randomToken(18);
+  const returnTo = safeReturnTo(url.searchParams.get('return_to'), env, request);
+  const redirectUri = String(env.GITHUB_OAUTH_REDIRECT_URI || new URL(AUTH_CALLBACK_PATH, request.url).toString());
+  const target = new URL('https://github.com/login/oauth/authorize');
+  target.searchParams.set('client_id', clientId);
+  target.searchParams.set('redirect_uri', redirectUri);
+  target.searchParams.set('scope', 'read:user');
+  target.searchParams.set('state', state);
+  return redirectResponse(target.toString(), {
+    cookies: [
+      cookie(OAUTH_COOKIE, state, { maxAge: 600 }),
+      cookie(OAUTH_RETURN_COOKIE, returnTo, { maxAge: 600 })
+    ]
+  });
+}
+
+async function handleGitHubCallback(request, env) {
+  const url = new URL(request.url);
+  const cookies = parseCookies(request);
+  const state = url.searchParams.get('state') || '';
+  if (!state || !cookies[OAUTH_COOKIE] || state !== cookies[OAUTH_COOKIE]) {
+    return redirectResponse(`${siteUrl(env, request)}#mv_auth_error=oauth_state`);
+  }
+  const code = url.searchParams.get('code') || '';
+  if (!code) return redirectResponse(`${siteUrl(env, request)}#mv_auth_error=missing_code`);
+  try {
+    const githubUser = await exchangeGitHubCode(code, env);
+    const session = await withClient(env, async (client) => {
+      await ensureSubmissionTables(client, env);
+      return createSession(client, env, githubUser);
+    });
+    const returnTo = safeReturnTo(cookies[OAUTH_RETURN_COOKIE], env, request);
+    const redirect = new URL(returnTo);
+    redirect.hash = `mv_auth_token=${encodeURIComponent(session.token)}`;
+    return redirectResponse(redirect.toString(), {
+      cookies: [
+        cookie(OAUTH_COOKIE, '', { maxAge: 0 }),
+        cookie(OAUTH_RETURN_COOKIE, '', { maxAge: 0 })
+      ]
+    });
+  } catch (error) {
+    return redirectResponse(`${siteUrl(env, request)}#mv_auth_error=${encodeURIComponent(error.message || 'github_login_failed')}`);
+  }
 }
 
 async function findExistingReport(client, env, domain, targetModel) {
@@ -532,6 +826,88 @@ async function listReports(env) {
   });
 }
 
+async function deleteReportWithClient(client, env, domain, targetModel) {
+  const table = quoteIdent(env.MODEL_VERIFY_TABLE);
+  const result = await client.query(`
+    delete from ${table}
+    where domain = $1 and target_model = $2
+    returning domain, target_model
+  `, [domain, targetModel]);
+  return result.rows.length > 0;
+}
+
+function normalizeDiscussionRow(row) {
+  return {
+    id: row.id || '',
+    domain: row.domain || '',
+    targetModel: row.target_model || '',
+    body: row.body || '',
+    author: {
+      githubId: row.author_id || '',
+      login: row.author_login || '',
+      name: row.author_name || '',
+      avatarUrl: row.author_avatar_url || ''
+    },
+    createdAt: row.created_at || '',
+    updatedAt: row.updated_at || ''
+  };
+}
+
+async function listDiscussions(env, domain, targetModel) {
+  const discussionTable = quoteIdent(env.MODEL_VERIFY_DISCUSSION_TABLE || DEFAULT_DISCUSSION_TABLE);
+  return withClient(env, async (client) => {
+    await ensureSubmissionTables(client, env);
+    const result = await client.query(`
+      select id, domain, target_model, body, author_id, author_login, author_name, author_avatar_url,
+             created_at::string as created_at, updated_at::string as updated_at
+      from ${discussionTable}
+      where domain = $1 and target_model = $2 and deleted_at is null
+      order by created_at asc
+      limit 200
+    `, [domain, targetModel]);
+    return result.rows.map(normalizeDiscussionRow);
+  });
+}
+
+async function createDiscussionWithClient(client, env, request, payload) {
+  const discussionTable = quoteIdent(env.MODEL_VERIFY_DISCUSSION_TABLE || DEFAULT_DISCUSSION_TABLE);
+  const user = await userFromSession(client, env, request);
+  if (!user) throw new HttpError(401, 'GitHub login is required');
+  const domain = String(payload?.domain || '').trim().toLowerCase();
+  const targetModel = String(payload?.targetModel || payload?.target_model || '').trim().toLowerCase();
+  const body = cleanText(String(payload?.body || '').trim(), 2000);
+  if (!domain || !targetModel) throw new HttpError(400, 'domain and targetModel are required');
+  if (!body) throw new HttpError(400, 'discussion body is required');
+  const id = crypto.randomUUID();
+  const result = await client.query(`
+    insert into ${discussionTable} (id, domain, target_model, body, author_id, author_login, author_name, author_avatar_url)
+    values ($1, $2, $3, $4, $5, $6, $7, $8)
+    returning id, domain, target_model, body, author_id, author_login, author_name, author_avatar_url,
+              created_at::string as created_at, updated_at::string as updated_at
+  `, [id, domain, targetModel, body, user.githubId, user.login, user.name, user.avatarUrl]);
+  return normalizeDiscussionRow(result.rows[0]);
+}
+
+async function deleteDiscussionWithClient(client, env, request, payload) {
+  const discussionTable = quoteIdent(env.MODEL_VERIFY_DISCUSSION_TABLE || DEFAULT_DISCUSSION_TABLE);
+  const user = await userFromSession(client, env, request);
+  if (!user) throw new HttpError(401, 'GitHub login is required');
+  const id = String(payload?.id || '').trim();
+  if (!id) throw new HttpError(400, 'discussion id is required');
+  const existing = await client.query(`
+    select author_login
+    from ${discussionTable}
+    where id = $1 and deleted_at is null
+    limit 1
+  `, [id]);
+  if (!existing.rows.length) throw new HttpError(404, 'discussion not found');
+  if (user.role !== 'admin' && String(existing.rows[0].author_login || '').toLowerCase() !== String(user.login || '').toLowerCase()) {
+    throw new HttpError(403, 'discussion can only be deleted by its author or admin');
+  }
+  await client.query(`update ${discussionTable} set deleted_at = now(), updated_at = now() where id = $1`, [id]);
+  return true;
+}
+
 async function upsertReport(env, item) {
   return withClient(env, async (client) => {
     return upsertReportWithClient(client, env, item);
@@ -546,11 +922,49 @@ export default {
 
     const url = new URL(request.url);
     const pathname = url.pathname.replace(/\/+$/, '') || '/';
-    if (pathname !== '/' && pathname !== REPORTS_PATH && pathname !== MODEL_PROXY_PATH) {
+    const knownPaths = new Set([
+      '/',
+      REPORTS_PATH,
+      MODEL_PROXY_PATH,
+      DISCUSSIONS_PATH,
+      AUTH_LOGIN_PATH,
+      AUTH_CALLBACK_PATH,
+      AUTH_ME_PATH,
+      AUTH_LOGOUT_PATH
+    ]);
+    if (!knownPaths.has(pathname)) {
       return errorResponse(request, env, 404, 'not found');
     }
 
     try {
+      if (pathname === AUTH_LOGIN_PATH) {
+        if (request.method !== 'GET') return errorResponse(request, env, 405, 'method not allowed');
+        return handleGitHubLogin(request, env);
+      }
+
+      if (pathname === AUTH_CALLBACK_PATH) {
+        if (request.method !== 'GET') return errorResponse(request, env, 405, 'method not allowed');
+        return handleGitHubCallback(request, env);
+      }
+
+      if (pathname === AUTH_ME_PATH) {
+        if (request.method !== 'GET') return errorResponse(request, env, 405, 'method not allowed');
+        const user = await withClient(env, async (client) => {
+          await ensureSubmissionTables(client, env);
+          return userFromSession(client, env, request);
+        });
+        return json({ ok: true, user, siteOwner: siteOwner(env) }, { headers: corsHeaders(request, env) });
+      }
+
+      if (pathname === AUTH_LOGOUT_PATH) {
+        if (request.method !== 'POST') return errorResponse(request, env, 405, 'method not allowed');
+        await withClient(env, async (client) => {
+          await ensureSubmissionTables(client, env);
+          return logoutSession(client, env, request);
+        });
+        return json({ ok: true }, { headers: corsHeaders(request, env) });
+      }
+
       if (pathname === '/' && request.method === 'GET') {
         return json({
           ok: true,
@@ -558,13 +972,43 @@ export default {
           version: 2,
           databaseConfigured: Boolean(env.HYPERDRIVE?.connectionString || env.DATABASE_URL),
           reportsEndpoint: REPORTS_PATH,
-          proxyEndpoint: MODEL_PROXY_PATH
+          proxyEndpoint: MODEL_PROXY_PATH,
+          discussionsEndpoint: DISCUSSIONS_PATH,
+          authEndpoint: AUTH_LOGIN_PATH,
+          siteOwner: siteOwner(env)
         }, { headers: corsHeaders(request, env) });
       }
 
       if (pathname === MODEL_PROXY_PATH) {
         if (request.method !== 'POST') return errorResponse(request, env, 405, 'method not allowed');
         return proxyModelRequest(request, env);
+      }
+
+      if (pathname === DISCUSSIONS_PATH) {
+        if (request.method === 'GET') {
+          const domain = String(url.searchParams.get('domain') || '').trim().toLowerCase();
+          const targetModel = String(url.searchParams.get('targetModel') || url.searchParams.get('target_model') || '').trim().toLowerCase();
+          if (!domain || !targetModel) return errorResponse(request, env, 400, 'domain and targetModel are required');
+          const items = await listDiscussions(env, domain, targetModel);
+          return json({ ok: true, items }, { headers: corsHeaders(request, env) });
+        }
+        if (request.method === 'POST') {
+          const payload = await request.json().catch(() => null);
+          const item = await withClient(env, async (client) => {
+            await ensureSubmissionTables(client, env);
+            return createDiscussionWithClient(client, env, request, payload);
+          });
+          return json({ ok: true, item }, { status: 201, headers: corsHeaders(request, env) });
+        }
+        if (request.method === 'DELETE') {
+          const payload = await request.json().catch(() => ({}));
+          await withClient(env, async (client) => {
+            await ensureSubmissionTables(client, env);
+            return deleteDiscussionWithClient(client, env, request, payload);
+          });
+          return json({ ok: true }, { headers: corsHeaders(request, env) });
+        }
+        return errorResponse(request, env, 405, 'method not allowed');
       }
 
       if (request.method === 'GET') {
@@ -575,6 +1019,20 @@ export default {
             'cache-control': 'public, max-age=60'
           }
         });
+      }
+
+      if (request.method === 'DELETE') {
+        const payload = await request.json().catch(() => ({}));
+        const domain = String(payload?.domain || url.searchParams.get('domain') || '').trim().toLowerCase();
+        const targetModel = String(payload?.targetModel || payload?.target_model || url.searchParams.get('targetModel') || url.searchParams.get('target_model') || '').trim().toLowerCase();
+        if (!domain || !targetModel) return errorResponse(request, env, 400, 'domain and targetModel are required');
+        const deleted = await withClient(env, async (client) => {
+          await ensureSubmissionTables(client, env);
+          await requireAdmin(client, env, request, payload);
+          return deleteReportWithClient(client, env, domain, targetModel);
+        });
+        if (!deleted) return errorResponse(request, env, 404, 'report not found');
+        return json({ ok: true, action: 'deleted', domain, targetModel }, { headers: corsHeaders(request, env) });
       }
 
       if (request.method === 'POST') {

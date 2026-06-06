@@ -382,7 +382,7 @@
 
         .shared-item {
             display: grid;
-            grid-template-columns: minmax(0, 1.35fr) 0.8fr 0.55fr 0.9fr auto;
+            grid-template-columns: minmax(0, 1.25fr) 0.75fr 0.55fr 0.85fr auto;
             gap: 0.7rem;
             align-items: center;
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -391,6 +391,74 @@
             background: rgba(255, 255, 255, 0.035);
             color: rgba(255, 255, 255, 0.72);
             font-size: 0.84rem;
+        }
+
+        .auth-bar,
+        .shared-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+        }
+
+        .shared-actions + .report-tab {
+            display: none;
+        }
+
+        .auth-bar {
+            justify-content: flex-end;
+            order: 2;
+            margin-left: auto;
+        }
+
+        .shared-head > div:not(.auth-bar) {
+            order: 1;
+        }
+
+        #shareBackendLabel {
+            order: 3;
+        }
+
+        .auth-user {
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 0.82rem;
+        }
+
+        .discussion-panel {
+            margin-top: 0.75rem;
+        }
+
+        .discussion-list {
+            display: grid;
+            gap: 0.5rem;
+            margin: 0.65rem 0;
+        }
+
+        .discussion-item {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 9px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.65rem;
+        }
+
+        .discussion-item header {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.75rem;
+            color: rgba(255, 255, 255, 0.56);
+            font-size: 0.78rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .discussion-item p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.78);
+            line-height: 1.55;
+            white-space: pre-wrap;
+        }
+
+        .discussion-form textarea {
+            min-height: 86px;
         }
 
         .shared-item strong {
@@ -912,6 +980,11 @@
         <section id="sharedPage" class="page-panel">
             <section class="panel shared-ranking-panel">
                 <div class="shared-head">
+                    <div class="auth-bar">
+                        <span id="authUserLabel" class="auth-user">Guest</span>
+                        <button id="githubLoginBtn" class="report-tab" type="button">GitHub Login</button>
+                        <button id="githubLogoutBtn" class="report-tab" type="button" hidden>Logout</button>
+                    </div>
                     <div>
                         <h2 id="sharedPanelTitle">用户手动分享汇总</h2>
                         <p>按官网域名去重展示最新报告；点击查看会把该报告载入测试页。</p>
@@ -926,6 +999,19 @@
                 <div id="sharedReports" class="shared-list">
                     <div class="verify-empty">正在准备公开分享报告...</div>
                 </div>
+                <section class="verify-card discussion-panel">
+                    <p class="section-note">Discussion</p>
+                    <h2 id="discussionTitle">Select a report to discuss</h2>
+                    <div id="discussionList" class="discussion-list">
+                        <div class="verify-empty">No report selected.</div>
+                    </div>
+                    <div class="discussion-form">
+                        <label class="field">Post
+                            <textarea id="discussionBody" placeholder="Login with GitHub to join the discussion."></textarea>
+                        </label>
+                        <button id="postDiscussionBtn" class="action-btn" type="button">Post discussion</button>
+                    </div>
+                </section>
                 <div class="report-actions">
                     <button id="refreshSharedBtn" class="action-btn" type="button">手动刷新</button>
                 </div>
@@ -953,7 +1039,7 @@
 
     <script src="../script.js"></script>
     <script src="model-verify-share-config.js?v=20260606"></script>
-    <script src="model-verifier.js?v=2026060603"></script>
+    <script src="model-verifier.js?v=2026060701"></script>
 </body>
 
 </html>
