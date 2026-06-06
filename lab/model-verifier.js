@@ -357,7 +357,23 @@
         }));
     }
 
-    function makeBody(config, probe, prompt) {
+    const reasoningEfforts = new Set(['none', 'minimal', 'low', 'medium', 'high', 'xhigh']);
+
+    function reasoningEffortFromConfig(config) {
+        const effort = String(config.reasoningEffort || '').trim().toLowerCase();
+        return reasoningEfforts.has(effort) ? effort : '';
+    }
+
+    function shouldRetryWithoutReasoning(config, response, errorText, rawText) {
+        if (!reasoningEffortFromConfig(config) || response.ok) return false;
+        const text = `${errorText || ''} ${rawText || ''}`.toLowerCase();
+        return response.status >= 400
+            && response.status < 500
+            && /\b(reasoning|effort|level)\b/.test(text)
+            && /(not supported|unsupported|valid levels|invalid_request_error|invalid value|invalid enum)/.test(text);
+    }
+
+    function makeBody(config, probe, prompt, options = {}) {
         const maxTokens = clamp(config.maxTokens, 32, 4096) || 256;
         const requestOptions = probe.requestOptions || {};
         const hasTemperature = supportsTemperature(config.model);
@@ -367,7 +383,8 @@
             const body = { model: config.model, input: responseInput(config, probe, prompt), max_output_tokens: maxTokens };
             if (config.systemPrompt) body.instructions = config.systemPrompt;
             if (hasTemperature) body.temperature = temperature;
-            if (String(config.model || '').toLowerCase().startsWith('gpt-5')) body.reasoning = { effort: 'minimal' };
+            const reasoningEffort = options.omitReasoning ? '' : reasoningEffortFromConfig(config);
+            if (reasoningEffort) body.reasoning = { effort: reasoningEffort };
             if (requestOptions.jsonMode) body.text = { format: { type: 'json_object' } };
             if (requestOptions.tools) {
                 body.tools = [{ type: 'function', name: 'lookup_vendor', description: 'Lookup a vendor by name', parameters: { type: 'object', properties: { vendor: { type: 'string' } }, required: ['vendor'] } }];
@@ -455,6 +472,7 @@
             notes.push(result.error || `HTTP ${result.statusCode || '失败'}`);
         }
         if (result.returnedModel) notes.push(`返回模型：${result.returnedModel}`);
+        if (result.retriedWithoutReasoning) notes.push('Retried without unsupported reasoning effort');
         return { score, notes };
     }
 
@@ -641,20 +659,34 @@
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), Math.max(5, config.timeout) * 1000);
         const start = performance.now();
+        let retriedWithoutReasoning = false;
 
         try {
-            const response = await fetchModelApi(config, apiUrl(config.baseUrl, config.protocol), {
+            let response = await fetchModelApi(config, apiUrl(config.baseUrl, config.protocol), {
                 method: 'POST',
                 jsonBody: makeBody(config, probe, prompt),
                 signal: controller.signal
             });
-            const rawText = await response.text();
+            let rawText = await response.text();
             let payload = null;
-            if (!probe.requestOptions?.stream) {
+            try { payload = JSON.parse(rawText); } catch { payload = null; }
+            let errorText = response.ok ? '' : compactErrorMessage(payload, rawText.slice(0, 500));
+
+            if (shouldRetryWithoutReasoning(config, response, errorText, rawText)) {
+                retriedWithoutReasoning = true;
+                appendLog(`${probe.name}: reasoning effort ${reasoningEffortFromConfig(config)} unsupported; retrying without reasoning.`);
+                response = await fetchModelApi(config, apiUrl(config.baseUrl, config.protocol), {
+                    method: 'POST',
+                    jsonBody: makeBody(config, probe, prompt, { omitReasoning: true }),
+                    signal: controller.signal
+                });
+                rawText = await response.text();
                 try { payload = JSON.parse(rawText); } catch { payload = null; }
+                errorText = response.ok ? '' : compactErrorMessage(payload, rawText.slice(0, 500));
             }
+
+            if (probe.requestOptions?.stream) payload = null;
             const streamDetected = probe.requestOptions?.stream && /(^|\n)data:|\bevent:|\bid:/i.test(rawText);
-            const errorText = response.ok ? '' : compactErrorMessage(payload, rawText.slice(0, 500));
             const preview = errorText || (probe.requestOptions?.stream ? rawText.replace(/^data:\s*/gm, '').slice(0, 1600) : (extractText(payload) || rawText.slice(0, 1600)));
             return {
                 probe: { ...probe, expectedText },
@@ -667,7 +699,8 @@
                     error: errorText,
                     rawPreview: rawText.slice(0, 1600),
                     streamDetected,
-                    toolCallDetected: extractToolCall(payload)
+                    toolCallDetected: extractToolCall(payload),
+                    retriedWithoutReasoning
                 }
             };
         } catch (error) {
@@ -959,6 +992,7 @@
             apiKey: normalizeApiKey($('apiKey').value),
             timeout: Number($('timeout').value) || 60,
             maxTokens: Number($('maxTokens')?.value) || 256,
+            reasoningEffort: $('reasoningEffort')?.value || '',
             includePreview: boolFromInput('includePreview', true),
             systemPrompt: $('systemPrompt').value.trim(),
             stabilityRounds: Number($('stabilityRounds').value) || 3,
@@ -977,6 +1011,7 @@
             detectionMode: config.detectionMode,
             executionMode: config.executionMode,
             targetModel: config.model,
+            reasoningEffort: config.reasoningEffort || 'default',
             rawScore,
             selectedTests: [...(selected || selectedTests())],
             plannedProbeCount: results.length,

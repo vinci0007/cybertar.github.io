@@ -827,6 +827,17 @@
                 <label class="field">最大输出 Token
                     <input id="maxTokens" value="256" inputmode="numeric">
                 </label>
+                <label class="field">Reasoning effort
+                    <select id="reasoningEffort">
+                        <option value="" selected>Auto / default</option>
+                        <option value="none">none</option>
+                        <option value="low">low</option>
+                        <option value="medium">medium</option>
+                        <option value="high">high</option>
+                        <option value="xhigh">xhigh</option>
+                        <option value="minimal">minimal (OpenAI only)</option>
+                    </select>
+                </label>
                 <label class="field">API Key
                     <input id="apiKey" type="password" autocomplete="off">
                 </label>
@@ -942,7 +953,7 @@
 
     <script src="../script.js"></script>
     <script src="model-verify-share-config.js?v=20260606"></script>
-    <script src="model-verifier.js?v=2026060602"></script>
+    <script src="model-verifier.js?v=2026060603"></script>
 </body>
 
 </html>
