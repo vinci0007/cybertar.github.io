@@ -13,7 +13,7 @@ const AUTH_LOGIN_PATH = '/model-verify-auth/github/login';
 const AUTH_CALLBACK_PATH = '/model-verify-auth/github/callback';
 const AUTH_ME_PATH = '/model-verify-auth/me';
 const AUTH_LOGOUT_PATH = '/model-verify-auth/logout';
-const DEFAULT_PROXY_HOSTS = ['api.openai.com', 'api.anthropic.com', 'ai2.hhhl.cc', 'www.nayutoai.online'];
+const DEFAULT_PROXY_HOSTS = ['*'];
 const PENDING_TTL_MS = 24 * 60 * 60 * 1000;
 const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
 const OAUTH_COOKIE = 'mv_oauth_state';
@@ -233,7 +233,11 @@ function proxyAllowedHosts(env) {
 
 function isProxyTargetAllowed(target, env) {
   if (target.protocol !== 'https:') return false;
-  if (!/^\/v1\/(models|responses|chat\/completions|messages)\/?$/i.test(target.pathname)) return false;
+  if (target.username || target.password) return false;
+  const path = target.pathname.replace(/\/+$/, '').toLowerCase();
+  const isAllowedEndpoint = /(?:^|\/)(models|responses|messages)$/.test(path) ||
+    /(?:^|\/)chat\/completions$/.test(path);
+  if (!isAllowedEndpoint) return false;
   const host = target.hostname.toLowerCase();
   return proxyAllowedHosts(env).some((allowed) => {
     if (allowed === '*') return true;

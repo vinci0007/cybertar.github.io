@@ -15,7 +15,7 @@ MAX_REPORT_BYTES = "120000"
 GITHUB_SITE_OWNER = "vinci0007"
 GITHUB_SITE_OWNER_ID = "39933794"
 MODEL_VERIFY_SITE_URL = "https://cybertar.youngood.tech/lab/model-verifier/"
-MODEL_VERIFY_PROXY_ALLOWED_HOSTS = "api.openai.com,api.anthropic.com,ai2.hhhl.cc,www.nayutoai.online"
+MODEL_VERIFY_PROXY_ALLOWED_HOSTS = "*"
 
 # Recommended for Cockroach Cloud:
 # 1. Create a Hyperdrive config:

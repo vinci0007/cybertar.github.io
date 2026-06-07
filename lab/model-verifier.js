@@ -376,28 +376,82 @@
         });
     }
 
-    function apiRoot(baseUrl) {
+    const endpointPattern = /\/(?:chat\/completions|responses|messages|models)$/i;
+    const versionedEndpointPattern = /\/v\d+\/(?:chat\/completions|responses|messages|models)$/i;
+
+    function uniqueList(items) {
+        return [...new Set(items.filter(Boolean))];
+    }
+
+    function endpointForProtocol(protocol) {
+        if (protocol === 'responses') return 'responses';
+        if (protocol === 'messages') return 'messages';
+        return 'chat/completions';
+    }
+
+    function protocolFromEndpoint(baseUrl) {
+        const base = normalizeBaseUrl(baseUrl).toLowerCase();
+        if (/\/responses$/i.test(base)) return 'responses';
+        if (/\/messages$/i.test(base)) return 'messages';
+        if (/\/chat\/completions$/i.test(base)) return 'chat_completions';
+        return '';
+    }
+
+    function apiRootCandidates(baseUrl) {
         const base = normalizeBaseUrl(baseUrl);
-        if (!base) return '';
-        if (/\/v1\/(chat\/completions|responses|messages)$/i.test(base)) {
-            return base.replace(/\/v1\/(chat\/completions|responses|messages)$/i, '/v1');
-        }
-        if (/\/v1$/i.test(base)) return base;
-        return `${base}/v1`;
+        if (!base) return [];
+        if (versionedEndpointPattern.test(base)) return [base.replace(/\/(?:chat\/completions|responses|messages|models)$/i, '')];
+        if (endpointPattern.test(base)) return [base.replace(/\/(?:chat\/completions|responses|messages|models)$/i, '')];
+        if (/\/v\d+$/i.test(base)) return [base];
+        return uniqueList([`${base}/v1`, base]);
+    }
+
+    function apiUrlCandidates(baseUrl, protocol) {
+        const base = normalizeBaseUrl(baseUrl);
+        if (!base) return [];
+        if (protocolFromEndpoint(base)) return [base];
+        const endpoint = endpointForProtocol(protocol);
+        return uniqueList(apiRootCandidates(base).map((root) => `${root}/${endpoint}`));
     }
 
     function apiUrl(baseUrl, protocol) {
-        const base = normalizeBaseUrl(baseUrl);
-        if (/\/v1\/(chat\/completions|responses|messages)$/i.test(base)) return base;
-        const root = apiRoot(base);
-        if (protocol === 'responses') return `${root}/responses`;
-        if (protocol === 'messages') return `${root}/messages`;
-        return `${root}/chat/completions`;
+        return apiUrlCandidates(baseUrl, protocol)[0] || '';
+    }
+
+    function modelUrls(baseUrl) {
+        return uniqueList(apiRootCandidates(baseUrl).map((root) => `${root}/models`));
     }
 
     function modelsUrl(baseUrl) {
-        const root = apiRoot(baseUrl);
-        return root ? `${root}/models` : '';
+        return modelUrls(baseUrl)[0] || '';
+    }
+
+    function protocolFallbackChain(config) {
+        const endpointProtocol = protocolFromEndpoint(config.baseUrl);
+        if (endpointProtocol) return [endpointProtocol];
+        if (config.protocol !== 'auto') return [config.protocol];
+        if (config.provider === 'anthropic') return ['messages'];
+        return ['responses', 'chat_completions'];
+    }
+
+    function protocolDescription(config) {
+        const chain = protocolFallbackChain(config).join(' -> ');
+        return config.protocol === 'auto' ? `Auto (${chain})` : chain;
+    }
+
+    function isTerminalApiFailure(response, errorText, rawText) {
+        const text = `${errorText || ''} ${rawText || ''}`.toLowerCase();
+        if (isAuthFailureStatus(response?.status)) return true;
+        return /invalid_api_key|authentication_error|unauthorized|forbidden|permission denied|not authorized|insufficient_quota|quota|billing|credit|rate_limit|model_not_found|model_not_exist|model (?:is )?not found|model (?:does )?not exist|not allowed to access model|does not have access/.test(text);
+    }
+
+    function isProtocolOrEndpointFailure(response, errorText, rawText) {
+        if (!response || response.ok || isTerminalApiFailure(response, errorText, rawText)) return false;
+        const status = Number(response.status || 0);
+        const text = `${errorText || ''} ${rawText || ''}`.toLowerCase();
+        if (![400, 404, 405, 406, 415, 422].includes(status)) return false;
+        if (status === 404 || status === 405 || status === 415) return true;
+        return /invalid_request_error|unknown parameter|unrecognized (request )?(argument|parameter)|unsupported|not supported|invalid (endpoint|route|url|request|parameter|field)|no route|cannot post|missing required parameter|expected .*input|expected .*messages|messages.*required|input.*required/.test(text);
     }
 
     function makeMessages(config, probe, prompt) {
@@ -691,33 +745,40 @@
             };
         }
 
-        const url = modelsUrl(config.baseUrl);
-        if (!url) return { checked: false, modelIds: [], error: '缺少 Base URL' };
+        const urls = modelUrls(config.baseUrl);
+        if (!urls.length) return { checked: false, modelIds: [], error: '缺少 Base URL' };
 
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), Math.max(5, config.timeout) * 1000);
+        let lastResult = null;
         try {
-            const response = await fetchModelApi(config, url, {
-                method: 'GET',
-                signal: controller.signal
-            });
-            const text = await response.text();
-            let payload = null;
-            try { payload = JSON.parse(text); } catch { payload = null; }
-            const modelIds = asArray(payload?.data).map((item) => item.id).filter(Boolean);
-            const error = response.ok ? '' : compactErrorMessage(payload, text.slice(0, 500));
-            return {
-                checked: true,
-                url,
-                statusCode: response.status,
-                modelIds,
-                declaredSupport: modelIds.includes(config.model),
-                error
-            };
+            for (const [index, url] of urls.entries()) {
+                const response = await fetchModelApi(config, url, {
+                    method: 'GET',
+                    signal: controller.signal
+                });
+                const text = await response.text();
+                let payload = null;
+                try { payload = JSON.parse(text); } catch { payload = null; }
+                const modelIds = asArray(payload?.data).map((item) => item.id).filter(Boolean);
+                const error = response.ok ? '' : compactErrorMessage(payload, text.slice(0, 500));
+                const result = {
+                    checked: true,
+                    url,
+                    statusCode: response.status,
+                    modelIds,
+                    declaredSupport: modelIds.includes(config.model),
+                    error
+                };
+                lastResult = result;
+                if (response.ok || index === urls.length - 1 || !isProtocolOrEndpointFailure(response, error, text)) return result;
+                appendLog(`模型列表端点 ${new URL(url).pathname} 不兼容，尝试备用 Base URL 路径。`);
+            }
+            return lastResult || { checked: true, modelIds: [], error: '未获得模型列表' };
         } catch (error) {
             return {
                 checked: true,
-                url,
+                url: lastResult?.url || urls[0],
                 modelIds: [],
                 error: error.name === 'AbortError' ? '模型列表检查超时' : error.message
             };
@@ -771,56 +832,90 @@
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), Math.max(5, config.timeout) * 1000);
         const start = performance.now();
-        let retriedWithoutReasoning = false;
+        const protocols = protocolFallbackChain(config);
+        const fallbackTrail = [];
+        let currentProtocol = protocols[0] || 'chat_completions';
+        let currentUrl = apiUrl(config.baseUrl, currentProtocol);
+        let lastSent = null;
 
-        try {
-            let response = await fetchModelApi(config, apiUrl(config.baseUrl, config.protocol), {
+        const readAttempt = async (activeConfig, url, options = {}) => {
+            const response = await fetchModelApi(activeConfig, url, {
                 method: 'POST',
-                jsonBody: makeBody(config, probe, prompt),
+                jsonBody: makeBody(activeConfig, probe, prompt, options),
                 signal: controller.signal
             });
-            let rawText = await response.text();
+            const rawText = await response.text();
             let payload = null;
             try { payload = JSON.parse(rawText); } catch { payload = null; }
-            let errorText = response.ok ? '' : compactErrorMessage(payload, rawText.slice(0, 500));
-            let parseFailure = Boolean(response.ok && !probe.requestOptions?.stream && rawText.trim() && !payload);
+            const errorText = response.ok ? '' : compactErrorMessage(payload, rawText.slice(0, 500));
+            const parseFailure = Boolean(response.ok && !probe.requestOptions?.stream && rawText.trim() && !payload);
+            return { response, rawText, payload, errorText, parseFailure };
+        };
 
-            if (shouldRetryWithoutReasoning(config, response, errorText, rawText)) {
-                retriedWithoutReasoning = true;
-                appendLog(`${probe.name}：reasoning effort ${reasoningEffortFromConfig(config)} 不受支持，已自动移除 reasoning 后重试。`);
-                response = await fetchModelApi(config, apiUrl(config.baseUrl, config.protocol), {
-                    method: 'POST',
-                    jsonBody: makeBody(config, probe, prompt, { omitReasoning: true }),
-                    signal: controller.signal
-                });
-                rawText = await response.text();
-                try { payload = JSON.parse(rawText); } catch { payload = null; }
-                errorText = response.ok ? '' : compactErrorMessage(payload, rawText.slice(0, 500));
-                parseFailure = Boolean(response.ok && !probe.requestOptions?.stream && rawText.trim() && !payload);
-            }
-
+        const toSent = (activeConfig, url, attempt, retriedWithoutReasoning) => {
+            let payload = attempt.payload;
             if (probe.requestOptions?.stream) payload = null;
+            const rawText = attempt.rawText || '';
+            const errorText = attempt.errorText || '';
             const streamDetected = probe.requestOptions?.stream && /(^|\n)data:|\bevent:|\bid:/i.test(rawText);
             const encryptedContentError = encryptedContentSignal(rawText, errorText);
             const preview = errorText || (probe.requestOptions?.stream ? rawText.replace(/^data:\s*/gm, '').slice(0, 1600) : (extractText(payload) || rawText.slice(0, 1600)));
             return {
                 probe: { ...probe, expectedText },
                 result: {
-                    success: response.ok,
-                    statusCode: response.status,
+                    success: attempt.response.ok,
+                    statusCode: attempt.response.status,
                     latencyMs: Math.round(performance.now() - start),
-                    returnedModel: response.ok ? extractModel(payload) : '',
+                    returnedModel: attempt.response.ok ? extractModel(payload) : '',
                     preview: preview.slice(0, config.includePreview ? 1600 : 260),
                     error: errorText,
                     rawPreview: rawText.slice(0, 1600),
                     streamDetected,
                     toolCallDetected: extractToolCall(payload),
                     retriedWithoutReasoning,
-                    parseFailure,
+                    parseFailure: attempt.parseFailure,
                     encryptedContentError,
-                    payloadKeys: payload && typeof payload === 'object' ? Object.keys(payload).slice(0, 20) : []
+                    payloadKeys: payload && typeof payload === 'object' ? Object.keys(payload).slice(0, 20) : [],
+                    requestedProtocol: config.protocol,
+                    effectiveProtocol: activeConfig.protocol,
+                    requestUrl: url,
+                    protocolFallback: fallbackTrail.length > 0,
+                    protocolFallbackReason: fallbackTrail.join(' -> ')
                 }
             };
+        };
+
+        try {
+            for (const [protocolIndex, protocol] of protocols.entries()) {
+                const activeConfig = { ...config, protocol };
+                const urls = apiUrlCandidates(config.baseUrl, protocol);
+                for (const [urlIndex, url] of urls.entries()) {
+                    currentProtocol = protocol;
+                    currentUrl = url;
+                    let retriedWithoutReasoning = false;
+                    let attempt = await readAttempt(activeConfig, url);
+
+                    if (shouldRetryWithoutReasoning(activeConfig, attempt.response, attempt.errorText, attempt.rawText)) {
+                        retriedWithoutReasoning = true;
+                        appendLog(`${probe.name}：reasoning effort ${reasoningEffortFromConfig(activeConfig)} 不受支持，已自动移除 reasoning 后重试。`);
+                        attempt = await readAttempt(activeConfig, url, { omitReasoning: true });
+                    }
+
+                    const sent = toSent(activeConfig, url, attempt, retriedWithoutReasoning);
+                    lastSent = sent;
+
+                    const canRetryUrl = urlIndex < urls.length - 1;
+                    const canRetryProtocol = protocolIndex < protocols.length - 1;
+                    if (attempt.response.ok || isTerminalApiFailure(attempt.response, attempt.errorText, attempt.rawText) || !isProtocolOrEndpointFailure(attempt.response, attempt.errorText, attempt.rawText) || (!canRetryUrl && !canRetryProtocol)) {
+                        return sent;
+                    }
+
+                    const reason = `${protocol} ${new URL(url).pathname} HTTP ${attempt.response.status}`;
+                    fallbackTrail.push(reason);
+                    appendLog(`${probe.name}：${reason} 不兼容，尝试备用${canRetryUrl ? '路径' : '协议'}。`);
+                }
+            }
+            return lastSent;
         } catch (error) {
             return {
                 probe: { ...probe, expectedText },
@@ -829,7 +924,12 @@
                     latencyMs: Math.round(performance.now() - start),
                     returnedModel: '',
                     preview: '',
-                    error: error.name === 'AbortError' ? '请求超时' : error.message
+                    error: error.name === 'AbortError' ? '请求超时' : error.message,
+                    requestedProtocol: config.protocol,
+                    effectiveProtocol: currentProtocol,
+                    requestUrl: currentUrl,
+                    protocolFallback: fallbackTrail.length > 0,
+                    protocolFallbackReason: fallbackTrail.join(' -> ')
                 }
             };
         } finally {
@@ -902,6 +1002,8 @@
         const latencies = sent.map((item) => Number(item.result.latencyMs || 0)).filter(Boolean);
         const avgLatency = latencies.length ? Math.round(latencies.reduce((sum, item) => sum + item, 0) / latencies.length) : 0;
         const returnedModels = [...new Set(sent.map((item) => item.result.returnedModel).filter(Boolean))];
+        const effectiveProtocols = uniqueList(sent.map((item) => item.result.effectiveProtocol).filter(Boolean));
+        const fallbackReasons = uniqueList(sent.map((item) => item.result.protocolFallbackReason).filter(Boolean));
         const score = Math.round(((successes / count) * 0.45 + (hits / count) * 0.55) * maxScore);
         return {
             id: probe.id,
@@ -918,7 +1020,10 @@
                 success: successes === count && hits === count,
                 latencyMs: avgLatency,
                 returnedModel: returnedModels.join(', '),
-                preview: sent.map((item, index) => `#${index + 1} ${item.result.preview || item.result.error || '无响应'}`).join('\n')
+                preview: sent.map((item, index) => `#${index + 1} ${item.result.preview || item.result.error || '无响应'}`).join('\n'),
+                effectiveProtocol: effectiveProtocols.join(', '),
+                protocolFallback: fallbackReasons.length > 0,
+                protocolFallbackReason: fallbackReasons.join(' | ')
             }
         };
     }
@@ -1212,11 +1317,16 @@
                 domain: probe.domain || metas.map((item) => item.domain).filter(Boolean)[0] || ''
             };
         });
+        const effectiveProtocols = uniqueList(annotatedResults
+            .flatMap((probe) => String(probe.result?.effectiveProtocol || '').split(','))
+            .map((item) => item.trim())
+            .filter(Boolean));
         const rawScore = weightedScoring.baseScore;
         const channel = {
-            channel: 'browser-direct',
+            channel: shareConfig.modelProxyEndpoint ? 'worker-proxy' : 'browser-direct',
             provider: config.provider,
             protocol: config.protocol,
+            effectiveProtocols,
             detectionMode: config.detectionMode,
             executionMode: config.executionMode,
             targetModel: config.model,
@@ -1266,23 +1376,26 @@
         $('runBtn').disabled = true;
         $('logView').textContent = '';
         setState('运行中');
-        appendLog(`开始验真：${config.provider} / ${config.protocol} / ${config.model}`);
+        appendLog(`开始验真：${config.provider} / ${protocolDescription(config)} / ${config.model}`);
 
         let total = 0;
         let max = 0;
         const results = [
-            metaProbe(config, 'endpoint_meta', '接口配置完整性', Boolean(config.baseUrl && config.model), [`协议 ${config.protocol}`, `Base URL ${config.baseUrl}`, `模型 ${config.model}`])
+            metaProbe(config, 'endpoint_meta', '接口配置完整性', Boolean(config.baseUrl && config.model), [`协议 ${protocolDescription(config)}`, `Base URL ${config.baseUrl}`, `模型 ${config.model}`])
         ];
         const returnedModels = [];
         let modelList = { checked: false, modelIds: [] };
         const modelListPromise = selected.has('model_list') ? checkModelList(config) : Promise.resolve(modelList);
 
         const recordProbeResult = (sent) => {
-            const scored = (sent.probe.score || scoreExpectedTextProbe)(config, sent.probe, sent.result);
+            if (!sent) return;
+            const scoringConfig = sent.result.effectiveProtocol ? { ...config, protocol: sent.result.effectiveProtocol } : config;
+            const scored = (sent.probe.score || scoreExpectedTextProbe)(scoringConfig, sent.probe, sent.result);
             total += scored.score;
             max += sent.probe.maxScore;
             if (sent.result.returnedModel) returnedModels.push(sent.result.returnedModel);
             if (isAuthFailureResult(sent.result)) scored.notes.push('认证失败仅记录为本探针失败，不会阻断后续探针。');
+            if (sent.result.protocolFallback) scored.notes.push(`已自动回退：${sent.result.protocolFallbackReason}`);
             results.push({ id: sent.probe.id, group: sent.probe.group, probe: sent.probe.name, maxScore: sent.probe.maxScore, score: scored.score, notes: scored.notes, result: sent.result });
             appendLog(`${sent.probe.name}：${scored.score}/${sent.probe.maxScore}，${scored.notes.join('；')}`);
         };
@@ -1366,7 +1479,8 @@
         const channel = {
             channel: 'sample-openai-compatible',
             provider: 'openai',
-            protocol: 'chat_completions',
+            protocol: 'auto',
+            effectiveProtocols: ['responses'],
             detectionMode: 'full',
             executionMode: 'serial',
             targetModel: 'gpt-4.1-mini',
