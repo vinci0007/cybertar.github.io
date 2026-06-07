@@ -1753,7 +1753,7 @@
         }
         list.innerHTML = normalized.map((entry) => {
             const author = entry.author || {};
-            const canDelete = authUser?.role === 'admin' || String(author.login || '').toLowerCase() === String(authUser?.login || '').toLowerCase();
+            const canDelete = authUser?.role === 'admin' || String(author.githubId || '').trim() === String(authUser?.githubId || '').trim();
             const created = entry.createdAt ? new Date(entry.createdAt).toLocaleString() : '';
             return `
                 <article class="discussion-item">

@@ -115,8 +115,13 @@ function siteOwner(env) {
   return String(env.GITHUB_SITE_OWNER || 'vinci0007').trim().toLowerCase();
 }
 
-function userRole(login, env) {
-  return String(login || '').trim().toLowerCase() === siteOwner(env) ? 'admin' : 'user';
+function siteOwnerId(env) {
+  return String(env.GITHUB_SITE_OWNER_ID || '').trim();
+}
+
+function userRoleByGithubId(githubId, env) {
+  const ownerId = siteOwnerId(env);
+  return ownerId && String(githubId || '').trim() === ownerId ? 'admin' : 'user';
 }
 
 function siteUrl(env, request, fallbackPath = '/lab/model-verifier/') {
@@ -545,14 +550,15 @@ async function enforceSubmissionRateLimit(client, env, request) {
   return submitterHash;
 }
 
-function publicUser(row) {
+function publicUser(row, env) {
   if (!row) return null;
+  const githubId = row.github_id || row.id || '';
   return {
-    githubId: row.github_id || row.id || '',
+    githubId,
     login: row.github_login || row.login || '',
     name: row.github_name || row.name || '',
     avatarUrl: row.avatar_url || row.avatar_url || '',
-    role: row.role || 'user'
+    role: userRoleByGithubId(githubId, env)
   };
 }
 
@@ -567,13 +573,13 @@ async function userFromSession(client, env, request) {
     where session_hash = $1 and expires_at > now()
     returning github_id, github_login, github_name, avatar_url, role
   `, [sessionHash]);
-  return publicUser(result.rows[0]);
+  return publicUser(result.rows[0], env);
 }
 
 async function createSession(client, env, githubUser) {
   const sessionTable = quoteIdent(env.MODEL_VERIFY_SESSION_TABLE || DEFAULT_SESSION_TABLE);
   const token = randomToken(32);
-  const role = userRole(githubUser.login, env);
+  const role = userRoleByGithubId(githubUser.id, env);
   const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
   await client.query(`
     upsert into ${sessionTable} (session_hash, github_id, github_login, github_name, avatar_url, role, last_seen_at, expires_at)
@@ -898,13 +904,13 @@ async function deleteDiscussionWithClient(client, env, request, payload) {
   const id = String(payload?.id || '').trim();
   if (!id) throw new HttpError(400, 'discussion id is required');
   const existing = await client.query(`
-    select author_login
+    select author_id
     from ${discussionTable}
     where id = $1 and deleted_at is null
     limit 1
   `, [id]);
   if (!existing.rows.length) throw new HttpError(404, 'discussion not found');
-  if (user.role !== 'admin' && String(existing.rows[0].author_login || '').toLowerCase() !== String(user.login || '').toLowerCase()) {
+  if (user.role !== 'admin' && String(existing.rows[0].author_id || '').trim() !== String(user.githubId || '').trim()) {
     throw new HttpError(403, 'discussion can only be deleted by its author or admin');
   }
   await client.query(`update ${discussionTable} set deleted_at = now(), updated_at = now() where id = $1`, [id]);
@@ -956,7 +962,7 @@ export default {
           await ensureSubmissionTables(client, env);
           return userFromSession(client, env, request);
         });
-        return json({ ok: true, user, siteOwner: siteOwner(env) }, { headers: corsHeaders(request, env) });
+        return json({ ok: true, user, siteOwner: siteOwner(env), siteOwnerId: siteOwnerId(env) }, { headers: corsHeaders(request, env) });
       }
 
       if (pathname === AUTH_LOGOUT_PATH) {
@@ -978,7 +984,8 @@ export default {
           proxyEndpoint: MODEL_PROXY_PATH,
           discussionsEndpoint: DISCUSSIONS_PATH,
           authEndpoint: AUTH_LOGIN_PATH,
-          siteOwner: siteOwner(env)
+          siteOwner: siteOwner(env),
+          siteOwnerId: siteOwnerId(env)
         }, { headers: corsHeaders(request, env) });
       }
 
