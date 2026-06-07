@@ -31,6 +31,31 @@ const jsonMemoryCache = new Map();
 const jsonRefreshPromises = new Map();
 const sessionUserCache = new Map();
 
+function nowMs() {
+  return typeof performance !== 'undefined' && typeof performance.now === 'function' ? performance.now() : Date.now();
+}
+
+function createTiming() {
+  return { startedAt: nowMs(), entries: [] };
+}
+
+function timeSpan(timing, name) {
+  if (!timing) return () => {};
+  const startedAt = nowMs();
+  return () => {
+    timing.entries.push({ name, duration: Math.max(0, nowMs() - startedAt) });
+  };
+}
+
+function timingHeader(timing) {
+  if (!timing) return '';
+  const total = Math.max(0, nowMs() - timing.startedAt);
+  const entries = [...timing.entries, { name: 'worker_total', duration: total }];
+  return entries
+    .map((entry) => `${entry.name};dur=${entry.duration.toFixed(1)}`)
+    .join(', ');
+}
+
 function json(data, init = {}) {
   return new Response(JSON.stringify(data), {
     ...init,
@@ -83,6 +108,10 @@ function edgeCacheEnabled(env) {
   return edgeCacheTtlSeconds(env) > 0 && env.MODEL_VERIFY_EDGE_CACHE_DISABLED !== 'true' && typeof caches !== 'undefined';
 }
 
+function skipReadSchemaEnsure(env) {
+  return env.MODEL_VERIFY_SKIP_READ_SCHEMA_ENSURE !== 'false';
+}
+
 function cacheOrigins(request, env) {
   const requestOrigin = request.headers.get('origin') || '';
   const configured = String(env.CORS_ALLOW_ORIGINS || '')
@@ -111,14 +140,16 @@ function boundedSet(map, key, value, maxEntries) {
   map.set(key, value);
 }
 
-function jsonResponseFromBody(body, request, env, cacheStatus = 'miss') {
+function jsonResponseFromBody(body, request, env, cacheStatus = 'miss', timing = null) {
   const ttl = edgeCacheTtlSeconds(env);
+  const serverTiming = timingHeader(timing);
   return new Response(body, {
     headers: {
       'content-type': 'application/json; charset=utf-8',
       ...corsHeaders(request, env),
       'cache-control': `public, max-age=${ttl}, stale-while-revalidate=${staleCacheTtlSeconds(env)}`,
-      'x-model-verify-cache': cacheStatus
+      'x-model-verify-cache': cacheStatus,
+      ...(serverTiming ? { 'server-timing': serverTiming } : {})
     }
   });
 }
@@ -134,15 +165,21 @@ function rememberJsonCache(key, body, env) {
   }, MAX_MEMORY_CACHE_ENTRIES);
 }
 
-async function produceCachedJson(request, env, ctx, tag, key, edgeKey, producer, cacheStatus = 'miss') {
+async function produceCachedJson(request, env, ctx, tag, key, edgeKey, producer, cacheStatus = 'miss', timing = null) {
   if (jsonRefreshPromises.has(key)) {
     const body = await jsonRefreshPromises.get(key);
-    return jsonResponseFromBody(body, request, env, 'coalesced');
+    return jsonResponseFromBody(body, request, env, 'coalesced', timing);
   }
   const refresh = (async () => {
-    const body = JSON.stringify(await producer());
+    const endProducer = timeSpan(timing, 'producer');
+    let body = '';
+    try {
+      body = JSON.stringify(await producer());
+    } finally {
+      endProducer();
+    }
     rememberJsonCache(key, body, env);
-    const response = jsonResponseFromBody(body, request, env, cacheStatus);
+    const response = jsonResponseFromBody(body, request, env, cacheStatus, timing);
     if (edgeCacheEnabled(env)) {
       ctx?.waitUntil?.(caches.default.put(edgeKey, response.clone()).catch(() => null));
     }
@@ -152,10 +189,10 @@ async function produceCachedJson(request, env, ctx, tag, key, edgeKey, producer,
   });
   jsonRefreshPromises.set(key, refresh);
   const body = await refresh;
-  return jsonResponseFromBody(body, request, env, cacheStatus);
+  return jsonResponseFromBody(body, request, env, cacheStatus, timing);
 }
 
-async function cachedJson(request, env, ctx, tag, producer) {
+async function cachedJson(request, env, ctx, tag, producer, timing = null) {
   const ttl = edgeCacheTtlSeconds(env);
   if (ttl <= 0) {
     return json(await producer(), { headers: corsHeaders(request, env) });
@@ -165,21 +202,23 @@ async function cachedJson(request, env, ctx, tag, producer) {
   const now = Date.now();
   const memoryEntry = jsonMemoryCache.get(memoryKey);
   if (memoryEntry && now < memoryEntry.expiresAt) {
-    return jsonResponseFromBody(memoryEntry.body, request, env, 'memory');
+    return jsonResponseFromBody(memoryEntry.body, request, env, 'memory', timing);
   }
   if (memoryEntry && now < memoryEntry.staleUntil) {
-    ctx?.waitUntil?.(produceCachedJson(request, env, ctx, tag, memoryKey, edgeKey, producer, 'refresh').catch(() => null));
-    return jsonResponseFromBody(memoryEntry.body, request, env, 'stale');
+    ctx?.waitUntil?.(produceCachedJson(request, env, ctx, tag, memoryKey, edgeKey, producer, 'refresh', null).catch(() => null));
+    return jsonResponseFromBody(memoryEntry.body, request, env, 'stale', timing);
   }
   if (edgeCacheEnabled(env)) {
+    const endEdgeMatch = timeSpan(timing, 'cache_edge');
     const cached = await caches.default.match(edgeKey);
+    endEdgeMatch();
     if (cached) {
       const body = await cached.clone().text();
       rememberJsonCache(memoryKey, body, env);
-      return jsonResponseFromBody(body, request, env, 'edge');
+      return jsonResponseFromBody(body, request, env, 'edge', timing);
     }
   }
-  return produceCachedJson(request, env, ctx, tag, memoryKey, edgeKey, producer);
+  return produceCachedJson(request, env, ctx, tag, memoryKey, edgeKey, producer, 'miss', timing);
 }
 
 function purgeCachedJson(request, env, ctx, urlValue, tag) {
@@ -583,13 +622,17 @@ function connectionOptions(env) {
   throw new Error('database is not configured');
 }
 
-async function withClient(env, callback) {
+async function withClient(env, callback, timing = null) {
   const client = new Client(connectionOptions(env));
+  const endConnect = timeSpan(timing, 'db_connect');
   await client.connect();
+  endConnect();
   try {
     return await callback(client);
   } finally {
+    const endClose = timeSpan(timing, 'db_close');
     await client.end();
+    endClose();
   }
 }
 
@@ -1044,18 +1087,29 @@ async function handleSharedReportSubmission(client, env, item, submitterHash) {
   return { status: 200, body: { ok: true, action: best === item ? 'accepted_second' : 'accepted_pending', item: saved, message: '二次提交已完成，已保存更可信的报告。' } };
 }
 
-async function listReports(env) {
+async function listReports(env, timing = null) {
   const table = quoteIdent(env.MODEL_VERIFY_TABLE);
   return withClient(env, async (client) => {
-    await ensureSubmissionTablesCached(client, env);
+    if (skipReadSchemaEnsure(env)) {
+      timing?.entries.push({ name: 'db_schema_skipped', duration: 0 });
+    } else {
+      const endSchema = timeSpan(timing, 'db_schema');
+      await ensureSubmissionTablesCached(client, env);
+      endSchema();
+    }
+    const endQuery = timeSpan(timing, 'db_query');
     const result = await client.query(`
       select domain, target_model, provider_name, homepage, shared_at::string as shared_at, report
       from ${table}
       order by shared_at desc
       limit 200
     `);
-    return result.rows.map(normalizeSharedRow);
-  });
+    endQuery();
+    const endNormalize = timeSpan(timing, 'normalize');
+    const items = result.rows.map(normalizeSharedRow);
+    endNormalize();
+    return items;
+  }, timing);
 }
 
 async function deleteReportWithClient(client, env, domain, targetModel) {
@@ -1085,10 +1139,17 @@ function normalizeDiscussionRow(row) {
   };
 }
 
-async function listDiscussions(env, domain, targetModel) {
+async function listDiscussions(env, domain, targetModel, timing = null) {
   const discussionTable = quoteIdent(env.MODEL_VERIFY_DISCUSSION_TABLE || DEFAULT_DISCUSSION_TABLE);
   return withClient(env, async (client) => {
-    await ensureSubmissionTablesCached(client, env);
+    if (skipReadSchemaEnsure(env)) {
+      timing?.entries.push({ name: 'db_schema_skipped', duration: 0 });
+    } else {
+      const endSchema = timeSpan(timing, 'db_schema');
+      await ensureSubmissionTablesCached(client, env);
+      endSchema();
+    }
+    const endQuery = timeSpan(timing, 'db_query');
     const result = await client.query(`
       select id, domain, target_model, body, author_id, author_login, author_name, author_avatar_url,
              created_at::string as created_at, updated_at::string as updated_at
@@ -1097,8 +1158,12 @@ async function listDiscussions(env, domain, targetModel) {
       order by created_at asc
       limit 200
     `, [domain, targetModel]);
-    return result.rows.map(normalizeDiscussionRow);
-  });
+    endQuery();
+    const endNormalize = timeSpan(timing, 'normalize');
+    const items = result.rows.map(normalizeDiscussionRow);
+    endNormalize();
+    return items;
+  }, timing);
 }
 
 async function createDiscussionWithClient(client, env, request, payload) {
@@ -1162,6 +1227,7 @@ async function upsertReport(env, item) {
 
 export default {
   async fetch(request, env, ctx) {
+    const timing = createTiming();
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders(request, env) });
     }
@@ -1237,9 +1303,9 @@ export default {
           const targetModel = String(url.searchParams.get('targetModel') || url.searchParams.get('target_model') || '').trim().toLowerCase();
           if (!domain || !targetModel) return errorResponse(request, env, 400, 'domain and targetModel are required');
           return cachedJson(request, env, ctx, 'discussions', async () => {
-            const items = await listDiscussions(env, domain, targetModel);
+            const items = await listDiscussions(env, domain, targetModel, timing);
             return { ok: true, items };
-          });
+          }, timing);
         }
         if (request.method === 'POST') {
           const payload = await request.json().catch(() => null);
@@ -1275,9 +1341,9 @@ export default {
 
       if (request.method === 'GET') {
         return cachedJson(request, env, ctx, 'reports', async () => {
-          const items = await listReports(env);
+          const items = await listReports(env, timing);
           return { version: 2, generatedAt: new Date().toISOString(), count: items.length, items };
-        });
+        }, timing);
       }
 
       if (request.method === 'DELETE') {
