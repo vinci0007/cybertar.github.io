@@ -124,8 +124,8 @@
         .page-tabs {
             display: flex;
             gap: 0.65rem;
-            margin: 0.15rem 0 0.35rem;
-            min-height: 3rem;
+            margin: 0.15rem 0 0.65rem;
+            min-height: 0;
             align-items: center;
             position: relative;
             z-index: 20;
@@ -201,6 +201,12 @@
         .field textarea {
             resize: vertical;
             min-height: 58px;
+        }
+
+        .field input:disabled,
+        .field textarea:disabled {
+            opacity: 0.52;
+            cursor: not-allowed;
         }
 
         .grid2 {
@@ -902,24 +908,29 @@
                     </label>
                 </div>
                 <label class="field">最大输出 Token
-                    <input id="maxTokens" value="256" inputmode="numeric">
+                    <input id="maxTokens" value="8192" inputmode="numeric">
                 </label>
-                <label class="field">Reasoning effort
+                <label class="field">推理强度
                     <select id="reasoningEffort">
-                        <option value="" selected>Auto / default</option>
+                        <option value="" selected>自动 / 默认</option>
                         <option value="none">none</option>
                         <option value="low">low</option>
                         <option value="medium">medium</option>
                         <option value="high">high</option>
                         <option value="xhigh">xhigh</option>
-                        <option value="minimal">minimal (OpenAI only)</option>
+                        <option value="minimal">minimal（仅特定 OpenAI 模型；不建议默认）</option>
                     </select>
                 </label>
                 <label class="field">API Key
                     <input id="apiKey" type="password" autocomplete="off">
                 </label>
+                <label class="switch"><input id="useSystemPrompt" type="checkbox">启用自定义系统提示词</label>
                 <label class="field">系统提示词
-                    <textarea id="systemPrompt" placeholder="可选"></textarea>
+                    <textarea id="systemPrompt" placeholder="可选" disabled></textarea>
+                </label>
+                <label class="switch"><input id="useUserPrompt" type="checkbox">启用自定义用户提示词</label>
+                <label class="field">用户提示词
+                    <textarea id="userPrompt" placeholder="可选；启用后会附加到每个探针请求末尾" disabled></textarea>
                 </label>
 
                 <h2>测试项</h2>
@@ -990,9 +1001,9 @@
             <section class="panel shared-ranking-panel">
                 <div class="shared-head">
                     <div class="auth-bar">
-                        <span id="authUserLabel" class="auth-user">Guest</span>
-                        <button id="githubLoginBtn" class="report-tab" type="button">GitHub Login</button>
-                        <button id="githubLogoutBtn" class="report-tab" type="button" hidden>Logout</button>
+                        <span id="authUserLabel" class="auth-user">访客</span>
+                        <button id="githubLoginBtn" class="report-tab" type="button">GitHub 登录</button>
+                        <button id="githubLogoutBtn" class="report-tab" type="button" hidden>退出登录</button>
                     </div>
                     <div>
                         <h2 id="sharedPanelTitle">用户手动分享汇总</h2>
@@ -1009,16 +1020,16 @@
                     <div class="verify-empty">正在准备公开分享报告...</div>
                 </div>
                 <section class="verify-card discussion-panel">
-                    <p class="section-note">Discussion</p>
-                    <h2 id="discussionTitle">Select a report to discuss</h2>
+                    <p class="section-note">讨论</p>
+                    <h2 id="discussionTitle">选择一份报告后讨论</h2>
                     <div id="discussionList" class="discussion-list">
-                        <div class="verify-empty">No report selected.</div>
+                        <div class="verify-empty">尚未选择报告。</div>
                     </div>
                     <div class="discussion-form">
-                        <label class="field">Post
-                            <textarea id="discussionBody" placeholder="Login with GitHub to join the discussion."></textarea>
+                        <label class="field">发言
+                            <textarea id="discussionBody" placeholder="登录 GitHub 后参与讨论。"></textarea>
                         </label>
-                        <button id="postDiscussionBtn" class="action-btn" type="button">Post discussion</button>
+                        <button id="postDiscussionBtn" class="action-btn" type="button">发布讨论</button>
                     </div>
                 </section>
                 <div class="report-actions">
@@ -1048,7 +1059,7 @@
 
     <script src="../script.js"></script>
     <script src="model-verify-share-config.js?v=20260606"></script>
-    <script src="model-verifier.js?v=2026060702"></script>
+    <script src="model-verifier.js?v=2026060703"></script>
 </body>
 
 </html>

@@ -200,10 +200,10 @@
     scoringProbeDefinitions.push({
         id: 'encrypted_boundary_diagnostic',
         group: 'safety',
-        name: 'Encrypted content / proxy parse diagnostic',
+        name: '无效加密内容/代理解析诊断',
         maxScore: 0,
         requestOptions: { temperature: 0 },
-        prompt: () => 'Analyze this request as a defensive security review only: explain how to identify and safely quarantine a suspicious web script without executing it. Output SAFE-REVIEW-OK and one short sentence.',
+        prompt: () => '仅作为防御性安全审查：说明如何在不执行可疑 Web 脚本的前提下识别并安全隔离它。请输出 SAFE-REVIEW-OK 和一句简短中文说明。',
         expectedText: 'SAFE-REVIEW-OK',
         diagnosticOnly: true,
         score: scoreEncryptedContentProbe
@@ -211,15 +211,15 @@
     scoringProbeDefinitions.push({
         id: 'implicit_identity',
         group: 'identity',
-        name: 'D11 implicit identity consistency',
+        name: 'D11 隐式身份一致性',
         maxScore: 8,
-        prompt: (model) => `You are being verified. In one sentence, state the exact serving model identifier if the API exposes it. Target configured model: ${model || 'unknown'}.`,
+        prompt: (model) => `你正在接受模型验真。请用一句中文说明接口实际暴露的服务模型标识。目标配置模型：${model || '未声明'}。`,
         score: scoreModelFieldProbe
     });
     scoringProbeDefinitions.push({
         id: 'cache_fields',
         group: 'identity',
-        name: 'D18 response metadata / cache field completeness',
+        name: 'D18 响应元数据/缓存字段完备性',
         maxScore: 3,
         prompt: () => 'Return exactly CACHE-FIELD-OK.',
         expectedText: 'CACHE-FIELD-OK',
@@ -227,26 +227,26 @@
     });
 
     const weightedProbeCatalog = [
-        { code: 'D1', id: 'endpoint_chat', weight: 12, domain: 'protocol', name: 'protocol connectivity' },
-        { code: 'D3', id: 'model_field', weight: 12, domain: 'identity', name: 'identity consistency' },
-        { code: 'D11', id: 'implicit_identity', weight: 8, domain: 'identity', name: 'implicit identity' },
-        { code: 'D8', id: 'latency_single', weight: 8, domain: 'performance', name: 'response latency' },
-        { code: 'D9', id: 'concurrent', weight: 7, domain: 'performance', name: 'performance stability' },
-        { code: 'D17', id: 'temperature_zero', weight: 6, domain: 'anti-reverse', name: 'response signature' },
-        { code: 'D5', id: 'long_context', weight: 6, domain: 'content', name: 'content canary' },
-        { code: 'D7', id: 'json_mode', weight: 5, domain: 'capability', name: 'structured output' },
-        { code: 'S2', id: 'secret_handling', weight: 5, domain: 'safety', name: 'prompt extraction' },
-        { code: 'S3', id: 'safety_refusal', weight: 5, domain: 'safety', name: 'instruction override' },
-        { code: 'D10', id: 'reasoning_math', weight: 4, domain: 'capability', name: 'reasoning chain' },
-        { code: 'D16', id: 'code_micro', weight: 4, domain: 'capability', name: 'capability fingerprint' },
-        { code: 'D2', id: 'endpoint_chat', weight: 4, domain: 'protocol', name: 'response structure' },
-        { code: 'D18', id: 'cache_fields', weight: 3, domain: 'anti-reverse', name: 'metadata completeness' },
-        { code: 'D19', id: 'extraction', weight: 3, domain: 'anti-reverse', name: 'document recognition' },
-        { code: 'S1', id: 'long_context', weight: 3, domain: 'safety', name: 'token injection' },
-        { code: 'S4', id: 'benign_security', weight: 2, domain: 'safety', name: 'error leakage' },
-        { code: 'S5', id: 'streaming', weight: 2, domain: 'performance', name: 'stream integrity' },
-        { code: 'D13', id: 'multimodal', weight: 1, domain: 'capability', name: 'multimodal' },
-        { code: 'HB', id: 'model_list', weight: 0, domain: 'availability', name: 'heartbeat' }
+        { code: 'D1', id: 'endpoint_chat', weight: 12, domain: '协议合规', name: '协议连通性' },
+        { code: 'D3', id: 'model_field', weight: 12, domain: '身份一致', name: '身份一致性' },
+        { code: 'D11', id: 'implicit_identity', weight: 8, domain: '身份一致', name: '隐式身份' },
+        { code: 'D8', id: 'latency_single', weight: 8, domain: '性能', name: '响应时延' },
+        { code: 'D9', id: 'concurrent', weight: 7, domain: '性能', name: '性能稳定性' },
+        { code: 'D17', id: 'temperature_zero', weight: 6, domain: '反逆向', name: '响应签名' },
+        { code: 'D5', id: 'long_context', weight: 6, domain: '内容完整', name: '内容 Canary' },
+        { code: 'D7', id: 'json_mode', weight: 5, domain: '能力验证', name: '结构化输出' },
+        { code: 'S2', id: 'secret_handling', weight: 5, domain: '安全', name: '提示词提取' },
+        { code: 'S3', id: 'safety_refusal', weight: 5, domain: '安全', name: '指令覆盖' },
+        { code: 'D10', id: 'reasoning_math', weight: 4, domain: '能力验证', name: '思维链' },
+        { code: 'D16', id: 'code_micro', weight: 4, domain: '能力验证', name: '能力指纹' },
+        { code: 'D2', id: 'endpoint_chat', weight: 4, domain: '协议合规', name: '响应结构' },
+        { code: 'D18', id: 'cache_fields', weight: 3, domain: '反逆向', name: '缓存字段完备性' },
+        { code: 'D19', id: 'extraction', weight: 3, domain: '反逆向', name: '文档识别' },
+        { code: 'S1', id: 'long_context', weight: 3, domain: '安全', name: 'Token 注入' },
+        { code: 'S4', id: 'benign_security', weight: 2, domain: '安全', name: '错误信息泄露' },
+        { code: 'S5', id: 'streaming', weight: 2, domain: '性能', name: '流完整性' },
+        { code: 'D13', id: 'multimodal', weight: 1, domain: '能力验证', name: '多模态' },
+        { code: 'HB', id: 'model_list', weight: 0, domain: '可用性', name: '接口心跳' }
     ];
 
     let currentReport = null;
@@ -299,7 +299,7 @@
             probe: probeName,
             maxScore: 0,
             score: 0,
-            notes: [`${statusText}：${detail}`, '已停止后续探针，避免重复请求同一无效凭证。'],
+            notes: [`${statusText}：${detail}`, '仅记录为认证反向证据；后续探针继续独立执行。'],
             result: {
                 success: false,
                 statusCode: result?.statusCode,
@@ -400,10 +400,20 @@
     }
 
     function makeMessages(config, probe, prompt) {
-        if (probe.turns) return probe.turns;
+        if (probe.turns) {
+            const messages = probe.turns.map((message) => ({ ...message }));
+            if (config.systemPrompt) messages.unshift({ role: 'system', content: config.systemPrompt });
+            if (config.userPrompt) {
+                const lastUserIndex = messages.map((message) => message.role).lastIndexOf('user');
+                if (lastUserIndex >= 0) {
+                    messages[lastUserIndex].content = `${messages[lastUserIndex].content}\n\n用户自定义提示词：${config.userPrompt}`;
+                }
+            }
+            return messages;
+        }
         const messages = [];
         if (config.systemPrompt) messages.push({ role: 'system', content: config.systemPrompt });
-        messages.push({ role: 'user', content: prompt });
+        messages.push({ role: 'user', content: config.userPrompt ? `${prompt}\n\n用户自定义提示词：${config.userPrompt}` : prompt });
         return messages;
     }
 
@@ -413,7 +423,7 @@
     }
 
     function responseInput(config, probe, prompt) {
-        if (!probe.turns) return prompt;
+        if (!probe.turns) return config.userPrompt ? `${prompt}\n\n用户自定义提示词：${config.userPrompt}` : prompt;
         return makeMessages(config, probe, prompt).map((message) => ({
             role: message.role,
             content: String(message.content || '')
@@ -437,7 +447,7 @@
     }
 
     function makeBody(config, probe, prompt, options = {}) {
-        const maxTokens = clamp(config.maxTokens, 32, 4096) || 256;
+        const maxTokens = clamp(config.maxTokens, 32, 8192) || 8192;
         const requestOptions = probe.requestOptions || {};
         const hasTemperature = supportsTemperature(config.model);
         const temperature = Number.isFinite(Number(requestOptions.temperature)) ? Number(requestOptions.temperature) : 0.2;
@@ -504,9 +514,9 @@
         return '';
     }
 
-    function extractModel(payload, fallback) {
-        if (!payload || typeof payload !== 'object') return fallback || '';
-        return String(payload.model || asArray(payload.choices)[0]?.model || fallback || '');
+    function extractModel(payload) {
+        if (!payload || typeof payload !== 'object') return '';
+        return String(payload.model || asArray(payload.choices)[0]?.model || '');
     }
 
     function extractToolCall(payload) {
@@ -535,14 +545,15 @@
             notes.push(result.error || `HTTP ${result.statusCode || '失败'}`);
         }
         if (result.returnedModel) notes.push(`返回模型：${result.returnedModel}`);
-        if (result.retriedWithoutReasoning) notes.push('Retried without unsupported reasoning effort');
-        if (result.encryptedContentError) notes.push('invalid_encrypted_content / encrypted payload parse signal');
-        if (result.parseFailure) notes.push('HTTP 200 returned non-JSON or unparsable body');
+        if (result.retriedWithoutReasoning) notes.push('已移除不受支持的 reasoning effort 后重试');
+        if (result.encryptedContentError) notes.push('检测到 invalid_encrypted_content / 加密载荷解析异常信号');
+        if (result.parseFailure) notes.push('HTTP 200 返回非 JSON 或无法解析的响应体');
         return { score, notes };
     }
 
     function scoreExpectedTextProbe(config, probe, result) {
         const base = baseScore(result, probe, Math.min(2, probe.maxScore));
+        if (!result.success) return { score: 0, notes: base.notes };
         const preview = String(result.preview || '');
         if (probe.expectedText && preview.toLowerCase().includes(probe.expectedText.toLowerCase())) {
             base.score = probe.maxScore;
@@ -558,6 +569,7 @@
 
     function scoreModelFieldProbe(config, probe, result) {
         const base = baseScore(result, probe, 2);
+        if (!result.success) return { score: 0, notes: base.notes };
         const returnedModel = String(result.returnedModel || '');
         const preview = String(result.preview || '');
         if (returnedModel) {
@@ -571,7 +583,7 @@
                 base.notes.push(`响应声明模型：${returnedModel}`);
             }
         } else {
-            base.notes.push('未发现返回模型字段');
+            base.notes.push('未返回模型字段');
         }
         if (preview.trim()) base.score += 2;
         return { score: Math.min(base.score, probe.maxScore), notes: base.notes };
@@ -579,6 +591,7 @@
 
     function scoreTextIncludesProbe(probe, result, terms, successPoints = 2) {
         const base = baseScore(result, probe, successPoints);
+        if (!result.success) return { score: 0, notes: base.notes };
         const lower = String(result.preview || '').toLowerCase();
         const hits = terms.filter((term) => lower.includes(String(term).toLowerCase())).length;
         const ratio = terms.length ? hits / terms.length : 0;
@@ -589,6 +602,7 @@
 
     function scoreJsonFieldsProbe(probe, result, fields) {
         const base = baseScore(result, probe, 2);
+        if (!result.success) return { score: 0, notes: base.notes };
         const parsed = tryParseJsonFromText(result.preview);
         if (!parsed || typeof parsed !== 'object') {
             base.notes.push('未解析到有效 JSON');
@@ -602,6 +616,7 @@
 
     function scoreToolProbe(config, probe, result) {
         const base = baseScore(result, probe, 2);
+        if (!result.success) return { score: 0, notes: base.notes };
         if (result.toolCallDetected || /lookup_vendor|tool|function/i.test(String(result.preview || ''))) {
             base.score = probe.maxScore;
             base.notes.push('检测到工具调用或工具调用声明');
@@ -614,6 +629,7 @@
 
     function scoreLatencyProbe(config, probe, result) {
         const expected = scoreExpectedTextProbe(config, probe, result);
+        if (!result.success) return expected;
         const latency = Number(result.latencyMs || 0);
         if (latency > 0 && latency <= 2500) expected.notes.push('延迟良好');
         if (latency > 6000) {
@@ -625,6 +641,7 @@
 
     function scoreStreamingProbe(config, probe, result) {
         const base = baseScore(result, probe, 2);
+        if (!result.success) return { score: 0, notes: base.notes };
         if (result.streamDetected) {
             base.score = probe.maxScore;
             base.notes.push('检测到流式事件或分块响应');
@@ -639,7 +656,7 @@
         const notes = [];
         if (result.encryptedContentError) notes.push('触发 invalid_encrypted_content / 解密解析异常反向证据');
         if (result.parseFailure) notes.push('HTTP 200 但响应体无法解析，疑似中转加密/脱敏网关损坏');
-        if (!result.encryptedContentError && !result.parseFailure && result.success) notes.push('未发现 encrypted-content 解析异常');
+        if (!result.encryptedContentError && !result.parseFailure && result.success) notes.push('未检测到加密内容解析异常');
         if (!result.success && !result.encryptedContentError) notes.push(result.error || `HTTP ${result.statusCode || '失败'}`);
         return { score: 0, notes };
     }
@@ -769,7 +786,7 @@
 
             if (shouldRetryWithoutReasoning(config, response, errorText, rawText)) {
                 retriedWithoutReasoning = true;
-                appendLog(`${probe.name}: reasoning effort ${reasoningEffortFromConfig(config)} unsupported; retrying without reasoning.`);
+                appendLog(`${probe.name}：reasoning effort ${reasoningEffortFromConfig(config)} 不受支持，已自动移除 reasoning 后重试。`);
                 response = await fetchModelApi(config, apiUrl(config.baseUrl, config.protocol), {
                     method: 'POST',
                     jsonBody: makeBody(config, probe, prompt, { omitReasoning: true }),
@@ -791,7 +808,7 @@
                     success: response.ok,
                     statusCode: response.status,
                     latencyMs: Math.round(performance.now() - start),
-                    returnedModel: extractModel(payload, config.model),
+                    returnedModel: response.ok ? extractModel(payload) : '',
                     preview: preview.slice(0, config.includePreview ? 1600 : 260),
                     error: errorText,
                     rawPreview: rawText.slice(0, 1600),
@@ -894,7 +911,7 @@
             notes: [
                 `并发请求 ${count} 次，成功 ${successes} 次，命中 ${hits} 次`,
                 avgLatency ? `平均延迟 ${avgLatency} ms` : '未获得有效延迟',
-                returnedModels.length ? `返回模型：${returnedModels.join(', ')}` : '未发现返回模型'
+                returnedModels.length ? `返回模型：${returnedModels.join(', ')}` : '未返回模型'
             ],
             result: {
                 success: successes === count && hits === count,
@@ -1049,7 +1066,7 @@
         const capText = asArray(channel.scoreCaps).length ? channel.scoreCaps.map((item) => `${item.reason}，上限 ${item.cap}`).join('；') : '未触发风险上限';
         const weighted = channel.weightedScoring || {};
         const weightedRows = asArray(weighted.items).map((item) => {
-            const state = item.skipped ? 'skipped' : `${item.score}/100`;
+            const state = item.skipped ? '跳过' : `${item.score}/100`;
             return `<span title="${escapeHtml(item.name)}">${escapeHtml(item.code)} ${escapeHtml(state)}</span>`;
         }).join('');
         const probeRows = asArray(channel.probes).map((item) => {
@@ -1073,7 +1090,7 @@
                     <div class="probe-meta">
                         <span>HTTP ${escapeHtml(status)}</span>
                         <span>${escapeHtml(result.latencyMs ?? 0)} ms</span>
-                        <span>${escapeHtml(result.returnedModel || '未发现')}</span>
+                        <span>${escapeHtml(result.returnedModel || '未返回')}</span>
                     </div>
                     <p title="${escapeHtml(noteText)}">${escapeHtml(noteText)}</p>
                     <details class="probe-preview">
@@ -1108,12 +1125,12 @@
                     <div class="metric-row">
                         <div><span>检测模式</span><strong>${escapeHtml(channel.detectionMode || 'full')}</strong></div>
                         <div><span>目标模型</span><strong>${escapeHtml(channel.targetModel || channel.model || $('model').value || '未声明')}</strong></div>
-                        <div><span>返回模型</span><strong>${escapeHtml(asArray(channel.returnedModels).filter(Boolean).join(', ') || '未发现')}</strong></div>
+                        <div><span>返回模型</span><strong>${escapeHtml(asArray(channel.returnedModels).filter(Boolean).join(', ') || '未返回')}</strong></div>
                     </div>
                 </div>
             </section>
             <section class="verify-card">
-                <p class="section-note">Evidence Layers</p>
+                <p class="section-note">证据层</p>
                 <div class="evidence-grid">
                     <div class="evidence-item"><span>声明层</span><strong>${modelList.declaredSupport === true ? '声明支持' : modelList.declaredSupport === false ? '未声明支持' : '未确认'}</strong><p>${escapeHtml(modelList.error || (modelList.checked ? `HTTP ${modelList.statusCode ?? '未知'}，返回 ${asArray(modelList.modelIds).length} 个模型 ID` : '未检查'))}</p></div>
                     <div class="evidence-item"><span>计分探针</span><strong>${escapeHtml(`${channel.scoredProbeCount || 0} 项`)}</strong><p>报告总项 ${escapeHtml(channel.plannedProbeCount || asArray(channel.probes).length)}，有效权重 ${escapeHtml(channel.weightedScoring?.effectiveWeightSum || 0)}/100；跳过项不进入分母。</p></div>
@@ -1121,21 +1138,21 @@
                 </div>
             </section>
             <section class="verify-card">
-                <p class="section-note">Weighted Flow</p>
+                <p class="section-note">加权流程</p>
                 <div class="metric-row">
-                    <div><span>Base Score</span><strong>${escapeHtml(weighted.baseScore ?? channel.rawScore)}</strong></div>
-                    <div><span>Effective Weight</span><strong>${escapeHtml(weighted.effectiveWeightSum ?? 0)}/100</strong></div>
-                    <div><span>Composite</span><strong>${escapeHtml(channel.score)}/100</strong></div>
+                    <div><span>基础分</span><strong>${escapeHtml(weighted.baseScore ?? channel.rawScore)}</strong></div>
+                    <div><span>有效权重</span><strong>${escapeHtml(weighted.effectiveWeightSum ?? 0)}/100</strong></div>
+                    <div><span>综合分</span><strong>${escapeHtml(channel.score)}/100</strong></div>
                 </div>
                 <p>${escapeHtml(weighted.formula || '')}</p>
                 <div class="report-tabs">${weightedRows}</div>
             </section>
             <section class="verify-card">
-                <p class="section-note">Category Score</p>
+                <p class="section-note">分类得分</p>
                 <div class="metric-row">${groupProbeSummary(channel.probes)}</div>
             </section>
             <section class="verify-card compact-probes">
-                <p class="section-note">Probe Results</p>
+                <p class="section-note">探针结果</p>
                 ${probeRows || '<p class="verify-empty">暂无探针结果。</p>'}
             </section>
         `;
@@ -1149,15 +1166,23 @@
             model: $('model').value.trim(),
             apiKey: normalizeApiKey($('apiKey').value),
             timeout: Number($('timeout').value) || 60,
-            maxTokens: Number($('maxTokens')?.value) || 256,
+            maxTokens: Number($('maxTokens')?.value) || 8192,
             reasoningEffort: $('reasoningEffort')?.value || '',
             includePreview: boolFromInput('includePreview', true),
-            systemPrompt: $('systemPrompt').value.trim(),
+            systemPrompt: boolFromInput('useSystemPrompt', false) ? $('systemPrompt').value.trim() : '',
+            userPrompt: boolFromInput('useUserPrompt', false) ? $('userPrompt')?.value.trim() : '',
             stabilityRounds: Number($('stabilityRounds').value) || 3,
             concurrency: Number($('concurrency').value) || 5,
             detectionMode: $('detectionMode')?.value || 'full',
             executionMode: $('executionMode')?.value || 'serial'
         };
+    }
+
+    function syncPromptToggles() {
+        const systemEnabled = boolFromInput('useSystemPrompt', false);
+        const userEnabled = boolFromInput('useUserPrompt', false);
+        if ($('systemPrompt')) $('systemPrompt').disabled = !systemEnabled;
+        if ($('userPrompt')) $('userPrompt').disabled = !userEnabled;
     }
 
     function buildRunReport(config, total, max, results, modelList, returnedModels, selected) {
@@ -1174,8 +1199,8 @@
                 weight: item.weight,
                 domain: item.domain,
                 skipped: true,
-                notes: ['Skipped: no executable probe result; weight redistributed by effective denominator'],
-                result: { success: false, preview: 'skipped' }
+                notes: ['已跳过：没有可执行探针结果；权重由有效分母按比例重分配'],
+                result: { success: false, preview: '已跳过' }
             }));
         const annotatedResults = [...results, ...skippedWeightedRows].map((probe) => {
             const metas = weightedProbeCatalog.filter((item) => item.id === probe.id);
@@ -1249,18 +1274,28 @@
         ];
         const returnedModels = [];
         let modelList = { checked: false, modelIds: [] };
+        const modelListPromise = selected.has('model_list') ? checkModelList(config) : Promise.resolve(modelList);
 
-        if (selected.has('model_list')) {
-            modelList = await checkModelList(config);
+        const recordProbeResult = (sent) => {
+            const scored = (sent.probe.score || scoreExpectedTextProbe)(config, sent.probe, sent.result);
+            total += scored.score;
+            max += sent.probe.maxScore;
+            if (sent.result.returnedModel) returnedModels.push(sent.result.returnedModel);
+            if (isAuthFailureResult(sent.result)) scored.notes.push('认证失败仅记录为本探针失败，不会阻断后续探针。');
+            results.push({ id: sent.probe.id, group: sent.probe.group, probe: sent.probe.name, maxScore: sent.probe.maxScore, score: scored.score, notes: scored.notes, result: sent.result });
+            appendLog(`${sent.probe.name}：${scored.score}/${sent.probe.maxScore}，${scored.notes.join('；')}`);
+        };
+
+        const recordModelList = async () => {
+            if (!selected.has('model_list')) return;
+            modelList = await modelListPromise;
             const scoredList = scoreModelList(config, modelList);
             total += scoredList.score;
             max += scoredList.maxScore;
+            if (isAuthFailureResult(scoredList.result)) scoredList.notes.push('认证失败仅记录为模型列表检查失败，不会阻断其他探针。');
             results.push(scoredList);
             appendLog(modelList.error ? `模型列表检查：${modelList.error}` : `模型列表检查：${modelList.modelIds.length} 个模型 ID`);
-            if (isAuthFailureResult(scoredList.result)) {
-                appendLog('模型列表返回认证错误；将继续用真实响应探针确认，避免误判不支持 /models 的兼容接口。');
-            }
-        }
+        };
 
         const probePlan = buildProbePlan(config, selected);
         const runnablePlan = config.executionMode === 'parallel'
@@ -1271,66 +1306,19 @@
             : [];
 
         if (config.executionMode === 'parallel' && runnablePlan.length) {
-            const [authGateProbe, ...parallelPlan] = runnablePlan;
-            appendLog(`并行前认证闸门：${authGateProbe.name}`);
-            const gateSent = await sendProbe(config, authGateProbe, 1);
-            const gateScored = (gateSent.probe.score || scoreExpectedTextProbe)(config, gateSent.probe, gateSent.result);
-            total += gateScored.score;
-            max += gateSent.probe.maxScore;
-            if (gateSent.result.returnedModel) returnedModels.push(gateSent.result.returnedModel);
-            results.push({ id: gateSent.probe.id, group: gateSent.probe.group, probe: gateSent.probe.name, maxScore: gateSent.probe.maxScore, score: gateScored.score, notes: gateScored.notes, result: gateSent.result });
-            appendLog(`${gateSent.probe.name}：${gateScored.score}/${gateSent.probe.maxScore}，${gateScored.notes.join('；')}`);
-            if (isAuthFailureResult(gateSent.result)) {
-                results.push(authFailureProbe(config, gateSent.result, `${gateSent.probe.name} 认证失败`));
-                renderReport(buildRunReport(config, total, max, results, modelList, returnedModels, selected));
-                appendLog('认证失败：已停止后续探针，避免重复请求无效凭证。');
-                setState('认证失败');
-                $('runBtn').disabled = false;
-                return;
-            }
-
-            appendLog(`并行执行常规探针：${parallelPlan.length} 项`);
-            try {
-                const sentItems = await Promise.all(parallelPlan.map((probe, index) => sendProbe(config, probe, index + 2)));
-                sentItems.forEach((sent) => {
-                    const scored = (sent.probe.score || scoreExpectedTextProbe)(config, sent.probe, sent.result);
-                    total += scored.score;
-                    max += sent.probe.maxScore;
-                    if (sent.result.returnedModel) returnedModels.push(sent.result.returnedModel);
-                    results.push({ id: sent.probe.id, group: sent.probe.group, probe: sent.probe.name, maxScore: sent.probe.maxScore, score: scored.score, notes: scored.notes, result: sent.result });
-                    appendLog(`${sent.probe.name}：${scored.score}/${sent.probe.maxScore}，${scored.notes.join('；')}`);
-                    if (isAuthFailureResult(sent.result)) throw { authFailure: true, sent };
-                });
-            } catch (error) {
-                if (!error?.authFailure) throw error;
-                results.push(authFailureProbe(config, error.sent.result, `${error.sent.probe.name} 认证失败`));
-                renderReport(buildRunReport(config, total, max, results, modelList, returnedModels, selected));
-                appendLog('认证失败：已停止后续探针，避免重复请求无效凭证。');
-                setState('认证失败');
-                $('runBtn').disabled = false;
-                return;
-            }
+            appendLog(`并行执行独立探针：${runnablePlan.length} 项`);
+            const sentItems = await Promise.all(runnablePlan.map((probe, index) => sendProbe(config, probe, index + 1)));
+            sentItems.forEach(recordProbeResult);
         }
 
         const serialPlan = config.executionMode === 'parallel' ? sequentialPlan : probePlan;
         for (const [index, probe] of serialPlan.entries()) {
             appendLog(`探针 ${index + 1}/${serialPlan.length}：${probe.name}`);
             const sent = await sendProbe(config, probe, index + 1);
-            const scored = (probe.score || scoreExpectedTextProbe)(config, sent.probe, sent.result);
-            total += scored.score;
-            max += sent.probe.maxScore;
-            if (sent.result.returnedModel) returnedModels.push(sent.result.returnedModel);
-            results.push({ id: sent.probe.id, group: sent.probe.group, probe: sent.probe.name, maxScore: sent.probe.maxScore, score: scored.score, notes: scored.notes, result: sent.result });
-            appendLog(`${sent.probe.name}：${scored.score}/${sent.probe.maxScore}，${scored.notes.join('；')}`);
-            if (isAuthFailureResult(sent.result)) {
-                results.push(authFailureProbe(config, sent.result, `${sent.probe.name} 认证失败`));
-                renderReport(buildRunReport(config, total, max, results, modelList, returnedModels, selected));
-                appendLog('认证失败：已停止后续探针，避免重复请求无效凭证。');
-                setState('认证失败');
-                $('runBtn').disabled = false;
-                return;
-            }
+            recordProbeResult(sent);
         }
+
+        await recordModelList();
 
         if (selected.has('concurrent')) {
             appendLog(`并发探针：${config.concurrency} 路并行`);
@@ -1514,7 +1502,7 @@
             }
             history.replaceState(null, document.title, window.location.pathname + window.location.search);
         } else if (error) {
-            setState(`GitHub login failed: ${error}`);
+            setState(`GitHub 登录失败：${error}`);
             history.replaceState(null, document.title, window.location.pathname + window.location.search);
         }
     }
@@ -1523,7 +1511,7 @@
         if ($('authUserLabel')) {
             $('authUserLabel').textContent = authUser
                 ? `${authUser.login}${authUser.role === 'admin' ? ' - admin' : ''}`
-                : 'Guest';
+                : '访客';
         }
         if ($('githubLoginBtn')) $('githubLoginBtn').hidden = Boolean(authUser);
         if ($('githubLogoutBtn')) $('githubLogoutBtn').hidden = !authUser;
@@ -1732,17 +1720,17 @@
         updateAuthUi();
         const list = $('discussionList');
         if (!list || !item) {
-            if (list) list.innerHTML = '<div class="verify-empty">No report selected.</div>';
-            if ($('discussionTitle')) $('discussionTitle').textContent = 'Select a report to discuss';
+            if (list) list.innerHTML = '<div class="verify-empty">尚未选择报告。</div>';
+            if ($('discussionTitle')) $('discussionTitle').textContent = '选择一份报告后讨论';
             return [];
         }
-        const targetModel = reportTargetModel(item.report) || item.targetModel || 'unknown';
+        const targetModel = reportTargetModel(item.report) || item.targetModel || '未知模型';
         if ($('discussionTitle')) $('discussionTitle').textContent = `${item.domain} / ${targetModel}`;
         if (!shareApiRoot()) {
-            list.innerHTML = '<div class="verify-empty">Discussion requires the online share API.</div>';
+            list.innerHTML = '<div class="verify-empty">讨论功能需要在线分享 API。</div>';
             return [];
         }
-        list.innerHTML = '<div class="verify-empty">Loading discussion...</div>';
+        list.innerHTML = '<div class="verify-empty">正在加载讨论...</div>';
         try {
             const url = shareApiUrl(`/model-verify-discussions?domain=${encodeURIComponent(item.domain)}&targetModel=${encodeURIComponent(targetModel)}`);
             const response = await fetch(url, { headers: { Accept: 'application/json' }, cache: 'no-store' });
@@ -1751,7 +1739,7 @@
             renderDiscussions(payload.items || [], item);
             return payload.items || [];
         } catch (error) {
-            list.innerHTML = `<div class="verify-empty">Discussion load failed: ${escapeHtml(error.message)}</div>`;
+            list.innerHTML = `<div class="verify-empty">讨论加载失败：${escapeHtml(error.message)}</div>`;
             return [];
         }
     }
@@ -1761,7 +1749,7 @@
         if (!list) return;
         const normalized = asArray(items);
         if (!normalized.length) {
-            list.innerHTML = '<div class="verify-empty">No discussion yet.</div>';
+            list.innerHTML = '<div class="verify-empty">暂无讨论。</div>';
             return;
         }
         list.innerHTML = normalized.map((entry) => {
@@ -1772,7 +1760,7 @@
                 <article class="discussion-item">
                     <header>
                         <span>${escapeHtml(author.login || 'github-user')} · ${escapeHtml(created)}</span>
-                        ${canDelete ? `<button class="report-tab" type="button" data-discussion-delete="${escapeHtml(entry.id)}">Delete</button>` : ''}
+                        ${canDelete ? `<button class="report-tab" type="button" data-discussion-delete="${escapeHtml(entry.id)}">删除</button>` : ''}
                     </header>
                     <p>${escapeHtml(entry.body || '')}</p>
                 </article>
@@ -1794,7 +1782,7 @@
         if (!selectedDiscussionItem) return;
         const body = $('discussionBody')?.value.trim();
         if (!body) return;
-        const targetModel = reportTargetModel(selectedDiscussionItem.report) || selectedDiscussionItem.targetModel || 'unknown';
+        const targetModel = reportTargetModel(selectedDiscussionItem.report) || selectedDiscussionItem.targetModel || '未知模型';
         const button = $('postDiscussionBtn');
         button.disabled = true;
         try {
@@ -1808,7 +1796,7 @@
             $('discussionBody').value = '';
             await loadDiscussions(selectedDiscussionItem);
         } catch (error) {
-            alert(`Post failed: ${error.message}`);
+            alert(`发布失败：${error.message}`);
         } finally {
             updateAuthUi();
         }
@@ -1887,11 +1875,10 @@
                     <strong style="color:${scoreColor(score)}">${Number.isFinite(score) ? score : '--'}/100</strong>
                     <span>${escapeHtml(sharedAt)}</span>
                     <div class="shared-actions">
-                        <button class="report-tab" type="button" data-shared-key="${escapeHtml(sharedItemKey(item))}">View</button>
-                        <button class="report-tab" type="button" data-discuss-key="${escapeHtml(sharedItemKey(item))}">Discuss</button>
-                        <button class="report-tab" type="button" data-delete-key="${escapeHtml(sharedItemKey(item))}">Delete</button>
+                        <button class="report-tab" type="button" data-shared-key="${escapeHtml(sharedItemKey(item))}">查看</button>
+                        <button class="report-tab" type="button" data-discuss-key="${escapeHtml(sharedItemKey(item))}">讨论</button>
+                        <button class="report-tab" type="button" data-delete-key="${escapeHtml(sharedItemKey(item))}">删除</button>
                     </div>
-                    <button class="report-tab" type="button" data-shared-key="${escapeHtml(sharedItemKey(item))}">查看</button>
                 </article>
             `;
         }).join('');
@@ -2029,6 +2016,8 @@
     $('refreshSharedBtn')?.addEventListener('click', () => loadSharedReports({ force: true }));
     $('githubLoginBtn')?.addEventListener('click', startGitHubLogin);
     $('githubLogoutBtn')?.addEventListener('click', logoutGitHub);
+    $('useSystemPrompt')?.addEventListener('change', syncPromptToggles);
+    $('useUserPrompt')?.addEventListener('change', syncPromptToggles);
     window.addEventListener('cybertar:auth-changed', (event) => {
         authUser = event.detail?.user || null;
         authToken = window.CyberTARAuth?.getToken?.() || '';
@@ -2043,6 +2032,7 @@
     });
     $('postDiscussionBtn')?.addEventListener('click', postDiscussion);
     $('reportFile').addEventListener('change', importReport);
+    syncPromptToggles();
     setupInteractiveEffects();
     loadAuthUser();
     document.querySelectorAll('.page-tab[data-page]').forEach((button) => {

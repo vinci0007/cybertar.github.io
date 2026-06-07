@@ -257,6 +257,7 @@ function write404() {
     <p>页面不存在，或地址已经移动。</p>
     <p><a href="/">返回首页</a></p>
   </main>
+  <script src="/script.js"></script>
 </body>
 </html>
 `;

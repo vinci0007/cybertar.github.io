@@ -106,9 +106,15 @@ function scrollToSection(sectionId) {
             .cybertar-auth-widget {
                 position: fixed;
                 top: 2rem;
-                right: 5.5rem;
+                right: 2rem;
                 z-index: 2200;
                 font-family: var(--font-display, 'Orbitron', sans-serif);
+            }
+            .corner-actions .cybertar-auth-widget {
+                position: relative;
+                top: auto;
+                right: auto;
+                z-index: auto;
             }
             .cybertar-auth-button {
                 min-width: 74px;
@@ -277,7 +283,11 @@ function scrollToSection(sectionId) {
             @media (max-width: 720px) {
                 .cybertar-auth-widget {
                     top: 1rem;
-                    right: 5rem;
+                    right: 1rem;
+                }
+                .corner-actions .cybertar-auth-widget {
+                    top: auto;
+                    right: auto;
                 }
                 .cybertar-auth-button {
                     height: 38px;
@@ -383,7 +393,7 @@ function scrollToSection(sectionId) {
             <button class="cybertar-auth-button" type="button" aria-haspopup="menu" aria-expanded="false">登录</button>
             <div class="cybertar-auth-menu" role="menu" hidden>
                 <div class="cybertar-auth-menu-header">
-                    <strong data-auth-name>Guest</strong>
+                    <strong data-auth-name>访客</strong>
                     <span data-auth-role>未登录</span>
                 </div>
                 <a href="/lab/model-verifier/" role="menuitem">模型验真</a>
@@ -392,7 +402,12 @@ function scrollToSection(sectionId) {
                 <button type="button" role="menuitem" data-logout>退出登录</button>
             </div>
         `;
-        document.body.appendChild(widget);
+        const actionGroup = document.querySelector('.corner-actions');
+        if (actionGroup) {
+            actionGroup.insertBefore(widget, actionGroup.firstElementChild);
+        } else {
+            document.body.appendChild(widget);
+        }
 
         const button = widget.querySelector('.cybertar-auth-button');
         const menu = widget.querySelector('.cybertar-auth-menu');
@@ -409,7 +424,7 @@ function scrollToSection(sectionId) {
             closeMenu();
             if (!user) {
                 button.textContent = '登录';
-                name.textContent = 'Guest';
+                name.textContent = '访客';
                 role.textContent = '未登录';
                 return;
             }
@@ -471,8 +486,10 @@ function scrollToSection(sectionId) {
 // 平滑滚动
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        const selector = this.getAttribute('href');
+        if (!selector || selector === '#') return;
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const target = document.querySelector(selector);
         if (target) {
             target.scrollIntoView({
                 behavior: 'smooth',
