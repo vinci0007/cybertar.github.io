@@ -77,7 +77,8 @@
         }
 
         .github-corner-link,
-        .model-verify-corner-link {
+        .model-verify-corner-link,
+        .login-corner-link {
             position: static;
             z-index: 1001;
             display: inline-flex;
@@ -95,7 +96,8 @@
             transition: color 0.3s ease, transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .model-verify-corner-link {
+        .model-verify-corner-link,
+        .login-corner-link {
             width: auto;
             min-width: 48px;
             padding: 0 16px;
@@ -109,7 +111,8 @@
         }
 
         .github-corner-link:hover,
-        .model-verify-corner-link:hover {
+        .model-verify-corner-link:hover,
+        .login-corner-link:hover {
             color: #fff;
             transform: translateY(-2px) scale(1.05);
             border-color: rgba(255, 255, 255, 0.3);
@@ -124,6 +127,18 @@
 
         .model-verify-corner-link span:first-child {
             font-size: 1rem;
+        }
+
+        .login-corner-link {
+            cursor: pointer;
+            border-color: rgba(124, 255, 0, 0.24);
+        }
+
+        .home-login-floating {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1001;
         }
 
         /* 新增：音频列表样式 */
@@ -160,6 +175,8 @@
     </div>
 
     <!-- 导航栏 -->
+    <button id="homeGithubLogin" class="login-corner-link home-login-floating" type="button">GitHub Login</button>
+
     <header class="header">
         <nav class="nav">
             <div class="logo">
@@ -537,6 +554,49 @@
                 heroRenderer.setSize(newWidth, newHeight);
             });
             resizeObserver.observe(heroContainer);
+        })();
+    </script>
+    <script>
+        (function () {
+            const apiRoot = 'https://cybertar-model-verify-api.1058996340.workers.dev';
+            const tokenKey = 'cybertar:model-verifier:auth-token:v1';
+            const button = document.getElementById('homeGithubLogin');
+            if (!button) return;
+            const params = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+            const returnedToken = params.get('mv_auth_token');
+            if (returnedToken) {
+                localStorage.setItem(tokenKey, returnedToken);
+                history.replaceState(null, document.title, window.location.pathname + window.location.search);
+            }
+            const token = localStorage.getItem(tokenKey) || '';
+            const setGuest = () => { button.textContent = 'GitHub Login'; };
+            button.addEventListener('click', () => {
+                if (button.dataset.loggedIn === 'true') {
+                    window.location.href = 'lab/model-verifier.html';
+                    return;
+                }
+                const returnTo = encodeURIComponent(window.location.href.split('#')[0]);
+                window.location.href = `${apiRoot}/model-verify-auth/github/login?return_to=${returnTo}`;
+            });
+            if (!token) {
+                setGuest();
+                return;
+            }
+            fetch(`${apiRoot}/model-verify-auth/me`, {
+                headers: { Authorization: `Bearer ${token}` },
+                cache: 'no-store'
+            })
+                .then((response) => response.ok ? response.json() : null)
+                .then((payload) => {
+                    if (!payload?.user) {
+                        localStorage.removeItem(tokenKey);
+                        setGuest();
+                        return;
+                    }
+                    button.dataset.loggedIn = 'true';
+                    button.textContent = `${payload.user.login}${payload.user.role === 'admin' ? ' - admin' : ''}`;
+                })
+                .catch(setGuest);
         })();
     </script>
 </body>

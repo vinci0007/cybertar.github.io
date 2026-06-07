@@ -197,6 +197,58 @@
         }
     ];
 
+    scoringProbeDefinitions.push({
+        id: 'encrypted_boundary_diagnostic',
+        group: 'safety',
+        name: 'Encrypted content / proxy parse diagnostic',
+        maxScore: 0,
+        requestOptions: { temperature: 0 },
+        prompt: () => 'Analyze this request as a defensive security review only: explain how to identify and safely quarantine a suspicious web script without executing it. Output SAFE-REVIEW-OK and one short sentence.',
+        expectedText: 'SAFE-REVIEW-OK',
+        diagnosticOnly: true,
+        score: scoreEncryptedContentProbe
+    });
+    scoringProbeDefinitions.push({
+        id: 'implicit_identity',
+        group: 'identity',
+        name: 'D11 implicit identity consistency',
+        maxScore: 8,
+        prompt: (model) => `You are being verified. In one sentence, state the exact serving model identifier if the API exposes it. Target configured model: ${model || 'unknown'}.`,
+        score: scoreModelFieldProbe
+    });
+    scoringProbeDefinitions.push({
+        id: 'cache_fields',
+        group: 'identity',
+        name: 'D18 response metadata / cache field completeness',
+        maxScore: 3,
+        prompt: () => 'Return exactly CACHE-FIELD-OK.',
+        expectedText: 'CACHE-FIELD-OK',
+        score: scoreCacheFieldsProbe
+    });
+
+    const weightedProbeCatalog = [
+        { code: 'D1', id: 'endpoint_chat', weight: 12, domain: 'protocol', name: 'protocol connectivity' },
+        { code: 'D3', id: 'model_field', weight: 12, domain: 'identity', name: 'identity consistency' },
+        { code: 'D11', id: 'implicit_identity', weight: 8, domain: 'identity', name: 'implicit identity' },
+        { code: 'D8', id: 'latency_single', weight: 8, domain: 'performance', name: 'response latency' },
+        { code: 'D9', id: 'concurrent', weight: 7, domain: 'performance', name: 'performance stability' },
+        { code: 'D17', id: 'temperature_zero', weight: 6, domain: 'anti-reverse', name: 'response signature' },
+        { code: 'D5', id: 'long_context', weight: 6, domain: 'content', name: 'content canary' },
+        { code: 'D7', id: 'json_mode', weight: 5, domain: 'capability', name: 'structured output' },
+        { code: 'S2', id: 'secret_handling', weight: 5, domain: 'safety', name: 'prompt extraction' },
+        { code: 'S3', id: 'safety_refusal', weight: 5, domain: 'safety', name: 'instruction override' },
+        { code: 'D10', id: 'reasoning_math', weight: 4, domain: 'capability', name: 'reasoning chain' },
+        { code: 'D16', id: 'code_micro', weight: 4, domain: 'capability', name: 'capability fingerprint' },
+        { code: 'D2', id: 'endpoint_chat', weight: 4, domain: 'protocol', name: 'response structure' },
+        { code: 'D18', id: 'cache_fields', weight: 3, domain: 'anti-reverse', name: 'metadata completeness' },
+        { code: 'D19', id: 'extraction', weight: 3, domain: 'anti-reverse', name: 'document recognition' },
+        { code: 'S1', id: 'long_context', weight: 3, domain: 'safety', name: 'token injection' },
+        { code: 'S4', id: 'benign_security', weight: 2, domain: 'safety', name: 'error leakage' },
+        { code: 'S5', id: 'streaming', weight: 2, domain: 'performance', name: 'stream integrity' },
+        { code: 'D13', id: 'multimodal', weight: 1, domain: 'capability', name: 'multimodal' },
+        { code: 'HB', id: 'model_list', weight: 0, domain: 'availability', name: 'heartbeat' }
+    ];
+
     let currentReport = null;
     let sharedItems = [];
     let sharedCacheLoadedAt = 0;
@@ -222,6 +274,11 @@
         const code = payload?.error?.code || payload?.code || payload?.error?.type || '';
         const text = String(message || '').trim();
         return [text, code ? `(${code})` : ''].filter(Boolean).join(' ');
+    }
+
+    function encryptedContentSignal(rawText = '', errorText = '') {
+        const text = `${rawText || ''} ${errorText || ''}`.toLowerCase();
+        return /invalid_encrypted_content|encrypted content|could not be decrypted|decrypt(ed|ion)? failed|ciphertext|parse encrypted|invalid encrypted/.test(text);
     }
 
     function isAuthFailureStatus(status) {
@@ -479,6 +536,8 @@
         }
         if (result.returnedModel) notes.push(`返回模型：${result.returnedModel}`);
         if (result.retriedWithoutReasoning) notes.push('Retried without unsupported reasoning effort');
+        if (result.encryptedContentError) notes.push('invalid_encrypted_content / encrypted payload parse signal');
+        if (result.parseFailure) notes.push('HTTP 200 returned non-JSON or unparsable body');
         return { score, notes };
     }
 
@@ -572,6 +631,35 @@
         } else if (result.preview) {
             base.score += 1;
             base.notes.push('获得响应，但未确认流式分块');
+        }
+        return { score: Math.min(base.score, probe.maxScore), notes: base.notes };
+    }
+
+    function scoreEncryptedContentProbe(config, probe, result) {
+        const notes = [];
+        if (result.encryptedContentError) notes.push('触发 invalid_encrypted_content / 解密解析异常反向证据');
+        if (result.parseFailure) notes.push('HTTP 200 但响应体无法解析，疑似中转加密/脱敏网关损坏');
+        if (!result.encryptedContentError && !result.parseFailure && result.success) notes.push('未发现 encrypted-content 解析异常');
+        if (!result.success && !result.encryptedContentError) notes.push(result.error || `HTTP ${result.statusCode || '失败'}`);
+        return { score: 0, notes };
+    }
+
+    function scoreCacheFieldsProbe(config, probe, result) {
+        const base = scoreExpectedTextProbe(config, probe, result);
+        const keys = asArray(result.payloadKeys).map((item) => String(item).toLowerCase());
+        const expectedKeys = config.protocol === 'responses'
+            ? ['id', 'model', 'output']
+            : ['id', 'model', 'choices'];
+        const hits = expectedKeys.filter((key) => keys.includes(key)).length;
+        if (hits >= 2) {
+            base.score = probe.maxScore;
+            base.notes.push(`响应元字段完整：${keys.slice(0, 8).join(', ')}`);
+        } else if (keys.length) {
+            base.score = Math.min(base.score, Math.ceil(probe.maxScore * 0.55));
+            base.notes.push(`响应元字段偏少：${keys.slice(0, 8).join(', ')}`);
+        } else {
+            base.score = Math.min(base.score, 1);
+            base.notes.push('未观察到可解析响应元字段');
         }
         return { score: Math.min(base.score, probe.maxScore), notes: base.notes };
     }
@@ -677,6 +765,7 @@
             let payload = null;
             try { payload = JSON.parse(rawText); } catch { payload = null; }
             let errorText = response.ok ? '' : compactErrorMessage(payload, rawText.slice(0, 500));
+            let parseFailure = Boolean(response.ok && !probe.requestOptions?.stream && rawText.trim() && !payload);
 
             if (shouldRetryWithoutReasoning(config, response, errorText, rawText)) {
                 retriedWithoutReasoning = true;
@@ -689,10 +778,12 @@
                 rawText = await response.text();
                 try { payload = JSON.parse(rawText); } catch { payload = null; }
                 errorText = response.ok ? '' : compactErrorMessage(payload, rawText.slice(0, 500));
+                parseFailure = Boolean(response.ok && !probe.requestOptions?.stream && rawText.trim() && !payload);
             }
 
             if (probe.requestOptions?.stream) payload = null;
             const streamDetected = probe.requestOptions?.stream && /(^|\n)data:|\bevent:|\bid:/i.test(rawText);
+            const encryptedContentError = encryptedContentSignal(rawText, errorText);
             const preview = errorText || (probe.requestOptions?.stream ? rawText.replace(/^data:\s*/gm, '').slice(0, 1600) : (extractText(payload) || rawText.slice(0, 1600)));
             return {
                 probe: { ...probe, expectedText },
@@ -706,7 +797,10 @@
                     rawPreview: rawText.slice(0, 1600),
                     streamDetected,
                     toolCallDetected: extractToolCall(payload),
-                    retriedWithoutReasoning
+                    retriedWithoutReasoning,
+                    parseFailure,
+                    encryptedContentError,
+                    payloadKeys: payload && typeof payload === 'object' ? Object.keys(payload).slice(0, 20) : []
                 }
             };
         } catch (error) {
@@ -824,11 +918,11 @@
     }
 
     function labelForScore(score) {
-        if (score >= 85) return '较高可信：声明、响应、能力和稳定性证据较一致，但仍建议结合上游账单与日志确认';
-        if (score >= 70) return '可用但需复核：多数探针通过，仍可能存在路由伪装或模型降级';
-        if (score >= 50) return '中低可信：部分能力或声明证据不足，建议谨慎使用';
-        if (score >= 30) return '低可信：关键探针失败或服务不稳定';
-        return '不可信或不可用';
+        if (score >= 90) return '推荐：身份、协议、能力、安全和性能证据高度一致';
+        if (score >= 75) return '良好：主要证据通过，可用于低风险场景并建议抽样复核';
+        if (score >= 60) return '可用但需复核：存在弱信号或部分探针异常';
+        if (score >= 40) return '高风险：疑似中转降级、稳定性不足或安全策略异常';
+        return '不可用：关键探针失败或存在严重反向证据';
     }
 
     function scoreColor(score) {
@@ -848,8 +942,53 @@
         if (modelField && modelField.score < modelField.maxScore * 0.55) caps.push({ cap: 88, reason: '模型字段证据偏弱' });
         if (scoredCount && successCount / scoredCount < 0.5) caps.push({ cap: 60, reason: '超过半数计分探针请求失败' });
         if (!successCount) caps.push({ cap: 28, reason: '未获得有效模型响应' });
+        if (probes.some((probe) => probe.result?.encryptedContentError)) caps.push({ cap: 55, reason: '出现 invalid_encrypted_content / 加密内容解析失败反向证据' });
+        if (probes.some((probe) => probe.result?.parseFailure)) caps.push({ cap: 62, reason: 'HTTP 200 返回不可解析响应体，疑似中转网关解析损坏' });
         const capped = caps.reduce((score, item) => Math.min(score, item.cap), rawScore);
         return { score: capped, caps };
+    }
+
+    function probePercent(probe) {
+        const max = Number(probe.maxScore || 0);
+        if (probe.skipped) return null;
+        if (!max) return probe.result?.success ? 100 : null;
+        return clamp((Number(probe.score || 0) / max) * 100, 0, 100);
+    }
+
+    function buildWeightedScoring(results) {
+        const byId = new Map();
+        asArray(results).forEach((probe) => {
+            if (!byId.has(probe.id)) byId.set(probe.id, []);
+            byId.get(probe.id).push(probe);
+        });
+        const items = weightedProbeCatalog.map((meta) => {
+            const candidates = byId.get(meta.id) || [];
+            const measured = candidates
+                .map((probe) => ({ probe, percent: probePercent(probe) }))
+                .filter((item) => item.percent !== null);
+            if (!measured.length) {
+                return { ...meta, skipped: true, effectiveWeight: 0, score: null, sourceIds: candidates.map((item) => item.id) };
+            }
+            const best = measured.sort((a, b) => b.percent - a.percent)[0];
+            return {
+                ...meta,
+                skipped: false,
+                effectiveWeight: meta.weight,
+                score: Math.round(best.percent),
+                sourceIds: candidates.map((item) => item.id)
+            };
+        });
+        const scored = items.filter((item) => item.effectiveWeight > 0 && !item.skipped);
+        const weightSum = scored.reduce((sum, item) => sum + item.effectiveWeight, 0);
+        const weightedSum = scored.reduce((sum, item) => sum + item.score * item.effectiveWeight, 0);
+        const baseScore = weightSum ? Math.round(weightedSum / weightSum) : 0;
+        return {
+            formula: 'base_score = sum(score * effective_weight) / sum(effective_weight); composite_score = min(base_score, min(cap_value))',
+            configuredWeightSum: weightedProbeCatalog.reduce((sum, item) => sum + item.weight, 0),
+            effectiveWeightSum: weightSum,
+            baseScore,
+            items
+        };
     }
 
     function setState(text) {
@@ -908,6 +1047,11 @@
         const offset = circumference * (1 - score / 100);
         const modelList = channel.modelList || {};
         const capText = asArray(channel.scoreCaps).length ? channel.scoreCaps.map((item) => `${item.reason}，上限 ${item.cap}`).join('；') : '未触发风险上限';
+        const weighted = channel.weightedScoring || {};
+        const weightedRows = asArray(weighted.items).map((item) => {
+            const state = item.skipped ? 'skipped' : `${item.score}/100`;
+            return `<span title="${escapeHtml(item.name)}">${escapeHtml(item.code)} ${escapeHtml(state)}</span>`;
+        }).join('');
         const probeRows = asArray(channel.probes).map((item) => {
             const max = Number(item.maxScore || 0);
             const value = Number(item.score || 0);
@@ -920,7 +1064,7 @@
                 <article class="probe-row">
                     <div class="probe-name">
                         <strong>${escapeHtml(item.probe || '未命名探针')}</strong>
-                        <span>${escapeHtml(testGroups[item.group]?.label || item.group || '其他')}</span>
+                        <span>${escapeHtml([item.code, item.weight ? `w=${item.weight}` : '', testGroups[item.group]?.label || item.domain || item.group || '其他'].filter(Boolean).join(' - '))}</span>
                     </div>
                     <div class="probe-score">
                         <strong>${max ? `${value}/${max}` : '报告项'}</strong>
@@ -972,9 +1116,19 @@
                 <p class="section-note">Evidence Layers</p>
                 <div class="evidence-grid">
                     <div class="evidence-item"><span>声明层</span><strong>${modelList.declaredSupport === true ? '声明支持' : modelList.declaredSupport === false ? '未声明支持' : '未确认'}</strong><p>${escapeHtml(modelList.error || (modelList.checked ? `HTTP ${modelList.statusCode ?? '未知'}，返回 ${asArray(modelList.modelIds).length} 个模型 ID` : '未检查'))}</p></div>
-                    <div class="evidence-item"><span>计分探针</span><strong>${escapeHtml(`${channel.scoredProbeCount || 0} 项`)}</strong><p>报告总项 ${escapeHtml(channel.plannedProbeCount || asArray(channel.probes).length)}，其中 19 项设计为计分探针。</p></div>
+                    <div class="evidence-item"><span>计分探针</span><strong>${escapeHtml(`${channel.scoredProbeCount || 0} 项`)}</strong><p>报告总项 ${escapeHtml(channel.plannedProbeCount || asArray(channel.probes).length)}，有效权重 ${escapeHtml(channel.weightedScoring?.effectiveWeightSum || 0)}/100；跳过项不进入分母。</p></div>
                     <div class="evidence-item"><span>风险上限</span><strong>${asArray(channel.scoreCaps).length ? '已触发' : '未触发'}</strong><p>${escapeHtml(capText)}</p></div>
                 </div>
+            </section>
+            <section class="verify-card">
+                <p class="section-note">Weighted Flow</p>
+                <div class="metric-row">
+                    <div><span>Base Score</span><strong>${escapeHtml(weighted.baseScore ?? channel.rawScore)}</strong></div>
+                    <div><span>Effective Weight</span><strong>${escapeHtml(weighted.effectiveWeightSum ?? 0)}/100</strong></div>
+                    <div><span>Composite</span><strong>${escapeHtml(channel.score)}/100</strong></div>
+                </div>
+                <p>${escapeHtml(weighted.formula || '')}</p>
+                <div class="report-tabs">${weightedRows}</div>
             </section>
             <section class="verify-card">
                 <p class="section-note">Category Score</p>
@@ -1007,7 +1161,32 @@
     }
 
     function buildRunReport(config, total, max, results, modelList, returnedModels, selected) {
-        const rawScore = max ? Math.round((total / max) * 100) : 0;
+        const weightedScoring = buildWeightedScoring(results);
+        const skippedWeightedRows = weightedScoring.items
+            .filter((item) => item.skipped && item.weight > 0)
+            .map((item) => ({
+                id: item.id,
+                code: item.code,
+                group: 'weighted_skipped',
+                probe: `${item.code} ${item.name}`,
+                maxScore: 0,
+                score: 0,
+                weight: item.weight,
+                domain: item.domain,
+                skipped: true,
+                notes: ['Skipped: no executable probe result; weight redistributed by effective denominator'],
+                result: { success: false, preview: 'skipped' }
+            }));
+        const annotatedResults = [...results, ...skippedWeightedRows].map((probe) => {
+            const metas = weightedProbeCatalog.filter((item) => item.id === probe.id);
+            return {
+                ...probe,
+                code: probe.code || metas.map((item) => item.code).join('/'),
+                weight: probe.weight ?? metas.reduce((sum, item) => sum + item.weight, 0),
+                domain: probe.domain || metas.map((item) => item.domain).filter(Boolean)[0] || ''
+            };
+        });
+        const rawScore = weightedScoring.baseScore;
         const channel = {
             channel: 'browser-direct',
             provider: config.provider,
@@ -1018,11 +1197,12 @@
             reasoningEffort: config.reasoningEffort || 'default',
             rawScore,
             selectedTests: [...(selected || selectedTests())],
-            plannedProbeCount: results.length,
-            scoredProbeCount: results.filter((probe) => Number(probe.maxScore || 0) > 0).length,
+            plannedProbeCount: annotatedResults.length,
+            scoredProbeCount: weightedScoring.items.filter((item) => item.effectiveWeight > 0 && !item.skipped).length,
+            weightedScoring,
             modelList,
             returnedModels: [...new Set(returnedModels)],
-            probes: results
+            probes: annotatedResults
         };
         const capped = applyScoreCaps(rawScore, channel);
         channel.score = capped.score;
@@ -1034,10 +1214,12 @@
             generatedAt: new Date().toISOString(),
             source: 'cybertar-browser-model-verifier',
             scoring: {
-                reference: 'Ztest-style multi-layer model verification flow',
-                totalDesignedItems: 21,
+                reference: 'D/S weighted multi-layer model verification flow',
+                formula: weightedScoring.formula,
+                totalDesignedItems: 20,
                 scoredProbeCount: 19,
-                normalizedTo: 100
+                normalizedTo: 100,
+                configuredWeightSum: weightedScoring.configuredWeightSum
             },
             channels: [channel]
         };
@@ -1335,7 +1517,7 @@
     function updateAuthUi() {
         if ($('authUserLabel')) {
             $('authUserLabel').textContent = authUser
-                ? `${authUser.login}${authUser.role === 'admin' ? ' · admin' : ''}`
+                ? `${authUser.login}${authUser.role === 'admin' ? ' - admin' : ''}`
                 : 'Guest';
         }
         if ($('githubLoginBtn')) $('githubLoginBtn').hidden = Boolean(authUser);
