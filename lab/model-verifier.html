@@ -550,9 +550,15 @@
 
         .verify-overview {
             display: grid;
-            grid-template-columns: 168px minmax(0, 1fr);
+            grid-template-columns: 168px 92px minmax(0, 1fr);
             gap: 0.9rem;
             align-items: center;
+        }
+
+        .critical-risk-card {
+            border-color: rgba(255, 48, 69, 0.58);
+            background: linear-gradient(135deg, rgba(255, 48, 69, 0.12), rgba(0, 0, 0, 0.22));
+            box-shadow: 0 0 0 1px rgba(255, 48, 69, 0.08), 0 16px 45px rgba(255, 48, 69, 0.11);
         }
 
         .score-ring {
@@ -581,6 +587,18 @@
             filter: drop-shadow(0 0 12px rgba(124, 255, 0, 0.32));
         }
 
+        .score-ring.critical-risk .track {
+            stroke: rgba(255, 48, 69, 0.2);
+        }
+
+        .score-ring.critical-risk .value {
+            filter: drop-shadow(0 0 18px rgba(255, 48, 69, 0.55));
+        }
+
+        .score-ring.critical-risk strong {
+            color: #ff6a7a;
+        }
+
         .score-ring div {
             position: absolute;
             inset: 0;
@@ -604,10 +622,109 @@
             font-size: 0.82rem;
         }
 
+        .bonus-cylinder {
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.18rem;
+            text-align: center;
+        }
+
+        .bonus-tube {
+            position: relative;
+            width: 46px;
+            height: 124px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+            background:
+                radial-gradient(ellipse at 50% 8%, rgba(255, 255, 255, 0.24), transparent 58%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025));
+            box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.42);
+        }
+
+        .bonus-tube::before,
+        .bonus-tube::after {
+            content: "";
+            position: absolute;
+            left: 6px;
+            right: 6px;
+            z-index: 2;
+            height: 11px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .bonus-tube::before {
+            top: 5px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .bonus-tube::after {
+            bottom: 5px;
+            background: rgba(0, 0, 0, 0.18);
+        }
+
+        .bonus-tube i {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            min-height: 4px;
+            border-radius: inherit;
+            background: linear-gradient(180deg, #7cf7ff 0%, #83ff8f 100%);
+            box-shadow: 0 0 18px rgba(124, 247, 255, 0.25);
+        }
+
+        .bonus-tube i::before {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: 6px;
+            right: 6px;
+            height: 11px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.32);
+        }
+
+        .bonus-cylinder strong {
+            color: #fff;
+            font-size: 1.18rem;
+        }
+
+        .bonus-cylinder span {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
         .verify-summary h3 {
             color: #fff;
             margin: 0.15rem 0 0.65rem;
             line-height: 1.35;
+        }
+
+        .risk-alert {
+            display: grid;
+            gap: 0.18rem;
+            margin: 0 0 0.72rem;
+            padding: 0.62rem 0.72rem;
+            border: 1px solid rgba(255, 48, 69, 0.45);
+            border-radius: 10px;
+            background: rgba(255, 48, 69, 0.12);
+            color: rgba(255, 255, 255, 0.84);
+            line-height: 1.45;
+        }
+
+        .risk-alert strong {
+            color: #ff7b89;
+        }
+
+        .risk-alert span {
+            color: rgba(255, 255, 255, 0.74);
+            font-size: 0.84rem;
         }
 
         .verify-kicker,
@@ -651,6 +768,65 @@
         .evidence-item p {
             margin: 0.35rem 0 0;
             line-height: 1.45;
+        }
+
+        .bonus-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.62rem;
+        }
+
+        .diagnostic-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            opacity: 0.78;
+        }
+
+        .bonus-item {
+            min-width: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 0.6rem;
+            background: rgba(255, 255, 255, 0.035);
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .bonus-item div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.14rem;
+            min-width: 0;
+        }
+
+        .bonus-item strong {
+            display: block;
+            color: #fff;
+            overflow-wrap: anywhere;
+        }
+
+        .bonus-item > strong {
+            margin-top: 0.44rem;
+            font-size: 1rem;
+        }
+
+        .bonus-item span {
+            color: rgba(255, 255, 255, 0.46);
+            font-size: 0.72rem;
+        }
+
+        .bonus-item p {
+            margin: 0.35rem 0 0;
+            color: rgba(255, 255, 255, 0.58);
+            font-size: 0.78rem;
+            line-height: 1.42;
+        }
+
+        .bonus-item.is-skipped {
+            opacity: 0.62;
+        }
+
+        .bonus-item.diagnostic {
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .probe-row {
@@ -831,6 +1007,8 @@
             .status-row,
             .metric-row,
             .evidence-grid,
+            .bonus-grid,
+            .diagnostic-grid,
             .shared-grid {
                 grid-template-columns: 1fr;
             }
@@ -1080,7 +1258,7 @@
 
     <script src="../script.js?v=2026060707"></script>
     <script src="model-verify-share-config.js?v=20260606"></script>
-    <script src="model-verifier.js?v=2026060707"></script>
+    <script src="model-verifier.js?v=2026060708"></script>
 </body>
 
 </html>
