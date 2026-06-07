@@ -550,8 +550,8 @@
 
         .verify-overview {
             display: grid;
-            grid-template-columns: 168px 92px minmax(0, 1fr);
-            gap: 0.9rem;
+            grid-template-columns: 232px minmax(0, 1fr);
+            gap: 1rem;
             align-items: center;
         }
 
@@ -561,10 +561,17 @@
             box-shadow: 0 0 0 1px rgba(255, 48, 69, 0.08), 0 16px 45px rgba(255, 48, 69, 0.11);
         }
 
+        .score-cluster {
+            position: relative;
+            width: 224px;
+            min-height: 174px;
+        }
+
         .score-ring {
             position: relative;
             width: 156px;
             height: 156px;
+            z-index: 1;
         }
 
         .score-ring svg {
@@ -623,19 +630,24 @@
         }
 
         .bonus-cylinder {
+            position: absolute;
+            right: 0;
+            bottom: 2px;
+            z-index: 2;
             display: flex;
             min-width: 0;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 0.18rem;
+            gap: 0.12rem;
             text-align: center;
         }
 
         .bonus-tube {
             position: relative;
-            width: 46px;
-            height: 124px;
+            order: 2;
+            width: 36px;
+            height: 86px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.18);
             border-radius: 999px;
@@ -649,21 +661,21 @@
         .bonus-tube::after {
             content: "";
             position: absolute;
-            left: 6px;
-            right: 6px;
+            left: 5px;
+            right: 5px;
             z-index: 2;
-            height: 11px;
+            height: 9px;
             border-radius: 50%;
             border: 1px solid rgba(255, 255, 255, 0.18);
         }
 
         .bonus-tube::before {
-            top: 5px;
+            top: 4px;
             background: rgba(255, 255, 255, 0.08);
         }
 
         .bonus-tube::after {
-            bottom: 5px;
+            bottom: 4px;
             background: rgba(0, 0, 0, 0.18);
         }
 
@@ -681,22 +693,26 @@
         .bonus-tube i::before {
             content: "";
             position: absolute;
-            top: 5px;
-            left: 6px;
-            right: 6px;
-            height: 11px;
+            top: 4px;
+            left: 5px;
+            right: 5px;
+            height: 9px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.32);
         }
 
         .bonus-cylinder strong {
+            order: 1;
             color: #fff;
-            font-size: 1.18rem;
+            font-size: 1rem;
+            line-height: 1;
         }
 
         .bonus-cylinder span {
+            order: 3;
             color: rgba(255, 255, 255, 0.55);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+            line-height: 1.1;
             white-space: nowrap;
         }
 
@@ -1258,7 +1274,7 @@
 
     <script src="../script.js?v=2026060707"></script>
     <script src="model-verify-share-config.js?v=20260606"></script>
-    <script src="model-verifier.js?v=2026060708"></script>
+    <script src="model-verifier.js?v=2026060709"></script>
 </body>
 
 </html>

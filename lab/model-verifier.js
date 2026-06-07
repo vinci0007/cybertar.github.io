@@ -1696,26 +1696,28 @@
 
         reportView.innerHTML = `
             <section class="verify-card verify-overview ${criticalRisk ? 'critical-risk-card' : ''}">
-                <div class="score-ring ${criticalRisk ? 'critical-risk' : ''}">
-                    <svg viewBox="0 0 168 168" aria-hidden="true">
-                        <defs>
-                            <linearGradient id="scoreGradient" x1="16" y1="150" x2="150" y2="16" gradientUnits="userSpaceOnUse">
-                                <stop offset="0%" stop-color="#ff4a78"></stop>
-                                <stop offset="28%" stop-color="#ffb238"></stop>
-                                <stop offset="55%" stop-color="#3fc7ff"></stop>
-                                <stop offset="78%" stop-color="#98e84f"></stop>
-                                <stop offset="100%" stop-color="#2ee66b"></stop>
-                            </linearGradient>
-                        </defs>
-                        <circle class="track" cx="84" cy="84" r="58"></circle>
-                        <circle class="value" cx="84" cy="84" r="58" stroke="${ringColor}" stroke-dasharray="${circumference.toFixed(2)}" stroke-dashoffset="${offset.toFixed(2)}"></circle>
-                    </svg>
-                    <div class="score-center"><strong>${score}</strong><span>/100</span></div>
-                </div>
-                <div class="bonus-cylinder" aria-label="额外加分 ${escapeHtml(formatBonusScore(bonusScore))}/${escapeHtml(formatBonusScore(bonusMax))}">
-                    <div class="bonus-tube"><i style="height:${bonusFill}%"></i></div>
-                    <strong>+${escapeHtml(formatBonusScore(bonusScore))}</strong>
-                    <span>/10 额外</span>
+                <div class="score-cluster">
+                    <div class="score-ring ${criticalRisk ? 'critical-risk' : ''}">
+                        <svg viewBox="0 0 168 168" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="scoreGradient" x1="16" y1="150" x2="150" y2="16" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#ff4a78"></stop>
+                                    <stop offset="28%" stop-color="#ffb238"></stop>
+                                    <stop offset="55%" stop-color="#3fc7ff"></stop>
+                                    <stop offset="78%" stop-color="#98e84f"></stop>
+                                    <stop offset="100%" stop-color="#2ee66b"></stop>
+                                </linearGradient>
+                            </defs>
+                            <circle class="track" cx="84" cy="84" r="58"></circle>
+                            <circle class="value" cx="84" cy="84" r="58" stroke="${ringColor}" stroke-dasharray="${circumference.toFixed(2)}" stroke-dashoffset="${offset.toFixed(2)}"></circle>
+                        </svg>
+                        <div class="score-center"><strong>${score}</strong><span>/100</span></div>
+                    </div>
+                    <div class="bonus-cylinder" aria-label="额外加分 ${escapeHtml(formatBonusScore(bonusScore))}/${escapeHtml(formatBonusScore(bonusMax))}">
+                        <strong>+${escapeHtml(formatBonusScore(bonusScore))}</strong>
+                        <div class="bonus-tube"><i style="height:${bonusFill}%"></i></div>
+                        <span>/10 额外</span>
+                    </div>
                 </div>
                 <div class="verify-summary">
                     <p class="verify-kicker">模型验真概览</p>
