@@ -671,6 +671,9 @@ async function handleGitHubLogin(request, env) {
 
 async function handleGitHubCallback(request, env) {
   const url = new URL(request.url);
+  if (!url.searchParams.get('code') && !url.searchParams.get('state')) {
+    return handleGitHubLogin(request, env);
+  }
   const cookies = parseCookies(request);
   const state = url.searchParams.get('state') || '';
   if (!state || !cookies[OAUTH_COOKIE] || state !== cookies[OAUTH_COOKIE]) {

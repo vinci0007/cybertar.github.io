@@ -134,11 +134,127 @@
             border-color: rgba(124, 255, 0, 0.24);
         }
 
-        .home-login-floating {
+        .corner-actions + #homeGithubLogin {
             position: fixed;
             top: 2rem;
-            right: 2rem;
+            left: 14.75rem;
             z-index: 1001;
+        }
+
+        .auth-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            display: grid;
+            place-items: center;
+            padding: 1.25rem;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .auth-modal[hidden] {
+            display: none;
+        }
+
+        .auth-dialog {
+            width: min(420px, 100%);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 12px;
+            background: rgba(8, 10, 16, 0.96);
+            box-shadow: 0 24px 90px rgba(0, 0, 0, 0.65);
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .auth-dialog header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 1rem 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .auth-dialog h2 {
+            margin: 0;
+            font-size: 1rem;
+            letter-spacing: 0.08rem;
+            text-transform: uppercase;
+        }
+
+        .auth-close {
+            width: 34px;
+            height: 34px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .auth-panel {
+            display: grid;
+            gap: 0.75rem;
+            padding: 1rem;
+        }
+
+        .auth-panel[hidden] {
+            display: none;
+        }
+
+        .auth-field {
+            display: grid;
+            gap: 0.32rem;
+            color: rgba(255, 255, 255, 0.68);
+            font-size: 0.82rem;
+        }
+
+        .auth-field input {
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.32);
+            color: #fff;
+            padding: 0.74rem 0.82rem;
+            outline: none;
+        }
+
+        .auth-action {
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 8px;
+            background: #fff;
+            color: #000;
+            padding: 0.78rem 0.9rem;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .auth-action.secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+        }
+
+        .auth-status {
+            min-height: 1.2rem;
+            color: rgba(255, 255, 255, 0.68);
+            font-size: 0.84rem;
+            line-height: 1.45;
+        }
+
+        @media (max-width: 720px) {
+            .corner-actions {
+                top: 1rem;
+                left: 1rem;
+                right: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .corner-actions + #homeGithubLogin {
+                top: 4.75rem;
+                left: 1rem;
+            }
         }
 
         /* 新增：音频列表样式 */
@@ -175,7 +291,7 @@
     </div>
 
     <!-- 导航栏 -->
-    <button id="homeGithubLogin" class="login-corner-link home-login-floating" type="button">GitHub Login</button>
+    <button id="homeGithubLogin" class="login-corner-link" type="button">Login</button>
 
     <header class="header">
         <nav class="nav">
@@ -207,6 +323,41 @@
             </div>
         </nav>
     </header>
+
+    <div id="homeAuthModal" class="auth-modal" hidden>
+        <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="homeAuthTitle">
+            <header>
+                <h2 id="homeAuthTitle">Account Login</h2>
+                <button id="homeAuthClose" class="auth-close" type="button" aria-label="Close">x</button>
+            </header>
+            <section id="homeAuthLoginPanel" class="auth-panel">
+                <button id="homeAuthGithub" class="auth-action" type="button">GitHub Login</button>
+                <label class="auth-field">Username
+                    <input id="homeAuthUsername" autocomplete="username">
+                </label>
+                <label class="auth-field">Password
+                    <input id="homeAuthPassword" type="password" autocomplete="current-password">
+                </label>
+                <button id="homeAuthPasswordLogin" class="auth-action secondary" type="button">Username Login</button>
+                <button id="homeAuthShowRegister" class="auth-action secondary" type="button">Register</button>
+                <p id="homeAuthStatus" class="auth-status"></p>
+            </section>
+            <section id="homeAuthRegisterPanel" class="auth-panel" hidden>
+                <label class="auth-field">Username
+                    <input autocomplete="username">
+                </label>
+                <label class="auth-field">Email
+                    <input type="email" autocomplete="email">
+                </label>
+                <label class="auth-field">Password
+                    <input type="password" autocomplete="new-password">
+                </label>
+                <button id="homeAuthRegisterSubmit" class="auth-action" type="button">Create Account</button>
+                <button id="homeAuthBackLogin" class="auth-action secondary" type="button">Back to Login</button>
+                <p id="homeAuthRegisterStatus" class="auth-status">Registration is not open yet.</p>
+            </section>
+        </div>
+    </div>
 
     <main>
         <!-- 英雄区域 -->
@@ -561,6 +712,11 @@
             const apiRoot = 'https://cybertar-model-verify-api.1058996340.workers.dev';
             const tokenKey = 'cybertar:model-verifier:auth-token:v1';
             const button = document.getElementById('homeGithubLogin');
+            const modal = document.getElementById('homeAuthModal');
+            const loginPanel = document.getElementById('homeAuthLoginPanel');
+            const registerPanel = document.getElementById('homeAuthRegisterPanel');
+            const status = document.getElementById('homeAuthStatus');
+            const registerStatus = document.getElementById('homeAuthRegisterStatus');
             if (!button) return;
             const params = new URLSearchParams(window.location.hash.replace(/^#/, ''));
             const returnedToken = params.get('mv_auth_token');
@@ -569,14 +725,55 @@
                 history.replaceState(null, document.title, window.location.pathname + window.location.search);
             }
             const token = localStorage.getItem(tokenKey) || '';
-            const setGuest = () => { button.textContent = 'GitHub Login'; };
+            const setGuest = () => {
+                button.textContent = 'Login';
+                button.dataset.loggedIn = 'false';
+            };
+            const startGithubLogin = () => {
+                const returnTo = encodeURIComponent(window.location.href.split('#')[0]);
+                window.location.href = `${apiRoot}/model-verify-auth/github/login?return_to=${returnTo}`;
+            };
+            const openModal = () => {
+                if (!modal) return;
+                if (loginPanel) loginPanel.hidden = false;
+                if (registerPanel) registerPanel.hidden = true;
+                if (status) status.textContent = '';
+                modal.hidden = false;
+                document.getElementById('homeAuthGithub')?.focus();
+            };
+            const closeModal = () => {
+                if (modal) modal.hidden = true;
+            };
             button.addEventListener('click', () => {
                 if (button.dataset.loggedIn === 'true') {
                     window.location.href = 'lab/model-verifier.html';
                     return;
                 }
-                const returnTo = encodeURIComponent(window.location.href.split('#')[0]);
-                window.location.href = `${apiRoot}/model-verify-auth/github/login?return_to=${returnTo}`;
+                openModal();
+            });
+            document.getElementById('homeAuthGithub')?.addEventListener('click', startGithubLogin);
+            document.getElementById('homeAuthPasswordLogin')?.addEventListener('click', () => {
+                if (status) status.textContent = 'Username/password login is not open yet.';
+            });
+            document.getElementById('homeAuthShowRegister')?.addEventListener('click', () => {
+                if (loginPanel) loginPanel.hidden = true;
+                if (registerPanel) registerPanel.hidden = false;
+                if (registerStatus) registerStatus.textContent = 'Registration is not open yet.';
+            });
+            document.getElementById('homeAuthRegisterSubmit')?.addEventListener('click', () => {
+                if (registerStatus) registerStatus.textContent = 'Registration is not open yet.';
+            });
+            document.getElementById('homeAuthBackLogin')?.addEventListener('click', () => {
+                if (registerPanel) registerPanel.hidden = true;
+                if (loginPanel) loginPanel.hidden = false;
+                if (status) status.textContent = '';
+            });
+            document.getElementById('homeAuthClose')?.addEventListener('click', closeModal);
+            modal?.addEventListener('click', (event) => {
+                if (event.target === modal) closeModal();
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') closeModal();
             });
             if (!token) {
                 setGuest();
