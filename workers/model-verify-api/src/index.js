@@ -7,6 +7,10 @@ const DEFAULT_RATE_TABLE = 'model_verify_submission_limits';
 const DEFAULT_SESSION_TABLE = 'model_verify_sessions';
 const DEFAULT_DISCUSSION_TABLE = 'model_verify_discussions';
 const DEFAULT_EDGE_CACHE_TTL_SECONDS = 3600;
+const DEFAULT_STALE_CACHE_TTL_SECONDS = 21600;
+const DEFAULT_SESSION_USER_CACHE_TTL_SECONDS = 300;
+const MAX_MEMORY_CACHE_ENTRIES = 120;
+const MAX_SESSION_CACHE_ENTRIES = 400;
 const MODEL_PROXY_PATH = '/model-verify-proxy';
 const REPORTS_PATH = '/model-verify-reports';
 const DISCUSSIONS_PATH = '/model-verify-discussions';
@@ -23,6 +27,9 @@ const SCHEMA_CACHE_TTL_MS = 10 * 60 * 1000;
 let schemaReadyAt = 0;
 let schemaReadyKey = '';
 let schemaReadyPromise = null;
+const jsonMemoryCache = new Map();
+const jsonRefreshPromises = new Map();
+const sessionUserCache = new Map();
 
 function json(data, init = {}) {
   return new Response(JSON.stringify(data), {
@@ -60,6 +67,18 @@ function edgeCacheTtlSeconds(env) {
   return Math.max(0, Math.min(86400, Math.round(configured)));
 }
 
+function staleCacheTtlSeconds(env) {
+  const configured = Number(env.MODEL_VERIFY_STALE_CACHE_TTL_SECONDS || DEFAULT_STALE_CACHE_TTL_SECONDS);
+  if (!Number.isFinite(configured)) return DEFAULT_STALE_CACHE_TTL_SECONDS;
+  return Math.max(0, Math.min(86400, Math.round(configured)));
+}
+
+function sessionUserCacheTtlSeconds(env) {
+  const configured = Number(env.MODEL_VERIFY_SESSION_USER_CACHE_TTL_SECONDS || DEFAULT_SESSION_USER_CACHE_TTL_SECONDS);
+  if (!Number.isFinite(configured)) return DEFAULT_SESSION_USER_CACHE_TTL_SECONDS;
+  return Math.max(0, Math.min(3600, Math.round(configured)));
+}
+
 function edgeCacheEnabled(env) {
   return edgeCacheTtlSeconds(env) > 0 && env.MODEL_VERIFY_EDGE_CACHE_DISABLED !== 'true' && typeof caches !== 'undefined';
 }
@@ -80,30 +99,96 @@ function cacheKeyForUrl(request, urlValue, tag, origin = request.headers.get('or
   return new Request(url.toString(), { method: 'GET' });
 }
 
-async function cachedJson(request, env, ctx, tag, producer) {
-  const ttl = edgeCacheTtlSeconds(env);
-  if (!edgeCacheEnabled(env)) {
-    return json(await producer(), { headers: corsHeaders(request, env) });
+function memoryCacheKeyForUrl(request, urlValue, tag, origin = request.headers.get('origin') || '') {
+  return cacheKeyForUrl(request, urlValue, tag, origin).url;
+}
+
+function boundedSet(map, key, value, maxEntries) {
+  if (map.size >= maxEntries && !map.has(key)) {
+    const oldest = map.keys().next().value;
+    if (oldest) map.delete(oldest);
   }
-  const cache = caches.default;
-  const key = cacheKeyForUrl(request, request.url, tag);
-  const cached = await cache.match(key);
-  if (cached) return cached;
-  const response = json(await producer(), {
+  map.set(key, value);
+}
+
+function jsonResponseFromBody(body, request, env, cacheStatus = 'miss') {
+  const ttl = edgeCacheTtlSeconds(env);
+  return new Response(body, {
     headers: {
+      'content-type': 'application/json; charset=utf-8',
       ...corsHeaders(request, env),
-      'cache-control': `public, max-age=${ttl}`
+      'cache-control': `public, max-age=${ttl}, stale-while-revalidate=${staleCacheTtlSeconds(env)}`,
+      'x-model-verify-cache': cacheStatus
     }
   });
-  ctx?.waitUntil?.(cache.put(key, response.clone()).catch(() => null));
-  return response;
+}
+
+function rememberJsonCache(key, body, env) {
+  const now = Date.now();
+  const ttlMs = edgeCacheTtlSeconds(env) * 1000;
+  if (!ttlMs) return;
+  boundedSet(jsonMemoryCache, key, {
+    body,
+    expiresAt: now + ttlMs,
+    staleUntil: now + Math.max(ttlMs, staleCacheTtlSeconds(env) * 1000)
+  }, MAX_MEMORY_CACHE_ENTRIES);
+}
+
+async function produceCachedJson(request, env, ctx, tag, key, edgeKey, producer, cacheStatus = 'miss') {
+  if (jsonRefreshPromises.has(key)) {
+    const body = await jsonRefreshPromises.get(key);
+    return jsonResponseFromBody(body, request, env, 'coalesced');
+  }
+  const refresh = (async () => {
+    const body = JSON.stringify(await producer());
+    rememberJsonCache(key, body, env);
+    const response = jsonResponseFromBody(body, request, env, cacheStatus);
+    if (edgeCacheEnabled(env)) {
+      ctx?.waitUntil?.(caches.default.put(edgeKey, response.clone()).catch(() => null));
+    }
+    return body;
+  })().finally(() => {
+    jsonRefreshPromises.delete(key);
+  });
+  jsonRefreshPromises.set(key, refresh);
+  const body = await refresh;
+  return jsonResponseFromBody(body, request, env, cacheStatus);
+}
+
+async function cachedJson(request, env, ctx, tag, producer) {
+  const ttl = edgeCacheTtlSeconds(env);
+  if (ttl <= 0) {
+    return json(await producer(), { headers: corsHeaders(request, env) });
+  }
+  const memoryKey = memoryCacheKeyForUrl(request, request.url, tag);
+  const edgeKey = cacheKeyForUrl(request, request.url, tag);
+  const now = Date.now();
+  const memoryEntry = jsonMemoryCache.get(memoryKey);
+  if (memoryEntry && now < memoryEntry.expiresAt) {
+    return jsonResponseFromBody(memoryEntry.body, request, env, 'memory');
+  }
+  if (memoryEntry && now < memoryEntry.staleUntil) {
+    ctx?.waitUntil?.(produceCachedJson(request, env, ctx, tag, memoryKey, edgeKey, producer, 'refresh').catch(() => null));
+    return jsonResponseFromBody(memoryEntry.body, request, env, 'stale');
+  }
+  if (edgeCacheEnabled(env)) {
+    const cached = await caches.default.match(edgeKey);
+    if (cached) {
+      const body = await cached.clone().text();
+      rememberJsonCache(memoryKey, body, env);
+      return jsonResponseFromBody(body, request, env, 'edge');
+    }
+  }
+  return produceCachedJson(request, env, ctx, tag, memoryKey, edgeKey, producer);
 }
 
 function purgeCachedJson(request, env, ctx, urlValue, tag) {
-  if (!edgeCacheEnabled(env)) return;
-  const cache = caches.default;
-  const deletes = cacheOrigins(request, env).map((origin) => cache.delete(cacheKeyForUrl(request, urlValue, tag, origin)));
-  ctx?.waitUntil?.(Promise.allSettled(deletes).catch(() => null));
+  const origins = cacheOrigins(request, env);
+  origins.forEach((origin) => jsonMemoryCache.delete(memoryCacheKeyForUrl(request, urlValue, tag, origin)));
+  if (edgeCacheEnabled(env)) {
+    const deletes = origins.map((origin) => caches.default.delete(cacheKeyForUrl(request, urlValue, tag, origin)));
+    ctx?.waitUntil?.(Promise.allSettled(deletes).catch(() => null));
+  }
 }
 
 function quoteIdent(value) {
@@ -663,30 +748,63 @@ function publicUser(row, env) {
   };
 }
 
+function sessionCacheKey(sessionHash, env) {
+  return `${siteOwnerId(env) || 'no-owner'}:${sessionHash}`;
+}
+
+function rememberSessionUser(sessionHash, env, user) {
+  const ttl = sessionUserCacheTtlSeconds(env) * 1000;
+  if (!ttl) return;
+  boundedSet(sessionUserCache, sessionCacheKey(sessionHash, env), {
+    user,
+    expiresAt: Date.now() + ttl
+  }, MAX_SESSION_CACHE_ENTRIES);
+}
+
+function readSessionUser(sessionHash, env) {
+  const key = sessionCacheKey(sessionHash, env);
+  const cached = sessionUserCache.get(key);
+  if (!cached) return undefined;
+  if (Date.now() > cached.expiresAt) {
+    sessionUserCache.delete(key);
+    return undefined;
+  }
+  return cached.user;
+}
+
+function forgetSessionUser(sessionHash, env) {
+  sessionUserCache.delete(sessionCacheKey(sessionHash, env));
+}
+
 async function userFromSession(client, env, request) {
   const token = authTokenFromRequest(request);
   if (!token) return null;
   const sessionTable = quoteIdent(env.MODEL_VERIFY_SESSION_TABLE || DEFAULT_SESSION_TABLE);
   const sessionHash = await sha256(token);
+  const cached = readSessionUser(sessionHash, env);
+  if (cached !== undefined) return cached;
   const result = await client.query(`
-    update ${sessionTable}
-    set last_seen_at = now()
+    select github_id, github_login, github_name, avatar_url, role
+    from ${sessionTable}
     where session_hash = $1 and expires_at > now()
-    returning github_id, github_login, github_name, avatar_url, role
+    limit 1
   `, [sessionHash]);
-  return publicUser(result.rows[0], env);
+  const user = publicUser(result.rows[0], env);
+  rememberSessionUser(sessionHash, env, user);
+  return user;
 }
 
 async function createSession(client, env, githubUser) {
   const sessionTable = quoteIdent(env.MODEL_VERIFY_SESSION_TABLE || DEFAULT_SESSION_TABLE);
   const token = randomToken(32);
+  const sessionHash = await sha256(token);
   const role = userRoleByGithubId(githubUser.id, env);
   const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
   await client.query(`
     upsert into ${sessionTable} (session_hash, github_id, github_login, github_name, avatar_url, role, last_seen_at, expires_at)
     values ($1, $2, $3, $4, $5, $6, now(), $7)
   `, [
-    await sha256(token),
+    sessionHash,
     String(githubUser.id || ''),
     String(githubUser.login || ''),
     String(githubUser.name || ''),
@@ -694,15 +812,17 @@ async function createSession(client, env, githubUser) {
     role,
     expiresAt
   ]);
+  const user = {
+    githubId: String(githubUser.id || ''),
+    login: String(githubUser.login || ''),
+    name: String(githubUser.name || ''),
+    avatarUrl: String(githubUser.avatar_url || ''),
+    role
+  };
+  rememberSessionUser(sessionHash, env, user);
   return {
     token,
-    user: {
-      githubId: String(githubUser.id || ''),
-      login: String(githubUser.login || ''),
-      name: String(githubUser.name || ''),
-      avatarUrl: String(githubUser.avatar_url || ''),
-      role
-    }
+    user
   };
 }
 
@@ -710,7 +830,9 @@ async function logoutSession(client, env, request) {
   const token = authTokenFromRequest(request);
   if (!token) return;
   const sessionTable = quoteIdent(env.MODEL_VERIFY_SESSION_TABLE || DEFAULT_SESSION_TABLE);
-  await client.query(`delete from ${sessionTable} where session_hash = $1`, [await sha256(token)]);
+  const sessionHash = await sha256(token);
+  forgetSessionUser(sessionHash, env);
+  await client.query(`delete from ${sessionTable} where session_hash = $1`, [sessionHash]);
 }
 
 async function requireAdmin(client, env, request, payload = {}) {

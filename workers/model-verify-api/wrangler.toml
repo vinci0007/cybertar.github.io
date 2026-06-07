@@ -21,6 +21,8 @@ GITHUB_SITE_OWNER_ID = "39933794"
 MODEL_VERIFY_SITE_URL = "https://cybertar.youngood.tech/lab/model-verifier/"
 MODEL_VERIFY_PROXY_ALLOWED_HOSTS = "*"
 MODEL_VERIFY_EDGE_CACHE_TTL_SECONDS = "3600"
+MODEL_VERIFY_STALE_CACHE_TTL_SECONDS = "21600"
+MODEL_VERIFY_SESSION_USER_CACHE_TTL_SECONDS = "300"
 
 # Recommended for Cockroach Cloud:
 # 1. Create a Hyperdrive config:
