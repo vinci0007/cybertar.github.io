@@ -1715,7 +1715,7 @@
                     </div>
                     <div class="bonus-cylinder" aria-label="额外加分 ${escapeHtml(formatBonusScore(bonusScore))}/${escapeHtml(formatBonusScore(bonusMax))}">
                         <strong>+${escapeHtml(formatBonusScore(bonusScore))}</strong>
-                        <div class="bonus-tube"><i style="height:${bonusFill}%"></i></div>
+                        <div class="bonus-tube"><i style="width:${bonusFill}%"></i></div>
                         <span>/10 额外</span>
                     </div>
                 </div>
