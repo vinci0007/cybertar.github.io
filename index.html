@@ -291,7 +291,7 @@
     </div>
 
     <!-- 导航栏 -->
-    <button id="homeGithubLogin" class="login-corner-link" type="button">Login</button>
+    <button id="homeGithubLogin" class="login-corner-link" type="button">登录</button>
 
     <header class="header">
         <nav class="nav">
@@ -327,34 +327,34 @@
     <div id="homeAuthModal" class="auth-modal" hidden>
         <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="homeAuthTitle">
             <header>
-                <h2 id="homeAuthTitle">Account Login</h2>
+                <h2 id="homeAuthTitle">账户登录</h2>
                 <button id="homeAuthClose" class="auth-close" type="button" aria-label="Close">x</button>
             </header>
             <section id="homeAuthLoginPanel" class="auth-panel">
-                <button id="homeAuthGithub" class="auth-action" type="button">GitHub Login</button>
-                <label class="auth-field">Username
+                <button id="homeAuthGithub" class="auth-action" type="button">GitHub 登录</button>
+                <label class="auth-field">用户名
                     <input id="homeAuthUsername" autocomplete="username">
                 </label>
-                <label class="auth-field">Password
+                <label class="auth-field">密码
                     <input id="homeAuthPassword" type="password" autocomplete="current-password">
                 </label>
-                <button id="homeAuthPasswordLogin" class="auth-action secondary" type="button">Username Login</button>
-                <button id="homeAuthShowRegister" class="auth-action secondary" type="button">Register</button>
+                <button id="homeAuthPasswordLogin" class="auth-action secondary" type="button">用户名密码登录</button>
+                <button id="homeAuthShowRegister" class="auth-action secondary" type="button">注册</button>
                 <p id="homeAuthStatus" class="auth-status"></p>
             </section>
             <section id="homeAuthRegisterPanel" class="auth-panel" hidden>
-                <label class="auth-field">Username
+                <label class="auth-field">用户名
                     <input autocomplete="username">
                 </label>
-                <label class="auth-field">Email
+                <label class="auth-field">邮箱
                     <input type="email" autocomplete="email">
                 </label>
-                <label class="auth-field">Password
+                <label class="auth-field">密码
                     <input type="password" autocomplete="new-password">
                 </label>
-                <button id="homeAuthRegisterSubmit" class="auth-action" type="button">Create Account</button>
-                <button id="homeAuthBackLogin" class="auth-action secondary" type="button">Back to Login</button>
-                <p id="homeAuthRegisterStatus" class="auth-status">Registration is not open yet.</p>
+                <button id="homeAuthRegisterSubmit" class="auth-action" type="button">创建账户</button>
+                <button id="homeAuthBackLogin" class="auth-action secondary" type="button">返回登录</button>
+                <p id="homeAuthRegisterStatus" class="auth-status">注册暂未开放。</p>
             </section>
         </div>
     </div>
@@ -726,7 +726,7 @@
             }
             const token = localStorage.getItem(tokenKey) || '';
             const setGuest = () => {
-                button.textContent = 'Login';
+                button.textContent = '登录';
                 button.dataset.loggedIn = 'false';
             };
             const startGithubLogin = () => {
@@ -753,15 +753,15 @@
             });
             document.getElementById('homeAuthGithub')?.addEventListener('click', startGithubLogin);
             document.getElementById('homeAuthPasswordLogin')?.addEventListener('click', () => {
-                if (status) status.textContent = 'Username/password login is not open yet.';
+                if (status) status.textContent = '用户名密码登录暂未开放。';
             });
             document.getElementById('homeAuthShowRegister')?.addEventListener('click', () => {
                 if (loginPanel) loginPanel.hidden = true;
                 if (registerPanel) registerPanel.hidden = false;
-                if (registerStatus) registerStatus.textContent = 'Registration is not open yet.';
+                if (registerStatus) registerStatus.textContent = '注册暂未开放。';
             });
             document.getElementById('homeAuthRegisterSubmit')?.addEventListener('click', () => {
-                if (registerStatus) registerStatus.textContent = 'Registration is not open yet.';
+                if (registerStatus) registerStatus.textContent = '注册暂未开放。';
             });
             document.getElementById('homeAuthBackLogin')?.addEventListener('click', () => {
                 if (registerPanel) registerPanel.hidden = true;
