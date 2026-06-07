@@ -134,13 +134,6 @@
             border-color: rgba(124, 255, 0, 0.24);
         }
 
-        .corner-actions + #homeGithubLogin {
-            position: fixed;
-            top: 2rem;
-            left: 0.75rem;
-            z-index: 1001;
-        }
-
         .corner-actions {
             left: 6.25rem;
         }
@@ -255,10 +248,6 @@
                 flex-wrap: wrap;
             }
 
-            .corner-actions + #homeGithubLogin {
-                top: 1rem;
-                left: 1rem;
-            }
         }
 
         /* 新增：音频列表样式 */
@@ -295,7 +284,6 @@
     </div>
 
     <!-- 导航栏 -->
-    <button id="homeGithubLogin" class="login-corner-link" type="button">登录</button>
 
     <header class="header">
         <nav class="nav">
@@ -327,41 +315,6 @@
             </div>
         </nav>
     </header>
-
-    <div id="homeAuthModal" class="auth-modal" hidden>
-        <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="homeAuthTitle">
-            <header>
-                <h2 id="homeAuthTitle">账户登录</h2>
-                <button id="homeAuthClose" class="auth-close" type="button" aria-label="Close">x</button>
-            </header>
-            <section id="homeAuthLoginPanel" class="auth-panel">
-                <button id="homeAuthGithub" class="auth-action" type="button">GitHub 登录</button>
-                <label class="auth-field">用户名
-                    <input id="homeAuthUsername" autocomplete="username">
-                </label>
-                <label class="auth-field">密码
-                    <input id="homeAuthPassword" type="password" autocomplete="current-password">
-                </label>
-                <button id="homeAuthPasswordLogin" class="auth-action secondary" type="button">用户名密码登录</button>
-                <button id="homeAuthShowRegister" class="auth-action secondary" type="button">注册</button>
-                <p id="homeAuthStatus" class="auth-status"></p>
-            </section>
-            <section id="homeAuthRegisterPanel" class="auth-panel" hidden>
-                <label class="auth-field">用户名
-                    <input autocomplete="username">
-                </label>
-                <label class="auth-field">邮箱
-                    <input type="email" autocomplete="email">
-                </label>
-                <label class="auth-field">密码
-                    <input type="password" autocomplete="new-password">
-                </label>
-                <button id="homeAuthRegisterSubmit" class="auth-action" type="button">创建账户</button>
-                <button id="homeAuthBackLogin" class="auth-action secondary" type="button">返回登录</button>
-                <p id="homeAuthRegisterStatus" class="auth-status">注册暂未开放。</p>
-            </section>
-        </div>
-    </div>
 
     <main>
         <!-- 英雄区域 -->
@@ -709,95 +662,6 @@
                 heroRenderer.setSize(newWidth, newHeight);
             });
             resizeObserver.observe(heroContainer);
-        })();
-    </script>
-    <script>
-        (function () {
-            const apiRoot = 'https://cybertar-model-verify-api.1058996340.workers.dev';
-            const tokenKey = 'cybertar:model-verifier:auth-token:v1';
-            const button = document.getElementById('homeGithubLogin');
-            const modal = document.getElementById('homeAuthModal');
-            const loginPanel = document.getElementById('homeAuthLoginPanel');
-            const registerPanel = document.getElementById('homeAuthRegisterPanel');
-            const status = document.getElementById('homeAuthStatus');
-            const registerStatus = document.getElementById('homeAuthRegisterStatus');
-            if (!button) return;
-            const params = new URLSearchParams(window.location.hash.replace(/^#/, ''));
-            const returnedToken = params.get('mv_auth_token');
-            if (returnedToken) {
-                localStorage.setItem(tokenKey, returnedToken);
-                history.replaceState(null, document.title, window.location.pathname + window.location.search);
-            }
-            const token = localStorage.getItem(tokenKey) || '';
-            const setGuest = () => {
-                button.textContent = '登录';
-                button.dataset.loggedIn = 'false';
-            };
-            const startGithubLogin = () => {
-                const returnTo = encodeURIComponent(window.location.href.split('#')[0]);
-                window.location.href = `${apiRoot}/model-verify-auth/github/login?return_to=${returnTo}`;
-            };
-            const openModal = () => {
-                if (!modal) return;
-                if (loginPanel) loginPanel.hidden = false;
-                if (registerPanel) registerPanel.hidden = true;
-                if (status) status.textContent = '';
-                modal.hidden = false;
-                document.getElementById('homeAuthGithub')?.focus();
-            };
-            const closeModal = () => {
-                if (modal) modal.hidden = true;
-            };
-            button.addEventListener('click', () => {
-                if (button.dataset.loggedIn === 'true') {
-                    window.location.href = 'lab/model-verifier.html';
-                    return;
-                }
-                openModal();
-            });
-            document.getElementById('homeAuthGithub')?.addEventListener('click', startGithubLogin);
-            document.getElementById('homeAuthPasswordLogin')?.addEventListener('click', () => {
-                if (status) status.textContent = '用户名密码登录暂未开放。';
-            });
-            document.getElementById('homeAuthShowRegister')?.addEventListener('click', () => {
-                if (loginPanel) loginPanel.hidden = true;
-                if (registerPanel) registerPanel.hidden = false;
-                if (registerStatus) registerStatus.textContent = '注册暂未开放。';
-            });
-            document.getElementById('homeAuthRegisterSubmit')?.addEventListener('click', () => {
-                if (registerStatus) registerStatus.textContent = '注册暂未开放。';
-            });
-            document.getElementById('homeAuthBackLogin')?.addEventListener('click', () => {
-                if (registerPanel) registerPanel.hidden = true;
-                if (loginPanel) loginPanel.hidden = false;
-                if (status) status.textContent = '';
-            });
-            document.getElementById('homeAuthClose')?.addEventListener('click', closeModal);
-            modal?.addEventListener('click', (event) => {
-                if (event.target === modal) closeModal();
-            });
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape') closeModal();
-            });
-            if (!token) {
-                setGuest();
-                return;
-            }
-            fetch(`${apiRoot}/model-verify-auth/me`, {
-                headers: { Authorization: `Bearer ${token}` },
-                cache: 'no-store'
-            })
-                .then((response) => response.ok ? response.json() : null)
-                .then((payload) => {
-                    if (!payload?.user) {
-                        localStorage.removeItem(tokenKey);
-                        setGuest();
-                        return;
-                    }
-                    button.dataset.loggedIn = 'true';
-                    button.textContent = `${payload.user.login}${payload.user.role === 'admin' ? ' - admin' : ''}`;
-                })
-                .catch(setGuest);
         })();
     </script>
 </body>

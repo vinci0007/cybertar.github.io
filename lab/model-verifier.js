@@ -29,7 +29,7 @@
     }
     const shareApiRoot = () => shareConfig.customEndpoint ? shareConfig.customEndpoint.replace(/\/model-verify-reports\/?$/i, '') : '';
     const shareApiUrl = (path) => `${shareApiRoot()}${path}`;
-    let authToken = localStorage.getItem(authTokenKey) || '';
+    let authToken = window.CyberTARAuth?.getToken?.() || localStorage.getItem(authTokenKey) || '';
     let authUser = null;
     let selectedDiscussionItem = null;
 
@@ -1497,6 +1497,7 @@
     }
 
     function authHeaders() {
+        authToken = window.CyberTARAuth?.getToken?.() || authToken || '';
         return authToken ? { Authorization: `Bearer ${authToken}` } : {};
     }
 
@@ -1506,7 +1507,11 @@
         const error = params.get('mv_auth_error');
         if (token) {
             authToken = token;
-            localStorage.setItem(authTokenKey, token);
+            if (window.CyberTARAuth?.saveToken) {
+                window.CyberTARAuth.saveToken(token);
+            } else {
+                localStorage.setItem(authTokenKey, token);
+            }
             history.replaceState(null, document.title, window.location.pathname + window.location.search);
         } else if (error) {
             setState(`GitHub login failed: ${error}`);
@@ -1527,6 +1532,7 @@
 
     async function loadAuthUser() {
         parseAuthRedirect();
+        authToken = window.CyberTARAuth?.getToken?.() || authToken || '';
         if (!shareApiRoot() || !authToken) {
             authUser = null;
             updateAuthUi();
@@ -1539,7 +1545,11 @@
             });
             const payload = await response.json().catch(() => ({}));
             authUser = response.ok ? payload.user : null;
-            if (!authUser) localStorage.removeItem(authTokenKey);
+            if (!authUser) {
+                if (window.CyberTARAuth?.clearToken) window.CyberTARAuth.clearToken();
+                else localStorage.removeItem(authTokenKey);
+                authToken = '';
+            }
         } catch {
             authUser = null;
         }
@@ -1557,7 +1567,9 @@
     }
 
     async function logoutGitHub() {
-        if (shareApiRoot() && authToken) {
+        if (window.CyberTARAuth?.logout) {
+            await window.CyberTARAuth.logout();
+        } else if (shareApiRoot() && authToken) {
             await fetch(shareApiUrl('/model-verify-auth/logout'), {
                 method: 'POST',
                 headers: { ...authHeaders(), Accept: 'application/json' }
@@ -1565,7 +1577,8 @@
         }
         authToken = '';
         authUser = null;
-        localStorage.removeItem(authTokenKey);
+        if (window.CyberTARAuth?.clearToken) window.CyberTARAuth.clearToken();
+        else localStorage.removeItem(authTokenKey);
         updateAuthUi();
     }
 
@@ -2016,6 +2029,18 @@
     $('refreshSharedBtn')?.addEventListener('click', () => loadSharedReports({ force: true }));
     $('githubLoginBtn')?.addEventListener('click', startGitHubLogin);
     $('githubLogoutBtn')?.addEventListener('click', logoutGitHub);
+    window.addEventListener('cybertar:auth-changed', (event) => {
+        authUser = event.detail?.user || null;
+        authToken = window.CyberTARAuth?.getToken?.() || '';
+        updateAuthUi();
+    });
+    window.addEventListener('cybertar:auth-ready', (event) => {
+        if (event.detail?.user) {
+            authUser = event.detail.user;
+            authToken = window.CyberTARAuth?.getToken?.() || authToken;
+            updateAuthUi();
+        }
+    });
     $('postDiscussionBtn')?.addEventListener('click', postDiscussion);
     $('reportFile').addEventListener('change', importReport);
     setupInteractiveEffects();

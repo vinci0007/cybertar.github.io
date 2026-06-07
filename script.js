@@ -9,6 +9,465 @@ function scrollToSection(sectionId) {
     }
 }
 
+// Global GitHub auth widget
+(function () {
+    const apiRoot = 'https://cybertar-model-verify-api.1058996340.workers.dev';
+    const tokenKey = 'cybertar:model-verifier:auth-token:v1';
+    const tokenExpiresKey = 'cybertar:model-verifier:auth-token-expires-at:v1';
+    const tokenTtlMs = 24 * 60 * 60 * 1000;
+
+    function storedToken() {
+        const token = localStorage.getItem(tokenKey) || '';
+        const expiresAt = Number(localStorage.getItem(tokenExpiresKey) || 0);
+        if (!token) return '';
+        if (!expiresAt) {
+            localStorage.setItem(tokenExpiresKey, String(Date.now() + tokenTtlMs));
+            return token;
+        }
+        if (expiresAt && Date.now() > expiresAt) {
+            clearToken();
+            return '';
+        }
+        return token;
+    }
+
+    function saveToken(token) {
+        localStorage.setItem(tokenKey, token);
+        localStorage.setItem(tokenExpiresKey, String(Date.now() + tokenTtlMs));
+    }
+
+    function clearToken() {
+        localStorage.removeItem(tokenKey);
+        localStorage.removeItem(tokenExpiresKey);
+    }
+
+    function authHeaders() {
+        const token = storedToken();
+        return token ? { Authorization: `Bearer ${token}` } : {};
+    }
+
+    function parseAuthRedirect() {
+        const params = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+        const token = params.get('mv_auth_token');
+        const error = params.get('mv_auth_error');
+        if (token) {
+            saveToken(token);
+            history.replaceState(null, document.title, window.location.pathname + window.location.search);
+            return { token };
+        }
+        if (error) {
+            history.replaceState(null, document.title, window.location.pathname + window.location.search);
+            return { error };
+        }
+        return {};
+    }
+
+    function startGitHubLogin() {
+        const returnTo = encodeURIComponent(window.location.href.split('#')[0]);
+        window.location.href = `${apiRoot}/model-verify-auth/github/login?return_to=${returnTo}`;
+    }
+
+    async function logout() {
+        const token = storedToken();
+        if (token) {
+            await fetch(`${apiRoot}/model-verify-auth/logout`, {
+                method: 'POST',
+                headers: { ...authHeaders(), Accept: 'application/json' }
+            }).catch(() => null);
+        }
+        clearToken();
+        window.dispatchEvent(new CustomEvent('cybertar:auth-changed', { detail: { user: null } }));
+    }
+
+    async function loadUser() {
+        const token = storedToken();
+        if (!token) return null;
+        try {
+            const response = await fetch(`${apiRoot}/model-verify-auth/me`, {
+                headers: { ...authHeaders(), Accept: 'application/json' },
+                cache: 'no-store'
+            });
+            const payload = await response.json().catch(() => ({}));
+            if (!response.ok || !payload.user) {
+                clearToken();
+                return null;
+            }
+            return payload.user;
+        } catch {
+            return null;
+        }
+    }
+
+    function injectStyles() {
+        if (document.getElementById('cybertarAuthStyles')) return;
+        const style = document.createElement('style');
+        style.id = 'cybertarAuthStyles';
+        style.textContent = `
+            .cybertar-auth-widget {
+                position: fixed;
+                top: 2rem;
+                right: 5.5rem;
+                z-index: 2200;
+                font-family: var(--font-display, 'Orbitron', sans-serif);
+            }
+            .cybertar-auth-button {
+                min-width: 74px;
+                height: 42px;
+                padding: 0 16px;
+                border-radius: 999px;
+                border: 1px solid rgba(124, 255, 0, 0.32);
+                background: rgba(5, 5, 5, 0.72);
+                color: rgba(255, 255, 255, 0.82);
+                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45), inset 0 0 18px rgba(124, 255, 0, 0.05);
+                backdrop-filter: blur(18px);
+                -webkit-backdrop-filter: blur(18px);
+                cursor: pointer;
+                letter-spacing: 0.08rem;
+                text-transform: uppercase;
+                white-space: nowrap;
+            }
+            .cybertar-auth-button:hover,
+            .cybertar-auth-button[aria-expanded="true"] {
+                color: #fff;
+                border-color: rgba(124, 255, 0, 0.74);
+                box-shadow: 0 0 24px rgba(124, 255, 0, 0.18), inset 0 0 18px rgba(124, 255, 0, 0.06);
+            }
+            .cybertar-auth-menu {
+                position: absolute;
+                top: calc(100% + 0.55rem);
+                right: 0;
+                width: 220px;
+                padding: 0.45rem;
+                border: 1px solid rgba(255, 255, 255, 0.14);
+                border-radius: 10px;
+                background: rgba(8, 10, 16, 0.96);
+                color: #fff;
+                box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+                backdrop-filter: blur(18px);
+                -webkit-backdrop-filter: blur(18px);
+            }
+            .cybertar-auth-menu[hidden] {
+                display: none;
+            }
+            .cybertar-auth-menu-header {
+                padding: 0.7rem 0.75rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                margin-bottom: 0.35rem;
+            }
+            .cybertar-auth-menu-header strong {
+                display: block;
+                font-size: 0.88rem;
+            }
+            .cybertar-auth-menu-header span {
+                display: block;
+                margin-top: 0.25rem;
+                color: rgba(255, 255, 255, 0.58);
+                font-size: 0.72rem;
+                text-transform: uppercase;
+                letter-spacing: 0.08rem;
+            }
+            .cybertar-auth-menu button,
+            .cybertar-auth-menu a {
+                display: block;
+                width: 100%;
+                padding: 0.68rem 0.75rem;
+                border: 0;
+                border-radius: 7px;
+                background: transparent;
+                color: rgba(255, 255, 255, 0.78);
+                text-align: left;
+                text-decoration: none;
+                cursor: pointer;
+                font: inherit;
+                font-size: 0.82rem;
+            }
+            .cybertar-auth-menu button:hover,
+            .cybertar-auth-menu a:hover {
+                background: rgba(255, 255, 255, 0.08);
+                color: #fff;
+            }
+            .cybertar-auth-modal {
+                position: fixed;
+                inset: 0;
+                z-index: 3200;
+                display: grid;
+                place-items: center;
+                padding: 1.25rem;
+                background: rgba(0, 0, 0, 0.72);
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
+            }
+            .cybertar-auth-modal[hidden] {
+                display: none;
+            }
+            .cybertar-auth-dialog {
+                width: min(420px, 100%);
+                border: 1px solid rgba(255, 255, 255, 0.16);
+                border-radius: 12px;
+                background: rgba(8, 10, 16, 0.96);
+                box-shadow: 0 24px 90px rgba(0, 0, 0, 0.65);
+                color: #fff;
+                overflow: hidden;
+                font-family: var(--font-primary, sans-serif);
+            }
+            .cybertar-auth-dialog header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                padding: 1rem 1rem 0.75rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            }
+            .cybertar-auth-dialog h2 {
+                margin: 0;
+                font-size: 1rem;
+            }
+            .cybertar-auth-close {
+                width: 34px;
+                height: 34px;
+                border: 1px solid rgba(255, 255, 255, 0.14);
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.06);
+                color: #fff;
+                cursor: pointer;
+            }
+            .cybertar-auth-panel {
+                display: grid;
+                gap: 0.75rem;
+                padding: 1rem;
+            }
+            .cybertar-auth-panel[hidden] {
+                display: none;
+            }
+            .cybertar-auth-field {
+                display: grid;
+                gap: 0.32rem;
+                color: rgba(255, 255, 255, 0.68);
+                font-size: 0.82rem;
+            }
+            .cybertar-auth-field input {
+                width: 100%;
+                border: 1px solid rgba(255, 255, 255, 0.14);
+                border-radius: 8px;
+                background: rgba(0, 0, 0, 0.32);
+                color: #fff;
+                padding: 0.74rem 0.82rem;
+                outline: none;
+            }
+            .cybertar-auth-action {
+                width: 100%;
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                border-radius: 8px;
+                background: #fff;
+                color: #000;
+                padding: 0.78rem 0.9rem;
+                cursor: pointer;
+                font-weight: 700;
+            }
+            .cybertar-auth-action.secondary {
+                background: rgba(255, 255, 255, 0.06);
+                color: #fff;
+            }
+            .cybertar-auth-status {
+                min-height: 1.2rem;
+                color: rgba(255, 255, 255, 0.68);
+                font-size: 0.84rem;
+                line-height: 1.45;
+            }
+            @media (max-width: 720px) {
+                .cybertar-auth-widget {
+                    top: 1rem;
+                    right: 5rem;
+                }
+                .cybertar-auth-button {
+                    height: 38px;
+                    min-width: 64px;
+                    padding: 0 12px;
+                    font-size: 0.72rem;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    function createModal() {
+        const modal = document.createElement('div');
+        modal.className = 'cybertar-auth-modal';
+        modal.hidden = true;
+        modal.innerHTML = `
+            <div class="cybertar-auth-dialog" role="dialog" aria-modal="true" aria-labelledby="cybertarAuthTitle">
+                <header>
+                    <h2 id="cybertarAuthTitle">账户登录</h2>
+                    <button class="cybertar-auth-close" type="button" aria-label="Close">x</button>
+                </header>
+                <section class="cybertar-auth-panel" data-auth-login-panel>
+                    <button class="cybertar-auth-action" type="button" data-auth-github>GitHub 登录</button>
+                    <label class="cybertar-auth-field">用户名
+                        <input autocomplete="username">
+                    </label>
+                    <label class="cybertar-auth-field">密码
+                        <input type="password" autocomplete="current-password">
+                    </label>
+                    <button class="cybertar-auth-action secondary" type="button" data-auth-password>用户名密码登录</button>
+                    <button class="cybertar-auth-action secondary" type="button" data-auth-show-register>注册</button>
+                    <p class="cybertar-auth-status" data-auth-status></p>
+                </section>
+                <section class="cybertar-auth-panel" data-auth-register-panel hidden>
+                    <label class="cybertar-auth-field">用户名
+                        <input autocomplete="username">
+                    </label>
+                    <label class="cybertar-auth-field">邮箱
+                        <input type="email" autocomplete="email">
+                    </label>
+                    <label class="cybertar-auth-field">密码
+                        <input type="password" autocomplete="new-password">
+                    </label>
+                    <button class="cybertar-auth-action" type="button" data-auth-register>创建账户</button>
+                    <button class="cybertar-auth-action secondary" type="button" data-auth-back-login>返回登录</button>
+                    <p class="cybertar-auth-status" data-auth-register-status>注册暂未开放。</p>
+                </section>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        const loginPanel = modal.querySelector('[data-auth-login-panel]');
+        const registerPanel = modal.querySelector('[data-auth-register-panel]');
+        const status = modal.querySelector('[data-auth-status]');
+        const registerStatus = modal.querySelector('[data-auth-register-status]');
+        const close = () => { modal.hidden = true; };
+        const showLogin = () => {
+            loginPanel.hidden = false;
+            registerPanel.hidden = true;
+            status.textContent = '';
+        };
+        const showRegister = () => {
+            loginPanel.hidden = true;
+            registerPanel.hidden = false;
+            registerStatus.textContent = '注册暂未开放。';
+        };
+
+        modal.querySelector('[data-auth-github]').addEventListener('click', startGitHubLogin);
+        modal.querySelector('[data-auth-password]').addEventListener('click', () => {
+            status.textContent = '用户名密码登录暂未开放。';
+        });
+        modal.querySelector('[data-auth-show-register]').addEventListener('click', showRegister);
+        modal.querySelector('[data-auth-register]').addEventListener('click', () => {
+            registerStatus.textContent = '注册暂未开放。';
+        });
+        modal.querySelector('[data-auth-back-login]').addEventListener('click', showLogin);
+        modal.querySelector('.cybertar-auth-close').addEventListener('click', close);
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) close();
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') close();
+        });
+
+        return {
+            open() {
+                showLogin();
+                modal.hidden = false;
+                modal.querySelector('[data-auth-github]').focus();
+            }
+        };
+    }
+
+    function createWidget() {
+        if (document.getElementById('cybertarAuthWidget')) return;
+        injectStyles();
+        const modal = createModal();
+        const widget = document.createElement('div');
+        widget.id = 'cybertarAuthWidget';
+        widget.className = 'cybertar-auth-widget';
+        widget.innerHTML = `
+            <button class="cybertar-auth-button" type="button" aria-haspopup="menu" aria-expanded="false">登录</button>
+            <div class="cybertar-auth-menu" role="menu" hidden>
+                <div class="cybertar-auth-menu-header">
+                    <strong data-auth-name>Guest</strong>
+                    <span data-auth-role>未登录</span>
+                </div>
+                <a href="/lab/model-verifier/" role="menuitem">模型验真</a>
+                <button type="button" role="menuitem" data-profile>个人资料</button>
+                <button type="button" role="menuitem" data-groups>权限组</button>
+                <button type="button" role="menuitem" data-logout>退出登录</button>
+            </div>
+        `;
+        document.body.appendChild(widget);
+
+        const button = widget.querySelector('.cybertar-auth-button');
+        const menu = widget.querySelector('.cybertar-auth-menu');
+        const name = widget.querySelector('[data-auth-name]');
+        const role = widget.querySelector('[data-auth-role]');
+        let currentUser = null;
+
+        const closeMenu = () => {
+            menu.hidden = true;
+            button.setAttribute('aria-expanded', 'false');
+        };
+        const render = (user) => {
+            currentUser = user;
+            closeMenu();
+            if (!user) {
+                button.textContent = '登录';
+                name.textContent = 'Guest';
+                role.textContent = '未登录';
+                return;
+            }
+            button.textContent = `${user.login}${user.role === 'admin' ? ' - ADMIN' : ''}`;
+            name.textContent = user.login || 'GitHub user';
+            role.textContent = user.role === 'admin' ? '超级管理员' : '普通用户';
+        };
+
+        button.addEventListener('click', () => {
+            if (!currentUser) {
+                modal.open();
+                return;
+            }
+            const open = menu.hidden;
+            menu.hidden = !open;
+            button.setAttribute('aria-expanded', String(open));
+        });
+        widget.querySelector('[data-profile]').addEventListener('click', () => {
+            if (currentUser?.login) window.location.href = `https://github.com/${encodeURIComponent(currentUser.login)}`;
+        });
+        widget.querySelector('[data-groups]').addEventListener('click', () => {
+            alert(currentUser?.role === 'admin' ? '权限组：超级管理员' : '权限组：普通用户');
+        });
+        widget.querySelector('[data-logout]').addEventListener('click', async () => {
+            await logout();
+            render(null);
+        });
+        document.addEventListener('click', (event) => {
+            if (!widget.contains(event.target)) closeMenu();
+        });
+        window.addEventListener('cybertar:auth-changed', (event) => {
+            render(event.detail?.user || null);
+        });
+
+        parseAuthRedirect();
+        loadUser().then((user) => {
+            render(user);
+            window.dispatchEvent(new CustomEvent('cybertar:auth-ready', { detail: { user } }));
+        });
+    }
+
+    window.CyberTARAuth = {
+        apiRoot,
+        tokenKey,
+        tokenExpiresKey,
+        tokenTtlMs,
+        getToken: storedToken,
+        saveToken,
+        clearToken,
+        authHeaders,
+        loadUser,
+        login: startGitHubLogin,
+        logout
+    };
+
+    document.addEventListener('DOMContentLoaded', createWidget);
+})();
+
 // 平滑滚动
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {

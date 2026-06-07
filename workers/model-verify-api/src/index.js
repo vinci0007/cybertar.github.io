@@ -15,7 +15,7 @@ const AUTH_ME_PATH = '/model-verify-auth/me';
 const AUTH_LOGOUT_PATH = '/model-verify-auth/logout';
 const DEFAULT_PROXY_HOSTS = ['api.openai.com', 'api.anthropic.com'];
 const PENDING_TTL_MS = 24 * 60 * 60 * 1000;
-const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
 const OAUTH_COOKIE = 'mv_oauth_state';
 const OAUTH_RETURN_COOKIE = 'mv_oauth_return_to';
 
