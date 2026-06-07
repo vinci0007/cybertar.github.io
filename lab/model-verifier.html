@@ -399,6 +399,16 @@
             font-size: 0.84rem;
         }
 
+        .shared-item[role="button"] {
+            cursor: pointer;
+        }
+
+        .shared-item.active {
+            border-color: rgba(124, 255, 0, 0.5);
+            background: rgba(124, 255, 0, 0.075);
+            box-shadow: 0 0 24px rgba(124, 255, 0, 0.08);
+        }
+
         .auth-bar,
         .shared-actions {
             display: flex;
@@ -658,6 +668,10 @@
             padding-top: 0;
         }
 
+        .weighted-probe-row {
+            background: rgba(255, 255, 255, 0.025);
+        }
+
         .probe-name,
         .probe-meta {
             display: flex;
@@ -720,16 +734,18 @@
             overflow: hidden;
         }
 
-        .probe-row pre,
+        .probe-preview-output,
         .raw-json {
             white-space: pre-wrap;
             word-break: break-word;
         }
 
-        .probe-row pre {
+        .probe-preview-output {
+            display: none;
+            grid-column: 1 / -1;
             max-height: 112px;
             overflow: auto;
-            margin: 0;
+            margin: 0.18rem 0 0;
             padding: 0.5rem;
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.045);
@@ -746,6 +762,10 @@
         .probe-preview summary {
             cursor: pointer;
             white-space: nowrap;
+        }
+
+        .probe-preview[open] + .probe-preview-output {
+            display: block;
         }
 
         .raw-json {
@@ -1060,7 +1080,7 @@
 
     <script src="../script.js?v=2026060705"></script>
     <script src="model-verify-share-config.js?v=20260606"></script>
-    <script src="model-verifier.js?v=2026060704"></script>
+    <script src="model-verifier.js?v=2026060705"></script>
 </body>
 
 </html>
