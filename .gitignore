@@ -65,6 +65,7 @@ output/
 .env.development.local
 .env.test.local
 .env.production.local
+.secrets/
 
 # Claude 本地工作目录
 .claude/

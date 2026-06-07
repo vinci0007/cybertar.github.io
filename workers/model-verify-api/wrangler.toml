@@ -25,6 +25,10 @@ MODEL_VERIFY_STALE_CACHE_TTL_SECONDS = "21600"
 MODEL_VERIFY_SESSION_USER_CACHE_TTL_SECONDS = "300"
 MODEL_VERIFY_SKIP_READ_SCHEMA_ENSURE = "true"
 
+[[hyperdrive]]
+binding = "HYPERDRIVE"
+id = "380fd0a06c23477dac339d358e8c7f86"
+
 # Recommended for Cockroach Cloud:
 # 1. Create a Hyperdrive config:
 #    npx wrangler hyperdrive create cybertar-model-verify-db --connection-string="postgresql://..."
