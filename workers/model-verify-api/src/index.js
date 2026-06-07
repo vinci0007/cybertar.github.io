@@ -6,6 +6,7 @@ const DEFAULT_PENDING_TABLE = 'model_verify_pending_reports';
 const DEFAULT_RATE_TABLE = 'model_verify_submission_limits';
 const DEFAULT_SESSION_TABLE = 'model_verify_sessions';
 const DEFAULT_DISCUSSION_TABLE = 'model_verify_discussions';
+const DEFAULT_EDGE_CACHE_TTL_SECONDS = 3600;
 const MODEL_PROXY_PATH = '/model-verify-proxy';
 const REPORTS_PATH = '/model-verify-reports';
 const DISCUSSIONS_PATH = '/model-verify-discussions';
@@ -18,6 +19,10 @@ const PENDING_TTL_MS = 24 * 60 * 60 * 1000;
 const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
 const OAUTH_COOKIE = 'mv_oauth_state';
 const OAUTH_RETURN_COOKIE = 'mv_oauth_return_to';
+const SCHEMA_CACHE_TTL_MS = 10 * 60 * 1000;
+let schemaReadyAt = 0;
+let schemaReadyKey = '';
+let schemaReadyPromise = null;
 
 function json(data, init = {}) {
   return new Response(JSON.stringify(data), {
@@ -49,8 +54,64 @@ function errorResponse(request, env, status, message) {
   return json({ error: message }, { status, headers: corsHeaders(request, env) });
 }
 
+function edgeCacheTtlSeconds(env) {
+  const configured = Number(env.MODEL_VERIFY_EDGE_CACHE_TTL_SECONDS || DEFAULT_EDGE_CACHE_TTL_SECONDS);
+  if (!Number.isFinite(configured)) return DEFAULT_EDGE_CACHE_TTL_SECONDS;
+  return Math.max(0, Math.min(86400, Math.round(configured)));
+}
+
+function edgeCacheEnabled(env) {
+  return edgeCacheTtlSeconds(env) > 0 && env.MODEL_VERIFY_EDGE_CACHE_DISABLED !== 'true' && typeof caches !== 'undefined';
+}
+
+function cacheOrigins(request, env) {
+  const requestOrigin = request.headers.get('origin') || '';
+  const configured = String(env.CORS_ALLOW_ORIGINS || '')
+    .split(',')
+    .map((item) => item.trim())
+    .filter((item) => item && item !== '*');
+  return [...new Set([requestOrigin, ...configured, ''].filter((item) => item !== null && item !== undefined))];
+}
+
+function cacheKeyForUrl(request, urlValue, tag, origin = request.headers.get('origin') || '') {
+  const url = new URL(urlValue, request.url);
+  url.searchParams.set('__mv_cache', tag);
+  url.searchParams.set('__mv_origin', origin || 'none');
+  return new Request(url.toString(), { method: 'GET' });
+}
+
+async function cachedJson(request, env, ctx, tag, producer) {
+  const ttl = edgeCacheTtlSeconds(env);
+  if (!edgeCacheEnabled(env)) {
+    return json(await producer(), { headers: corsHeaders(request, env) });
+  }
+  const cache = caches.default;
+  const key = cacheKeyForUrl(request, request.url, tag);
+  const cached = await cache.match(key);
+  if (cached) return cached;
+  const response = json(await producer(), {
+    headers: {
+      ...corsHeaders(request, env),
+      'cache-control': `public, max-age=${ttl}`
+    }
+  });
+  ctx?.waitUntil?.(cache.put(key, response.clone()).catch(() => null));
+  return response;
+}
+
+function purgeCachedJson(request, env, ctx, urlValue, tag) {
+  if (!edgeCacheEnabled(env)) return;
+  const cache = caches.default;
+  const deletes = cacheOrigins(request, env).map((origin) => cache.delete(cacheKeyForUrl(request, urlValue, tag, origin)));
+  ctx?.waitUntil?.(Promise.allSettled(deletes).catch(() => null));
+}
+
 function quoteIdent(value) {
   return `"${String(value || DEFAULT_TABLE).replace(/"/g, '""')}"`;
+}
+
+function tableName(env, key, fallback) {
+  return String(env[key] || fallback).trim() || fallback;
 }
 
 function asArray(value) {
@@ -447,6 +508,33 @@ async function withClient(env, callback) {
   }
 }
 
+function schemaKey(env) {
+  return [
+    tableName(env, 'MODEL_VERIFY_TABLE', DEFAULT_TABLE),
+    tableName(env, 'MODEL_VERIFY_PENDING_TABLE', DEFAULT_PENDING_TABLE),
+    tableName(env, 'MODEL_VERIFY_RATE_TABLE', DEFAULT_RATE_TABLE),
+    tableName(env, 'MODEL_VERIFY_SESSION_TABLE', DEFAULT_SESSION_TABLE),
+    tableName(env, 'MODEL_VERIFY_DISCUSSION_TABLE', DEFAULT_DISCUSSION_TABLE)
+  ].join('|');
+}
+
+async function ensureSubmissionTablesCached(client, env) {
+  const key = schemaKey(env);
+  const now = Date.now();
+  if (schemaReadyKey === key && schemaReadyAt && now - schemaReadyAt < SCHEMA_CACHE_TTL_MS) return;
+  if (!schemaReadyPromise) {
+    schemaReadyPromise = ensureSubmissionTables(client, env)
+      .then(() => {
+        schemaReadyKey = key;
+        schemaReadyAt = Date.now();
+      })
+      .finally(() => {
+        schemaReadyPromise = null;
+      });
+  }
+  await schemaReadyPromise;
+}
+
 async function primaryKeyIncludesTargetModel(client, table) {
   const result = await client.query(`show create table ${table}`);
   const statement = Object.values(result.rows[0] || {}).join('\n').toLowerCase();
@@ -454,11 +542,16 @@ async function primaryKeyIncludesTargetModel(client, table) {
 }
 
 async function ensureSubmissionTables(client, env) {
-  const table = quoteIdent(env.MODEL_VERIFY_TABLE);
-  const pendingTable = quoteIdent(env.MODEL_VERIFY_PENDING_TABLE || DEFAULT_PENDING_TABLE);
-  const rateTable = quoteIdent(env.MODEL_VERIFY_RATE_TABLE || DEFAULT_RATE_TABLE);
-  const sessionTable = quoteIdent(env.MODEL_VERIFY_SESSION_TABLE || DEFAULT_SESSION_TABLE);
-  const discussionTable = quoteIdent(env.MODEL_VERIFY_DISCUSSION_TABLE || DEFAULT_DISCUSSION_TABLE);
+  const reportTableName = tableName(env, 'MODEL_VERIFY_TABLE', DEFAULT_TABLE);
+  const pendingTableName = tableName(env, 'MODEL_VERIFY_PENDING_TABLE', DEFAULT_PENDING_TABLE);
+  const rateTableName = tableName(env, 'MODEL_VERIFY_RATE_TABLE', DEFAULT_RATE_TABLE);
+  const sessionTableName = tableName(env, 'MODEL_VERIFY_SESSION_TABLE', DEFAULT_SESSION_TABLE);
+  const discussionTableName = tableName(env, 'MODEL_VERIFY_DISCUSSION_TABLE', DEFAULT_DISCUSSION_TABLE);
+  const table = quoteIdent(reportTableName);
+  const pendingTable = quoteIdent(pendingTableName);
+  const rateTable = quoteIdent(rateTableName);
+  const sessionTable = quoteIdent(sessionTableName);
+  const discussionTable = quoteIdent(discussionTableName);
   await client.query(`
     create table if not exists ${table} (
       domain string not null,
@@ -531,6 +624,10 @@ async function ensureSubmissionTables(client, env) {
       deleted_at timestamptz
     )
   `);
+  await client.query(`create index if not exists ${quoteIdent(`${reportTableName}_shared_at_idx`)} on ${table} (shared_at desc)`);
+  await client.query(`create index if not exists ${quoteIdent(`${pendingTableName}_expires_at_idx`)} on ${pendingTable} (expires_at)`);
+  await client.query(`create index if not exists ${quoteIdent(`${rateTableName}_updated_at_idx`)} on ${rateTable} (updated_at)`);
+  await client.query(`create index if not exists ${quoteIdent(`${discussionTableName}_lookup_idx`)} on ${discussionTable} (domain, target_model, deleted_at, created_at)`);
 }
 
 async function enforceSubmissionRateLimit(client, env, request) {
@@ -694,7 +791,7 @@ async function handleGitHubCallback(request, env) {
   try {
     const githubUser = await exchangeGitHubCode(code, env);
     const session = await withClient(env, async (client) => {
-      await ensureSubmissionTables(client, env);
+      await ensureSubmissionTablesCached(client, env);
       return createSession(client, env, githubUser);
     });
     const returnTo = safeReturnTo(cookies[OAUTH_RETURN_COOKIE], env, request);
@@ -828,7 +925,7 @@ async function handleSharedReportSubmission(client, env, item, submitterHash) {
 async function listReports(env) {
   const table = quoteIdent(env.MODEL_VERIFY_TABLE);
   return withClient(env, async (client) => {
-    await ensureSubmissionTables(client, env);
+    await ensureSubmissionTablesCached(client, env);
     const result = await client.query(`
       select domain, target_model, provider_name, homepage, shared_at::string as shared_at, report
       from ${table}
@@ -869,7 +966,7 @@ function normalizeDiscussionRow(row) {
 async function listDiscussions(env, domain, targetModel) {
   const discussionTable = quoteIdent(env.MODEL_VERIFY_DISCUSSION_TABLE || DEFAULT_DISCUSSION_TABLE);
   return withClient(env, async (client) => {
-    await ensureSubmissionTables(client, env);
+    await ensureSubmissionTablesCached(client, env);
     const result = await client.query(`
       select id, domain, target_model, body, author_id, author_login, author_name, author_avatar_url,
              created_at::string as created_at, updated_at::string as updated_at
@@ -901,6 +998,20 @@ async function createDiscussionWithClient(client, env, request, payload) {
   return normalizeDiscussionRow(result.rows[0]);
 }
 
+async function discussionTargetForCache(client, env, id) {
+  const discussionTable = quoteIdent(env.MODEL_VERIFY_DISCUSSION_TABLE || DEFAULT_DISCUSSION_TABLE);
+  const discussionId = String(id || '').trim();
+  if (!discussionId) return null;
+  const result = await client.query(`
+    select domain, target_model
+    from ${discussionTable}
+    where id = $1
+    limit 1
+  `, [discussionId]);
+  const row = result.rows[0];
+  return row ? { domain: row.domain || '', targetModel: row.target_model || '' } : null;
+}
+
 async function deleteDiscussionWithClient(client, env, request, payload) {
   const discussionTable = quoteIdent(env.MODEL_VERIFY_DISCUSSION_TABLE || DEFAULT_DISCUSSION_TABLE);
   const user = await userFromSession(client, env, request);
@@ -928,7 +1039,7 @@ async function upsertReport(env, item) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders(request, env) });
     }
@@ -963,7 +1074,7 @@ export default {
       if (pathname === AUTH_ME_PATH) {
         if (request.method !== 'GET') return errorResponse(request, env, 405, 'method not allowed');
         const user = await withClient(env, async (client) => {
-          await ensureSubmissionTables(client, env);
+          await ensureSubmissionTablesCached(client, env);
           return userFromSession(client, env, request);
         });
         return json({ ok: true, user, siteOwner: siteOwner(env), siteOwnerId: siteOwnerId(env) }, { headers: corsHeaders(request, env) });
@@ -972,7 +1083,7 @@ export default {
       if (pathname === AUTH_LOGOUT_PATH) {
         if (request.method !== 'POST') return errorResponse(request, env, 405, 'method not allowed');
         await withClient(env, async (client) => {
-          await ensureSubmissionTables(client, env);
+          await ensureSubmissionTablesCached(client, env);
           return logoutSession(client, env, request);
         });
         return json({ ok: true }, { headers: corsHeaders(request, env) });
@@ -1003,35 +1114,47 @@ export default {
           const domain = String(url.searchParams.get('domain') || '').trim().toLowerCase();
           const targetModel = String(url.searchParams.get('targetModel') || url.searchParams.get('target_model') || '').trim().toLowerCase();
           if (!domain || !targetModel) return errorResponse(request, env, 400, 'domain and targetModel are required');
-          const items = await listDiscussions(env, domain, targetModel);
-          return json({ ok: true, items }, { headers: corsHeaders(request, env) });
+          return cachedJson(request, env, ctx, 'discussions', async () => {
+            const items = await listDiscussions(env, domain, targetModel);
+            return { ok: true, items };
+          });
         }
         if (request.method === 'POST') {
           const payload = await request.json().catch(() => null);
           const item = await withClient(env, async (client) => {
-            await ensureSubmissionTables(client, env);
+            await ensureSubmissionTablesCached(client, env);
             return createDiscussionWithClient(client, env, request, payload);
           });
+          const targetModel = String(payload?.targetModel || payload?.target_model || '').trim().toLowerCase();
+          const cacheUrl = new URL(DISCUSSIONS_PATH, request.url);
+          cacheUrl.searchParams.set('domain', String(payload?.domain || '').trim().toLowerCase());
+          cacheUrl.searchParams.set('targetModel', targetModel);
+          purgeCachedJson(request, env, ctx, cacheUrl.toString(), 'discussions');
           return json({ ok: true, item }, { status: 201, headers: corsHeaders(request, env) });
         }
         if (request.method === 'DELETE') {
           const payload = await request.json().catch(() => ({}));
+          let cacheUrl = null;
           await withClient(env, async (client) => {
-            await ensureSubmissionTables(client, env);
+            await ensureSubmissionTablesCached(client, env);
+            const existing = await discussionTargetForCache(client, env, payload?.id);
+            if (existing) {
+              cacheUrl = new URL(DISCUSSIONS_PATH, request.url);
+              cacheUrl.searchParams.set('domain', existing.domain);
+              cacheUrl.searchParams.set('targetModel', existing.targetModel);
+            }
             return deleteDiscussionWithClient(client, env, request, payload);
           });
+          if (cacheUrl) purgeCachedJson(request, env, ctx, cacheUrl.toString(), 'discussions');
           return json({ ok: true }, { headers: corsHeaders(request, env) });
         }
         return errorResponse(request, env, 405, 'method not allowed');
       }
 
       if (request.method === 'GET') {
-        const items = await listReports(env);
-        return json({ version: 2, generatedAt: new Date().toISOString(), count: items.length, items }, {
-          headers: {
-            ...corsHeaders(request, env),
-            'cache-control': 'public, max-age=60'
-          }
+        return cachedJson(request, env, ctx, 'reports', async () => {
+          const items = await listReports(env);
+          return { version: 2, generatedAt: new Date().toISOString(), count: items.length, items };
         });
       }
 
@@ -1041,11 +1164,12 @@ export default {
         const targetModel = String(payload?.targetModel || payload?.target_model || url.searchParams.get('targetModel') || url.searchParams.get('target_model') || '').trim().toLowerCase();
         if (!domain || !targetModel) return errorResponse(request, env, 400, 'domain and targetModel are required');
         const deleted = await withClient(env, async (client) => {
-          await ensureSubmissionTables(client, env);
+          await ensureSubmissionTablesCached(client, env);
           await requireAdmin(client, env, request, payload);
           return deleteReportWithClient(client, env, domain, targetModel);
         });
         if (!deleted) return errorResponse(request, env, 404, 'report not found');
+        purgeCachedJson(request, env, ctx, new URL(REPORTS_PATH, request.url).toString(), 'reports');
         return json({ ok: true, action: 'deleted', domain, targetModel }, { headers: corsHeaders(request, env) });
       }
 
@@ -1054,10 +1178,11 @@ export default {
         const validation = validatePayload(payload, env);
         if (validation.error) return errorResponse(request, env, 400, validation.error);
         const result = await withClient(env, async (client) => {
-          await ensureSubmissionTables(client, env);
+          await ensureSubmissionTablesCached(client, env);
           const submitterHash = await enforceSubmissionRateLimit(client, env, request);
           return handleSharedReportSubmission(client, env, validation.item, submitterHash);
         });
+        purgeCachedJson(request, env, ctx, new URL(REPORTS_PATH, request.url).toString(), 'reports');
         return json(result.body, { status: result.status, headers: corsHeaders(request, env) });
       }
 

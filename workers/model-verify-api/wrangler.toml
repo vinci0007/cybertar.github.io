@@ -6,6 +6,10 @@ compatibility_flags = ["nodejs_compat"]
 [placement]
 mode = "smart"
 
+[observability]
+enabled = true
+head_sampling_rate = 1
+
 [vars]
 MODEL_VERIFY_TABLE = "model_verify_reports"
 MODEL_VERIFY_SESSION_TABLE = "model_verify_sessions"
@@ -16,6 +20,7 @@ GITHUB_SITE_OWNER = "vinci0007"
 GITHUB_SITE_OWNER_ID = "39933794"
 MODEL_VERIFY_SITE_URL = "https://cybertar.youngood.tech/lab/model-verifier/"
 MODEL_VERIFY_PROXY_ALLOWED_HOSTS = "*"
+MODEL_VERIFY_EDGE_CACHE_TTL_SECONDS = "3600"
 
 # Recommended for Cockroach Cloud:
 # 1. Create a Hyperdrive config:
