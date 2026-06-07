@@ -127,6 +127,29 @@ function scrollToSection(sectionId) {
                 z-index: 2200;
                 font-family: var(--font-display, 'Orbitron', sans-serif);
             }
+            .header.cybertar-auth-dock {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+            .header.cybertar-auth-dock > .cybertar-auth-widget {
+                position: static;
+                margin-top: 9px;
+                flex: 0 0 auto;
+                order: -1;
+            }
+            .nav.cybertar-auth-mobile-dock {
+                justify-content: flex-start;
+            }
+            .nav.cybertar-auth-mobile-dock .logo {
+                margin-right: auto;
+            }
+            .nav.cybertar-auth-mobile-dock > .cybertar-auth-widget {
+                position: static;
+                margin: 0 0.7rem 0 auto;
+                flex: 0 0 auto;
+                z-index: 1001;
+            }
             .cybertar-auth-button {
                 min-width: 74px;
                 height: 42px;
@@ -307,6 +330,17 @@ function scrollToSection(sectionId) {
         document.head.appendChild(style);
     }
 
+    function authDockTarget() {
+        const header = document.querySelector('.header');
+        const nav = header?.querySelector('.nav');
+        if (!header || !nav) return null;
+        if (window.matchMedia('(min-width: 769px)').matches) {
+            return { container: header, before: nav, className: 'cybertar-auth-dock' };
+        }
+        const toggle = nav.querySelector('.nav-toggle');
+        return toggle ? { container: nav, before: toggle, className: 'cybertar-auth-mobile-dock' } : null;
+    }
+
     function createModal() {
         const modal = document.createElement('div');
         modal.className = 'cybertar-auth-modal';
@@ -409,7 +443,13 @@ function scrollToSection(sectionId) {
                 <button type="button" role="menuitem" data-logout>退出登录</button>
             </div>
         `;
-        document.body.appendChild(widget);
+        const dock = authDockTarget();
+        if (dock) {
+            dock.container.classList.add(dock.className);
+            dock.container.insertBefore(widget, dock.before);
+        } else {
+            document.body.appendChild(widget);
+        }
 
         const button = widget.querySelector('.cybertar-auth-button');
         const menu = widget.querySelector('.cybertar-auth-menu');

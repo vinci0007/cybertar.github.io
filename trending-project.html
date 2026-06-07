@@ -617,7 +617,7 @@
             </div>
         </section>
     </main>
-    <script src="script.js"></script>
+    <script src="script.js?v=2026060705"></script>
     <script>
         (function () {
             class TrendingProject {
@@ -760,7 +760,7 @@
 
                 async fetchGithub() {
                     try {
-                        const res = await fetch('feeds/trending-data.json', { cache: 'no-store' });
+                        const res = await fetch('/feeds/trending-data.json', { cache: 'no-store' });
                         if (res.ok) {
                             const json = await res.json();
                             if (json[this.period] && Array.isArray(json[this.period])) return json[this.period];
@@ -783,7 +783,7 @@
 
                 async fetchHuggingface() {
                     try {
-                        const res = await fetch('feeds/huggingface-data.json', { cache: 'no-store' });
+                        const res = await fetch('/feeds/huggingface-data.json', { cache: 'no-store' });
                         if (res.ok) {
                             const json = await res.json();
                             if (json[this.category] && Array.isArray(json[this.category])) return json[this.category];
