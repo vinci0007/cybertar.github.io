@@ -339,8 +339,9 @@
     function shouldProxyModelRequest(config, url) {
         if (!shareConfig.modelProxyEndpoint) return false;
         try {
-            const host = new URL(url).hostname.toLowerCase();
-            return host === 'api.openai.com' || host === 'api.anthropic.com';
+            const target = new URL(url);
+            const proxy = new URL(shareConfig.modelProxyEndpoint, window.location.href);
+            return target.protocol === 'https:' && target.origin !== proxy.origin;
         } catch {
             return false;
         }

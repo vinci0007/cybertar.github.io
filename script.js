@@ -14,6 +14,7 @@ function scrollToSection(sectionId) {
     const apiRoot = 'https://cybertar-model-verify-api.1058996340.workers.dev';
     const tokenKey = 'cybertar:model-verifier:auth-token:v1';
     const tokenExpiresKey = 'cybertar:model-verifier:auth-token-expires-at:v1';
+    const userKey = 'cybertar:model-verifier:auth-user:v1';
     const tokenTtlMs = 24 * 60 * 60 * 1000;
 
     function storedToken() {
@@ -39,6 +40,21 @@ function scrollToSection(sectionId) {
     function clearToken() {
         localStorage.removeItem(tokenKey);
         localStorage.removeItem(tokenExpiresKey);
+        localStorage.removeItem(userKey);
+    }
+
+    function storedUser() {
+        try {
+            const user = JSON.parse(localStorage.getItem(userKey) || 'null');
+            return user && typeof user === 'object' ? user : null;
+        } catch {
+            return null;
+        }
+    }
+
+    function saveUser(user) {
+        if (user) localStorage.setItem(userKey, JSON.stringify(user));
+        else localStorage.removeItem(userKey);
     }
 
     function authHeaders() {
@@ -92,9 +108,10 @@ function scrollToSection(sectionId) {
                 clearToken();
                 return null;
             }
+            saveUser(payload.user);
             return payload.user;
         } catch {
-            return null;
+            return storedUser();
         }
     }
 
@@ -105,16 +122,10 @@ function scrollToSection(sectionId) {
         style.textContent = `
             .cybertar-auth-widget {
                 position: fixed;
-                top: 2rem;
-                right: 2rem;
+                top: calc(2rem + 9px);
+                right: calc(2rem + 72px);
                 z-index: 2200;
                 font-family: var(--font-display, 'Orbitron', sans-serif);
-            }
-            .corner-actions .cybertar-auth-widget {
-                position: relative;
-                top: auto;
-                right: auto;
-                z-index: auto;
             }
             .cybertar-auth-button {
                 min-width: 74px;
@@ -283,11 +294,7 @@ function scrollToSection(sectionId) {
             @media (max-width: 720px) {
                 .cybertar-auth-widget {
                     top: 1rem;
-                    right: 1rem;
-                }
-                .corner-actions .cybertar-auth-widget {
-                    top: auto;
-                    right: auto;
+                    right: 5rem;
                 }
                 .cybertar-auth-button {
                     height: 38px;
@@ -402,12 +409,7 @@ function scrollToSection(sectionId) {
                 <button type="button" role="menuitem" data-logout>退出登录</button>
             </div>
         `;
-        const actionGroup = document.querySelector('.corner-actions');
-        if (actionGroup) {
-            actionGroup.insertBefore(widget, actionGroup.firstElementChild);
-        } else {
-            document.body.appendChild(widget);
-        }
+        document.body.appendChild(widget);
 
         const button = widget.querySelector('.cybertar-auth-button');
         const menu = widget.querySelector('.cybertar-auth-menu');
@@ -460,9 +462,13 @@ function scrollToSection(sectionId) {
         });
 
         parseAuthRedirect();
+        const cachedUser = storedToken() ? storedUser() : null;
+        if (cachedUser) render(cachedUser);
         loadUser().then((user) => {
             render(user);
+            if (user) saveUser(user);
             window.dispatchEvent(new CustomEvent('cybertar:auth-ready', { detail: { user } }));
+            window.dispatchEvent(new CustomEvent('cybertar:auth-changed', { detail: { user } }));
         });
     }
 
@@ -470,9 +476,12 @@ function scrollToSection(sectionId) {
         apiRoot,
         tokenKey,
         tokenExpiresKey,
+        userKey,
         tokenTtlMs,
         getToken: storedToken,
+        getUser: storedUser,
         saveToken,
+        saveUser,
         clearToken,
         authHeaders,
         loadUser,
