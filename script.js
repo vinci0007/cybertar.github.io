@@ -17,6 +17,20 @@ function scrollToSection(sectionId) {
     const userKey = 'cybertar:model-verifier:auth-user:v1';
     const tokenTtlMs = 24 * 60 * 60 * 1000;
 
+    function siteBaseUrl() {
+        const script = document.currentScript || [...document.scripts].find((item) => /(?:^|\/)script\.js(?:\?|$)/.test(item.src || ''));
+        try {
+            const scriptUrl = new URL(script?.src || 'script.js', window.location.href);
+            return new URL('.', scriptUrl);
+        } catch {
+            return new URL('./', window.location.href);
+        }
+    }
+
+    function siteUrl(path) {
+        return new URL(path, siteBaseUrl()).toString();
+    }
+
     function storedToken() {
         const token = localStorage.getItem(tokenKey) || '';
         const expiresAt = Number(localStorage.getItem(tokenExpiresKey) || 0);
@@ -126,17 +140,34 @@ function scrollToSection(sectionId) {
                 right: calc(2rem + 72px);
                 z-index: 2200;
                 font-family: var(--font-display, 'Orbitron', sans-serif);
+                background: transparent;
             }
             .header.cybertar-auth-dock {
                 display: flex;
                 align-items: flex-start;
                 gap: 0.75rem;
+                background: transparent !important;
+                border: 0 !important;
+                box-shadow: none !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
             }
             .header.cybertar-auth-dock > .cybertar-auth-widget {
                 position: static;
                 margin-top: 9px;
                 flex: 0 0 auto;
                 order: -1;
+            }
+            .header.cybertar-auth-dock > .nav,
+            .cybertar-generated-nav {
+                background: rgba(255, 255, 255, 0.055) !important;
+                border-color: rgba(255, 255, 255, 0.16) !important;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28), inset 0 0 18px rgba(255, 255, 255, 0.035) !important;
+            }
+            .header.cybertar-auth-dock > .nav:hover,
+            .cybertar-generated-nav:hover,
+            .cybertar-generated-nav.is-open {
+                background: rgba(8, 10, 14, 0.82) !important;
             }
             .nav.cybertar-auth-mobile-dock {
                 justify-content: flex-start;
@@ -156,9 +187,9 @@ function scrollToSection(sectionId) {
                 padding: 0 16px;
                 border-radius: 999px;
                 border: 1px solid rgba(124, 255, 0, 0.32);
-                background: rgba(5, 5, 5, 0.72);
+                background: rgba(255, 255, 255, 0.055);
                 color: rgba(255, 255, 255, 0.82);
-                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45), inset 0 0 18px rgba(124, 255, 0, 0.05);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 0 18px rgba(124, 255, 0, 0.05);
                 backdrop-filter: blur(18px);
                 -webkit-backdrop-filter: blur(18px);
                 cursor: pointer;
@@ -326,14 +357,149 @@ function scrollToSection(sectionId) {
                     font-size: 0.72rem;
                 }
             }
+            .cybertar-generated-header {
+                position: fixed;
+                top: 2rem;
+                right: 2rem;
+                left: auto;
+                width: auto;
+                z-index: 1000;
+                background: transparent;
+            }
+            .cybertar-generated-nav {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 60px;
+                height: 60px;
+                overflow: hidden;
+                padding: 0.5rem;
+                border: 1px solid rgba(255, 255, 255, 0.16);
+                border-radius: 30px;
+                backdrop-filter: blur(24px);
+                -webkit-backdrop-filter: blur(24px);
+                transition: width 0.34s ease, height 0.34s ease, background 0.34s ease, box-shadow 0.34s ease;
+            }
+            .cybertar-generated-nav:hover,
+            .cybertar-generated-nav.is-open {
+                width: 160px;
+                height: auto;
+                max-height: 80vh;
+                padding: 1.5rem 1rem;
+            }
+            .cybertar-generated-nav .logo {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+                width: 100%;
+                margin-bottom: 0.5rem;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            .cybertar-generated-nav .logo-img {
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 1px solid rgba(255, 255, 255, 0.22);
+                box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+            }
+            .cybertar-generated-nav .logo-text {
+                height: 0;
+                opacity: 0;
+                overflow: hidden;
+                color: #fff;
+                font-weight: 700;
+                font-size: 0;
+                letter-spacing: 2px;
+                white-space: nowrap;
+                transition: all 0.25s ease;
+            }
+            .cybertar-generated-nav:hover .logo-text,
+            .cybertar-generated-nav.is-open .logo-text {
+                height: auto;
+                opacity: 1;
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+            }
+            .cybertar-generated-nav .nav-links {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.8rem;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: all 0.25s ease;
+            }
+            .cybertar-generated-nav:hover .nav-links,
+            .cybertar-generated-nav.is-open .nav-links {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .cybertar-generated-nav .nav-link {
+                display: block;
+                width: 100%;
+                padding: 0.2rem 0;
+                border-radius: 4px;
+                color: rgba(255, 255, 255, 0.68);
+                text-align: center;
+                text-decoration: none;
+                font-size: 0.85rem;
+                letter-spacing: 1px;
+            }
+            .cybertar-generated-nav .nav-link:hover {
+                color: #fff;
+                background: rgba(255, 255, 255, 0.08);
+            }
+            .cybertar-generated-nav .nav-toggle {
+                display: none;
+            }
         `;
         document.head.appendChild(style);
+    }
+
+    function ensureMainNavigation() {
+        if (document.querySelector('.header .nav')) return;
+        const header = document.createElement('header');
+        header.className = 'header cybertar-generated-header';
+        header.dataset.cybertarGeneratedNav = 'true';
+        header.innerHTML = `
+            <nav class="nav cybertar-generated-nav" aria-label="主导航">
+                <a href="${siteUrl('index.html')}" class="logo" aria-label="CyberTAR 首页">
+                    <img src="${siteUrl('images/Cybertar.png')}" alt="CyberTAR" class="logo-img">
+                    <span class="logo-text">CYBERTAR</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="${siteUrl('index.html#home')}" class="nav-link">首页</a></li>
+                    <li><a href="${siteUrl('blogs/index.html')}" class="nav-link">Blogs</a></li>
+                    <li><a href="${siteUrl('index.html#projects')}" class="nav-link">AI Lab</a></li>
+                    <li><a href="${siteUrl('space.html')}" class="nav-link">探索</a></li>
+                    <li><a href="${siteUrl('trending-project.html')}" class="nav-link">Trending</a></li>
+                    <li><a href="${siteUrl('lab/model-verifier.html')}" class="nav-link">模型验真</a></li>
+                    <li><a href="${siteUrl('tools.html')}" class="nav-link">工具</a></li>
+                </ul>
+                <button class="nav-toggle" type="button" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+            </nav>
+        `;
+        document.body.appendChild(header);
+        const nav = header.querySelector('.nav');
+        nav.addEventListener('click', (event) => {
+            if (event.target.closest('.nav-toggle')) nav.classList.toggle('is-open');
+        });
     }
 
     function authDockTarget() {
         const header = document.querySelector('.header');
         const nav = header?.querySelector('.nav');
         if (!header || !nav) return null;
+        if (header.dataset.cybertarGeneratedNav === 'true') {
+            return { container: header, before: nav, className: 'cybertar-auth-dock' };
+        }
         if (window.matchMedia('(min-width: 769px)').matches) {
             return { container: header, before: nav, className: 'cybertar-auth-dock' };
         }
@@ -426,6 +592,7 @@ function scrollToSection(sectionId) {
     function createWidget() {
         if (document.getElementById('cybertarAuthWidget')) return;
         injectStyles();
+        ensureMainNavigation();
         const modal = createModal();
         const widget = document.createElement('div');
         widget.id = 'cybertarAuthWidget';
