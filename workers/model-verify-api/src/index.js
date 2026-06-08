@@ -18,6 +18,7 @@ const AUTH_LOGIN_PATH = '/model-verify-auth/github/login';
 const AUTH_CALLBACK_PATH = '/model-verify-auth/github/callback';
 const AUTH_ME_PATH = '/model-verify-auth/me';
 const AUTH_LOGOUT_PATH = '/model-verify-auth/logout';
+const PROXY_AUDIT_HEADER = 'x-cybertar-proxy-audit';
 const DEFAULT_PROXY_HOSTS = ['*'];
 const PENDING_TTL_MS = 24 * 60 * 60 * 1000;
 const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
@@ -77,6 +78,7 @@ function corsHeaders(request, env) {
     'access-control-allow-origin': allowOrigin,
     'access-control-allow-methods': 'GET,POST,DELETE,OPTIONS',
     'access-control-allow-headers': 'content-type,authorization',
+    'access-control-expose-headers': `${PROXY_AUDIT_HEADER},server-timing`,
     'access-control-max-age': '86400',
     vary: 'Origin'
   };
@@ -443,6 +445,19 @@ function apiAuthHeaders(provider, apiKey) {
   return { authorization: `Bearer ${key}` };
 }
 
+function proxyAuditHeaderValue(audit) {
+  return encodeURIComponent(JSON.stringify(audit));
+}
+
+function safeProxyResponseHeaders(upstream, request, env, audit) {
+  const headers = new Headers(corsHeaders(request, env));
+  const contentType = upstream.headers.get('content-type');
+  if (contentType) headers.set('content-type', contentType);
+  headers.set('cache-control', 'no-store');
+  headers.set(PROXY_AUDIT_HEADER, proxyAuditHeaderValue(audit));
+  return headers;
+}
+
 function normalizeApiKey(value) {
   let key = String(value || '')
     .trim()
@@ -469,22 +484,29 @@ async function proxyModelRequest(request, env) {
   if (!isProxyTargetAllowed(target, env)) return errorResponse(request, env, 400, 'proxy target is not allowed');
   if (!apiKey) return errorResponse(request, env, 400, 'apiKey is required');
 
+  const upstreamHeaders = {
+    ...(method === 'POST' ? { 'content-type': 'application/json' } : {}),
+    ...apiAuthHeaders(provider, apiKey)
+  };
+  const body = method === 'POST' ? (payload?.body || {}) : null;
+  const audit = {
+    proxied: true,
+    method,
+    provider,
+    targetHost: target.hostname,
+    targetPath: target.pathname,
+    upstreamHeaderNames: Object.keys(upstreamHeaders).map((item) => item.toLowerCase()).sort(),
+    bodyKeyNames: body && typeof body === 'object' && !Array.isArray(body) ? Object.keys(body).slice(0, 30) : []
+  };
   const upstream = await fetch(target.toString(), {
     method,
-    headers: {
-      'content-type': 'application/json',
-      ...apiAuthHeaders(provider, apiKey)
-    },
-    body: method === 'POST' ? JSON.stringify(payload?.body || {}) : undefined
+    headers: upstreamHeaders,
+    body: method === 'POST' ? JSON.stringify(body) : undefined
   });
-  const headers = new Headers(upstream.headers);
-  Object.entries(corsHeaders(request, env)).forEach(([key, value]) => headers.set(key, value));
-  headers.delete('content-encoding');
-  headers.delete('content-length');
   return new Response(upstream.body, {
     status: upstream.status,
     statusText: upstream.statusText,
-    headers
+    headers: safeProxyResponseHeaders(upstream, request, env, audit)
   });
 }
 
@@ -531,6 +553,8 @@ function compactReport(report) {
     scoredProbeCount: Number(channel.scoredProbeCount || 0),
     scoreCaps: asArray(channel.scoreCaps).map((cap) => ({
       cap: Number(cap.cap || 0),
+      code: cleanText(cap.code, 80),
+      severity: cleanText(cap.severity, 40),
       reason: cleanText(cap.reason, 160)
     })).slice(0, 8),
     returnedModels: asArray(channel.returnedModels).slice(0, 20),
@@ -553,7 +577,22 @@ function compactReport(report) {
         statusCode: probe.result.statusCode || '',
         latencyMs: Number(probe.result.latencyMs || 0),
         returnedModel: String(probe.result.returnedModel || ''),
-        preview: cleanText(probe.result.preview || probe.result.error, 700)
+        preview: cleanText(probe.result.preview || probe.result.error, 700),
+        requestAudit: probe.result.requestAudit ? walkAndRedact({
+          channel: probe.result.requestAudit.channel,
+          proxied: probe.result.requestAudit.proxied,
+          proxyAuditPresent: probe.result.requestAudit.proxyAuditPresent,
+          targetHost: probe.result.requestAudit.targetHost,
+          targetPath: probe.result.requestAudit.targetPath,
+          browserHeaderNames: asArray(probe.result.requestAudit.browserHeaderNames).slice(0, 12),
+          expectedUpstreamHeaderNames: asArray(probe.result.requestAudit.expectedUpstreamHeaderNames).slice(0, 12),
+          upstreamHeaderNames: asArray(probe.result.requestAudit.upstreamHeaderNames).slice(0, 12),
+          disallowedUpstreamHeaderNames: asArray(probe.result.requestAudit.disallowedUpstreamHeaderNames).slice(0, 12),
+          bodyKeyNames: asArray(probe.result.requestAudit.bodyKeyNames).slice(0, 20),
+          bodyCredentialFieldPresent: Boolean(probe.result.requestAudit.bodyCredentialFieldPresent),
+          bodyHeaderFieldPresent: Boolean(probe.result.requestAudit.bodyHeaderFieldPresent),
+          auditWarnings: asArray(probe.result.requestAudit.auditWarnings).slice(0, 8)
+        }) : undefined
       } : {}
     })).slice(0, 60)
   }));
