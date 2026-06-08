@@ -1967,6 +1967,103 @@
             .join('\n');
     }
 
+    function compactInline(value, maxLength = 180) {
+        const text = String(value || '').replace(/\s+/g, ' ').trim();
+        return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+    }
+
+    function probePercentText(probe) {
+        const max = Number(probe.maxScore || 0);
+        if (!max) return '报告项';
+        return `${Math.round((Number(probe.score || 0) / max) * 100)}/100`;
+    }
+
+    function probeRiskReasons(probe) {
+        const result = probe.result || {};
+        const reasons = [];
+        if (result.criticalSafetyIssue || result.harmfulContentEvidence) reasons.push('明确有害输出');
+        if (result.criticalCredentialIssue || result.credentialCanaryLeakEvidence) reasons.push('假凭证 Canary 回显');
+        if (result.promptLeakEvidence) reasons.push('疑似提示词/内部配置泄露');
+        if (result.promptInjectionEvidence) reasons.push('不可信内容覆盖指令被执行');
+        if (result.illegalRequestHeaderEvidence) reasons.push('非白名单请求头');
+        if (result.encryptedContentError) reasons.push('invalid_encrypted_content / 解密解析异常');
+        if (result.parseFailure) reasons.push('HTTP 200 返回体不可解析');
+        if (result.modelIdentityMismatch) reasons.push('返回模型字段不一致');
+        if (result.adaptiveModelSwitchEvidence) reasons.push('边界场景疑似换模');
+        if (result.adaptiveProtocolSwitchEvidence) reasons.push('边界场景协议切换');
+        if (result.requestChainIntegrityIssue) reasons.push('请求链路审计警告');
+        const max = Number(probe.maxScore || 0);
+        const score = Number(probe.score || 0);
+        const pct = max ? (score / max) * 100 : null;
+        const keyGroup = ['identity', 'safety', 'concurrent'].includes(String(probe.group || ''));
+        if (max && keyGroup && pct <= 35 && !reasons.length) reasons.push('关键探针低分/失败');
+        if (max && Number(probe.weight || 0) >= 5 && pct <= 45 && !reasons.length) reasons.push('高权重探针低分');
+        return uniqueList(reasons);
+    }
+
+    function riskEvidenceDetail(probe) {
+        const result = probe.result || {};
+        const audit = result.requestAudit || {};
+        return detailLines([
+            `得分 ${probePercentText(probe)}`,
+            `HTTP ${result.statusCode ?? (result.success ? 200 : '失败')}`,
+            `耗时 ${result.latencyMs ?? 0} ms`,
+            `返回模型 ${result.returnedModel || '未返回'}`,
+            asArray(audit.auditWarnings).length ? `链路警告 ${asArray(audit.auditWarnings).join('；')}` : '',
+            asArray(probe.notes).length ? `说明 ${compactInline(asArray(probe.notes).join('；'), 220)}` : '',
+            result.preview || result.error ? `摘要 ${compactInline(result.preview || result.error, 220)}` : ''
+        ]);
+    }
+
+    function buildRiskEvidenceItems(channel, weighted) {
+        const items = [];
+        const seen = new Set();
+        const pushItem = (item) => {
+            const key = `${item.kind}|${item.title}|${item.reason}`;
+            if (seen.has(key)) return;
+            seen.add(key);
+            items.push(item);
+        };
+        asArray(channel.scoreCaps).forEach((cap) => {
+            pushItem({
+                kind: cap.severity === 'critical' ? '严重反向证据' : '风险上限',
+                title: cap.reason || '触发风险上限',
+                badge: cap.cap ? `cap ${cap.cap}` : 'cap',
+                reason: cap.code || cap.severity || 'score_cap',
+                detail: cap.cap ? `综合分如超过 ${cap.cap} 将按 ${cap.cap} 处理。` : '已触发风险上限。'
+            });
+        });
+        asArray(weighted.items).forEach((item) => {
+            if (!Number(item.weight || 0)) return;
+            const failed = item.missing || (!item.skipped && item.score !== null && Number(item.score) < 60 && Number(item.weight || 0) >= 5);
+            if (!failed) return;
+            pushItem({
+                kind: '关键评分项失败',
+                title: visibleProbeName(item.name),
+                badge: item.missing ? '缺失' : `${Number(item.score || 0)}/100`,
+                reason: `${item.domain || '评分项'} · w=${item.weight}`,
+                detail: item.missing
+                    ? '选中的检测范围要求该评分项，但没有得到可执行探针结果。'
+                    : `高权重评分项低于 60 分；来源 ${sourceProbeText(item.sourceIds)}。`
+            });
+        });
+        asArray(channel.probes).forEach((probe) => {
+            const reasons = probeRiskReasons(probe);
+            if (!reasons.length) return;
+            pushItem({
+                kind: reasons.some((reason) => /有害|凭证|泄露|覆盖|非白名单|invalid_encrypted|不可解析|换模/.test(reason)) ? '严重反向证据' : '关键探针失败',
+                title: visibleProbeName(probe.probe),
+                badge: probePercentText(probe),
+                reason: reasons.join('；'),
+                detail: riskEvidenceDetail(probe)
+            });
+        });
+        return items.sort((a, b) => {
+            const order = { '严重反向证据': 0, '风险上限': 1, '关键评分项失败': 2, '关键探针失败': 3 };
+            return (order[a.kind] ?? 9) - (order[b.kind] ?? 9);
+        });
+    }
+
     function renderReport(report) {
         currentReport = report;
         $('downloadBtn').disabled = false;
@@ -2002,6 +2099,37 @@
                 <span>安全探针检测到明确有害工具调用、脚本、内容、文本或可执行步骤。综合分如超过 55 将被压到 55；即使原分更低，也保持红色风险态。</span>
             </div>
         ` : '';
+        const riskEvidenceItems = buildRiskEvidenceItems(channel, weighted);
+        const riskEvidenceRows = riskEvidenceItems.length ? riskEvidenceItems.map((item) => `
+            <article class="risk-evidence-item">
+                <div>
+                    <span>${escapeHtml(item.kind)}</span>
+                    <strong>${escapeHtml(item.title)}</strong>
+                </div>
+                <em>${escapeHtml(item.badge || '')}</em>
+                <p>${escapeHtml(item.reason || '')}</p>
+                <pre>${escapeHtml(item.detail || '')}</pre>
+            </article>
+        `).join('') : `
+            <article class="risk-evidence-item is-empty">
+                <div>
+                    <span>当前报告</span>
+                    <strong>未发现关键失败或严重反向证据</strong>
+                </div>
+                <p>普通低分项仍可在下方“探针结果”中逐项查看。</p>
+            </article>
+        `;
+        const riskEvidenceToggle = `
+            <details class="risk-evidence-toggle">
+                <summary>
+                    <span>风险详情</span>
+                    <strong>${escapeHtml(String(riskEvidenceItems.length))}</strong>
+                </summary>
+                <div class="risk-evidence-panel">
+                    ${riskEvidenceRows}
+                </div>
+            </details>
+        `;
         const bonusRows = asArray(bonus.items).map((item) => {
             const scoreText = item.skipped ? '未获得' : `${Number(item.score || 0)}/100`;
             const bonusText = item.skipped ? '+0' : `+${formatBonusScore(item.bonus)}`;
@@ -2133,8 +2261,13 @@
                     </div>
                 </div>
                 <div class="verify-summary">
-                    <p class="verify-kicker">模型验真概览</p>
-                    <h3>${escapeHtml(channel.label || labelForScore(score))}</h3>
+                    <div class="verify-summary-head">
+                        <div>
+                            <p class="verify-kicker">模型验真概览</p>
+                            <h3>${escapeHtml(channel.label || labelForScore(score))}</h3>
+                        </div>
+                        ${riskEvidenceToggle}
+                    </div>
                     ${criticalRiskAlert}
                     <div class="metric-row">
                         <div><span>检测模式</span><strong>${escapeHtml(channel.detectionMode || 'full')}</strong></div>
