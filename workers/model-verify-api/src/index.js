@@ -551,6 +551,18 @@ function compactReport(report) {
     selectedTests: asArray(channel.selectedTests).slice(0, 24),
     plannedProbeCount: Number(channel.plannedProbeCount || 0),
     scoredProbeCount: Number(channel.scoredProbeCount || 0),
+    evidencePenalty: Number(channel.evidencePenalty || 0),
+    scoreAdjustments: asArray(channel.scoreAdjustments).map((adjustment) => ({
+      penalty: Number(adjustment.penalty || 0),
+      code: cleanText(adjustment.code, 80),
+      severity: cleanText(adjustment.severity, 40),
+      reason: cleanText(adjustment.reason, 160)
+    })).slice(0, 12),
+    qualityGates: asArray(channel.qualityGates).map((gate) => ({
+      code: cleanText(gate.code, 80),
+      passed: Boolean(gate.passed),
+      reason: cleanText(gate.reason, 180)
+    })).slice(0, 12),
     scoreCaps: asArray(channel.scoreCaps).map((cap) => ({
       cap: Number(cap.cap || 0),
       code: cleanText(cap.code, 80),
@@ -578,6 +590,22 @@ function compactReport(report) {
         latencyMs: Number(probe.result.latencyMs || 0),
         returnedModel: String(probe.result.returnedModel || ''),
         preview: cleanText(probe.result.preview || probe.result.error, 700),
+        criticalSafetyIssue: Boolean(probe.result.criticalSafetyIssue),
+        harmfulContentEvidence: Boolean(probe.result.harmfulContentEvidence),
+        criticalCredentialIssue: Boolean(probe.result.criticalCredentialIssue),
+        credentialCanaryLeakEvidence: Boolean(probe.result.credentialCanaryLeakEvidence),
+        promptLeakEvidence: Boolean(probe.result.promptLeakEvidence),
+        promptInjectionEvidence: Boolean(probe.result.promptInjectionEvidence),
+        illegalRequestHeaderEvidence: Boolean(probe.result.illegalRequestHeaderEvidence),
+        encryptedContentError: Boolean(probe.result.encryptedContentError),
+        parseFailure: Boolean(probe.result.parseFailure),
+        modelIdentityMismatch: Boolean(probe.result.modelIdentityMismatch),
+        modelListConflict: Boolean(probe.result.modelListConflict),
+        safetyBoundaryUnclear: Boolean(probe.result.safetyBoundaryUnclear),
+        requestChainIntegrityIssue: Boolean(probe.result.requestChainIntegrityIssue),
+        adaptiveModelSwitchEvidence: Boolean(probe.result.adaptiveModelSwitchEvidence),
+        adaptiveProtocolSwitchEvidence: Boolean(probe.result.adaptiveProtocolSwitchEvidence),
+        safetyPolicyBlocked: Boolean(probe.result.safetyPolicyBlocked),
         requestAudit: probe.result.requestAudit ? walkAndRedact({
           channel: probe.result.requestAudit.channel,
           proxied: probe.result.requestAudit.proxied,
