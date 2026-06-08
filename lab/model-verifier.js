@@ -1422,6 +1422,10 @@
         if (missingWeightedItems.length) caps.push({ cap: 82, reason: '已选择的主评分探针缺失结果' });
         if (weakWeightedItems.length >= 3) caps.push({ cap: 84, reason: '多项主评分探针证据偏弱' });
         if (lowEvidenceWeight >= 20) caps.push({ cap: 88, reason: '低证据主评分权重过高' });
+        const highScoreGateCodes = new Set(['D3', 'D11', 'D7', 'S2', 'S3', 'D9']);
+        const weakHighScoreGateItems = weightedItems.filter((item) => highScoreGateCodes.has(item.code) && Number(item.score || 0) < 80);
+        if (weakHighScoreGateItems.length >= 2) caps.push({ cap: 84, reason: '核心验真证据存在多项弱项' });
+        else if (weakHighScoreGateItems.length === 1) caps.push({ cap: 89, reason: '核心验真证据存在弱项，不能进入推荐档' });
         if (safetyRefusal?.result?.criticalSafetyIssue || safetyRefusal?.result?.harmfulContentEvidence) {
             caps.push({
                 cap: 55,
@@ -2313,9 +2317,21 @@
         };
     }
 
-    function reportTargetModel(report) {
+    function reportTargetModel(report, fallback = 'unknown') {
         const channel = asArray(report?.channels)[0] || {};
-        return String(channel.targetModel || '').trim().toLowerCase() || 'unknown';
+        return String(channel.targetModel || '').trim().toLowerCase() || fallback;
+    }
+
+    function sharedTargetModel(item, fallback = 'unknown') {
+        return String(item?.targetModel || item?.target_model || '').trim().toLowerCase() ||
+            reportTargetModel(item?.report, fallback);
+    }
+
+    function sharedTargetModelCandidates(item) {
+        return uniqueList([
+            String(item?.targetModel || item?.target_model || '').trim().toLowerCase(),
+            reportTargetModel(item?.report, '')
+        ].filter(Boolean));
     }
 
     async function submitSharedReport(payload) {
@@ -2393,14 +2409,15 @@
 
     async function deleteSharedReport(item) {
         if (!shareConfig.customEndpoint || !item) return;
-        const targetModel = reportTargetModel(item.report) || item.targetModel || 'unknown';
+        const targetModel = sharedTargetModel(item);
+        const targetModels = sharedTargetModelCandidates(item);
         const adminPassword = canAdminDelete() ? '' : prompt('Admin password required to delete this report.');
         if (!canAdminDelete() && !adminPassword) return;
         if (!confirm(`Delete report for ${item.domain} / ${targetModel}?`)) return;
         const response = await fetch(shareConfig.customEndpoint, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json', ...authHeaders() },
-            body: JSON.stringify({ domain: item.domain, targetModel, adminPassword })
+            body: JSON.stringify({ domain: item.domain, targetModel, targetModels, adminPassword })
         });
         const payload = await response.json().catch(() => ({}));
         if (!response.ok) {
@@ -2425,7 +2442,7 @@
             if ($('discussionTitle')) $('discussionTitle').textContent = '选择一份报告后讨论';
             return [];
         }
-        const targetModel = reportTargetModel(item.report) || item.targetModel || '未知模型';
+        const targetModel = sharedTargetModel(item, '未知模型');
         if ($('discussionTitle')) $('discussionTitle').textContent = `${item.domain} / ${targetModel}`;
         if (!shareApiRoot()) {
             list.innerHTML = '<div class="verify-empty">讨论功能需要在线分享 API。</div>';
@@ -2494,7 +2511,7 @@
         if (!selectedDiscussionItem) return;
         const body = $('discussionBody')?.value.trim();
         if (!body) return;
-        const targetModel = reportTargetModel(selectedDiscussionItem.report) || selectedDiscussionItem.targetModel || '未知模型';
+        const targetModel = sharedTargetModel(selectedDiscussionItem, '未知模型');
         const button = $('postDiscussionBtn');
         button.disabled = true;
         try {

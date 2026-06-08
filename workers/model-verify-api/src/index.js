@@ -1112,14 +1112,25 @@ async function listReports(env, timing = null) {
   }, timing);
 }
 
-async function deleteReportWithClient(client, env, domain, targetModel) {
+async function deleteReportWithClient(client, env, domain, targetModels) {
   const table = quoteIdent(env.MODEL_VERIFY_TABLE);
-  const result = await client.query(`
-    delete from ${table}
-    where domain = $1 and target_model = $2
-    returning domain, target_model
-  `, [domain, targetModel]);
-  return result.rows.length > 0;
+  const candidates = [...new Set(asArray(targetModels)
+    .map((item) => String(item || '').trim().toLowerCase())
+    .filter(Boolean))];
+  for (const targetModel of candidates) {
+    const result = await client.query(`
+      delete from ${table}
+      where domain = $1 and target_model = $2
+      returning domain, target_model
+    `, [domain, targetModel]);
+    if (result.rows.length > 0) {
+      return {
+        domain: result.rows[0].domain || domain,
+        targetModel: result.rows[0].target_model || targetModel
+      };
+    }
+  }
+  return null;
 }
 
 function normalizeDiscussionRow(row) {
@@ -1350,15 +1361,19 @@ export default {
         const payload = await request.json().catch(() => ({}));
         const domain = String(payload?.domain || url.searchParams.get('domain') || '').trim().toLowerCase();
         const targetModel = String(payload?.targetModel || payload?.target_model || url.searchParams.get('targetModel') || url.searchParams.get('target_model') || '').trim().toLowerCase();
-        if (!domain || !targetModel) return errorResponse(request, env, 400, 'domain and targetModel are required');
+        const targetModels = [...new Set([
+          targetModel,
+          ...asArray(payload?.targetModels || payload?.target_models)
+        ].map((item) => String(item || '').trim().toLowerCase()).filter(Boolean))];
+        if (!domain || !targetModels.length) return errorResponse(request, env, 400, 'domain and targetModel are required');
         const deleted = await withClient(env, async (client) => {
           await ensureSubmissionTablesCached(client, env);
           await requireAdmin(client, env, request, payload);
-          return deleteReportWithClient(client, env, domain, targetModel);
+          return deleteReportWithClient(client, env, domain, targetModels);
         });
         if (!deleted) return errorResponse(request, env, 404, 'report not found');
         purgeCachedJson(request, env, ctx, new URL(REPORTS_PATH, request.url).toString(), 'reports');
-        return json({ ok: true, action: 'deleted', domain, targetModel }, { headers: corsHeaders(request, env) });
+        return json({ ok: true, action: 'deleted', domain: deleted.domain, targetModel: deleted.targetModel }, { headers: corsHeaders(request, env) });
       }
 
       if (request.method === 'POST') {
