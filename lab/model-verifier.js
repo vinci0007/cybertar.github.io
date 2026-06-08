@@ -2293,20 +2293,26 @@
                 </div>
                 <p>${escapeHtml(weighted.formula || '')}</p>
             </section>
-            <section class="verify-card">
+            <section class="verify-card compact-bonus-card">
                 <p class="section-note">额外加分</p>
-                <div class="metric-row">
+                <div class="metric-row bonus-summary-row">
                     <div><span>额外分</span><strong>+${escapeHtml(formatBonusScore(bonusScore))}/${escapeHtml(formatBonusScore(bonusMax))}</strong></div>
                     <div><span>计算方式</span><strong>不重分配</strong></div>
                     <div><span>主评分关系</span><strong>独立展示</strong></div>
                 </div>
                 <p>${escapeHtml(bonus.formula || '')}</p>
-                <div class="bonus-grid">${bonusRows || '<p class="verify-empty">暂无额外加分探针结果。</p>'}</div>
-                <div class="bonus-grid diagnostic-grid">${diagnosticRows}</div>
+                <div class="bonus-scroll-block">
+                    <div class="bonus-row-label">评分</div>
+                    <div class="bonus-grid bonus-scroll-row">${bonusRows || '<p class="bonus-empty">暂无额外加分探针结果。</p>'}</div>
+                </div>
+                <div class="bonus-scroll-block">
+                    <div class="bonus-row-label">不计分</div>
+                    <div class="bonus-grid bonus-scroll-row diagnostic-grid">${diagnosticRows}</div>
+                </div>
             </section>
             <section class="verify-card">
                 <p class="section-note">分类得分</p>
-                <div class="metric-row">${groupProbeSummary(channel.probes)}</div>
+                <div class="metric-row category-score-row">${groupProbeSummary(channel.probes)}</div>
             </section>
             <section class="verify-card compact-probes">
                 <p class="section-note">探针结果</p>
