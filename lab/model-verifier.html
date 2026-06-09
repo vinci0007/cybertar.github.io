@@ -1040,12 +1040,13 @@
         }
 
         .bonus-summary-row span {
-            margin-bottom: 0.12rem;
-            font-size: 0.68rem;
+            margin-bottom: 0.06rem;
+            font-size: 0.64rem;
         }
 
         .bonus-summary-row strong {
-            font-size: 0.92rem;
+            font-size: 0.84rem;
+            line-height: 1.05;
         }
 
         .bonus-scroll-block {
@@ -1096,11 +1097,11 @@
         }
 
         .bonus-item {
-            flex: 0 0 132px;
+            flex: 0 0 118px;
             min-width: 0;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
-            padding: 0.3rem 0.38rem;
+            padding: 0.26rem 0.34rem;
             background: rgba(255, 255, 255, 0.035);
             color: rgba(255, 255, 255, 0.72);
             scroll-snap-align: start;
@@ -1109,35 +1110,47 @@
         .bonus-item div {
             display: flex;
             flex-direction: column;
-            gap: 0.14rem;
+            gap: 0.04rem;
             min-width: 0;
         }
 
         .bonus-item strong {
             display: block;
             color: #fff;
-            overflow-wrap: anywhere;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .bonus-item div strong {
+            font-size: 0.7rem;
+            line-height: 1.08;
         }
 
         .bonus-item > strong {
-            margin-top: 0.1rem;
-            font-size: 0.78rem;
+            margin-top: 0.06rem;
+            font-size: 0.72rem;
+            line-height: 1.05;
         }
 
         .bonus-item span {
+            display: block;
+            overflow: hidden;
             color: rgba(255, 255, 255, 0.46);
-            font-size: 0.64rem;
+            font-size: 0.6rem;
+            line-height: 1.08;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .bonus-item p {
-            display: -webkit-box;
-            margin: 0.1rem 0 0;
+            margin: 0.06rem 0 0;
             overflow: hidden;
             color: rgba(255, 255, 255, 0.58);
-            font-size: 0.64rem;
-            line-height: 1.18;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
+            font-size: 0.6rem;
+            line-height: 1.08;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .bonus-item.is-skipped {
