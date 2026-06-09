@@ -123,8 +123,21 @@ function cacheOrigins(request, env) {
   return [...new Set([requestOrigin, ...configured, ''].filter((item) => item !== null && item !== undefined))];
 }
 
+function cacheRefreshRequested(request) {
+  const url = new URL(request.url);
+  const value = url.searchParams.get('_refresh') || url.searchParams.get('refresh');
+  return value !== null && value !== '0' && value !== 'false';
+}
+
+function normalizedCacheUrl(urlValue, baseUrl) {
+  const url = new URL(urlValue, baseUrl);
+  url.searchParams.delete('_refresh');
+  url.searchParams.delete('refresh');
+  return url.toString();
+}
+
 function cacheKeyForUrl(request, urlValue, tag, origin = request.headers.get('origin') || '') {
-  const url = new URL(urlValue, request.url);
+  const url = new URL(normalizedCacheUrl(urlValue, request.url));
   url.searchParams.set('__mv_cache', tag);
   url.searchParams.set('__mv_origin', origin || 'none');
   return new Request(url.toString(), { method: 'GET' });
@@ -202,6 +215,10 @@ async function cachedJson(request, env, ctx, tag, producer, timing = null) {
   const memoryKey = memoryCacheKeyForUrl(request, request.url, tag);
   const edgeKey = cacheKeyForUrl(request, request.url, tag);
   const now = Date.now();
+  const forceRefresh = cacheRefreshRequested(request);
+  if (forceRefresh) {
+    return produceCachedJson(request, env, ctx, tag, memoryKey, edgeKey, producer, 'refresh', timing);
+  }
   const memoryEntry = jsonMemoryCache.get(memoryKey);
   if (memoryEntry && now < memoryEntry.expiresAt) {
     return jsonResponseFromBody(memoryEntry.body, request, env, 'memory', timing);
@@ -590,6 +607,8 @@ function compactReport(report) {
         latencyMs: Number(probe.result.latencyMs || 0),
         returnedModel: String(probe.result.returnedModel || ''),
         preview: cleanText(probe.result.preview || probe.result.error, 700),
+        retriedWithoutReasoning: Boolean(probe.result.retriedWithoutReasoning),
+        retriedWithLowerMaxTokens: Number(probe.result.retriedWithLowerMaxTokens || 0),
         criticalSafetyIssue: Boolean(probe.result.criticalSafetyIssue),
         harmfulContentEvidence: Boolean(probe.result.harmfulContentEvidence),
         criticalCredentialIssue: Boolean(probe.result.criticalCredentialIssue),

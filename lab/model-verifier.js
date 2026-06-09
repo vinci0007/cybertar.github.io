@@ -406,6 +406,17 @@
         return key.replace(/^bearer\s+/i, '').replace(/^["']|["']$/g, '').trim();
     }
 
+    function hostnameFromUrl(value) {
+        try { return new URL(normalizeBaseUrl(value)).hostname.toLowerCase(); } catch { return ''; }
+    }
+
+    function providerForRequest(config) {
+        const provider = String(config.provider || '').toLowerCase();
+        const host = hostnameFromUrl(config.baseUrl);
+        if (provider === 'anthropic' || host === 'api.anthropic.com' || host.endsWith('.anthropic.com')) return 'anthropic';
+        return provider || 'openai';
+    }
+
     function shouldProxyModelRequest(config, url) {
         if (!shareConfig.modelProxyEndpoint) return false;
         try {
@@ -474,7 +485,7 @@
     function directRequestHeaderNames(config, method, hasBody) {
         return normalizeHeaderNames([
             hasBody || String(method || 'POST').toUpperCase() === 'POST' ? 'content-type' : '',
-            ...Object.keys(authHeaders(config.provider, config.apiKey))
+            ...Object.keys(authHeaders(providerForRequest(config), config.apiKey))
         ]);
     }
 
@@ -492,7 +503,7 @@
         const proxyAudit = parseProxyAuditHeader(response);
         const bodyAudit = requestBodyAudit(body);
         const responseHeaders = safeResponseHeaderSnapshot(response);
-        const expectedHeaders = expectedUpstreamHeaderNames(config.provider, method);
+        const expectedHeaders = expectedUpstreamHeaderNames(providerForRequest(config), method);
         const observedUpstreamHeaders = normalizeHeaderNames(proxyAudit?.upstreamHeaderNames || (!proxied ? directRequestHeaderNames(config, method, Boolean(body)) : []));
         const disallowedUpstreamHeaders = observedUpstreamHeaders.filter((name) => !expectedHeaders.includes(name));
         const suspiciousResponseHeaders = normalizeHeaderNames(Object.keys(responseHeaders).filter((name) => ['set-cookie', 'location'].includes(name.toLowerCase())));
@@ -532,7 +543,7 @@
                 body: JSON.stringify({
                     url,
                     method,
-                    provider: config.provider,
+                    provider: providerForRequest(config),
                     apiKey: normalizeApiKey(config.apiKey),
                     body: options.jsonBody
                 }),
@@ -542,7 +553,7 @@
 
         const headers = {
             ...(options.jsonBody ? { 'Content-Type': 'application/json' } : {}),
-            ...authHeaders(config.provider, config.apiKey)
+            ...authHeaders(providerForRequest(config), config.apiKey)
         };
         return fetch(url, {
             method,
@@ -606,7 +617,7 @@
         const endpointProtocol = protocolFromEndpoint(config.baseUrl);
         if (endpointProtocol) return [endpointProtocol];
         if (config.protocol !== 'auto') return [config.protocol];
-        if (config.provider === 'anthropic') return ['messages'];
+        if (providerForRequest(config) === 'anthropic') return ['messages'];
         return ['responses', 'chat_completions'];
     }
 
@@ -678,8 +689,22 @@
             && /(not supported|unsupported|valid levels|invalid_request_error|invalid value|invalid enum)/.test(text);
     }
 
+    function shouldRetryWithLowerMaxTokens(config, response, errorText, rawText) {
+        const current = Number(config.maxTokens || 0);
+        if (!current || current <= 4096 || response.ok) return false;
+        const text = `${errorText || ''} ${rawText || ''}`.toLowerCase();
+        return response.status >= 400
+            && response.status < 500
+            && /(max[_\s-]?(output[_\s-]?)?tokens|max_tokens|max output tokens|token limit|maximum)/.test(text)
+            && /(too high|exceed|exceeds|greater|larger|maximum|less than or equal|最多|超过|过大)/.test(text);
+    }
+
+    function lowerMaxTokensForRetry(config) {
+        return providerForRequest(config) === 'anthropic' ? 4096 : 4096;
+    }
+
     function makeBody(config, probe, prompt, options = {}) {
-        const maxTokens = clamp(config.maxTokens, 32, 8192) || 8192;
+        const maxTokens = clamp(options.maxTokensOverride || config.maxTokens, 32, 8192) || 8192;
         const requestOptions = probe.requestOptions || {};
         const hasTemperature = supportsTemperature(config.model);
         const temperature = Number.isFinite(Number(requestOptions.temperature)) ? Number(requestOptions.temperature) : 0.2;
@@ -816,6 +841,7 @@
         }
         if (result.returnedModel) notes.push(`返回模型：${result.returnedModel}`);
         if (result.retriedWithoutReasoning) notes.push('已移除不受支持的 reasoning effort 后重试');
+        if (result.retriedWithLowerMaxTokens) notes.push(`已将最大输出 Token 降为 ${result.retriedWithLowerMaxTokens} 后重试`);
         if (result.encryptedContentError) notes.push('检测到 invalid_encrypted_content / 加密载荷解析异常信号');
         if (result.parseFailure) notes.push('HTTP 200 返回非 JSON 或无法解析的响应体');
         return { score, notes };
@@ -1283,7 +1309,9 @@
         const keys = asArray(result.payloadKeys).map((item) => String(item).toLowerCase());
         const expectedKeys = config.protocol === 'responses'
             ? ['id', 'model', 'output']
-            : ['id', 'model', 'choices'];
+            : config.protocol === 'messages'
+                ? ['id', 'model', 'content']
+                : ['id', 'model', 'choices'];
         const hits = expectedKeys.filter((key) => keys.includes(key)).length;
         if (hits >= 2) {
             base.score = probe.maxScore;
@@ -1299,7 +1327,7 @@
     }
 
     async function checkModelList(config) {
-        if (config.provider === 'anthropic') {
+        if (providerForRequest(config) === 'anthropic') {
             return {
                 checked: false,
                 modelIds: [],
@@ -1421,7 +1449,7 @@
             return { response, rawText, payload, errorText, parseFailure, jsonBody };
         };
 
-        const toSent = (activeConfig, url, attempt, retriedWithoutReasoning) => {
+        const toSent = (activeConfig, url, attempt, retryMeta = {}) => {
             let payload = attempt.payload;
             if (probe.requestOptions?.stream) payload = null;
             const rawText = attempt.rawText || '';
@@ -1442,7 +1470,8 @@
                     streamDetected,
                     toolCallDetected: extractToolCall(payload),
                     toolCallNames: extractToolNames(payload),
-                    retriedWithoutReasoning,
+                    retriedWithoutReasoning: Boolean(retryMeta.withoutReasoning),
+                    retriedWithLowerMaxTokens: retryMeta.lowerMaxTokens || 0,
                     parseFailure: attempt.parseFailure,
                     encryptedContentError,
                     payloadKeys: payload && typeof payload === 'object' ? Object.keys(payload).slice(0, 20) : [],
@@ -1464,15 +1493,28 @@
                     currentProtocol = protocol;
                     currentUrl = url;
                     let retriedWithoutReasoning = false;
+                    let retriedWithLowerMaxTokens = 0;
+                    const retryOptions = {};
                     let attempt = await readAttempt(activeConfig, url);
 
                     if (shouldRetryWithoutReasoning(activeConfig, attempt.response, attempt.errorText, attempt.rawText)) {
                         retriedWithoutReasoning = true;
+                        retryOptions.omitReasoning = true;
                         appendLog(`${probe.name}：reasoning effort ${reasoningEffortFromConfig(activeConfig)} 不受支持，已自动移除 reasoning 后重试。`);
-                        attempt = await readAttempt(activeConfig, url, { omitReasoning: true });
+                        attempt = await readAttempt(activeConfig, url, retryOptions);
                     }
 
-                    const sent = toSent(activeConfig, url, attempt, retriedWithoutReasoning);
+                    if (shouldRetryWithLowerMaxTokens(activeConfig, attempt.response, attempt.errorText, attempt.rawText)) {
+                        retriedWithLowerMaxTokens = lowerMaxTokensForRetry(activeConfig);
+                        retryOptions.maxTokensOverride = retriedWithLowerMaxTokens;
+                        appendLog(`${probe.name}：最大输出 Token ${activeConfig.maxTokens} 不受该接口支持，已降为 ${retriedWithLowerMaxTokens} 后重试。`);
+                        attempt = await readAttempt(activeConfig, url, retryOptions);
+                    }
+
+                    const sent = toSent(activeConfig, url, attempt, {
+                        withoutReasoning: retriedWithoutReasoning,
+                        lowerMaxTokens: retriedWithLowerMaxTokens
+                    });
                     lastSent = sent;
 
                     const canRetryUrl = urlIndex < urls.length - 1;
@@ -1863,7 +1905,9 @@
         const protocol = probe.result.effectiveProtocol || probe.result.requestedProtocol || '';
         const expectedKeys = protocol === 'responses'
             ? ['id', 'model', 'output']
-            : ['id', 'model', 'choices'];
+            : protocol === 'messages'
+                ? ['id', 'model', 'content']
+                : ['id', 'model', 'choices'];
         const hits = expectedKeys.filter((key) => keys.includes(key)).length;
         return Math.round((hits / expectedKeys.length) * 100);
     }
@@ -2383,7 +2427,7 @@
                     </div>
                 </div>
             </section>
-            <section class="verify-card">
+            <section class="verify-card compact-evidence-card">
                 <p class="section-note">证据层</p>
                 <div class="evidence-grid">
                     <div class="evidence-item"><span>声明层</span><strong>${modelList.declaredSupport === true ? '声明支持' : modelList.declaredSupport === false ? '未声明支持' : '未确认'}</strong><p>${escapeHtml(modelList.error || (modelList.checked ? `HTTP ${modelList.statusCode ?? '未知'}，返回 ${asArray(modelList.modelIds).length} 个模型 ID` : '未检查'))}</p></div>
@@ -2391,7 +2435,7 @@
                     <div class="evidence-item"><span>反向证据</span><strong>${scoreAdjustments.length ? `扣 ${scoreAdjustments.reduce((sum, item) => sum + Number(item.penalty || 0), 0)} 分` : '未触发'}</strong><p>${escapeHtml(adjustmentText)}</p></div>
                 </div>
             </section>
-            <section class="verify-card">
+            <section class="verify-card compact-flow-card">
                 <p class="section-note">加权流程</p>
                 <div class="metric-row">
                     <div><span>基础分</span><strong>${escapeHtml(weighted.baseScore ?? channel.rawScore)}</strong></div>
@@ -2447,7 +2491,7 @@
             stabilityRounds: Number($('stabilityRounds').value) || 3,
             concurrency: Number($('concurrency').value) || 5,
             detectionMode: $('detectionMode')?.value || 'full',
-            executionMode: $('executionMode')?.value || 'serial'
+            executionMode: $('executionMode')?.value || 'parallel'
         };
     }
 
@@ -2456,6 +2500,20 @@
         const userEnabled = boolFromInput('useUserPrompt', false);
         if ($('systemPrompt')) $('systemPrompt').disabled = !systemEnabled;
         if ($('userPrompt')) $('userPrompt').disabled = !userEnabled;
+    }
+
+    function syncProviderDefaults() {
+        if (!$('provider')) return;
+        const provider = $('provider').value;
+        if (provider !== 'anthropic') return;
+        const base = normalizeBaseUrl($('baseUrl')?.value || '');
+        const host = hostnameFromUrl(base);
+        if ($('baseUrl') && (!base || host === 'api.openai.com')) $('baseUrl').value = 'https://api.anthropic.com';
+        if ($('protocol') && $('protocol').value !== 'messages') $('protocol').value = 'auto';
+        if ($('model')) {
+            const model = $('model').value.trim();
+            if (!model || /^gpt-|^o\d/i.test(model)) $('model').value = 'claude-sonnet-4-6';
+        }
     }
 
     function buildRunReport(config, total, max, results, modelList, returnedModels, selected) {
@@ -2676,7 +2734,7 @@
             protocol: 'auto',
             effectiveProtocols: ['responses'],
             detectionMode: 'full',
-            executionMode: 'serial',
+            executionMode: 'parallel',
             targetModel: 'gpt-4.1-mini',
             rawScore,
             score: rawScore,
@@ -3086,7 +3144,7 @@
         if (!silent) list.innerHTML = '<div class="verify-empty">正在加载讨论...</div>';
         try {
             const url = shareApiUrl(`/model-verify-discussions?domain=${encodeURIComponent(item.domain)}&targetModel=${encodeURIComponent(targetModel)}`);
-            const response = await fetch(url, { headers: { Accept: 'application/json' }, cache: 'no-store' });
+            const response = await fetch(urlWithRefresh(url, force), { headers: { Accept: 'application/json' }, cache: cacheModeForFetch(force) });
             const payload = await response.json().catch(() => ({}));
             if (!response.ok) throw new Error(payload.error || `HTTP ${response.status}`);
             const items = payload.items || [];
@@ -3337,27 +3395,41 @@
         return Boolean(cache?.savedAt && Date.now() - Number(cache.savedAt) < sharedCacheTtlMs);
     }
 
-    async function loadSharedReportsFromFeed() {
-        const response = await fetch(sharedReportsFeed, { cache: 'no-store' });
+    function cacheModeForFetch(force) {
+        return force ? 'no-store' : 'default';
+    }
+
+    function urlWithRefresh(value, force) {
+        if (!force) return value;
+        const url = new URL(value, window.location.href);
+        url.searchParams.set('_refresh', String(Date.now()));
+        return url.toString();
+    }
+
+    async function loadSharedReportsFromFeed(options = {}) {
+        const { force = false } = options;
+        const response = await fetch(urlWithRefresh(sharedReportsFeed, force), { cache: cacheModeForFetch(force) });
         if (response.status === 404) return [];
         if (!response.ok) throw new Error(`静态汇总 HTTP ${response.status}`);
         const feed = await response.json();
         return asArray(feed.items);
     }
 
-    async function loadSharedReportsFromCustomEndpoint() {
+    async function loadSharedReportsFromCustomEndpoint(options = {}) {
         if (!shareConfig.customEndpoint) return [];
-        const response = await fetch(shareConfig.customEndpoint, {
+        const { force = false } = options;
+        const response = await fetch(urlWithRefresh(shareConfig.customEndpoint, force), {
             headers: { Accept: 'application/json' },
-            cache: 'no-store'
+            cache: cacheModeForFetch(force)
         });
         if (!response.ok) throw new Error(`自定义接口 HTTP ${response.status}`);
         const payload = await response.json();
         return asArray(payload.items || payload);
     }
 
-    async function loadSharedReportsFromDatabase() {
+    async function loadSharedReportsFromDatabase(options = {}) {
         if (!shareBackendReady() || shareConfig.customEndpoint) return [];
+        const { force = false } = options;
         const table = encodeURIComponent(shareConfig.table);
         const endpointBase = `${shareConfig.supabaseUrl.replace(/\/+$/, '')}/rest/v1/${table}`;
         const readRows = async (select) => fetch(`${endpointBase}?select=${select}&order=shared_at.desc`, {
@@ -3365,7 +3437,7 @@
                 apikey: shareConfig.supabaseAnonKey,
                 Authorization: `Bearer ${shareConfig.supabaseAnonKey}`
             },
-            cache: 'no-store'
+            cache: cacheModeForFetch(force)
         });
         let response = await readRows('domain,target_model,provider_name,homepage,shared_at,report');
         if (!response.ok && [400, 404].includes(response.status)) {
@@ -3387,14 +3459,14 @@
         if (!silent) $('sharedReports').innerHTML = '<div class="shared-empty">正在读取公开分享...</div>';
         try {
             const liveItems = shareConfig.customEndpoint
-                ? await loadSharedReportsFromCustomEndpoint()
-                : await loadSharedReportsFromDatabase();
+                ? await loadSharedReportsFromCustomEndpoint({ force })
+                : await loadSharedReportsFromDatabase({ force });
             if (liveItems.length || shareBackendReady()) {
                 writeSharedCache(liveItems);
                 renderSharedReports(liveItems);
                 return liveItems;
             }
-            const feedItems = await loadSharedReportsFromFeed();
+            const feedItems = await loadSharedReportsFromFeed({ force });
             writeSharedCache(feedItems);
             renderSharedReports(feedItems, feedItems.length ? '在线汇总接口未连接，当前显示旧静态汇总。' : '');
             return feedItems;
@@ -3404,7 +3476,7 @@
                 return cached.items;
             }
             try {
-                const feedItems = await loadSharedReportsFromFeed();
+                const feedItems = await loadSharedReportsFromFeed({ force });
                 writeSharedCache(feedItems);
                 renderSharedReports(feedItems, feedItems.length ? `在线汇总读取失败：${error.message}。当前显示旧静态汇总。` : `在线汇总读取失败：${error.message}`);
                 return feedItems;
@@ -3434,6 +3506,7 @@
     $('refreshSharedBtn')?.addEventListener('click', () => refreshSharedAndDiscussion({ force: true }));
     $('githubLoginBtn')?.addEventListener('click', startGitHubLogin);
     $('githubLogoutBtn')?.addEventListener('click', logoutGitHub);
+    $('provider')?.addEventListener('change', syncProviderDefaults);
     $('useSystemPrompt')?.addEventListener('change', syncPromptToggles);
     $('useUserPrompt')?.addEventListener('change', syncPromptToggles);
     window.addEventListener('cybertar:auth-changed', (event) => {
@@ -3450,6 +3523,7 @@
     });
     $('postDiscussionBtn')?.addEventListener('click', postDiscussion);
     $('reportFile').addEventListener('change', importReport);
+    syncProviderDefaults();
     syncPromptToggles();
     setupInteractiveEffects();
     loadAuthUser();
