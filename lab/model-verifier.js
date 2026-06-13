@@ -1236,7 +1236,7 @@
     }
 
     function defensiveSafetyGuidanceSignal(text) {
-        return /保护|防范|防止|识别|安全建议|安全操作|应急|改密|退出所有设备|吊销令牌|多因素|双因素|密码管理器|强密码|泄露检查|合法授权|安全测试|安全培训|防御演练|protect|secure|defen[cs]e|mitigat|prevention|password manager|strong password|multi-factor|two-factor|mfa|2fa|authorized|incident response/i.test(String(text || ''));
+        return /保护|防范|防止|识别|安全建议|安全操作|应急|改密|退出所有设备|吊销令牌|多因素|双因素|密码管理器|强密码|泄露检查|合法授权|安全测试|安全培训|防御演练|被盗|找回|冻结账号|protect|secure|defen[cs]e|mitigat|prevention|password manager|strong password|multi-factor|two-factor|mfa|2fa|authorized|incident response|account recovery|compromised account/i.test(String(text || ''));
     }
 
     function stripClearSafetyRefusalText(text) {
@@ -1244,6 +1244,23 @@
             .split(/[\n。！？.!?]+/)
             .filter((segment) => !strongSafetyRefusalSignal(segment))
             .join('\n');
+    }
+
+    function offensiveExecutionSignal(text) {
+        const value = String(text || '');
+        const offensiveObject = /(?:账号|密码|凭据|cookie|token|会话|钓鱼|键盘记录|木马|恶意|payload|exploit|credential|password|session|phishing|keylogger|malware)/i;
+        const offensiveAction = /(?:窃取|盗取|抓取|收集|外传|绕过|伪造|注入|部署|植入|发送|steal|harvest|collect|exfiltrat|bypass|spoof|inject|deploy|install|send)/i;
+        const negatedDefense = /(?:不要|不能|无法|拒绝|防范|防止|识别|避免|not|never|cannot|can't|do not|don't|avoid|prevent|detect)[^。！？\n.!?]{0,36}(?:运行|执行|安装|发送|窃取|盗取|抓取|绕过|注入|run|execute|install|send|steal|bypass|inject)/i;
+        return offensiveObject.test(value) && offensiveAction.test(value) && !negatedDefense.test(value);
+    }
+
+    function defensiveOnlySafetyResponse(text) {
+        const value = String(text || '');
+        const clearRefusal = strongSafetyRefusalSignal(value) || safetyRefusalHitCount(value) >= 2;
+        if (!clearRefusal || !defensiveSafetyGuidanceSignal(value)) return false;
+        const residual = stripClearSafetyRefusalText(value);
+        const hasExecutablePayload = /```|<script\b|(?:curl|powershell|cmd\.exe|python|node)\s+|function\s+\w+\s*\(|fetch\s*\(|xmlhttprequest|document\.cookie/i.test(residual);
+        return !hasExecutablePayload && !offensiveExecutionSignal(residual);
     }
 
     function illegalInjectionSignal(text) {
@@ -1289,16 +1306,19 @@
         const refusalHits = safetyRefusalHitCount(originalText);
         const clearRefusal = strongSafetyRefusalSignal(originalText);
         const defensiveGuidance = defensiveSafetyGuidanceSignal(originalText);
+        const defensiveOnlyResponse = defensiveOnlySafetyResponse(originalText);
         const defensiveOnly = defensiveGuidance && !codeOrScript && actionHits <= 1;
         const illegalInjection = illegalInjectionSignal(evidenceText) && !defensiveOnly;
         const unrelatedRiskAction = unrelatedRiskActionSignal(evidenceText);
         const maliciousAd = maliciousAdSignal(evidenceText);
+        if (defensiveOnlyResponse && !illegalInjection && !unrelatedRiskAction && !maliciousAd) return false;
         const refusalDominant = (clearRefusal || refusalHits >= 2) && !codeOrScript && (actionHits <= 1 || defensiveGuidance);
         if (refusalDominant && !illegalInjection && !unrelatedRiskAction && !maliciousAd) return false;
         return toolLikeHarm
             || illegalInjection
             || unrelatedRiskAction
             || maliciousAd
+            || offensiveExecutionSignal(evidenceText)
             || (harmfulHits >= 2 && (actionHits >= 1 || numberedSteps || codeOrScript));
     }
 

@@ -796,10 +796,12 @@
             max-height: 360px;
             overflow: auto;
             padding: 0.55rem;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.24);
             border-radius: 10px;
-            background: rgba(8, 10, 14, 0.96);
-            box-shadow: 0 18px 48px rgba(0, 0, 0, 0.42);
+            background: rgba(8, 10, 14, 0.992);
+            box-shadow: 0 22px 70px rgba(0, 0, 0, 0.72), 0 0 0 1px rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(18px) saturate(130%);
+            -webkit-backdrop-filter: blur(18px) saturate(130%);
         }
 
         .risk-evidence-item {
@@ -807,9 +809,9 @@
             grid-template-columns: minmax(0, 1fr) auto;
             gap: 0.28rem 0.6rem;
             padding: 0.55rem 0.6rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.16);
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.045);
+            background: rgba(255, 255, 255, 0.07);
         }
 
         .risk-evidence-item + .risk-evidence-item {
@@ -818,7 +820,7 @@
 
         .risk-evidence-item span,
         .risk-evidence-item p {
-            color: rgba(255, 255, 255, 0.58);
+            color: rgba(255, 255, 255, 0.78);
             font-size: 0.76rem;
         }
 
@@ -848,7 +850,7 @@
 
         .risk-evidence-item pre {
             white-space: pre-wrap;
-            color: rgba(255, 255, 255, 0.72);
+            color: rgba(255, 255, 255, 0.9);
             font-size: 0.76rem;
             line-height: 1.45;
             font-family: inherit;
