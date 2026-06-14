@@ -11,7 +11,7 @@ const DEFAULT_ONLINE_TABLE = 'site_online_visitors';
 const DEFAULT_EDGE_CACHE_TTL_SECONDS = 3600;
 const DEFAULT_STALE_CACHE_TTL_SECONDS = 21600;
 const DEFAULT_SESSION_USER_CACHE_TTL_SECONDS = 300;
-const DEFAULT_ONLINE_WINDOW_SECONDS = 300;
+const DEFAULT_ONLINE_WINDOW_SECONDS = 1800;
 const MAX_MEMORY_CACHE_ENTRIES = 120;
 const MAX_SESSION_CACHE_ENTRIES = 400;
 const MODEL_PROXY_PATH = '/model-verify-proxy';
@@ -113,7 +113,7 @@ function sessionUserCacheTtlSeconds(env) {
 function onlineWindowSeconds(env) {
   const configured = Number(env.SITE_ONLINE_WINDOW_SECONDS || DEFAULT_ONLINE_WINDOW_SECONDS);
   if (!Number.isFinite(configured)) return DEFAULT_ONLINE_WINDOW_SECONDS;
-  return Math.max(60, Math.min(3600, Math.round(configured)));
+  return Math.max(60, Math.min(86400, Math.round(configured)));
 }
 
 function edgeCacheEnabled(env) {

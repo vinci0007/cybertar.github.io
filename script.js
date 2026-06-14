@@ -353,22 +353,23 @@ function scrollToSection(sectionId) {
             }
             .cybertar-site-stats {
                 position: fixed;
-                left: 1rem;
-                bottom: 1rem;
-                z-index: 1800;
+                top: 0.58rem;
+                right: 6.2rem;
+                z-index: 2100;
                 display: inline-flex;
                 align-items: center;
-                gap: 0.55rem;
-                padding: 0.48rem 0.68rem;
+                gap: 1.2rem;
+                padding: 0.54rem 0.82rem;
                 border: 1px solid rgba(255, 255, 255, 0.14);
                 border-radius: 999px;
                 background: rgba(8, 10, 16, 0.82);
-                color: rgba(255, 255, 255, 0.78);
+                color: rgba(255, 255, 255, 0.84);
                 box-shadow: 0 14px 40px rgba(0, 0, 0, 0.36), inset 0 0 16px rgba(124, 255, 0, 0.035);
                 backdrop-filter: blur(18px);
                 -webkit-backdrop-filter: blur(18px);
-                font-family: var(--font-primary, sans-serif);
-                font-size: 0.72rem;
+                font-family: var(--font-display, var(--font-primary, sans-serif));
+                font-size: 0.88rem;
+                font-weight: 800;
                 line-height: 1;
                 letter-spacing: 0;
             }
@@ -378,19 +379,21 @@ function scrollToSection(sectionId) {
             .cybertar-site-stats span {
                 display: inline-flex;
                 align-items: baseline;
-                gap: 0.26rem;
+                gap: 0.34rem;
                 white-space: nowrap;
             }
             .cybertar-site-stats strong {
                 color: #fff;
-                font-size: 0.82rem;
+                font-size: 1.02rem;
+                font-weight: 900;
             }
             .cybertar-site-stats i {
-                width: 0.42rem;
-                height: 0.42rem;
+                align-self: center;
+                width: 0.56rem;
+                height: 0.56rem;
                 border-radius: 999px;
                 background: #7cff00;
-                box-shadow: 0 0 12px rgba(124, 255, 0, 0.5);
+                box-shadow: 0 0 14px rgba(124, 255, 0, 0.68);
                 font-style: normal;
             }
             .cybertar-site-stats.is-offline {
@@ -413,11 +416,16 @@ function scrollToSection(sectionId) {
                     font-size: 0.72rem;
                 }
                 .cybertar-site-stats {
-                    left: 0.75rem;
-                    right: auto;
-                    bottom: 0.75rem;
-                    padding: 0.42rem 0.58rem;
-                    font-size: 0.68rem;
+                    top: 4.2rem;
+                    right: 0.75rem;
+                    bottom: auto;
+                    left: auto;
+                    gap: 0.78rem;
+                    padding: 0.46rem 0.62rem;
+                    font-size: 0.76rem;
+                }
+                .cybertar-site-stats strong {
+                    font-size: 0.9rem;
                 }
             }
             .cybertar-generated-header {
@@ -744,10 +752,7 @@ function scrollToSection(sectionId) {
         if (value === undefined || value === null || value === '') return '--';
         const number = Number(value || 0);
         if (!Number.isFinite(number)) return '--';
-        if (number >= 1000000) return `${(number / 1000000).toFixed(number >= 10000000 ? 0 : 1)}M`;
-        if (number >= 10000) return `${(number / 10000).toFixed(number >= 100000 ? 0 : 1)}W`;
-        if (number >= 1000) return `${(number / 1000).toFixed(number >= 10000 ? 0 : 1)}K`;
-        return String(Math.max(0, Math.round(number)));
+        return new Intl.NumberFormat('zh-CN').format(Math.max(0, Math.round(number)));
     }
 
     function siteVisitorId() {
@@ -765,16 +770,19 @@ function scrollToSection(sectionId) {
     }
 
     async function postSiteStats(eventName) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
         const response = await fetch(`${apiRoot}/site-stats`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
             cache: 'no-store',
+            signal: controller.signal,
             body: JSON.stringify({
                 event: eventName,
                 page: window.location.pathname,
                 visitorId: siteVisitorId()
             })
-        });
+        }).finally(() => clearTimeout(timeoutId));
         const payload = await response.json().catch(() => ({}));
         if (!response.ok || !payload.stats) throw new Error(payload.error || `HTTP ${response.status}`);
         return payload.stats;
@@ -816,7 +824,7 @@ function scrollToSection(sectionId) {
         };
 
         refresh('view');
-        setInterval(() => refresh('heartbeat'), 60000);
+        setInterval(() => refresh('heartbeat'), 15000);
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) refresh('heartbeat');
         });
