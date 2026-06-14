@@ -384,10 +384,44 @@
             gap: 0.7rem;
             margin-top: 0.9rem;
             max-height: 52vh;
-            overflow-y: scroll;
+            overflow-y: auto;
             overflow-x: hidden;
             scrollbar-gutter: stable;
             padding: 0.12rem 0.45rem 0.3rem 0.12rem;
+            scrollbar-width: none;
+            scrollbar-color: rgba(124, 255, 0, 0) transparent;
+            overscroll-behavior: contain;
+        }
+
+        .shared-list:hover,
+        .shared-list.is-scrolling {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(124, 255, 0, 0.36) rgba(8, 12, 16, 0.52);
+        }
+
+        .shared-list::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+
+        .shared-list:hover::-webkit-scrollbar,
+        .shared-list.is-scrolling::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .shared-list::-webkit-scrollbar-track {
+            background: rgba(8, 12, 16, 0.52);
+            border-radius: 999px;
+        }
+
+        .shared-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(124, 255, 0, 0.42), rgba(255, 56, 79, 0.28));
+            border: 2px solid rgba(8, 12, 16, 0.52);
+            border-radius: 999px;
+        }
+
+        .shared-list::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, rgba(124, 255, 0, 0.6), rgba(255, 56, 79, 0.4));
         }
 
         .shared-item {
@@ -1999,7 +2033,7 @@
 
     <script src="../script.js?v=2026061406"></script>
     <script src="model-verify-share-config.js?v=20260606"></script>
-    <script src="model-verifier.js?v=2026061503"></script>
+    <script src="model-verifier.js?v=2026061504"></script>
 </body>
 
 </html>

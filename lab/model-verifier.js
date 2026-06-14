@@ -2968,6 +2968,21 @@
         });
     }
 
+    function setupSharedListScrollbar() {
+        const list = $('sharedReports');
+        if (!list) return;
+        let hideTimer = 0;
+        const showScrollbar = () => {
+            list.classList.add('is-scrolling');
+            window.clearTimeout(hideTimer);
+            hideTimer = window.setTimeout(() => {
+                list.classList.remove('is-scrolling');
+            }, 850);
+        };
+        list.addEventListener('scroll', showScrollbar, { passive: true });
+        list.addEventListener('wheel', showScrollbar, { passive: true });
+    }
+
     function truncateText(value, maxLength = 800) {
         const text = String(value ?? '');
         return text.length > maxLength ? `${text.slice(0, maxLength)}\n...[truncated]` : text;
@@ -3919,6 +3934,7 @@
     syncProviderDefaults();
     syncPromptToggles();
     setupInteractiveEffects();
+    setupSharedListScrollbar();
     loadAuthUser();
     document.querySelectorAll('.page-tab[data-page]').forEach((button) => {
         button.addEventListener('click', () => {
