@@ -16,6 +16,7 @@ function scrollToSection(sectionId) {
     const tokenExpiresKey = 'cybertar:model-verifier:auth-token-expires-at:v1';
     const userKey = 'cybertar:model-verifier:auth-user:v1';
     const tokenTtlMs = 24 * 60 * 60 * 1000;
+    let verifiedUser = null;
 
     function siteBaseUrl() {
         const script = document.currentScript || [...document.scripts].find((item) => /(?:^|\/)script\.js(?:\?|$)/.test(item.src || ''));
@@ -55,6 +56,7 @@ function scrollToSection(sectionId) {
         localStorage.removeItem(tokenKey);
         localStorage.removeItem(tokenExpiresKey);
         localStorage.removeItem(userKey);
+        verifiedUser = null;
     }
 
     function storedUser() {
@@ -106,11 +108,12 @@ function scrollToSection(sectionId) {
             }).catch(() => null);
         }
         clearToken();
-        window.dispatchEvent(new CustomEvent('cybertar:auth-changed', { detail: { user: null } }));
+        window.dispatchEvent(new CustomEvent('cybertar:auth-changed', { detail: { user: null, verified: true } }));
     }
 
     async function loadUser() {
         const token = storedToken();
+        verifiedUser = null;
         if (!token) return null;
         try {
             const response = await fetch(`${apiRoot}/model-verify-auth/me`, {
@@ -122,10 +125,12 @@ function scrollToSection(sectionId) {
                 clearToken();
                 return null;
             }
+            verifiedUser = payload.user;
             saveUser(payload.user);
             return payload.user;
         } catch {
-            return storedUser();
+            saveUser(null);
+            return null;
         }
     }
 
@@ -669,13 +674,11 @@ function scrollToSection(sectionId) {
         });
 
         parseAuthRedirect();
-        const cachedUser = storedToken() ? storedUser() : null;
-        if (cachedUser) render(cachedUser);
         loadUser().then((user) => {
             render(user);
             if (user) saveUser(user);
-            window.dispatchEvent(new CustomEvent('cybertar:auth-ready', { detail: { user } }));
-            window.dispatchEvent(new CustomEvent('cybertar:auth-changed', { detail: { user } }));
+            window.dispatchEvent(new CustomEvent('cybertar:auth-ready', { detail: { user, verified: true } }));
+            window.dispatchEvent(new CustomEvent('cybertar:auth-changed', { detail: { user, verified: true } }));
         });
     }
 
@@ -686,7 +689,8 @@ function scrollToSection(sectionId) {
         userKey,
         tokenTtlMs,
         getToken: storedToken,
-        getUser: storedUser,
+        getUser: () => verifiedUser,
+        getCachedUser: storedUser,
         saveToken,
         saveUser,
         clearToken,

@@ -3580,12 +3580,13 @@
     $('useSystemPrompt')?.addEventListener('change', syncPromptToggles);
     $('useUserPrompt')?.addEventListener('change', syncPromptToggles);
     window.addEventListener('cybertar:auth-changed', (event) => {
+        if (!event.detail?.verified) return;
         authUser = event.detail?.user || null;
         authToken = window.CyberTARAuth?.getToken?.() || '';
         updateAuthUi();
     });
     window.addEventListener('cybertar:auth-ready', (event) => {
-        if (event.detail?.user) {
+        if (event.detail?.verified && event.detail?.user) {
             authUser = event.detail.user;
             authToken = window.CyberTARAuth?.getToken?.() || authToken;
             updateAuthUi();
