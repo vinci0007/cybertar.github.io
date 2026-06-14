@@ -150,6 +150,7 @@ function scrollToSection(sectionId) {
                 background: transparent;
             }
             .header.cybertar-auth-dock {
+                position: fixed;
                 display: flex;
                 align-items: center;
                 gap: 1rem;
@@ -178,6 +179,7 @@ function scrollToSection(sectionId) {
             }
             .nav.cybertar-auth-mobile-dock {
                 justify-content: flex-start;
+                position: relative;
             }
             .nav.cybertar-auth-mobile-dock .logo {
                 margin-right: auto;
@@ -189,15 +191,19 @@ function scrollToSection(sectionId) {
                 z-index: 1001;
             }
             .header.cybertar-auth-dock > .cybertar-site-stats {
-                position: static;
+                position: absolute;
+                top: 72px;
+                right: 0;
                 margin-top: 0;
-                flex: 0 0 auto;
+                flex: none;
                 order: -2;
             }
             .nav.cybertar-auth-mobile-dock > .cybertar-site-stats {
-                position: static;
-                margin-left: auto;
-                flex: 0 0 auto;
+                position: absolute;
+                top: calc(100% + 12px);
+                right: 0.75rem;
+                margin-left: 0;
+                flex: none;
                 z-index: 1001;
             }
             .nav.cybertar-auth-mobile-dock > .cybertar-site-stats + .cybertar-auth-widget {
@@ -369,8 +375,8 @@ function scrollToSection(sectionId) {
             }
             .cybertar-site-stats {
                 position: fixed;
-                top: calc(2rem + 9px);
-                right: 11.5rem;
+                top: calc(2rem + 72px);
+                right: 2rem;
                 z-index: 2100;
                 display: inline-flex;
                 align-items: center;
@@ -433,6 +439,8 @@ function scrollToSection(sectionId) {
                     font-size: 0.72rem;
                 }
                 .cybertar-site-stats {
+                    top: 4.85rem;
+                    right: 0.75rem;
                     gap: 0.92rem;
                     min-height: 38px;
                     padding: 0.42rem 0.68rem;
