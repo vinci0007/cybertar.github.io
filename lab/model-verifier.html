@@ -1281,6 +1281,7 @@
         .raw-json {
             white-space: pre-wrap;
             word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         .probe-preview-output {
@@ -1312,9 +1313,72 @@
         }
 
         .raw-json {
-            max-height: 520px;
+            max-height: min(76vh, 980px);
             overflow: auto;
             color: rgba(255, 255, 255, 0.74);
+        }
+
+        .json-tree {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+            font-size: 0.82rem;
+            line-height: 1.55;
+        }
+
+        .json-node,
+        .json-leaf {
+            margin: 0.12rem 0;
+        }
+
+        .json-node summary {
+            cursor: pointer;
+            list-style: disclosure-closed;
+            border-radius: 6px;
+            padding: 0.12rem 0.32rem;
+        }
+
+        .json-node[open] > summary {
+            list-style: disclosure-open;
+            background: rgba(255, 255, 255, 0.055);
+        }
+
+        .json-node summary::-webkit-details-marker {
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .json-children {
+            margin-left: 1.05rem;
+            padding-left: 0.72rem;
+            border-left: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .json-leaf {
+            padding-left: 1.35rem;
+        }
+
+        .json-key {
+            color: #9ee7ff;
+            margin-right: 0.35rem;
+        }
+
+        .json-type {
+            color: rgba(255, 255, 255, 0.48);
+        }
+
+        .json-value {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .json-string {
+            color: #b9f6ca;
+        }
+
+        .json-number,
+        .json-boolean {
+            color: #ffd98a;
+        }
+
+        .json-null {
+            color: rgba(255, 255, 255, 0.46);
         }
 
         .modal {
@@ -1575,7 +1639,7 @@
                         <pre id="logView" class="log-view">等待运行...</pre>
                     </div>
                     <div id="rawPanel" class="tab-panel">
-                        <pre id="rawView" class="verify-empty raw-json">暂无 JSON 报告。</pre>
+                        <div id="rawView" class="verify-empty raw-json json-tree">暂无 JSON 报告。</div>
                     </div>
                 </section>
             </section>
@@ -1643,7 +1707,7 @@
 
     <script src="../script.js?v=2026061401"></script>
     <script src="model-verify-share-config.js?v=20260606"></script>
-    <script src="model-verifier.js?v=2026061401"></script>
+    <script src="model-verifier.js?v=2026061402"></script>
 </body>
 
 </html>

@@ -339,6 +339,33 @@
         return Math.max(min, Math.min(max, Number(value) || 0));
     }
 
+    function jsonNodeSummary(key, value) {
+        const keyHtml = key === '' ? '' : `<span class="json-key">${escapeHtml(key)}:</span>`;
+        if (Array.isArray(value)) return `${keyHtml}<span class="json-type">Array(${value.length})</span>`;
+        const size = value && typeof value === 'object' ? Object.keys(value).length : 0;
+        return `${keyHtml}<span class="json-type">Object(${size})</span>`;
+    }
+
+    function renderJsonValue(value) {
+        if (value === null) return '<span class="json-null">null</span>';
+        if (typeof value === 'string') return `<span class="json-value json-string">"${escapeHtml(value)}"</span>`;
+        if (typeof value === 'number') return `<span class="json-value json-number">${escapeHtml(value)}</span>`;
+        if (typeof value === 'boolean') return `<span class="json-value json-boolean">${escapeHtml(value)}</span>`;
+        return `<span class="json-value">${escapeHtml(String(value))}</span>`;
+    }
+
+    function renderJsonTree(value, key = '') {
+        if (!value || typeof value !== 'object') {
+            const keyHtml = key === '' ? '' : `<span class="json-key">${escapeHtml(key)}:</span>`;
+            return `<div class="json-leaf">${keyHtml}${renderJsonValue(value)}</div>`;
+        }
+        const entries = Array.isArray(value) ? value.map((item, index) => [String(index), item]) : Object.entries(value);
+        const children = entries.length
+            ? entries.map(([childKey, childValue]) => renderJsonTree(childValue, childKey)).join('')
+            : '<div class="json-leaf"><span class="json-type">empty</span></div>';
+        return `<details class="json-node"><summary>${jsonNodeSummary(key, value)}</summary><div class="json-children">${children}</div></details>`;
+    }
+
     function compactErrorMessage(payload, rawText = '') {
         const message = payload?.error?.message || payload?.message || rawText;
         const code = payload?.error?.code || payload?.code || payload?.error?.type || '';
@@ -1536,6 +1563,25 @@
                     returnedModel: attempt.response.ok ? extractModel(payload) : '',
                     preview: preview.slice(0, config.includePreview ? 1600 : 260),
                     error: errorText,
+                    request: {
+                        method: 'POST',
+                        url,
+                        body: attempt.jsonBody
+                    },
+                    response: {
+                        ok: attempt.response.ok,
+                        status: attempt.response.status,
+                        statusText: attempt.response.statusText || '',
+                        url: attempt.response.url || '',
+                        headers: safeResponseHeaderSnapshot(attempt.response),
+                        bodyText: attempt.rawText,
+                        json: payload
+                    },
+                    requestBody: attempt.jsonBody,
+                    responseBodyText: attempt.rawText,
+                    responseHeaders: safeResponseHeaderSnapshot(attempt.response),
+                    requestAudit: buildRequestAudit(activeConfig, url, attempt.jsonBody, attempt.response, 'POST'),
+                    fullResponseText: attempt.rawText,
                     rawPreview: rawText.slice(0, 1600),
                     streamDetected,
                     toolCallDetected: extractToolCall(payload),
@@ -1548,7 +1594,6 @@
                     requestedProtocol: config.protocol,
                     effectiveProtocol: activeConfig.protocol,
                     requestUrl: url,
-                    requestAudit: buildRequestAudit(activeConfig, url, attempt.jsonBody, attempt.response, 'POST'),
                     protocolFallback: fallbackTrail.length > 0,
                     protocolFallbackReason: fallbackTrail.join(' -> ')
                 }
@@ -2161,6 +2206,18 @@
         return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
     }
 
+    function fullResultText(result) {
+        return String(
+            result?.response?.bodyText ||
+            result?.responseBodyText ||
+            result?.rawResponseText ||
+            result?.rawPreview ||
+            result?.preview ||
+            result?.error ||
+            ''
+        );
+    }
+
     function probePercentText(probe) {
         const max = Number(probe.maxScore || 0);
         if (!max) return '报告项';
@@ -2201,8 +2258,8 @@
             `耗时 ${result.latencyMs ?? 0} ms`,
             `返回模型 ${result.returnedModel || '未返回'}`,
             asArray(audit.auditWarnings).length ? `链路警告 ${asArray(audit.auditWarnings).join('；')}` : '',
-            asArray(probe.notes).length ? `说明 ${compactInline(asArray(probe.notes).join('；'), 220)}` : '',
-            result.preview || result.error ? `摘要 ${compactInline(result.preview || result.error, 220)}` : ''
+            asArray(probe.notes).length ? `说明 ${asArray(probe.notes).join('；')}` : '',
+            fullResultText(result) ? `完整返回\n${fullResultText(result)}` : ''
         ]);
     }
 
@@ -2285,7 +2342,8 @@
         currentReport = report;
         $('downloadBtn').disabled = false;
         $('shareBtn').disabled = false;
-        $('rawView').textContent = JSON.stringify(report, null, 2);
+        $('rawView').classList.remove('verify-empty');
+        $('rawView').innerHTML = renderJsonTree(report, 'report');
         updateStats(report);
         const reportView = $('reportView');
         reportView.classList.remove('verify-empty');
@@ -2917,7 +2975,7 @@
         if (!value || typeof value !== 'object') return typeof value === 'string' ? truncateText(value) : value;
         return Object.fromEntries(Object.entries(value).map(([key, item]) => {
             if (/api.?key|authorization|x-api-key|secret|token/i.test(key)) return [key, '[redacted]'];
-            if (key === 'rawPreview') return [key, undefined];
+            if (['rawPreview', 'request', 'response', 'requestBody', 'responseBodyText', 'responseHeaders', 'fullResponseText', 'rawResponseText'].includes(key)) return [key, undefined];
             if (key === 'preview' || key === 'error') return [key, truncateText(item, 700)];
             if (key === 'modelIds' && Array.isArray(item)) return [key, item.slice(0, 80)];
             return [key, walkAndRedact(item)];
