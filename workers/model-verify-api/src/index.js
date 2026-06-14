@@ -1,4 +1,5 @@
 import { Client } from 'pg';
+import { DurableObject } from 'cloudflare:workers';
 
 const DEFAULT_MAX_REPORT_BYTES = 120000;
 const DEFAULT_TABLE = 'model_verify_reports';
@@ -42,10 +43,9 @@ const siteStatsMemory = {
   syncedAt: 0
 };
 
-export class SiteStatsCounter {
+export class SiteStatsCounter extends DurableObject {
   constructor(ctx, env) {
-    this.ctx = ctx;
-    this.env = env;
+    super(ctx, env);
     ctx.blockConcurrencyWhile(async () => {
       this.ctx.storage.sql.exec(`
         create table if not exists stats (
