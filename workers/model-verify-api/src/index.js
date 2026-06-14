@@ -42,6 +42,145 @@ const siteStatsMemory = {
   syncedAt: 0
 };
 
+export class SiteStatsCounter {
+  constructor(ctx, env) {
+    this.ctx = ctx;
+    this.env = env;
+    ctx.blockConcurrencyWhile(async () => {
+      this.ctx.storage.sql.exec(`
+        create table if not exists stats (
+          stat_key text primary key,
+          total_visits integer not null default 0,
+          db_total integer not null default 0,
+          pending_visits integer not null default 0,
+          seeded_at integer not null default 0,
+          updated_at integer not null default 0
+        )
+      `);
+      this.ctx.storage.sql.exec(`
+        insert or ignore into stats (stat_key, total_visits, db_total, pending_visits, seeded_at, updated_at)
+        values ('global', 0, 0, 0, 0, ?)
+      `, Date.now());
+      this.ctx.storage.sql.exec(`
+        create table if not exists online_visitors (
+          visitor_id text primary key,
+          page_path text not null default '/',
+          last_seen_at integer not null
+        )
+      `);
+      this.ctx.storage.sql.exec(`create index if not exists online_visitors_seen_idx on online_visitors (last_seen_at)`);
+    });
+  }
+
+  pruneOnlineVisitors() {
+    const cutoff = Date.now() - onlineWindowSeconds(this.env) * 1000;
+    this.ctx.storage.sql.exec(`delete from online_visitors where last_seen_at < ?`, cutoff);
+  }
+
+  statsRow() {
+    return this.ctx.storage.sql.exec(`
+      select total_visits, db_total, pending_visits, seeded_at, updated_at
+      from stats
+      where stat_key = 'global'
+    `).one();
+  }
+
+  snapshot(source = 'durable_object') {
+    this.pruneOnlineVisitors();
+    const row = this.statsRow();
+    const online = this.ctx.storage.sql.exec(`select count(*) as count from online_visitors`).one();
+    const totalVisits = Math.max(0, Math.round(Number(row?.total_visits || 0)));
+    return {
+      totalVisits,
+      totalVisitCount: totalVisits,
+      onlineVisitors: Math.max(0, Math.round(Number(online?.count || 0))),
+      onlineWindowSeconds: onlineWindowSeconds(this.env),
+      updatedAt: row?.updated_at ? new Date(Number(row.updated_at)).toISOString() : new Date().toISOString(),
+      source,
+      durableSeeded: Boolean(Number(row?.seeded_at || 0)),
+      pendingVisits: Math.max(0, Math.round(Number(row?.pending_visits || 0)))
+    };
+  }
+
+  async getStats() {
+    return this.snapshot();
+  }
+
+  async touch(input = {}) {
+    const now = Date.now();
+    if (String(input.event || 'view') === 'view') {
+      this.ctx.storage.sql.exec(`
+        update stats
+        set total_visits = total_visits + 1,
+            pending_visits = pending_visits + 1,
+            updated_at = ?
+        where stat_key = 'global'
+      `, now);
+    } else {
+      this.ctx.storage.sql.exec(`update stats set updated_at = ? where stat_key = 'global'`, now);
+    }
+    const visitorId = String(input.visitorId || '').slice(0, 128);
+    if (visitorId) {
+      const pagePath = normalizePagePath(input.pagePath || '/').slice(0, 300);
+      this.ctx.storage.sql.exec(`
+        insert into online_visitors (visitor_id, page_path, last_seen_at)
+        values (?, ?, ?)
+        on conflict(visitor_id) do update set
+          page_path = excluded.page_path,
+          last_seen_at = excluded.last_seen_at
+      `, visitorId, pagePath, now);
+    }
+    return this.snapshot();
+  }
+
+  async seedDatabaseTotal(input = {}) {
+    const dbTotal = Math.max(0, Math.round(Number(input.totalVisits || input.totalVisitCount || 0)));
+    const now = Date.now();
+    const row = this.statsRow();
+    const wasSeeded = Boolean(Number(row?.seeded_at || 0));
+    const pending = Math.max(0, Math.round(Number(row?.pending_visits || 0)));
+    let totalVisits;
+    let pendingVisits = pending;
+    if (!wasSeeded) {
+      totalVisits = Math.max(Math.round(Number(row?.total_visits || 0)), dbTotal + pending);
+    } else if (dbTotal >= Number(row?.total_visits || 0)) {
+      totalVisits = dbTotal;
+      pendingVisits = 0;
+    } else {
+      totalVisits = Math.max(Math.round(Number(row?.total_visits || 0)), dbTotal + pending);
+    }
+    this.ctx.storage.sql.exec(`
+      update stats
+      set total_visits = ?,
+          db_total = max(db_total, ?),
+          pending_visits = ?,
+          seeded_at = case when seeded_at = 0 then ? else seeded_at end,
+          updated_at = ?
+      where stat_key = 'global'
+    `, totalVisits, dbTotal, pendingVisits, now, now);
+    return this.snapshot('database_seeded_durable_object');
+  }
+
+  async markDatabasePersisted(input = {}) {
+    const persistedTotal = Math.max(0, Math.round(Number(input.totalVisits || input.totalVisitCount || 0)));
+    const row = this.statsRow();
+    const currentTotal = Math.max(0, Math.round(Number(row?.total_visits || 0)));
+    if (persistedTotal >= currentTotal) {
+      const now = Date.now();
+      this.ctx.storage.sql.exec(`
+        update stats
+        set total_visits = ?,
+            db_total = ?,
+            pending_visits = 0,
+            seeded_at = case when seeded_at = 0 then ? else seeded_at end,
+            updated_at = ?
+        where stat_key = 'global'
+      `, persistedTotal, persistedTotal, now, now);
+    }
+    return this.snapshot('database_persisted_durable_object');
+  }
+}
+
 function nowMs() {
   return typeof performance !== 'undefined' && typeof performance.now === 'function' ? performance.now() : Date.now();
 }
@@ -634,6 +773,52 @@ async function touchSiteStatsMemory(env, request, payload, options = {}) {
   return siteStatsMemorySnapshot(env);
 }
 
+function siteStatsCounterStub(env) {
+  return env.SITE_STATS_COUNTER?.getByName?.('global');
+}
+
+async function durableSiteStatsSnapshot(env) {
+  const stub = siteStatsCounterStub(env);
+  if (!stub) return siteStatsMemorySnapshot(env);
+  return stub.getStats();
+}
+
+async function seedDurableSiteStats(env, stats) {
+  const stub = siteStatsCounterStub(env);
+  if (!stub) return stats;
+  const seeded = await stub.seedDatabaseTotal({
+    totalVisits: stats?.totalVisits,
+    totalVisitCount: stats?.totalVisitCount
+  });
+  syncSiteStatsMemory(env, seeded);
+  return seeded;
+}
+
+async function markDurableSiteStatsPersisted(env, stats) {
+  const stub = siteStatsCounterStub(env);
+  if (!stub) return stats;
+  const persisted = await stub.markDatabasePersisted({
+    totalVisits: stats?.totalVisits,
+    totalVisitCount: stats?.totalVisitCount
+  });
+  syncSiteStatsMemory(env, persisted);
+  return persisted;
+}
+
+async function touchDurableSiteStats(env, request, payload) {
+  const rawVisitorId = visitorIdFromRequest(request, payload) || `${clientIp(request)}:${request.headers.get('user-agent') || ''}`;
+  const visitorId = await sha256(rawVisitorId);
+  const stub = siteStatsCounterStub(env);
+  if (!stub) return touchSiteStatsMemory(env, request, payload);
+  const stats = await stub.touch({
+    event: String(payload?.event || 'view'),
+    pagePath: normalizePagePath(payload?.page || payload?.path || '/').slice(0, 300),
+    visitorId
+  });
+  syncSiteStatsMemory(env, stats);
+  return stats;
+}
+
 function walkAndRedact(value) {
   if (Array.isArray(value)) return value.map(walkAndRedact);
   if (!value || typeof value !== 'object') return typeof value === 'string' ? cleanText(value, 1200) : value;
@@ -1207,6 +1392,70 @@ async function recordSiteVisit(client, env, request, payload, options = {}) {
   }
 }
 
+async function mirrorSiteStatsSnapshot(client, env, request, payload, stats) {
+  const statsTable = quoteIdent(env.SITE_STATS_TABLE || DEFAULT_STATS_TABLE);
+  const onlineTable = quoteIdent(env.SITE_ONLINE_TABLE || DEFAULT_ONLINE_TABLE);
+  const totalVisits = Math.max(0, Math.round(Number(stats?.totalVisits || stats?.totalVisitCount || 0)));
+  return withStatementTimeout(client, env.SITE_STATS_QUERY_TIMEOUT_MS || 5000, async () => {
+    const result = await client.query(`
+      insert into ${statsTable} as current_stats (stat_key, total_count, updated_at)
+      values ('global', $1, now())
+      on conflict (stat_key) do update
+        set total_count = case
+              when current_stats.total_count < excluded.total_count then excluded.total_count
+              else current_stats.total_count
+            end,
+            updated_at = now()
+      returning total_count
+    `, [totalVisits]);
+    if (request && payload) {
+      const rawVisitorId = visitorIdFromRequest(request, payload) || `${clientIp(request)}:${request.headers.get('user-agent') || ''}`;
+      const visitorId = await sha256(rawVisitorId);
+      const pagePath = normalizePagePath(payload?.page || payload?.path || '/').slice(0, 300);
+      await client.query(`
+        upsert into ${onlineTable} (visitor_id, page_path, first_seen_at, last_seen_at)
+        values ($1, $2, now(), now())
+        on conflict (visitor_id) do update
+          set page_path = excluded.page_path,
+              last_seen_at = now()
+      `, [visitorId, pagePath]);
+    }
+    const persistedTotal = Number(result.rows[0]?.total_count || totalVisits);
+    return {
+      ...stats,
+      totalVisits: persistedTotal,
+      totalVisitCount: persistedTotal,
+      updatedAt: new Date().toISOString(),
+      source: 'database_mirrored_durable_object'
+    };
+  });
+}
+
+async function bootstrapDurableSiteStatsFromDatabase(env) {
+  const snapshot = await durableSiteStatsSnapshot(env);
+  if (snapshot.durableSeeded && snapshot.pendingVisits <= 0) return snapshot;
+  return withClient(env, async (client) => {
+    const databaseStats = await siteStatsWithTableRepair(client, env, () => readSiteStats(client, env));
+    return seedDurableSiteStats(env, databaseStats);
+  });
+}
+
+async function mirrorDurableSiteStatsToDatabase(env, request = null, payload = null, currentStats = null) {
+  let stats = currentStats || await durableSiteStatsSnapshot(env);
+  if (!stats.durableSeeded || Number(stats.pendingVisits || 0) > 0) {
+    try {
+      stats = await bootstrapDurableSiteStatsFromDatabase(env);
+    } catch {
+      return stats;
+    }
+  }
+  if (!stats.durableSeeded) return stats;
+  return withClient(env, async (client) => {
+    const mirrored = await siteStatsWithTableRepair(client, env, () => mirrorSiteStatsSnapshot(client, env, request, payload, stats));
+    return markDurableSiteStatsPersisted(env, mirrored);
+  });
+}
+
 async function requireAdmin(client, env, request, payload = {}) {
   const user = await userFromSession(client, env, request);
   if (user?.role === 'admin') return user;
@@ -1647,27 +1896,24 @@ export default {
 
       if (pathname === SITE_STATS_PATH) {
         if (request.method === 'GET') {
-          const statsPromise = withClient(env, async (client) => {
-            return siteStatsWithTableRepair(client, env, () => readSiteStats(client, env));
-          });
-          ctx?.waitUntil?.(withTimeout(statsPromise, siteStatsResponseTimeoutMs(env), 'site stats read timed out').catch(() => null));
-          const stats = siteStatsMemory.syncedAt
-            ? siteStatsMemorySnapshot(env)
-            : await withTimeout(statsPromise, siteStatsInitialSyncTimeoutMs(env), 'initial site stats sync timed out')
-              .catch(() => siteStatsMemorySnapshot(env));
+          const fallbackStats = await durableSiteStatsSnapshot(env).catch(() => siteStatsMemorySnapshot(env));
+          const needsSync = !fallbackStats.durableSeeded || Number(fallbackStats.pendingVisits || 0) > 0;
+          const syncPromise = mirrorDurableSiteStatsToDatabase(env);
+          ctx?.waitUntil?.(withTimeout(syncPromise, siteStatsResponseTimeoutMs(env), 'site stats mirror timed out').catch(() => null));
+          const stats = needsSync
+            ? await withTimeout(syncPromise, siteStatsInitialSyncTimeoutMs(env), 'initial site stats mirror timed out').catch(() => fallbackStats)
+            : fallbackStats;
           return json({ ok: true, stats }, { headers: corsHeaders(request, env) });
         }
         if (request.method === 'POST') {
           const payload = await request.json().catch(() => ({}));
-          const fallbackStats = await touchSiteStatsMemory(env, request, payload);
-          const statsPromise = withClient(env, async (client) => {
-            return siteStatsWithTableRepair(client, env, () => recordSiteVisit(client, env, request, payload, { touchMemory: false }));
-          });
-          ctx?.waitUntil?.(withTimeout(statsPromise, siteStatsResponseTimeoutMs(env), 'site stats write timed out').catch(() => null));
-          const stats = siteStatsMemory.syncedAt
-            ? fallbackStats
-            : await withTimeout(statsPromise, siteStatsInitialSyncTimeoutMs(env), 'initial site stats write sync timed out')
-              .catch(() => fallbackStats);
+          const beforeStats = await durableSiteStatsSnapshot(env).catch(() => siteStatsMemorySnapshot(env));
+          if (!beforeStats.durableSeeded) {
+            await withTimeout(bootstrapDurableSiteStatsFromDatabase(env), siteStatsInitialSyncTimeoutMs(env), 'initial site stats bootstrap timed out').catch(() => null);
+          }
+          const stats = await touchDurableSiteStats(env, request, payload).catch(() => touchSiteStatsMemory(env, request, payload));
+          const syncPromise = mirrorDurableSiteStatsToDatabase(env, request, payload, stats);
+          ctx?.waitUntil?.(withTimeout(syncPromise, siteStatsResponseTimeoutMs(env), 'site stats mirror timed out').catch(() => null));
           return json({ ok: true, stats }, { headers: corsHeaders(request, env) });
         }
         return errorResponse(request, env, 405, 'method not allowed');

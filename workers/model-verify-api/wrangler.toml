@@ -31,6 +31,14 @@ MODEL_VERIFY_SKIP_READ_SCHEMA_ENSURE = "true"
 binding = "HYPERDRIVE"
 id = "380fd0a06c23477dac339d358e8c7f86"
 
+[[durable_objects.bindings]]
+name = "SITE_STATS_COUNTER"
+class_name = "SiteStatsCounter"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["SiteStatsCounter"]
+
 # Recommended for Cockroach Cloud:
 # 1. Create a Hyperdrive config:
 #    npx wrangler hyperdrive create cybertar-model-verify-db --connection-string="postgresql://..."
