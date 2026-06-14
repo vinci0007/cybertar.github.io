@@ -38,7 +38,8 @@ const sessionUserCache = new Map();
 const siteStatsMemory = {
   totalVisits: 0,
   onlineVisitors: new Map(),
-  updatedAt: 0
+  updatedAt: 0,
+  syncedAt: 0
 };
 
 function nowMs() {
@@ -113,6 +114,12 @@ function siteStatsResponseTimeoutMs(env) {
   const configured = Number(env.SITE_STATS_RESPONSE_TIMEOUT_MS || 1200);
   if (!Number.isFinite(configured)) return 1200;
   return Math.max(250, Math.min(5000, Math.round(configured)));
+}
+
+function siteStatsInitialSyncTimeoutMs(env) {
+  const configured = Number(env.SITE_STATS_INITIAL_SYNC_TIMEOUT_MS || 900);
+  if (!Number.isFinite(configured)) return 900;
+  return Math.max(150, Math.min(3000, Math.round(configured)));
 }
 
 function sessionUserCacheTtlSeconds(env) {
@@ -606,6 +613,7 @@ function syncSiteStatsMemory(env, stats) {
     siteStatsMemory.totalVisits = Math.max(siteStatsMemory.totalVisits, Math.round(totalVisits));
   }
   siteStatsMemory.updatedAt = Date.now();
+  siteStatsMemory.syncedAt = Date.now();
   return {
     ...siteStatsMemorySnapshot(env),
     ...stats,
@@ -1643,7 +1651,10 @@ export default {
             return siteStatsWithTableRepair(client, env, () => readSiteStats(client, env));
           });
           ctx?.waitUntil?.(withTimeout(statsPromise, siteStatsResponseTimeoutMs(env), 'site stats read timed out').catch(() => null));
-          const stats = siteStatsMemorySnapshot(env);
+          const stats = siteStatsMemory.syncedAt
+            ? siteStatsMemorySnapshot(env)
+            : await withTimeout(statsPromise, siteStatsInitialSyncTimeoutMs(env), 'initial site stats sync timed out')
+              .catch(() => siteStatsMemorySnapshot(env));
           return json({ ok: true, stats }, { headers: corsHeaders(request, env) });
         }
         if (request.method === 'POST') {
@@ -1653,7 +1664,11 @@ export default {
             return siteStatsWithTableRepair(client, env, () => recordSiteVisit(client, env, request, payload, { touchMemory: false }));
           });
           ctx?.waitUntil?.(withTimeout(statsPromise, siteStatsResponseTimeoutMs(env), 'site stats write timed out').catch(() => null));
-          return json({ ok: true, stats: fallbackStats }, { headers: corsHeaders(request, env) });
+          const stats = siteStatsMemory.syncedAt
+            ? fallbackStats
+            : await withTimeout(statsPromise, siteStatsInitialSyncTimeoutMs(env), 'initial site stats write sync timed out')
+              .catch(() => fallbackStats);
+          return json({ ok: true, stats }, { headers: corsHeaders(request, env) });
         }
         return errorResponse(request, env, 405, 'method not allowed');
       }
