@@ -35,6 +35,11 @@ let schemaReadyPromise = null;
 const jsonMemoryCache = new Map();
 const jsonRefreshPromises = new Map();
 const sessionUserCache = new Map();
+const siteStatsMemory = {
+  totalVisits: 0,
+  onlineVisitors: new Map(),
+  updatedAt: 0
+};
 
 function nowMs() {
   return typeof performance !== 'undefined' && typeof performance.now === 'function' ? performance.now() : Date.now();
@@ -102,6 +107,12 @@ function staleCacheTtlSeconds(env) {
   const configured = Number(env.MODEL_VERIFY_STALE_CACHE_TTL_SECONDS || DEFAULT_STALE_CACHE_TTL_SECONDS);
   if (!Number.isFinite(configured)) return DEFAULT_STALE_CACHE_TTL_SECONDS;
   return Math.max(0, Math.min(86400, Math.round(configured)));
+}
+
+function siteStatsResponseTimeoutMs(env) {
+  const configured = Number(env.SITE_STATS_RESPONSE_TIMEOUT_MS || 1200);
+  if (!Number.isFinite(configured)) return 1200;
+  return Math.max(250, Math.min(5000, Math.round(configured)));
 }
 
 function sessionUserCacheTtlSeconds(env) {
@@ -569,6 +580,52 @@ function visitorIdFromRequest(request, payload) {
   return '';
 }
 
+function pruneSiteStatsMemory(env) {
+  const cutoff = Date.now() - onlineWindowSeconds(env) * 1000;
+  for (const [visitorId, lastSeenAt] of siteStatsMemory.onlineVisitors) {
+    if (!visitorId || Number(lastSeenAt || 0) < cutoff) siteStatsMemory.onlineVisitors.delete(visitorId);
+  }
+}
+
+function siteStatsMemorySnapshot(env) {
+  pruneSiteStatsMemory(env);
+  const totalVisits = Math.max(0, Math.round(Number(siteStatsMemory.totalVisits || 0)));
+  return {
+    totalVisits,
+    totalVisitCount: totalVisits,
+    onlineVisitors: siteStatsMemory.onlineVisitors.size,
+    onlineWindowSeconds: onlineWindowSeconds(env),
+    updatedAt: siteStatsMemory.updatedAt ? new Date(siteStatsMemory.updatedAt).toISOString() : new Date().toISOString(),
+    source: 'memory_fallback'
+  };
+}
+
+function syncSiteStatsMemory(env, stats) {
+  const totalVisits = Number(stats?.totalVisits ?? stats?.totalVisitCount);
+  if (Number.isFinite(totalVisits)) {
+    siteStatsMemory.totalVisits = Math.max(siteStatsMemory.totalVisits, Math.round(totalVisits));
+  }
+  siteStatsMemory.updatedAt = Date.now();
+  return {
+    ...siteStatsMemorySnapshot(env),
+    ...stats,
+    totalVisits: Math.max(siteStatsMemory.totalVisits, Math.round(Number(stats?.totalVisits || 0))),
+    totalVisitCount: Math.max(siteStatsMemory.totalVisits, Math.round(Number(stats?.totalVisitCount || stats?.totalVisits || 0))),
+    onlineVisitors: Math.max(siteStatsMemory.onlineVisitors.size, Math.round(Number(stats?.onlineVisitors || 0))),
+    source: stats?.source || 'database'
+  };
+}
+
+async function touchSiteStatsMemory(env, request, payload, options = {}) {
+  const eventName = String(payload?.event || 'view');
+  if (eventName === 'view' && options.incrementVisit !== false) siteStatsMemory.totalVisits += 1;
+  const rawVisitorId = visitorIdFromRequest(request, payload) || `${clientIp(request)}:${request.headers.get('user-agent') || ''}`;
+  const visitorId = await sha256(rawVisitorId);
+  siteStatsMemory.onlineVisitors.set(visitorId, Date.now());
+  siteStatsMemory.updatedAt = Date.now();
+  return siteStatsMemorySnapshot(env);
+}
+
 function walkAndRedact(value) {
   if (Array.isArray(value)) return value.map(walkAndRedact);
   if (!value || typeof value !== 'object') return typeof value === 'string' ? cleanText(value, 1200) : value;
@@ -755,6 +812,24 @@ async function withClient(env, callback, timing = null) {
   }
 }
 
+async function withStatementTimeout(client, ms, callback) {
+  const timeout = Math.max(1000, Math.min(15000, Number(ms) || 5000));
+  try {
+    await client.query(`set statement_timeout = ${timeout}`);
+    return await callback();
+  } finally {
+    await client.query('reset statement_timeout').catch(() => null);
+  }
+}
+
+function withTimeout(promise, ms, message = 'operation timed out') {
+  let timeoutId;
+  const timeout = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => reject(new Error(message)), ms);
+  });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timeoutId));
+}
+
 function schemaKey(env) {
   return [
     tableName(env, 'MODEL_VERIFY_TABLE', DEFAULT_TABLE),
@@ -782,6 +857,44 @@ async function ensureSubmissionTablesCached(client, env) {
       });
   }
   await schemaReadyPromise;
+}
+
+async function ensureSiteStatsTables(client, env) {
+  const statsTableName = tableName(env, 'SITE_STATS_TABLE', DEFAULT_STATS_TABLE);
+  const onlineTableName = tableName(env, 'SITE_ONLINE_TABLE', DEFAULT_ONLINE_TABLE);
+  const statsTable = quoteIdent(statsTableName);
+  const onlineTable = quoteIdent(onlineTableName);
+  await client.query(`
+    create table if not exists ${statsTable} (
+      stat_key string primary key,
+      total_count int8 not null default 0,
+      updated_at timestamptz not null default now()
+    )
+  `);
+  await client.query(`
+    create table if not exists ${onlineTable} (
+      visitor_id string primary key,
+      page_path string not null default '/',
+      first_seen_at timestamptz not null default now(),
+      last_seen_at timestamptz not null default now()
+    )
+  `);
+  await client.query(`create index if not exists ${quoteIdent(`${onlineTableName}_last_seen_idx`)} on ${onlineTable} (last_seen_at)`);
+}
+
+function isMissingStatsTableError(error) {
+  const message = String(error?.message || '').toLowerCase();
+  return error?.code === '42P01' || /relation .* does not exist|table .* does not exist|undefined_table/.test(message);
+}
+
+async function siteStatsWithTableRepair(client, env, callback) {
+  try {
+    return await callback();
+  } catch (error) {
+    if (!isMissingStatsTableError(error)) throw error;
+    await ensureSiteStatsTables(client, env);
+    return callback();
+  }
 }
 
 async function primaryKeyIncludesTargetModel(client, table) {
@@ -1040,40 +1153,50 @@ async function readSiteStats(client, env) {
   const onlineTable = quoteIdent(env.SITE_ONLINE_TABLE || DEFAULT_ONLINE_TABLE);
   const onlineWindow = onlineWindowSeconds(env);
   const onlineCutoff = new Date(Date.now() - onlineWindow * 1000).toISOString();
-  await client.query(`delete from ${onlineTable} where last_seen_at < $1`, [onlineCutoff]);
-  const statsResult = await client.query(`select total_count from ${statsTable} where stat_key = 'global' limit 1`);
-  const onlineResult = await client.query(`select count(*)::int as online_count from ${onlineTable}`);
-  return {
-    totalVisits: Number(statsResult.rows[0]?.total_count || 0),
-    onlineVisitors: Number(onlineResult.rows[0]?.online_count || 0),
-    onlineWindowSeconds: onlineWindow,
-    updatedAt: new Date().toISOString()
-  };
+  return withStatementTimeout(client, env.SITE_STATS_QUERY_TIMEOUT_MS || 5000, async () => {
+    const statsResult = await client.query(`select total_count from ${statsTable} where stat_key = 'global' limit 1`);
+    const onlineResult = await client.query(`select count(*)::int as online_count from ${onlineTable} where last_seen_at >= $1`, [onlineCutoff]);
+    const totalVisits = Number(statsResult.rows[0]?.total_count || 0);
+    return syncSiteStatsMemory(env, {
+      totalVisits,
+      totalVisitCount: totalVisits,
+      onlineVisitors: Number(onlineResult.rows[0]?.online_count || 0),
+      onlineWindowSeconds: onlineWindow,
+      updatedAt: new Date().toISOString()
+    });
+  });
 }
 
-async function recordSiteVisit(client, env, request, payload) {
+async function recordSiteVisit(client, env, request, payload, options = {}) {
   const statsTable = quoteIdent(env.SITE_STATS_TABLE || DEFAULT_STATS_TABLE);
   const onlineTable = quoteIdent(env.SITE_ONLINE_TABLE || DEFAULT_ONLINE_TABLE);
   const rawVisitorId = visitorIdFromRequest(request, payload) || `${clientIp(request)}:${request.headers.get('user-agent') || ''}`;
   const visitorId = await sha256(rawVisitorId);
   const pagePath = normalizePagePath(payload?.page || payload?.path || '/').slice(0, 300);
-  if (String(payload?.event || 'view') === 'view') {
+  const memoryStats = options.touchMemory === false ? siteStatsMemorySnapshot(env) : await touchSiteStatsMemory(env, request, payload);
+  await withStatementTimeout(client, env.SITE_STATS_QUERY_TIMEOUT_MS || 5000, async () => {
+    if (String(payload?.event || 'view') === 'view') {
+      await client.query(`
+        upsert into ${statsTable} as current_stats (stat_key, total_count, updated_at)
+        values ('global', 1, now())
+        on conflict (stat_key) do update
+          set total_count = current_stats.total_count + 1,
+              updated_at = now()
+      `);
+    }
     await client.query(`
-      upsert into ${statsTable} as current_stats (stat_key, total_count, updated_at)
-      values ('global', 1, now())
-      on conflict (stat_key) do update
-        set total_count = current_stats.total_count + 1,
-            updated_at = now()
-    `);
+      upsert into ${onlineTable} (visitor_id, page_path, first_seen_at, last_seen_at)
+      values ($1, $2, now(), now())
+      on conflict (visitor_id) do update
+        set page_path = excluded.page_path,
+            last_seen_at = now()
+    `, [visitorId, pagePath]);
+  });
+  try {
+    return await readSiteStats(client, env);
+  } catch {
+    return memoryStats;
   }
-  await client.query(`
-    upsert into ${onlineTable} (visitor_id, page_path, first_seen_at, last_seen_at)
-    values ($1, $2, now(), now())
-    on conflict (visitor_id) do update
-      set page_path = excluded.page_path,
-          last_seen_at = now()
-  `, [visitorId, pagePath]);
-  return readSiteStats(client, env);
 }
 
 async function requireAdmin(client, env, request, payload = {}) {
@@ -1516,19 +1639,21 @@ export default {
 
       if (pathname === SITE_STATS_PATH) {
         if (request.method === 'GET') {
-          const stats = await withClient(env, async (client) => {
-            await ensureSubmissionTablesCached(client, env);
-            return readSiteStats(client, env);
+          const statsPromise = withClient(env, async (client) => {
+            return siteStatsWithTableRepair(client, env, () => readSiteStats(client, env));
           });
+          ctx?.waitUntil?.(withTimeout(statsPromise, siteStatsResponseTimeoutMs(env), 'site stats read timed out').catch(() => null));
+          const stats = siteStatsMemorySnapshot(env);
           return json({ ok: true, stats }, { headers: corsHeaders(request, env) });
         }
         if (request.method === 'POST') {
           const payload = await request.json().catch(() => ({}));
-          const stats = await withClient(env, async (client) => {
-            await ensureSubmissionTablesCached(client, env);
-            return recordSiteVisit(client, env, request, payload);
+          const fallbackStats = await touchSiteStatsMemory(env, request, payload);
+          const statsPromise = withClient(env, async (client) => {
+            return siteStatsWithTableRepair(client, env, () => recordSiteVisit(client, env, request, payload, { touchMemory: false }));
           });
-          return json({ ok: true, stats }, { headers: corsHeaders(request, env) });
+          ctx?.waitUntil?.(withTimeout(statsPromise, siteStatsResponseTimeoutMs(env), 'site stats write timed out').catch(() => null));
+          return json({ ok: true, stats: fallbackStats }, { headers: corsHeaders(request, env) });
         }
         return errorResponse(request, env, 405, 'method not allowed');
       }

@@ -16,6 +16,7 @@ function scrollToSection(sectionId) {
     const tokenExpiresKey = 'cybertar:model-verifier:auth-token-expires-at:v1';
     const userKey = 'cybertar:model-verifier:auth-user:v1';
     const visitorKey = 'cybertar:site-visitor-id:v1';
+    const statsCacheKey = 'cybertar:site-stats-cache:v1';
     const tokenTtlMs = 24 * 60 * 60 * 1000;
     let verifiedUser = null;
 
@@ -150,8 +151,8 @@ function scrollToSection(sectionId) {
             }
             .header.cybertar-auth-dock {
                 display: flex;
-                align-items: flex-start;
-                gap: 0.75rem;
+                align-items: center;
+                gap: 1rem;
                 background: transparent !important;
                 border: 0 !important;
                 box-shadow: none !important;
@@ -160,7 +161,7 @@ function scrollToSection(sectionId) {
             }
             .header.cybertar-auth-dock > .cybertar-auth-widget {
                 position: static;
-                margin-top: 9px;
+                margin-top: 0;
                 flex: 0 0 auto;
                 order: -1;
             }
@@ -186,6 +187,21 @@ function scrollToSection(sectionId) {
                 margin: 0 0.7rem 0 auto;
                 flex: 0 0 auto;
                 z-index: 1001;
+            }
+            .header.cybertar-auth-dock > .cybertar-site-stats {
+                position: static;
+                margin-top: 0;
+                flex: 0 0 auto;
+                order: -2;
+            }
+            .nav.cybertar-auth-mobile-dock > .cybertar-site-stats {
+                position: static;
+                margin-left: auto;
+                flex: 0 0 auto;
+                z-index: 1001;
+            }
+            .nav.cybertar-auth-mobile-dock > .cybertar-site-stats + .cybertar-auth-widget {
+                margin-left: 0;
             }
             .cybertar-auth-button {
                 min-width: 74px;
@@ -353,13 +369,14 @@ function scrollToSection(sectionId) {
             }
             .cybertar-site-stats {
                 position: fixed;
-                top: 0.58rem;
-                right: 6.2rem;
+                top: calc(2rem + 9px);
+                right: 11.5rem;
                 z-index: 2100;
                 display: inline-flex;
                 align-items: center;
-                gap: 1.2rem;
-                padding: 0.54rem 0.82rem;
+                gap: 1.45rem;
+                min-height: 42px;
+                padding: 0.5rem 0.92rem;
                 border: 1px solid rgba(255, 255, 255, 0.14);
                 border-radius: 999px;
                 background: rgba(8, 10, 16, 0.82);
@@ -368,7 +385,7 @@ function scrollToSection(sectionId) {
                 backdrop-filter: blur(18px);
                 -webkit-backdrop-filter: blur(18px);
                 font-family: var(--font-display, var(--font-primary, sans-serif));
-                font-size: 0.88rem;
+                font-size: 0.98rem;
                 font-weight: 800;
                 line-height: 1;
                 letter-spacing: 0;
@@ -384,7 +401,7 @@ function scrollToSection(sectionId) {
             }
             .cybertar-site-stats strong {
                 color: #fff;
-                font-size: 1.02rem;
+                font-size: 1.12rem;
                 font-weight: 900;
             }
             .cybertar-site-stats i {
@@ -397,12 +414,12 @@ function scrollToSection(sectionId) {
                 font-style: normal;
             }
             .cybertar-site-stats.is-offline {
-                border-color: rgba(255, 255, 255, 0.1);
-                color: rgba(255, 255, 255, 0.56);
+                border-color: rgba(255, 255, 255, 0.14);
+                color: rgba(255, 255, 255, 0.84);
             }
             .cybertar-site-stats.is-offline i {
-                background: rgba(255, 255, 255, 0.42);
-                box-shadow: none;
+                background: #7cff00;
+                box-shadow: 0 0 14px rgba(124, 255, 0, 0.68);
             }
             @media (max-width: 720px) {
                 .cybertar-auth-widget {
@@ -416,16 +433,13 @@ function scrollToSection(sectionId) {
                     font-size: 0.72rem;
                 }
                 .cybertar-site-stats {
-                    top: 4.2rem;
-                    right: 0.75rem;
-                    bottom: auto;
-                    left: auto;
-                    gap: 0.78rem;
-                    padding: 0.46rem 0.62rem;
-                    font-size: 0.76rem;
+                    gap: 0.92rem;
+                    min-height: 38px;
+                    padding: 0.42rem 0.68rem;
+                    font-size: 0.82rem;
                 }
                 .cybertar-site-stats strong {
-                    font-size: 0.9rem;
+                    font-size: 0.96rem;
                 }
             }
             .cybertar-generated-header {
@@ -749,10 +763,31 @@ function scrollToSection(sectionId) {
     }
 
     function compactNumber(value) {
-        if (value === undefined || value === null || value === '') return '--';
+        if (value === undefined || value === null || value === '') return '0';
         const number = Number(value || 0);
-        if (!Number.isFinite(number)) return '--';
+        if (!Number.isFinite(number)) return '0';
         return new Intl.NumberFormat('zh-CN').format(Math.max(0, Math.round(number)));
+    }
+
+    function cachedSiteStats() {
+        try {
+            const cached = JSON.parse(localStorage.getItem(statsCacheKey) || 'null');
+            return cached && typeof cached === 'object' ? cached : null;
+        } catch {
+            return null;
+        }
+    }
+
+    function saveSiteStats(stats) {
+        try {
+            localStorage.setItem(statsCacheKey, JSON.stringify({
+                totalVisits: Number(stats?.totalVisits || 0),
+                onlineVisitors: Number(stats?.onlineVisitors || 0),
+                updatedAt: stats?.updatedAt || new Date().toISOString()
+            }));
+        } catch {
+            // Ignore storage failures; stats are decorative.
+        }
     }
 
     function siteVisitorId() {
@@ -796,27 +831,38 @@ function scrollToSection(sectionId) {
         widget.classList.remove('is-offline');
         widget.title = stats?.updatedAt ? `Updated ${stats.updatedAt}` : '';
         widget.hidden = false;
+        saveSiteStats(stats);
     }
 
     function createSiteStatsWidget() {
         if (document.getElementById('cybertarSiteStats')) return;
         injectStyles();
+        ensureMainNavigation();
         const widget = document.createElement('div');
         widget.id = 'cybertarSiteStats';
         widget.className = 'cybertar-site-stats';
         widget.hidden = false;
         widget.setAttribute('aria-label', '站点访问统计');
         widget.innerHTML = `
-            <span>访问 <strong data-site-visits>--</strong></span>
+            <span>总访问量 <strong data-site-visits>--</strong></span>
             <span><i aria-hidden="true"></i>在线 <strong data-site-online>--</strong></span>
         `;
-        document.body.appendChild(widget);
+        renderSiteStats(widget, cachedSiteStats() || { totalVisits: 0, onlineVisitors: 0 });
+        const authWidget = document.getElementById('cybertarAuthWidget');
+        const dock = authDockTarget();
+        if (dock) {
+            dock.container.classList.add(dock.className);
+            dock.container.insertBefore(widget, authWidget || dock.before);
+        } else {
+            document.body.appendChild(widget);
+        }
 
         const refresh = async (eventName = 'heartbeat') => {
             if (document.hidden && eventName !== 'view') return;
             try {
                 renderSiteStats(widget, await postSiteStats(eventName));
             } catch (error) {
+                renderSiteStats(widget, cachedSiteStats() || { totalVisits: 0, onlineVisitors: 0 });
                 widget.classList.add('is-offline');
                 widget.title = `统计接口暂不可用：${error?.message || 'unknown error'}`;
                 widget.hidden = false;
