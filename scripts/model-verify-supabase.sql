@@ -3,10 +3,30 @@ create table if not exists public.model_verify_reports (
   provider_name text not null,
   homepage text not null,
   shared_at timestamptz not null default now(),
+  submitter_github_id text not null default '',
+  submitter_login text not null default '',
+  submitter_name text not null default '',
+  submitter_avatar_url text not null default '',
   report jsonb not null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+create table if not exists public.site_visit_stats (
+  stat_key text primary key,
+  total_count bigint not null default 0,
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.site_online_visitors (
+  visitor_id text primary key,
+  page_path text not null default '/',
+  first_seen_at timestamptz not null default now(),
+  last_seen_at timestamptz not null default now()
+);
+
+create index if not exists site_online_visitors_last_seen_idx
+on public.site_online_visitors (last_seen_at);
 
 create or replace function public.model_verify_homepage_domain(homepage text)
 returns text

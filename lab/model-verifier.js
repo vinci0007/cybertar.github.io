@@ -3116,6 +3116,10 @@
             provider_name: payload.providerName,
             homepage: payload.homepage,
             shared_at: payload.sharedAt,
+            submitter_github_id: authUser?.githubId || '',
+            submitter_login: authUser?.login || '',
+            submitter_name: authUser?.name || '',
+            submitter_avatar_url: authUser?.avatarUrl || '',
             report: payload.report
         };
         const writeRow = async (endpoint, body) => fetch(endpoint, {
@@ -3130,7 +3134,24 @@
         });
         let response = await writeRow(`${endpointBase}?on_conflict=domain,target_model`, row);
         if (!response.ok && [400, 404].includes(response.status)) {
-            const { target_model: _targetModel, ...legacyRow } = row;
+            const {
+                submitter_github_id: _submitterGithubId,
+                submitter_login: _submitterLogin,
+                submitter_name: _submitterName,
+                submitter_avatar_url: _submitterAvatarUrl,
+                ...rowWithoutSubmitter
+            } = row;
+            response = await writeRow(`${endpointBase}?on_conflict=domain,target_model`, rowWithoutSubmitter);
+        }
+        if (!response.ok && [400, 404].includes(response.status)) {
+            const {
+                submitter_github_id: _submitterGithubId,
+                submitter_login: _submitterLogin,
+                submitter_name: _submitterName,
+                submitter_avatar_url: _submitterAvatarUrl,
+                target_model: _targetModel,
+                ...legacyRow
+            } = row;
             response = await writeRow(`${endpointBase}?on_conflict=domain`, legacyRow);
         }
         if (!response.ok) {
@@ -3311,6 +3332,12 @@
             domain: item.domain || '',
             targetModel: item.targetModel || item.target_model || '',
             sharedAt: item.sharedAt || item.shared_at || '',
+            submitter: item.submitter || {
+                githubId: item.submitter_github_id || '',
+                login: item.submitter_login || '',
+                name: item.submitter_name || '',
+                avatarUrl: item.submitter_avatar_url || ''
+            },
             report: item.report || {}
         };
     }
@@ -3390,11 +3417,19 @@
             const channel = asArray(item.report?.channels)[0] || {};
             const score = Number(channel.score || 0);
             const sharedAt = item.sharedAt ? new Date(item.sharedAt).toLocaleString() : '--';
+            const submitter = item.submitter || {};
+            const submitterLabel = submitter.login
+                ? `${submitter.login}${submitter.name ? ` · ${submitter.name}` : ''}`
+                : '匿名提交';
+            const submitterAvatar = submitter.avatarUrl
+                ? `<img class="submitter-avatar" src="${escapeHtml(submitter.avatarUrl)}" alt="">`
+                : '';
             return `
                 <article class="shared-item" data-select-report-key="${escapeHtml(sharedItemKey(item))}" tabindex="0" role="button" aria-label="选择 ${escapeHtml(item.providerName || item.domain)} 的报告进行讨论">
                     <div><strong>#${index + 1} ${escapeHtml(item.providerName || '未命名服务商')}</strong><span>${escapeHtml(item.domain)}</span></div>
                     <span>${escapeHtml(item.targetModel || channel.targetModel || '未声明模型')}</span>
                     <strong style="color:${scoreColor(score)}">${Number.isFinite(score) ? score : '--'}/100</strong>
+                    <span class="submitter-label">${submitterAvatar}${escapeHtml(submitterLabel)}</span>
                     <span>${escapeHtml(sharedAt)}</span>
                     <div class="shared-actions">
                         <button class="report-tab" type="button" data-shared-key="${escapeHtml(sharedItemKey(item))}">查看</button>
@@ -3509,7 +3544,7 @@
             },
             cache: cacheModeForFetch(force)
         });
-        let response = await readRows('domain,target_model,provider_name,homepage,shared_at,report');
+        let response = await readRows('domain,target_model,provider_name,homepage,shared_at,submitter_github_id,submitter_login,submitter_name,submitter_avatar_url,report');
         if (!response.ok && [400, 404].includes(response.status)) {
             response = await readRows('domain,provider_name,homepage,shared_at,report');
         }

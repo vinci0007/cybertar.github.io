@@ -6,9 +6,12 @@ const DEFAULT_PENDING_TABLE = 'model_verify_pending_reports';
 const DEFAULT_RATE_TABLE = 'model_verify_submission_limits';
 const DEFAULT_SESSION_TABLE = 'model_verify_sessions';
 const DEFAULT_DISCUSSION_TABLE = 'model_verify_discussions';
+const DEFAULT_STATS_TABLE = 'site_visit_stats';
+const DEFAULT_ONLINE_TABLE = 'site_online_visitors';
 const DEFAULT_EDGE_CACHE_TTL_SECONDS = 3600;
 const DEFAULT_STALE_CACHE_TTL_SECONDS = 21600;
 const DEFAULT_SESSION_USER_CACHE_TTL_SECONDS = 300;
+const DEFAULT_ONLINE_WINDOW_SECONDS = 300;
 const MAX_MEMORY_CACHE_ENTRIES = 120;
 const MAX_SESSION_CACHE_ENTRIES = 400;
 const MODEL_PROXY_PATH = '/model-verify-proxy';
@@ -18,6 +21,7 @@ const AUTH_LOGIN_PATH = '/model-verify-auth/github/login';
 const AUTH_CALLBACK_PATH = '/model-verify-auth/github/callback';
 const AUTH_ME_PATH = '/model-verify-auth/me';
 const AUTH_LOGOUT_PATH = '/model-verify-auth/logout';
+const SITE_STATS_PATH = '/site-stats';
 const PROXY_AUDIT_HEADER = 'x-cybertar-proxy-audit';
 const DEFAULT_PROXY_HOSTS = ['*'];
 const PENDING_TTL_MS = 24 * 60 * 60 * 1000;
@@ -104,6 +108,12 @@ function sessionUserCacheTtlSeconds(env) {
   const configured = Number(env.MODEL_VERIFY_SESSION_USER_CACHE_TTL_SECONDS || DEFAULT_SESSION_USER_CACHE_TTL_SECONDS);
   if (!Number.isFinite(configured)) return DEFAULT_SESSION_USER_CACHE_TTL_SECONDS;
   return Math.max(0, Math.min(3600, Math.round(configured)));
+}
+
+function onlineWindowSeconds(env) {
+  const configured = Number(env.SITE_ONLINE_WINDOW_SECONDS || DEFAULT_ONLINE_WINDOW_SECONDS);
+  if (!Number.isFinite(configured)) return DEFAULT_ONLINE_WINDOW_SECONDS;
+  return Math.max(60, Math.min(3600, Math.round(configured)));
 }
 
 function edgeCacheEnabled(env) {
@@ -542,6 +552,23 @@ function domainFromUrl(value) {
   }
 }
 
+function normalizePagePath(value) {
+  const raw = String(value || '/').trim();
+  try {
+    const url = raw.startsWith('http') ? new URL(raw) : new URL(raw, 'https://cybertar.local');
+    return `/${url.pathname.replace(/^\/+/, '')}`.replace(/\/index\.html$/i, '/') || '/';
+  } catch {
+    const path = raw.split(/[?#]/)[0].replace(/^https?:\/\/[^/]+/i, '');
+    return `/${path.replace(/^\/+/, '')}`.replace(/\/index\.html$/i, '/') || '/';
+  }
+}
+
+function visitorIdFromRequest(request, payload) {
+  const provided = String(payload?.visitorId || payload?.visitor_id || '').trim();
+  if (/^[a-zA-Z0-9_-]{12,80}$/.test(provided)) return provided;
+  return '';
+}
+
 function walkAndRedact(value) {
   if (Array.isArray(value)) return value.map(walkAndRedact);
   if (!value || typeof value !== 'object') return typeof value === 'string' ? cleanText(value, 1200) : value;
@@ -661,6 +688,12 @@ function normalizeSharedRow(row) {
     domain: row.domain || '',
     targetModel: row.target_model || reportStats(row.report).targetModel || '',
     sharedAt: row.shared_at || '',
+    submitter: {
+      githubId: row.submitter_github_id || '',
+      login: row.submitter_login || '',
+      name: row.submitter_name || '',
+      avatarUrl: row.submitter_avatar_url || ''
+    },
     report: row.report || {}
   };
 }
@@ -728,7 +761,9 @@ function schemaKey(env) {
     tableName(env, 'MODEL_VERIFY_PENDING_TABLE', DEFAULT_PENDING_TABLE),
     tableName(env, 'MODEL_VERIFY_RATE_TABLE', DEFAULT_RATE_TABLE),
     tableName(env, 'MODEL_VERIFY_SESSION_TABLE', DEFAULT_SESSION_TABLE),
-    tableName(env, 'MODEL_VERIFY_DISCUSSION_TABLE', DEFAULT_DISCUSSION_TABLE)
+    tableName(env, 'MODEL_VERIFY_DISCUSSION_TABLE', DEFAULT_DISCUSSION_TABLE),
+    tableName(env, 'SITE_STATS_TABLE', DEFAULT_STATS_TABLE),
+    tableName(env, 'SITE_ONLINE_TABLE', DEFAULT_ONLINE_TABLE)
   ].join('|');
 }
 
@@ -761,11 +796,15 @@ async function ensureSubmissionTables(client, env) {
   const rateTableName = tableName(env, 'MODEL_VERIFY_RATE_TABLE', DEFAULT_RATE_TABLE);
   const sessionTableName = tableName(env, 'MODEL_VERIFY_SESSION_TABLE', DEFAULT_SESSION_TABLE);
   const discussionTableName = tableName(env, 'MODEL_VERIFY_DISCUSSION_TABLE', DEFAULT_DISCUSSION_TABLE);
+  const statsTableName = tableName(env, 'SITE_STATS_TABLE', DEFAULT_STATS_TABLE);
+  const onlineTableName = tableName(env, 'SITE_ONLINE_TABLE', DEFAULT_ONLINE_TABLE);
   const table = quoteIdent(reportTableName);
   const pendingTable = quoteIdent(pendingTableName);
   const rateTable = quoteIdent(rateTableName);
   const sessionTable = quoteIdent(sessionTableName);
   const discussionTable = quoteIdent(discussionTableName);
+  const statsTable = quoteIdent(statsTableName);
+  const onlineTable = quoteIdent(onlineTableName);
   await client.query(`
     create table if not exists ${table} (
       domain string not null,
@@ -773,6 +812,10 @@ async function ensureSubmissionTables(client, env) {
       provider_name string not null,
       homepage string not null,
       shared_at timestamptz not null default now(),
+      submitter_github_id string not null default '',
+      submitter_login string not null default '',
+      submitter_name string not null default '',
+      submitter_avatar_url string not null default '',
       report jsonb not null,
       created_at timestamptz not null default now(),
       updated_at timestamptz not null default now(),
@@ -780,6 +823,10 @@ async function ensureSubmissionTables(client, env) {
     )
   `);
   await client.query(`alter table ${table} add column if not exists target_model string not null default ''`);
+  await client.query(`alter table ${table} add column if not exists submitter_github_id string not null default ''`);
+  await client.query(`alter table ${table} add column if not exists submitter_login string not null default ''`);
+  await client.query(`alter table ${table} add column if not exists submitter_name string not null default ''`);
+  await client.query(`alter table ${table} add column if not exists submitter_avatar_url string not null default ''`);
   const rowsMissingModel = await client.query(`select domain, report from ${table} where target_model = ''`);
   for (const row of rowsMissingModel.rows) {
     const targetModel = reportStats(row.report).targetModel || 'unknown';
@@ -797,12 +844,20 @@ async function ensureSubmissionTables(client, env) {
       provider_name string not null,
       homepage string not null,
       score float8 not null,
+      submitter_github_id string not null default '',
+      submitter_login string not null default '',
+      submitter_name string not null default '',
+      submitter_avatar_url string not null default '',
       report jsonb not null,
       created_at timestamptz not null default now(),
       updated_at timestamptz not null default now(),
       expires_at timestamptz not null
     )
   `);
+  await client.query(`alter table ${pendingTable} add column if not exists submitter_github_id string not null default ''`);
+  await client.query(`alter table ${pendingTable} add column if not exists submitter_login string not null default ''`);
+  await client.query(`alter table ${pendingTable} add column if not exists submitter_name string not null default ''`);
+  await client.query(`alter table ${pendingTable} add column if not exists submitter_avatar_url string not null default ''`);
   await client.query(`
     create table if not exists ${rateTable} (
       rate_key string primary key,
@@ -838,10 +893,26 @@ async function ensureSubmissionTables(client, env) {
       deleted_at timestamptz
     )
   `);
+  await client.query(`
+    create table if not exists ${statsTable} (
+      stat_key string primary key,
+      total_count int8 not null default 0,
+      updated_at timestamptz not null default now()
+    )
+  `);
+  await client.query(`
+    create table if not exists ${onlineTable} (
+      visitor_id string primary key,
+      page_path string not null default '/',
+      first_seen_at timestamptz not null default now(),
+      last_seen_at timestamptz not null default now()
+    )
+  `);
   await client.query(`create index if not exists ${quoteIdent(`${reportTableName}_shared_at_idx`)} on ${table} (shared_at desc)`);
   await client.query(`create index if not exists ${quoteIdent(`${pendingTableName}_expires_at_idx`)} on ${pendingTable} (expires_at)`);
   await client.query(`create index if not exists ${quoteIdent(`${rateTableName}_updated_at_idx`)} on ${rateTable} (updated_at)`);
   await client.query(`create index if not exists ${quoteIdent(`${discussionTableName}_lookup_idx`)} on ${discussionTable} (domain, target_model, deleted_at, created_at)`);
+  await client.query(`create index if not exists ${quoteIdent(`${onlineTableName}_last_seen_idx`)} on ${onlineTable} (last_seen_at)`);
 }
 
 async function enforceSubmissionRateLimit(client, env, request) {
@@ -964,6 +1035,47 @@ async function logoutSession(client, env, request) {
   await client.query(`delete from ${sessionTable} where session_hash = $1`, [sessionHash]);
 }
 
+async function readSiteStats(client, env) {
+  const statsTable = quoteIdent(env.SITE_STATS_TABLE || DEFAULT_STATS_TABLE);
+  const onlineTable = quoteIdent(env.SITE_ONLINE_TABLE || DEFAULT_ONLINE_TABLE);
+  const onlineWindow = onlineWindowSeconds(env);
+  const onlineCutoff = new Date(Date.now() - onlineWindow * 1000).toISOString();
+  await client.query(`delete from ${onlineTable} where last_seen_at < $1`, [onlineCutoff]);
+  const statsResult = await client.query(`select total_count from ${statsTable} where stat_key = 'global' limit 1`);
+  const onlineResult = await client.query(`select count(*)::int as online_count from ${onlineTable}`);
+  return {
+    totalVisits: Number(statsResult.rows[0]?.total_count || 0),
+    onlineVisitors: Number(onlineResult.rows[0]?.online_count || 0),
+    onlineWindowSeconds: onlineWindow,
+    updatedAt: new Date().toISOString()
+  };
+}
+
+async function recordSiteVisit(client, env, request, payload) {
+  const statsTable = quoteIdent(env.SITE_STATS_TABLE || DEFAULT_STATS_TABLE);
+  const onlineTable = quoteIdent(env.SITE_ONLINE_TABLE || DEFAULT_ONLINE_TABLE);
+  const rawVisitorId = visitorIdFromRequest(request, payload) || `${clientIp(request)}:${request.headers.get('user-agent') || ''}`;
+  const visitorId = await sha256(rawVisitorId);
+  const pagePath = normalizePagePath(payload?.page || payload?.path || '/').slice(0, 300);
+  if (String(payload?.event || 'view') === 'view') {
+    await client.query(`
+      upsert into ${statsTable} as current_stats (stat_key, total_count, updated_at)
+      values ('global', 1, now())
+      on conflict (stat_key) do update
+        set total_count = current_stats.total_count + 1,
+            updated_at = now()
+    `);
+  }
+  await client.query(`
+    upsert into ${onlineTable} (visitor_id, page_path, first_seen_at, last_seen_at)
+    values ($1, $2, now(), now())
+    on conflict (visitor_id) do update
+      set page_path = excluded.page_path,
+          last_seen_at = now()
+  `, [visitorId, pagePath]);
+  return readSiteStats(client, env);
+}
+
 async function requireAdmin(client, env, request, payload = {}) {
   const user = await userFromSession(client, env, request);
   if (user?.role === 'admin') return user;
@@ -1062,7 +1174,8 @@ async function handleGitHubCallback(request, env) {
 async function findExistingReport(client, env, domain, targetModel) {
   const table = quoteIdent(env.MODEL_VERIFY_TABLE);
   const result = await client.query(`
-    select domain, target_model, provider_name, homepage, shared_at::string as shared_at, report
+    select domain, target_model, provider_name, homepage, shared_at::string as shared_at,
+           submitter_github_id, submitter_login, submitter_name, submitter_avatar_url, report
     from ${table}
     where domain = $1 and target_model = $2
     limit 1
@@ -1072,16 +1185,26 @@ async function findExistingReport(client, env, domain, targetModel) {
 
 async function upsertReportWithClient(client, env, item) {
   const table = quoteIdent(env.MODEL_VERIFY_TABLE);
+  const submitter = item.submitter || {};
   const result = await client.query(`
-    upsert into ${table} (domain, target_model, provider_name, homepage, shared_at, report, updated_at)
-    values ($1, $2, $3, $4, $5, $6::jsonb, now())
-    returning domain, target_model, provider_name, homepage, shared_at::string as shared_at, report
+    upsert into ${table} (
+      domain, target_model, provider_name, homepage, shared_at,
+      submitter_github_id, submitter_login, submitter_name, submitter_avatar_url,
+      report, updated_at
+    )
+    values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10::jsonb, now())
+    returning domain, target_model, provider_name, homepage, shared_at::string as shared_at,
+              submitter_github_id, submitter_login, submitter_name, submitter_avatar_url, report
   `, [
     item.domain,
     item.targetModel || reportStats(item.report).targetModel || 'unknown',
     item.providerName,
     item.homepage,
     item.sharedAt,
+    String(submitter.githubId || ''),
+    String(submitter.login || ''),
+    String(submitter.name || ''),
+    String(submitter.avatarUrl || ''),
     JSON.stringify(item.report)
   ]);
   return normalizeSharedRow(result.rows[0]);
@@ -1120,7 +1243,8 @@ async function handleSharedReportSubmission(client, env, item, submitterHash) {
 
   await client.query(`delete from ${pendingTable} where expires_at < now()`);
   const pending = await client.query(`
-    select provider_name, homepage, report, score
+    select provider_name, homepage, report, score,
+           submitter_github_id, submitter_login, submitter_name, submitter_avatar_url
     from ${pendingTable}
     where pending_key = $1
     limit 1
@@ -1128,8 +1252,12 @@ async function handleSharedReportSubmission(client, env, item, submitterHash) {
 
   if (!pending.rows.length) {
     await client.query(`
-      upsert into ${pendingTable} (pending_key, domain, target_model, submitter_hash, provider_name, homepage, score, report, updated_at, expires_at)
-      values ($1, $2, $3, $4, $5, $6, $7, $8::jsonb, now(), $9)
+      upsert into ${pendingTable} (
+        pending_key, domain, target_model, submitter_hash, provider_name, homepage, score,
+        submitter_github_id, submitter_login, submitter_name, submitter_avatar_url,
+        report, updated_at, expires_at
+      )
+      values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12::jsonb, now(), $13)
     `, [
       pendingKey,
       item.domain,
@@ -1138,6 +1266,10 @@ async function handleSharedReportSubmission(client, env, item, submitterHash) {
       item.providerName,
       item.homepage,
       incomingStats.score,
+      String(item.submitter?.githubId || ''),
+      String(item.submitter?.login || ''),
+      String(item.submitter?.name || ''),
+      String(item.submitter?.avatarUrl || ''),
       JSON.stringify(item.report),
       new Date(Date.now() + PENDING_TTL_MS).toISOString()
     ]);
@@ -1154,6 +1286,12 @@ async function handleSharedReportSubmission(client, env, item, submitterHash) {
     domain: item.domain,
     targetModel,
     sharedAt: new Date().toISOString(),
+    submitter: {
+      githubId: pending.rows[0].submitter_github_id || '',
+      login: pending.rows[0].submitter_login || '',
+      name: pending.rows[0].submitter_name || '',
+      avatarUrl: pending.rows[0].submitter_avatar_url || ''
+    },
     report: pending.rows[0].report
   };
   const best = bestSharedItem([existing, pendingItem, item]);
@@ -1185,7 +1323,8 @@ async function listReports(env, timing = null) {
     }
     const endQuery = timeSpan(timing, 'db_query');
     const result = await client.query(`
-      select domain, target_model, provider_name, homepage, shared_at::string as shared_at, report
+      select domain, target_model, provider_name, homepage, shared_at::string as shared_at,
+             submitter_github_id, submitter_login, submitter_name, submitter_avatar_url, report
       from ${table}
       order by shared_at desc
       limit 200
@@ -1339,7 +1478,8 @@ export default {
       AUTH_LOGIN_PATH,
       AUTH_CALLBACK_PATH,
       AUTH_ME_PATH,
-      AUTH_LOGOUT_PATH
+      AUTH_LOGOUT_PATH,
+      SITE_STATS_PATH
     ]);
     if (!knownPaths.has(pathname)) {
       return errorResponse(request, env, 404, 'not found');
@@ -1374,6 +1514,25 @@ export default {
         return json({ ok: true }, { headers: corsHeaders(request, env) });
       }
 
+      if (pathname === SITE_STATS_PATH) {
+        if (request.method === 'GET') {
+          const stats = await withClient(env, async (client) => {
+            await ensureSubmissionTablesCached(client, env);
+            return readSiteStats(client, env);
+          });
+          return json({ ok: true, stats }, { headers: corsHeaders(request, env) });
+        }
+        if (request.method === 'POST') {
+          const payload = await request.json().catch(() => ({}));
+          const stats = await withClient(env, async (client) => {
+            await ensureSubmissionTablesCached(client, env);
+            return recordSiteVisit(client, env, request, payload);
+          });
+          return json({ ok: true, stats }, { headers: corsHeaders(request, env) });
+        }
+        return errorResponse(request, env, 405, 'method not allowed');
+      }
+
       if (pathname === '/' && request.method === 'GET') {
         return json({
           ok: true,
@@ -1384,6 +1543,7 @@ export default {
           proxyEndpoint: MODEL_PROXY_PATH,
           discussionsEndpoint: DISCUSSIONS_PATH,
           authEndpoint: AUTH_LOGIN_PATH,
+          statsEndpoint: SITE_STATS_PATH,
           siteOwner: siteOwner(env),
           siteOwnerId: siteOwnerId(env)
         }, { headers: corsHeaders(request, env) });
@@ -1468,6 +1628,15 @@ export default {
         if (validation.error) return errorResponse(request, env, 400, validation.error);
         const result = await withClient(env, async (client) => {
           await ensureSubmissionTablesCached(client, env);
+          const submitter = await userFromSession(client, env, request);
+          if (submitter) {
+            validation.item.submitter = {
+              githubId: submitter.githubId || '',
+              login: submitter.login || '',
+              name: submitter.name || '',
+              avatarUrl: submitter.avatarUrl || ''
+            };
+          }
           const submitterHash = await enforceSubmissionRateLimit(client, env, request);
           return handleSharedReportSubmission(client, env, validation.item, submitterHash);
         });

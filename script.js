@@ -15,6 +15,7 @@ function scrollToSection(sectionId) {
     const tokenKey = 'cybertar:model-verifier:auth-token:v1';
     const tokenExpiresKey = 'cybertar:model-verifier:auth-token-expires-at:v1';
     const userKey = 'cybertar:model-verifier:auth-user:v1';
+    const visitorKey = 'cybertar:site-visitor-id:v1';
     const tokenTtlMs = 24 * 60 * 60 * 1000;
     let verifiedUser = null;
 
@@ -350,6 +351,48 @@ function scrollToSection(sectionId) {
                 font-size: 0.84rem;
                 line-height: 1.45;
             }
+            .cybertar-site-stats {
+                position: fixed;
+                left: 1rem;
+                bottom: 1rem;
+                z-index: 1800;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.55rem;
+                padding: 0.48rem 0.68rem;
+                border: 1px solid rgba(255, 255, 255, 0.14);
+                border-radius: 999px;
+                background: rgba(8, 10, 16, 0.82);
+                color: rgba(255, 255, 255, 0.78);
+                box-shadow: 0 14px 40px rgba(0, 0, 0, 0.36), inset 0 0 16px rgba(124, 255, 0, 0.035);
+                backdrop-filter: blur(18px);
+                -webkit-backdrop-filter: blur(18px);
+                font-family: var(--font-primary, sans-serif);
+                font-size: 0.72rem;
+                line-height: 1;
+                letter-spacing: 0;
+            }
+            .cybertar-site-stats[hidden] {
+                display: none;
+            }
+            .cybertar-site-stats span {
+                display: inline-flex;
+                align-items: baseline;
+                gap: 0.26rem;
+                white-space: nowrap;
+            }
+            .cybertar-site-stats strong {
+                color: #fff;
+                font-size: 0.82rem;
+            }
+            .cybertar-site-stats i {
+                width: 0.42rem;
+                height: 0.42rem;
+                border-radius: 999px;
+                background: #7cff00;
+                box-shadow: 0 0 12px rgba(124, 255, 0, 0.5);
+                font-style: normal;
+            }
             @media (max-width: 720px) {
                 .cybertar-auth-widget {
                     top: 1rem;
@@ -360,6 +403,13 @@ function scrollToSection(sectionId) {
                     min-width: 64px;
                     padding: 0 12px;
                     font-size: 0.72rem;
+                }
+                .cybertar-site-stats {
+                    left: 0.75rem;
+                    right: auto;
+                    bottom: 0.75rem;
+                    padding: 0.42rem 0.58rem;
+                    font-size: 0.68rem;
                 }
             }
             .cybertar-generated-header {
@@ -682,11 +732,89 @@ function scrollToSection(sectionId) {
         });
     }
 
+    function compactNumber(value) {
+        const number = Number(value || 0);
+        if (!Number.isFinite(number)) return '--';
+        if (number >= 1000000) return `${(number / 1000000).toFixed(number >= 10000000 ? 0 : 1)}M`;
+        if (number >= 10000) return `${(number / 10000).toFixed(number >= 100000 ? 0 : 1)}W`;
+        if (number >= 1000) return `${(number / 1000).toFixed(number >= 10000 ? 0 : 1)}K`;
+        return String(Math.max(0, Math.round(number)));
+    }
+
+    function siteVisitorId() {
+        try {
+            const existing = localStorage.getItem(visitorKey);
+            if (/^[a-zA-Z0-9_-]{12,80}$/.test(existing || '')) return existing;
+            const generated = (window.crypto?.randomUUID ? window.crypto.randomUUID() : `${Date.now()}-${Math.random()}`)
+                .replace(/[^a-zA-Z0-9_-]/g, '')
+                .slice(0, 48);
+            localStorage.setItem(visitorKey, generated);
+            return generated;
+        } catch {
+            return '';
+        }
+    }
+
+    async function postSiteStats(eventName) {
+        const response = await fetch(`${apiRoot}/site-stats`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            cache: 'no-store',
+            body: JSON.stringify({
+                event: eventName,
+                page: window.location.pathname,
+                visitorId: siteVisitorId()
+            })
+        });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok || !payload.stats) throw new Error(payload.error || `HTTP ${response.status}`);
+        return payload.stats;
+    }
+
+    function renderSiteStats(widget, stats) {
+        const visits = widget.querySelector('[data-site-visits]');
+        const online = widget.querySelector('[data-site-online]');
+        if (visits) visits.textContent = compactNumber(stats?.totalVisits);
+        if (online) online.textContent = compactNumber(stats?.onlineVisitors);
+        widget.hidden = false;
+    }
+
+    function createSiteStatsWidget() {
+        if (document.getElementById('cybertarSiteStats')) return;
+        injectStyles();
+        const widget = document.createElement('div');
+        widget.id = 'cybertarSiteStats';
+        widget.className = 'cybertar-site-stats';
+        widget.hidden = true;
+        widget.setAttribute('aria-label', '站点访问统计');
+        widget.innerHTML = `
+            <span>访问 <strong data-site-visits>--</strong></span>
+            <span><i aria-hidden="true"></i>在线 <strong data-site-online>--</strong></span>
+        `;
+        document.body.appendChild(widget);
+
+        const refresh = async (eventName = 'heartbeat') => {
+            if (document.hidden && eventName !== 'view') return;
+            try {
+                renderSiteStats(widget, await postSiteStats(eventName));
+            } catch {
+                widget.hidden = true;
+            }
+        };
+
+        refresh('view');
+        setInterval(() => refresh('heartbeat'), 60000);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) refresh('heartbeat');
+        });
+    }
+
     window.CyberTARAuth = {
         apiRoot,
         tokenKey,
         tokenExpiresKey,
         userKey,
+        visitorKey,
         tokenTtlMs,
         getToken: storedToken,
         getUser: () => verifiedUser,
@@ -701,6 +829,7 @@ function scrollToSection(sectionId) {
     };
 
     document.addEventListener('DOMContentLoaded', createWidget);
+    document.addEventListener('DOMContentLoaded', createSiteStatsWidget);
 })();
 
 // 平滑滚动
