@@ -322,6 +322,7 @@
     let currentReport = null;
     let sharedItems = [];
     let sharedCacheLoadedAt = 0;
+    let activeSharedItem = null;
 
     function escapeHtml(value) {
         return String(value ?? '')
@@ -3032,6 +3033,9 @@
                 ? (authUser ? '写下你的评论。' : '点击发布讨论会先进行 GitHub 登录。')
                 : '先在汇总排行中选择一份报告。';
         }
+        if ($('drawerDeleteBtn')) {
+            $('drawerDeleteBtn').textContent = canAdminDelete() ? '删除报告' : '申请删除';
+        }
     }
 
     async function loadAuthUser() {
@@ -3248,21 +3252,42 @@
         if (!shareConfig.customEndpoint || !item) return;
         const targetModel = sharedTargetModel(item);
         const targetModels = sharedTargetModelCandidates(item);
-        const adminPassword = canAdminDelete() ? '' : prompt('Admin password required to delete this report.');
-        if (!canAdminDelete() && !adminPassword) return;
-        if (!confirm(`Delete report for ${item.domain} / ${targetModel}?`)) return;
+        if (!canAdminDelete()) {
+            if (!authUser) {
+                startGitHubLogin();
+                return;
+            }
+            const reason = prompt('请填写申请删除原因，管理员审核后处理。') || '';
+            if (!reason.trim()) return;
+            const response = await fetch(shareConfig.customEndpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', ...authHeaders() },
+                body: JSON.stringify({ action: 'delete_request', domain: item.domain, targetModel, targetModels, reason })
+            });
+            const payload = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                alert(payload.error || `申请失败：HTTP ${response.status}`);
+                return;
+            }
+            alert('已提交删除申请，等待管理员审核。');
+            localStorage.removeItem(sharedCacheKey);
+            await loadSharedReports({ force: true });
+            return;
+        }
+        if (!confirm(`管理员确认删除 ${item.domain} / ${targetModel} 的报告？`)) return;
         const response = await fetch(shareConfig.customEndpoint, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json', ...authHeaders() },
-            body: JSON.stringify({ domain: item.domain, targetModel, targetModels, adminPassword })
+            body: JSON.stringify({ domain: item.domain, targetModel, targetModels })
         });
         const payload = await response.json().catch(() => ({}));
         if (!response.ok) {
-            alert(payload.error || `Delete failed: HTTP ${response.status}`);
+            alert(payload.error || `删除失败：HTTP ${response.status}`);
             return;
         }
         localStorage.removeItem(sharedCacheKey);
         await loadSharedReports({ force: true });
+        closeSharedDetail();
     }
 
     async function loadDiscussions(item, options = {}) {
@@ -3384,12 +3409,24 @@
 
     function normalizeSharedItem(item) {
         if (!item) return null;
+        const votes = item.votes || {};
+        const deleteRequests = item.deleteRequests || item.delete_requests || {};
         return {
             providerName: item.providerName || item.provider_name || item.provider || '',
             homepage: item.homepage || '',
             domain: item.domain || '',
             targetModel: item.targetModel || item.target_model || '',
             sharedAt: item.sharedAt || item.shared_at || '',
+            votes: {
+                up: Number(votes.up ?? item.vote_up_count ?? 0),
+                down: Number(votes.down ?? item.vote_down_count ?? 0),
+                score: Number(votes.score ?? item.vote_score ?? 0),
+                heat: Number(votes.heat ?? item.vote_heat ?? votes.up ?? item.vote_up_count ?? 0),
+                userVote: Number(votes.userVote ?? votes.user_vote ?? 0)
+            },
+            deleteRequests: {
+                pending: Number(deleteRequests.pending ?? item.pending_delete_count ?? 0)
+            },
             submitter: item.submitter || {
                 githubId: item.submitter_github_id || '',
                 login: item.submitter_login || '',
@@ -3439,18 +3476,163 @@
         return Boolean(cache?.savedAt && Date.now() - Number(cache.savedAt) < sharedCacheTtlMs);
     }
 
+    function sharedVotes(item) {
+        const votes = item?.votes || {};
+        return {
+            up: Number(votes.up || 0),
+            down: Number(votes.down || 0),
+            score: Number(votes.score || 0),
+            heat: Number(votes.heat ?? votes.up ?? 0),
+            userVote: Number(votes.userVote || 0)
+        };
+    }
+
+    function formatCompactNumber(value) {
+        const number = Number(value || 0);
+        if (!Number.isFinite(number)) return '0';
+        if (Math.abs(number) >= 10000) return `${(number / 10000).toFixed(number >= 100000 ? 0 : 1).replace(/\.0$/, '')}万`;
+        return String(number);
+    }
+
+    function renderSharedDetail(item) {
+        activeSharedItem = item || null;
+        updateAuthUi();
+        const title = $('sharedDetailTitle');
+        const meta = $('sharedDetailMeta');
+        const viewBtn = $('drawerViewReportBtn');
+        const discussBtn = $('drawerDiscussBtn');
+        const deleteBtn = $('drawerDeleteBtn');
+        const upBtn = $('upvoteReportBtn');
+        const downBtn = $('downvoteReportBtn');
+        if (!item) {
+            if (title) title.textContent = '选择一份报告';
+            if (meta) meta.innerHTML = '';
+            [viewBtn, discussBtn, deleteBtn, upBtn, downBtn].forEach((button) => {
+                if (button) button.disabled = true;
+            });
+            return;
+        }
+        const channel = asArray(item.report?.channels)[0] || {};
+        const score = Number(channel.score || 0);
+        const votes = sharedVotes(item);
+        const sharedAt = item.sharedAt ? new Date(item.sharedAt).toLocaleString() : '--';
+        const submitter = item.submitter || {};
+        const submitterLabel = submitter.login
+            ? `${submitter.login}${submitter.name ? ` · ${submitter.name}` : ''}`
+            : '匿名提交';
+        const pendingDeletes = Number(item.deleteRequests?.pending || 0);
+        if (title) title.textContent = item.providerName || item.domain || '未命名服务商';
+        if (meta) {
+            meta.innerHTML = `
+                <div><span>官网域名</span><strong>${escapeHtml(item.domain || '--')}</strong></div>
+                <div><span>目标模型</span><strong>${escapeHtml(item.targetModel || channel.targetModel || '未声明模型')}</strong></div>
+                <div><span>综合得分</span><strong style="color:${scoreColor(score)}">${Number.isFinite(score) ? score : '--'}/100</strong></div>
+                <div><span>热度</span><strong class="shared-heat"><span class="heat-icon" aria-hidden="true">🔥</span>${escapeHtml(formatCompactNumber(votes.heat))}</strong></div>
+                <div><span>提交者</span><strong>${escapeHtml(submitterLabel)}</strong></div>
+                <div><span>更新时间</span><strong>${escapeHtml(sharedAt)}</strong></div>
+                ${pendingDeletes ? `<div><span>删除申请</span><strong>${escapeHtml(formatCompactNumber(pendingDeletes))} 个待处理</strong></div>` : ''}
+            `;
+        }
+        if (viewBtn) viewBtn.disabled = false;
+        if (discussBtn) discussBtn.disabled = false;
+        if (deleteBtn) {
+            deleteBtn.disabled = false;
+            deleteBtn.textContent = canAdminDelete() ? '删除报告' : (pendingDeletes ? '已有人申请删除' : '申请删除');
+        }
+        if (upBtn) {
+            upBtn.disabled = !shareConfig.customEndpoint;
+            upBtn.classList.toggle('active', votes.userVote === 1);
+            upBtn.querySelector('strong').textContent = formatCompactNumber(votes.up);
+        }
+        if (downBtn) {
+            downBtn.disabled = !shareConfig.customEndpoint;
+            downBtn.classList.toggle('active', votes.userVote === -1);
+            downBtn.querySelector('strong').textContent = formatCompactNumber(votes.down);
+        }
+    }
+
+    function openSharedDetail(item) {
+        if (!item) return;
+        renderSharedDetail(item);
+        const overlay = $('sharedDetailOverlay');
+        const drawer = $('sharedDetailDrawer');
+        if (overlay) {
+            overlay.hidden = false;
+            requestAnimationFrame(() => overlay.classList.add('open'));
+        }
+        if (drawer) {
+            drawer.setAttribute('aria-hidden', 'false');
+            requestAnimationFrame(() => drawer.classList.add('open'));
+        }
+        loadDiscussions(item);
+    }
+
+    function closeSharedDetail() {
+        const overlay = $('sharedDetailOverlay');
+        const drawer = $('sharedDetailDrawer');
+        if (overlay) overlay.classList.remove('open');
+        if (drawer) {
+            drawer.classList.remove('open');
+            drawer.setAttribute('aria-hidden', 'true');
+        }
+        setTimeout(() => {
+            if (overlay && !overlay.classList.contains('open')) overlay.hidden = true;
+        }, 220);
+    }
+
+    function viewActiveSharedReport() {
+        if (!activeSharedItem?.report) return;
+        renderReport(activeSharedItem.report);
+        activatePage('testPage');
+        activatePanel('reportPanel');
+        setState('共享报告');
+        closeSharedDetail();
+    }
+
+    async function voteSharedReport(item, vote) {
+        if (!shareConfig.customEndpoint || !item) return;
+        const targetModel = sharedTargetModel(item);
+        const currentVote = sharedVotes(item).userVote;
+        const nextVote = currentVote === vote ? 0 : vote;
+        const response = await fetch(shareConfig.customEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', ...authHeaders() },
+            body: JSON.stringify({ action: 'vote', domain: item.domain, targetModel, vote: nextVote })
+        });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            alert(payload.error || `投票失败：HTTP ${response.status}`);
+            return;
+        }
+        const updatedVotes = payload.item?.votes || payload.votes || {};
+        item.votes = { ...sharedVotes(item), ...updatedVotes };
+        const index = sharedItems.findIndex((entry) => sharedItemKey(entry) === sharedItemKey(item));
+        if (index >= 0) sharedItems[index] = item;
+        renderSharedDetail(item);
+        renderSharedReports(sharedItems);
+        localStorage.removeItem(sharedCacheKey);
+        await loadSharedReports({ force: true, silent: true });
+    }
+
     function renderSharedReports(items, error = '') {
         const grid = $('sharedReports');
         const normalized = asArray(items)
             .map(normalizeSharedItem)
             .filter((item) => item?.domain)
             .sort((a, b) => {
+                const heatA = sharedVotes(a).heat;
+                const heatB = sharedVotes(b).heat;
+                if (heatB !== heatA) return heatB - heatA;
                 const scoreA = Number(asArray(a.report?.channels)[0]?.score || 0);
                 const scoreB = Number(asArray(b.report?.channels)[0]?.score || 0);
                 if (scoreB !== scoreA) return scoreB - scoreA;
                 return Date.parse(b.sharedAt || 0) - Date.parse(a.sharedAt || 0);
             });
         sharedItems = normalized;
+        if (activeSharedItem) {
+            activeSharedItem = sharedItems.find((item) => sharedItemKey(item) === sharedItemKey(activeSharedItem)) || activeSharedItem;
+            renderSharedDetail(activeSharedItem);
+        }
         if (error && !normalized.length) {
             $('sharedDomainCount').textContent = '--';
             $('sharedBestScore').textContent = '--';
@@ -3474,7 +3656,7 @@
         grid.innerHTML = notice + normalized.map((item, index) => {
             const channel = asArray(item.report?.channels)[0] || {};
             const score = Number(channel.score || 0);
-            const sharedAt = item.sharedAt ? new Date(item.sharedAt).toLocaleString() : '--';
+            const sharedAt = item.sharedAt ? new Date(item.sharedAt).toLocaleDateString() : '--';
             const submitter = item.submitter || {};
             const submitterLabel = submitter.login
                 ? `${submitter.login}${submitter.name ? ` · ${submitter.name}` : ''}`
@@ -3482,55 +3664,45 @@
             const submitterAvatar = submitter.avatarUrl
                 ? `<img class="submitter-avatar" src="${escapeHtml(submitter.avatarUrl)}" alt="">`
                 : '';
+            const votes = sharedVotes(item);
+            const pendingDeletes = Number(item.deleteRequests?.pending || 0);
             return `
-                <article class="shared-item" data-select-report-key="${escapeHtml(sharedItemKey(item))}" tabindex="0" role="button" aria-label="选择 ${escapeHtml(item.providerName || item.domain)} 的报告进行讨论">
-                    <div><strong>#${index + 1} ${escapeHtml(item.providerName || '未命名服务商')}</strong><span>${escapeHtml(item.domain)}</span></div>
-                    <span>${escapeHtml(item.targetModel || channel.targetModel || '未声明模型')}</span>
-                    <strong style="color:${scoreColor(score)}">${Number.isFinite(score) ? score : '--'}/100</strong>
+                <article class="shared-item" style="--card-delay:${Math.min(index, 14) * 36}ms" data-select-report-key="${escapeHtml(sharedItemKey(item))}" tabindex="0" role="button" aria-label="打开 ${escapeHtml(item.providerName || item.domain)} 的报告详情">
+                    <div class="shared-card-top">
+                        <span class="shared-rank">#${index + 1}</span>
+                        <span class="shared-heat"><span class="heat-icon" aria-hidden="true">🔥</span>${escapeHtml(formatCompactNumber(votes.heat))}</span>
+                    </div>
+                    <strong class="shared-card-title">${escapeHtml(item.providerName || '未命名服务商')}</strong>
+                    <span class="shared-card-domain">${escapeHtml(item.domain)}</span>
+                    <div class="shared-card-score" style="--score-color:${scoreColor(score)}">
+                        <strong>${Number.isFinite(score) ? score : '--'}</strong><span>/100</span>
+                    </div>
+                    <div class="shared-card-meta">
+                        <span>${escapeHtml(item.targetModel || channel.targetModel || '未声明模型')}</span>
+                        <span>${escapeHtml(sharedAt)}</span>
+                    </div>
                     <span class="submitter-label">${submitterAvatar}${escapeHtml(submitterLabel)}</span>
-                    <span>${escapeHtml(sharedAt)}</span>
-                    <div class="shared-actions">
-                        <button class="report-tab" type="button" data-shared-key="${escapeHtml(sharedItemKey(item))}">查看</button>
-                        <button class="report-tab" type="button" data-discuss-key="${escapeHtml(sharedItemKey(item))}">讨论</button>
-                        <button class="report-tab" type="button" data-delete-key="${escapeHtml(sharedItemKey(item))}">删除</button>
+                    <div class="shared-card-footer">
+                        <span>赞 ${escapeHtml(formatCompactNumber(votes.up))}</span>
+                        <span>踩 ${escapeHtml(formatCompactNumber(votes.down))}</span>
+                        ${pendingDeletes ? `<span class="shared-pending-delete">${escapeHtml(formatCompactNumber(pendingDeletes))} 删除申请</span>` : ''}
                     </div>
                 </article>
             `;
         }).join('');
-        grid.querySelectorAll('[data-select-report-key]').forEach((row) => {
+        grid.querySelectorAll('[data-select-report-key]').forEach((card) => {
             const select = () => {
-                const item = sharedItems.find((entry) => sharedItemKey(entry) === row.dataset.selectReportKey);
-                if (item) loadDiscussions(item);
+                const item = sharedItems.find((entry) => sharedItemKey(entry) === card.dataset.selectReportKey);
+                if (item) openSharedDetail(item);
             };
-            row.addEventListener('click', (event) => {
+            card.addEventListener('click', (event) => {
                 if (event.target.closest('button, a')) return;
                 select();
             });
-            row.addEventListener('keydown', (event) => {
+            card.addEventListener('keydown', (event) => {
                 if (event.key !== 'Enter' && event.key !== ' ') return;
                 event.preventDefault();
                 select();
-            });
-        });
-        grid.querySelectorAll('[data-shared-key]').forEach((button) => {
-            button.addEventListener('click', () => {
-                const item = sharedItems.find((entry) => sharedItemKey(entry) === button.dataset.sharedKey);
-                if (item?.report) renderReport(item.report);
-                activatePage('testPage');
-                activatePanel('reportPanel');
-                setState('共享报告');
-            });
-        });
-        grid.querySelectorAll('[data-discuss-key]').forEach((button) => {
-            button.addEventListener('click', () => {
-                const item = sharedItems.find((entry) => sharedItemKey(entry) === button.dataset.discussKey);
-                loadDiscussions(item);
-            });
-        });
-        grid.querySelectorAll('[data-delete-key]').forEach((button) => {
-            button.addEventListener('click', () => {
-                const item = sharedItems.find((entry) => sharedItemKey(entry) === button.dataset.deleteKey);
-                deleteSharedReport(item);
             });
         });
     }
@@ -3669,6 +3841,15 @@
     $('refreshSharedBtn')?.addEventListener('click', () => refreshSharedAndDiscussion({ force: true }));
     $('githubLoginBtn')?.addEventListener('click', startGitHubLogin);
     $('githubLogoutBtn')?.addEventListener('click', logoutGitHub);
+    $('sharedDetailClose')?.addEventListener('click', closeSharedDetail);
+    $('sharedDetailOverlay')?.addEventListener('click', closeSharedDetail);
+    $('drawerViewReportBtn')?.addEventListener('click', viewActiveSharedReport);
+    $('drawerDiscussBtn')?.addEventListener('click', () => {
+        if (activeSharedItem) loadDiscussions(activeSharedItem, { force: true });
+    });
+    $('drawerDeleteBtn')?.addEventListener('click', () => deleteSharedReport(activeSharedItem));
+    $('upvoteReportBtn')?.addEventListener('click', () => voteSharedReport(activeSharedItem, 1));
+    $('downvoteReportBtn')?.addEventListener('click', () => voteSharedReport(activeSharedItem, -1));
     $('provider')?.addEventListener('change', syncProviderDefaults);
     $('useSystemPrompt')?.addEventListener('change', syncPromptToggles);
     $('useUserPrompt')?.addEventListener('change', syncPromptToggles);

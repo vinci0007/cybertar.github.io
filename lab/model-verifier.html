@@ -380,33 +380,78 @@
 
         .shared-list {
             display: grid;
-            gap: 0.5rem;
-            margin-top: 0.55rem;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 0.8rem;
+            margin-top: 0.9rem;
             max-height: 52vh;
             overflow: auto;
+            padding: 0.12rem 0.12rem 0.3rem;
         }
 
         .shared-item {
-            display: grid;
-            grid-template-columns: minmax(0, 1.2fr) 0.72fr 0.5fr 0.9fr 0.85fr auto;
-            gap: 0.7rem;
-            align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 9px;
-            padding: 0.62rem 0.7rem;
-            background: rgba(255, 255, 255, 0.035);
-            color: rgba(255, 255, 255, 0.72);
-            font-size: 0.84rem;
+            position: relative;
+            display: flex;
+            min-height: 176px;
+            flex-direction: column;
+            gap: 0.5rem;
+            border: 1px solid rgba(124, 255, 0, 0.22);
+            border-radius: 8px;
+            padding: 0.78rem;
+            background:
+                linear-gradient(150deg, rgba(30, 53, 47, 0.96), rgba(16, 20, 28, 0.98) 58%),
+                radial-gradient(circle at 18% 0%, rgba(124, 255, 0, 0.22), transparent 34%);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.74);
+            font-size: 0.82rem;
+            isolation: isolate;
+            opacity: 0;
+            --card-lift: 0px;
+            transform: translateY(calc(12px + var(--card-lift))) scale(0.985);
+            animation: sharedCardIn 420ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            animation-delay: var(--card-delay, 0ms);
+            transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
         }
 
         .shared-item[role="button"] {
             cursor: pointer;
         }
 
+        .shared-item::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(120deg, transparent 12%, rgba(255, 255, 255, 0.08), transparent 34%);
+            opacity: 0;
+            transform: translateX(-18%);
+            transition: opacity 0.22s ease, transform 0.32s ease;
+            z-index: -1;
+        }
+
+        .shared-item:hover,
+        .shared-item:focus-visible {
+            --card-lift: -4px;
+            border-color: rgba(124, 255, 0, 0.54);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42), 0 0 26px rgba(124, 255, 0, 0.12);
+        }
+
+        .shared-item:hover::before,
+        .shared-item:focus-visible::before {
+            opacity: 1;
+            transform: translateX(14%);
+        }
+
         .shared-item.active {
             border-color: rgba(124, 255, 0, 0.5);
             background: rgba(124, 255, 0, 0.075);
             box-shadow: 0 0 24px rgba(124, 255, 0, 0.08);
+        }
+
+        @keyframes sharedCardIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .auth-bar,
@@ -482,19 +527,88 @@
             color: #fff;
         }
 
+        .shared-card-top,
+        .shared-card-meta,
+        .shared-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.45rem;
+        }
+
+        .shared-rank {
+            color: rgba(255, 255, 255, 0.52);
+            font-size: 0.76rem;
+            font-weight: 700;
+        }
+
+        .shared-card-title {
+            min-height: 2.6em;
+            font-size: 1rem;
+            line-height: 1.3;
+            overflow-wrap: anywhere;
+        }
+
+        .shared-card-domain,
+        .shared-card-meta,
+        .shared-card-footer {
+            color: rgba(255, 255, 255, 0.62);
+            font-size: 0.75rem;
+            overflow-wrap: anywhere;
+        }
+
+        .shared-card-score {
+            display: flex;
+            align-items: baseline;
+            gap: 0.16rem;
+            color: var(--score-color);
+        }
+
+        .shared-card-score strong {
+            color: var(--score-color);
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        .shared-heat {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+            color: #ff384f;
+            font-size: 0.58rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .heat-icon {
+            color: #ff384f;
+            filter: drop-shadow(0 0 8px rgba(255, 48, 69, 0.55));
+            font-size: 0.9em;
+        }
+
+        .shared-pending-delete {
+            color: #ffb95c;
+        }
+
         .shared-item > span,
         .shared-item > div {
             min-width: 0;
             overflow-wrap: anywhere;
         }
 
-        .shared-item .submitter-label {
+        .shared-item .submitter-label,
+        .shared-detail-meta .submitter-label {
             display: flex;
             align-items: center;
             gap: 0.35rem;
+            min-width: 0;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 0.74rem;
+            overflow-wrap: anywhere;
         }
 
-        .shared-item .submitter-avatar {
+        .shared-item .submitter-avatar,
+        .shared-detail-meta .submitter-avatar {
             width: 18px;
             height: 18px;
             border-radius: 50%;
@@ -505,6 +619,127 @@
 
         .shared-item a {
             color: #fff;
+        }
+
+        .shared-detail-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 8990;
+            background: rgba(0, 0, 0, 0.48);
+            opacity: 0;
+            transition: opacity 0.22s ease;
+            backdrop-filter: blur(2px);
+        }
+
+        .shared-detail-overlay.open {
+            opacity: 1;
+        }
+
+        .shared-detail-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 9000;
+            width: min(520px, calc(100vw - 18px));
+            height: 100vh;
+            border-left: 1px solid rgba(124, 255, 0, 0.28);
+            background:
+                linear-gradient(180deg, rgba(23, 35, 38, 0.99), rgba(7, 10, 14, 0.99)),
+                radial-gradient(circle at 18% 8%, rgba(124, 255, 0, 0.18), transparent 32%);
+            box-shadow: -28px 0 70px rgba(0, 0, 0, 0.58);
+            transform: translateX(104%);
+            transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .shared-detail-drawer.open {
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .shared-detail-close {
+            position: absolute;
+            top: 0.9rem;
+            right: 0.9rem;
+            width: 38px;
+            height: 38px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .shared-detail-scroll {
+            height: 100%;
+            overflow: auto;
+            padding: 2rem 1.35rem 1.4rem;
+        }
+
+        .shared-detail-scroll h2 {
+            margin: 0.2rem 2.4rem 0.8rem 0;
+            font-size: 1.45rem;
+            line-height: 1.2;
+            overflow-wrap: anywhere;
+        }
+
+        .shared-detail-meta {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.55rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .shared-detail-meta div {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.62rem;
+            background: rgba(255, 255, 255, 0.055);
+            min-width: 0;
+        }
+
+        .shared-detail-meta span {
+            display: block;
+            color: rgba(255, 255, 255, 0.52);
+            font-size: 0.72rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .shared-detail-meta strong {
+            color: #fff;
+            font-size: 0.88rem;
+            overflow-wrap: anywhere;
+        }
+
+        .shared-detail-meta .shared-heat {
+            display: inline-flex;
+            color: #ff384f;
+            font-size: 0.58rem;
+        }
+
+        .shared-detail-meta .heat-icon {
+            display: inline;
+            color: #ff384f;
+            margin-bottom: 0;
+        }
+
+        .shared-detail-actions,
+        .vote-strip {
+            display: flex;
+            gap: 0.55rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+
+        .vote-button {
+            color: rgba(255, 255, 255, 0.78);
+        }
+
+        .vote-button.active {
+            border-color: rgba(255, 56, 79, 0.64);
+            color: #ff384f;
+            box-shadow: 0 0 18px rgba(255, 56, 79, 0.16);
         }
 
         .report-tabs {
@@ -1432,6 +1667,12 @@
             line-height: 1.45;
         }
 
+        @media (max-width: 1280px) {
+            .shared-list {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+
         @media (max-width: 1050px) {
             .verifier-header,
             .verifier-grid,
@@ -1447,6 +1688,10 @@
             .verify-overview,
             .shared-item {
                 grid-template-columns: 1fr;
+            }
+
+            .shared-list {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
             }
 
             .probe-row {
@@ -1481,7 +1726,9 @@
             }
 
             .test-options,
-            .grid2 {
+            .grid2,
+            .shared-list,
+            .shared-detail-meta {
                 grid-template-columns: 1fr;
             }
         }
@@ -1667,25 +1914,44 @@
                 <div id="sharedReports" class="shared-list">
                     <div class="verify-empty">正在准备公开分享报告...</div>
                 </div>
-                <section class="verify-card discussion-panel">
-                    <p class="section-note">讨论</p>
-                    <h2 id="discussionTitle">选择一份报告后讨论</h2>
-                    <div id="discussionList" class="discussion-list">
-                        <div class="verify-empty">尚未选择报告。</div>
-                    </div>
-                    <div class="discussion-form">
-                        <label class="field">发言
-                            <textarea id="discussionBody" placeholder="登录 GitHub 后参与讨论。"></textarea>
-                        </label>
-                        <button id="postDiscussionBtn" class="action-btn" type="button">发布讨论</button>
-                    </div>
-                </section>
                 <div class="report-actions">
                     <button id="refreshSharedBtn" class="action-btn" type="button">手动刷新</button>
                 </div>
             </section>
         </section>
     </main>
+
+    <div id="sharedDetailOverlay" class="shared-detail-overlay" hidden></div>
+    <aside id="sharedDetailDrawer" class="shared-detail-drawer" aria-hidden="true" aria-labelledby="sharedDetailTitle">
+        <button id="sharedDetailClose" class="shared-detail-close" type="button" aria-label="关闭">×</button>
+        <div class="shared-detail-scroll">
+            <p class="section-note">模型报告详情</p>
+            <h2 id="sharedDetailTitle">选择一份报告</h2>
+            <div id="sharedDetailMeta" class="shared-detail-meta"></div>
+            <div class="shared-detail-actions">
+                <button id="drawerViewReportBtn" class="action-btn" type="button">查看报告</button>
+                <button id="drawerDiscussBtn" class="action-btn secondary" type="button">刷新讨论</button>
+                <button id="drawerDeleteBtn" class="action-btn secondary danger" type="button">申请删除</button>
+            </div>
+            <div class="vote-strip">
+                <button id="upvoteReportBtn" class="report-tab vote-button" type="button">赞 <strong>0</strong></button>
+                <button id="downvoteReportBtn" class="report-tab vote-button" type="button">踩 <strong>0</strong></button>
+            </div>
+            <section class="discussion-panel">
+                <p class="section-note">讨论</p>
+                <h2 id="discussionTitle">选择一份报告后讨论</h2>
+                <div id="discussionList" class="discussion-list">
+                    <div class="verify-empty">尚未选择报告。</div>
+                </div>
+                <div class="discussion-form">
+                    <label class="field">发言
+                        <textarea id="discussionBody" placeholder="登录 GitHub 后参与讨论。"></textarea>
+                    </label>
+                    <button id="postDiscussionBtn" class="action-btn" type="button">发布讨论</button>
+                </div>
+            </section>
+        </div>
+    </aside>
 
     <div id="shareModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="shareModalTitle">
         <div class="modal-card">
@@ -1707,7 +1973,7 @@
 
     <script src="../script.js?v=2026061406"></script>
     <script src="model-verify-share-config.js?v=20260606"></script>
-    <script src="model-verifier.js?v=2026061402"></script>
+    <script src="model-verifier.js?v=2026061501"></script>
 </body>
 
 </html>

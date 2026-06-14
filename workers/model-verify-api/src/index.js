@@ -7,6 +7,8 @@ const DEFAULT_PENDING_TABLE = 'model_verify_pending_reports';
 const DEFAULT_RATE_TABLE = 'model_verify_submission_limits';
 const DEFAULT_SESSION_TABLE = 'model_verify_sessions';
 const DEFAULT_DISCUSSION_TABLE = 'model_verify_discussions';
+const DEFAULT_VOTE_TABLE = 'model_verify_report_votes';
+const DEFAULT_DELETE_REQUEST_TABLE = 'model_verify_delete_requests';
 const DEFAULT_STATS_TABLE = 'site_visit_stats';
 const DEFAULT_ONLINE_TABLE = 'site_online_visitors';
 const DEFAULT_EDGE_CACHE_TTL_SECONDS = 3600;
@@ -944,7 +946,16 @@ function normalizeSharedRow(row) {
       name: row.submitter_name || '',
       avatarUrl: row.submitter_avatar_url || ''
     },
-    report: row.report || {}
+    report: row.report || {},
+    votes: {
+      up: Number(row.vote_up_count || 0),
+      down: Number(row.vote_down_count || 0),
+      score: Number(row.vote_score || 0),
+      heat: Number(row.vote_heat || row.vote_up_count || 0)
+    },
+    deleteRequests: {
+      pending: Number(row.pending_delete_count || 0)
+    }
   };
 }
 
@@ -1030,6 +1041,8 @@ function schemaKey(env) {
     tableName(env, 'MODEL_VERIFY_RATE_TABLE', DEFAULT_RATE_TABLE),
     tableName(env, 'MODEL_VERIFY_SESSION_TABLE', DEFAULT_SESSION_TABLE),
     tableName(env, 'MODEL_VERIFY_DISCUSSION_TABLE', DEFAULT_DISCUSSION_TABLE),
+    tableName(env, 'MODEL_VERIFY_VOTE_TABLE', DEFAULT_VOTE_TABLE),
+    tableName(env, 'MODEL_VERIFY_DELETE_REQUEST_TABLE', DEFAULT_DELETE_REQUEST_TABLE),
     tableName(env, 'SITE_STATS_TABLE', DEFAULT_STATS_TABLE),
     tableName(env, 'SITE_ONLINE_TABLE', DEFAULT_ONLINE_TABLE)
   ].join('|');
@@ -1102,6 +1115,8 @@ async function ensureSubmissionTables(client, env) {
   const rateTableName = tableName(env, 'MODEL_VERIFY_RATE_TABLE', DEFAULT_RATE_TABLE);
   const sessionTableName = tableName(env, 'MODEL_VERIFY_SESSION_TABLE', DEFAULT_SESSION_TABLE);
   const discussionTableName = tableName(env, 'MODEL_VERIFY_DISCUSSION_TABLE', DEFAULT_DISCUSSION_TABLE);
+  const voteTableName = tableName(env, 'MODEL_VERIFY_VOTE_TABLE', DEFAULT_VOTE_TABLE);
+  const deleteRequestTableName = tableName(env, 'MODEL_VERIFY_DELETE_REQUEST_TABLE', DEFAULT_DELETE_REQUEST_TABLE);
   const statsTableName = tableName(env, 'SITE_STATS_TABLE', DEFAULT_STATS_TABLE);
   const onlineTableName = tableName(env, 'SITE_ONLINE_TABLE', DEFAULT_ONLINE_TABLE);
   const table = quoteIdent(reportTableName);
@@ -1109,6 +1124,8 @@ async function ensureSubmissionTables(client, env) {
   const rateTable = quoteIdent(rateTableName);
   const sessionTable = quoteIdent(sessionTableName);
   const discussionTable = quoteIdent(discussionTableName);
+  const voteTable = quoteIdent(voteTableName);
+  const deleteRequestTable = quoteIdent(deleteRequestTableName);
   const statsTable = quoteIdent(statsTableName);
   const onlineTable = quoteIdent(onlineTableName);
   await client.query(`
@@ -1200,6 +1217,36 @@ async function ensureSubmissionTables(client, env) {
     )
   `);
   await client.query(`
+    create table if not exists ${voteTable} (
+      domain string not null,
+      target_model string not null,
+      voter_hash string not null,
+      vote int2 not null,
+      voter_id string not null default '',
+      voter_login string not null default '',
+      created_at timestamptz not null default now(),
+      updated_at timestamptz not null default now(),
+      primary key (domain, target_model, voter_hash)
+    )
+  `);
+  await client.query(`
+    create table if not exists ${deleteRequestTable} (
+      request_id string primary key,
+      domain string not null,
+      target_model string not null,
+      reason string not null default '',
+      requester_id string not null,
+      requester_login string not null,
+      requester_name string not null default '',
+      requester_avatar_url string not null default '',
+      status string not null default 'pending',
+      reviewer_id string not null default '',
+      reviewer_login string not null default '',
+      created_at timestamptz not null default now(),
+      updated_at timestamptz not null default now()
+    )
+  `);
+  await client.query(`
     create table if not exists ${statsTable} (
       stat_key string primary key,
       total_count int8 not null default 0,
@@ -1218,6 +1265,8 @@ async function ensureSubmissionTables(client, env) {
   await client.query(`create index if not exists ${quoteIdent(`${pendingTableName}_expires_at_idx`)} on ${pendingTable} (expires_at)`);
   await client.query(`create index if not exists ${quoteIdent(`${rateTableName}_updated_at_idx`)} on ${rateTable} (updated_at)`);
   await client.query(`create index if not exists ${quoteIdent(`${discussionTableName}_lookup_idx`)} on ${discussionTable} (domain, target_model, deleted_at, created_at)`);
+  await client.query(`create index if not exists ${quoteIdent(`${voteTableName}_lookup_idx`)} on ${voteTable} (domain, target_model)`);
+  await client.query(`create index if not exists ${quoteIdent(`${deleteRequestTableName}_lookup_idx`)} on ${deleteRequestTable} (domain, target_model, status, created_at)`);
   await client.query(`create index if not exists ${quoteIdent(`${onlineTableName}_last_seen_idx`)} on ${onlineTable} (last_seen_at)`);
 }
 
@@ -1693,6 +1742,8 @@ async function handleSharedReportSubmission(client, env, item, submitterHash) {
 
 async function listReports(env, timing = null) {
   const table = quoteIdent(env.MODEL_VERIFY_TABLE);
+  const voteTable = quoteIdent(env.MODEL_VERIFY_VOTE_TABLE || DEFAULT_VOTE_TABLE);
+  const deleteRequestTable = quoteIdent(env.MODEL_VERIFY_DELETE_REQUEST_TABLE || DEFAULT_DELETE_REQUEST_TABLE);
   return withClient(env, async (client) => {
     if (skipReadSchemaEnsure(env)) {
       timing?.entries.push({ name: 'db_schema_skipped', duration: 0 });
@@ -1702,13 +1753,41 @@ async function listReports(env, timing = null) {
       endSchema();
     }
     const endQuery = timeSpan(timing, 'db_query');
-    const result = await client.query(`
-      select domain, target_model, provider_name, homepage, shared_at::string as shared_at,
-             submitter_github_id, submitter_login, submitter_name, submitter_avatar_url, report
-      from ${table}
+    const runQuery = () => client.query(`
+      select r.domain, r.target_model, r.provider_name, r.homepage, r.shared_at::string as shared_at,
+             r.submitter_github_id, r.submitter_login, r.submitter_name, r.submitter_avatar_url, r.report,
+             coalesce(v.vote_up_count, 0)::int as vote_up_count,
+             coalesce(v.vote_down_count, 0)::int as vote_down_count,
+             coalesce(v.vote_score, 0)::int as vote_score,
+             coalesce(v.vote_heat, 0)::int as vote_heat,
+             coalesce(d.pending_delete_count, 0)::int as pending_delete_count
+      from ${table} as r
+      left join (
+        select domain, target_model,
+               sum(case when vote = 1 then 1 else 0 end) as vote_up_count,
+               sum(case when vote = -1 then 1 else 0 end) as vote_down_count,
+               sum(vote) as vote_score,
+               sum(case when vote = 1 then 1 else 0 end) as vote_heat
+        from ${voteTable}
+        group by domain, target_model
+      ) as v on v.domain = r.domain and v.target_model = r.target_model
+      left join (
+        select domain, target_model, count(*) as pending_delete_count
+        from ${deleteRequestTable}
+        where status = 'pending'
+        group by domain, target_model
+      ) as d on d.domain = r.domain and d.target_model = r.target_model
       order by shared_at desc
       limit 200
     `);
+    let result;
+    try {
+      result = await runQuery();
+    } catch (error) {
+      if (!isMissingStatsTableError(error)) throw error;
+      await ensureSubmissionTablesCached(client, env);
+      result = await runQuery();
+    }
     endQuery();
     const endNormalize = timeSpan(timing, 'normalize');
     const items = result.rows.map(normalizeSharedRow);
@@ -1736,6 +1815,102 @@ async function deleteReportWithClient(client, env, domain, targetModels) {
     }
   }
   return null;
+}
+
+function reportTargetPayload(payload, url = null) {
+  const domain = String(payload?.domain || url?.searchParams?.get('domain') || '').trim().toLowerCase();
+  const targetModel = String(payload?.targetModel || payload?.target_model || url?.searchParams?.get('targetModel') || url?.searchParams?.get('target_model') || '').trim().toLowerCase();
+  const targetModels = [...new Set([
+    targetModel,
+    ...asArray(payload?.targetModels || payload?.target_models)
+  ].map((item) => String(item || '').trim().toLowerCase()).filter(Boolean))];
+  return { domain, targetModel, targetModels };
+}
+
+async function voteReportWithClient(client, env, request, payload) {
+  const voteTable = quoteIdent(env.MODEL_VERIFY_VOTE_TABLE || DEFAULT_VOTE_TABLE);
+  const { domain, targetModel } = reportTargetPayload(payload);
+  const vote = Number(payload?.vote);
+  if (!domain || !targetModel) throw new HttpError(400, 'domain and targetModel are required');
+  if (![1, -1, 0].includes(vote)) throw new HttpError(400, 'vote must be 1, -1, or 0');
+  const user = await userFromSession(client, env, request);
+  const voterKey = user?.githubId ? `github:${user.githubId}` : `ip:${clientIp(request)}`;
+  const voterHash = await sha256(voterKey);
+  if (vote === 0) {
+    await client.query(`delete from ${voteTable} where domain = $1 and target_model = $2 and voter_hash = $3`, [domain, targetModel, voterHash]);
+  } else {
+    await client.query(`
+      upsert into ${voteTable} (domain, target_model, voter_hash, vote, voter_id, voter_login, updated_at)
+      values ($1, $2, $3, $4, $5, $6, now())
+      on conflict (domain, target_model, voter_hash) do update
+        set vote = excluded.vote,
+            voter_id = excluded.voter_id,
+            voter_login = excluded.voter_login,
+            updated_at = now()
+    `, [domain, targetModel, voterHash, vote, user?.githubId || '', user?.login || '']);
+  }
+  const result = await client.query(`
+    select
+      coalesce(sum(case when vote = 1 then 1 else 0 end), 0)::int as vote_up_count,
+      coalesce(sum(case when vote = -1 then 1 else 0 end), 0)::int as vote_down_count,
+      coalesce(sum(vote), 0)::int as vote_score
+    from ${voteTable}
+    where domain = $1 and target_model = $2
+  `, [domain, targetModel]);
+  const row = result.rows[0] || {};
+  return {
+    domain,
+    targetModel,
+    votes: {
+      up: Number(row.vote_up_count || 0),
+      down: Number(row.vote_down_count || 0),
+      score: Number(row.vote_score || 0),
+      heat: Number(row.vote_up_count || 0),
+      userVote: vote
+    }
+  };
+}
+
+async function requestReportDeletionWithClient(client, env, request, payload) {
+  const deleteRequestTable = quoteIdent(env.MODEL_VERIFY_DELETE_REQUEST_TABLE || DEFAULT_DELETE_REQUEST_TABLE);
+  const user = await userFromSession(client, env, request);
+  if (!user) throw new HttpError(401, 'GitHub login is required');
+  const { domain, targetModel } = reportTargetPayload(payload);
+  if (!domain || !targetModel) throw new HttpError(400, 'domain and targetModel are required');
+  const reason = cleanText(String(payload?.reason || '').trim(), 700);
+  const requestId = await sha256(`${domain}:${targetModel}:${user.githubId}`);
+  const result = await client.query(`
+    upsert into ${deleteRequestTable} (
+      request_id, domain, target_model, reason,
+      requester_id, requester_login, requester_name, requester_avatar_url,
+      status, updated_at
+    )
+    values ($1, $2, $3, $4, $5, $6, $7, $8, 'pending', now())
+    on conflict (request_id) do update
+      set reason = excluded.reason,
+          status = 'pending',
+          updated_at = now()
+    returning request_id, domain, target_model, status, created_at::string as created_at, updated_at::string as updated_at
+  `, [requestId, domain, targetModel, reason, user.githubId, user.login, user.name, user.avatarUrl]);
+  return result.rows[0];
+}
+
+async function approveDeleteRequestWithClient(client, env, request, payload) {
+  const deleteRequestTable = quoteIdent(env.MODEL_VERIFY_DELETE_REQUEST_TABLE || DEFAULT_DELETE_REQUEST_TABLE);
+  const reviewer = await requireAdmin(client, env, request, payload);
+  const { domain, targetModel, targetModels } = reportTargetPayload(payload);
+  if (!domain || !targetModels.length) throw new HttpError(400, 'domain and targetModel are required');
+  const deleted = await deleteReportWithClient(client, env, domain, targetModels);
+  if (!deleted) throw new HttpError(404, 'report not found');
+  await client.query(`
+    update ${deleteRequestTable}
+    set status = 'approved',
+        reviewer_id = $3,
+        reviewer_login = $4,
+        updated_at = now()
+    where domain = $1 and target_model = $2 and status = 'pending'
+  `, [domain, targetModel, reviewer.githubId || '', reviewer.login || 'admin']);
+  return { action: 'delete_request_approved', ...deleted };
 }
 
 function normalizeDiscussionRow(row) {
@@ -1991,12 +2166,7 @@ export default {
 
       if (request.method === 'DELETE') {
         const payload = await request.json().catch(() => ({}));
-        const domain = String(payload?.domain || url.searchParams.get('domain') || '').trim().toLowerCase();
-        const targetModel = String(payload?.targetModel || payload?.target_model || url.searchParams.get('targetModel') || url.searchParams.get('target_model') || '').trim().toLowerCase();
-        const targetModels = [...new Set([
-          targetModel,
-          ...asArray(payload?.targetModels || payload?.target_models)
-        ].map((item) => String(item || '').trim().toLowerCase()).filter(Boolean))];
+        const { domain, targetModel, targetModels } = reportTargetPayload(payload, url);
         if (!domain || !targetModels.length) return errorResponse(request, env, 400, 'domain and targetModel are required');
         const deleted = await withClient(env, async (client) => {
           await ensureSubmissionTablesCached(client, env);
@@ -2010,6 +2180,17 @@ export default {
 
       if (request.method === 'POST') {
         const payload = await request.json().catch(() => null);
+        const action = String(payload?.action || '').trim().toLowerCase();
+        if (['vote', 'delete_request', 'approve_delete_request'].includes(action)) {
+          const result = await withClient(env, async (client) => {
+            await ensureSubmissionTablesCached(client, env);
+            if (action === 'vote') return voteReportWithClient(client, env, request, payload);
+            if (action === 'delete_request') return requestReportDeletionWithClient(client, env, request, payload);
+            return approveDeleteRequestWithClient(client, env, request, payload);
+          });
+          purgeCachedJson(request, env, ctx, new URL(REPORTS_PATH, request.url).toString(), 'reports');
+          return json({ ok: true, action, item: result }, { headers: corsHeaders(request, env) });
+        }
         const validation = validatePayload(payload, env);
         if (validation.error) return errorResponse(request, env, 400, validation.error);
         const result = await withClient(env, async (client) => {
