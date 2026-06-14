@@ -9,6 +9,8 @@
     const discussionCachePrefix = 'cybertar:model-verifier:discussions:v1:';
     const sharedCacheTtlMs = 60 * 60 * 1000;
     const authTokenKey = 'cybertar:model-verifier:auth-token:v1';
+    const voteClientIdKey = 'cybertar:model-verifier:vote-client-id:v1';
+    const voteStatePrefix = 'cybertar:model-verifier:vote-state:v1:';
     const shareConfig = {
         type: 'supabase',
         supabaseUrl: '',
@@ -3254,7 +3256,7 @@
         const targetModels = sharedTargetModelCandidates(item);
         if (!canAdminDelete()) {
             if (!authUser) {
-                startGitHubLogin();
+                alert('请先点击 GitHub 登录，登录后再申请删除。');
                 return;
             }
             const reason = prompt('请填写申请删除原因，管理员审核后处理。') || '';
@@ -3447,6 +3449,28 @@
         return `${discussionCachePrefix}${sharedItemKey(item)}`;
     }
 
+    function voteStateKey(item) {
+        return `${voteStatePrefix}${sharedItemKey(item)}`;
+    }
+
+    function readLocalVote(item) {
+        if (!item) return 0;
+        try {
+            const value = Number(localStorage.getItem(voteStateKey(item)) || 0);
+            return [1, -1, 0].includes(value) ? value : 0;
+        } catch {
+            return 0;
+        }
+    }
+
+    function writeLocalVote(item, vote) {
+        if (!item) return;
+        try {
+            if (!vote) localStorage.removeItem(voteStateKey(item));
+            else localStorage.setItem(voteStateKey(item), String(vote));
+        } catch {}
+    }
+
     function readDiscussionCache(item) {
         if (!item) return null;
         try {
@@ -3478,12 +3502,13 @@
 
     function sharedVotes(item) {
         const votes = item?.votes || {};
+        const localVote = readLocalVote(item);
         return {
             up: Number(votes.up || 0),
             down: Number(votes.down || 0),
             score: Number(votes.score || 0),
             heat: Number(votes.heat ?? votes.up ?? 0),
-            userVote: Number(votes.userVote || 0)
+            userVote: Number(votes.userVote || localVote || 0)
         };
     }
 
@@ -3492,6 +3517,19 @@
         if (!Number.isFinite(number)) return '0';
         if (Math.abs(number) >= 10000) return `${(number / 10000).toFixed(number >= 100000 ? 0 : 1).replace(/\.0$/, '')}万`;
         return String(number);
+    }
+
+    function voteClientId() {
+        try {
+            const existing = localStorage.getItem(voteClientIdKey);
+            if (existing) return existing;
+            const generated = window.crypto?.randomUUID?.() ||
+                `vote-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+            localStorage.setItem(voteClientIdKey, generated);
+            return generated;
+        } catch {
+            return '';
+        }
     }
 
     function renderSharedDetail(item) {
@@ -3542,11 +3580,13 @@
         if (upBtn) {
             upBtn.disabled = !shareConfig.customEndpoint;
             upBtn.classList.toggle('active', votes.userVote === 1);
+            upBtn.setAttribute('aria-pressed', votes.userVote === 1 ? 'true' : 'false');
             upBtn.querySelector('strong').textContent = formatCompactNumber(votes.up);
         }
         if (downBtn) {
             downBtn.disabled = !shareConfig.customEndpoint;
             downBtn.classList.toggle('active', votes.userVote === -1);
+            downBtn.setAttribute('aria-pressed', votes.userVote === -1 ? 'true' : 'false');
             downBtn.querySelector('strong').textContent = formatCompactNumber(votes.down);
         }
     }
@@ -3592,12 +3632,19 @@
     async function voteSharedReport(item, vote) {
         if (!shareConfig.customEndpoint || !item) return;
         const targetModel = sharedTargetModel(item);
-        const currentVote = sharedVotes(item).userVote;
+        const currentVote = readLocalVote(item) || sharedVotes(item).userVote;
         const nextVote = currentVote === vote ? 0 : vote;
         const response = await fetch(shareConfig.customEndpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', ...authHeaders() },
-            body: JSON.stringify({ action: 'vote', domain: item.domain, targetModel, vote: nextVote })
+            body: JSON.stringify({
+                action: 'vote',
+                domain: item.domain,
+                targetModel,
+                vote: nextVote,
+                previousVote: currentVote,
+                voterClientId: voteClientId()
+            })
         });
         const payload = await response.json().catch(() => ({}));
         if (!response.ok) {
@@ -3605,6 +3652,7 @@
             return;
         }
         const updatedVotes = payload.item?.votes || payload.votes || {};
+        writeLocalVote(item, nextVote);
         item.votes = { ...sharedVotes(item), ...updatedVotes };
         const index = sharedItems.findIndex((entry) => sharedItemKey(entry) === sharedItemKey(item));
         if (index >= 0) sharedItems[index] = item;

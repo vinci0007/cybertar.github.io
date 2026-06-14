@@ -381,22 +381,24 @@
         .shared-list {
             display: grid;
             grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 0.8rem;
+            gap: 0.7rem;
             margin-top: 0.9rem;
             max-height: 52vh;
-            overflow: auto;
-            padding: 0.12rem 0.12rem 0.3rem;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            scrollbar-gutter: stable;
+            padding: 0.12rem 0.45rem 0.3rem 0.12rem;
         }
 
         .shared-item {
             position: relative;
             display: flex;
-            min-height: 176px;
+            min-height: 132px;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.38rem;
             border: 1px solid rgba(124, 255, 0, 0.22);
             border-radius: 8px;
-            padding: 0.78rem;
+            padding: 0.66rem 0.72rem;
             background:
                 linear-gradient(150deg, rgba(30, 53, 47, 0.96), rgba(16, 20, 28, 0.98) 58%),
                 radial-gradient(circle at 18% 0%, rgba(124, 255, 0, 0.22), transparent 34%);
@@ -543,7 +545,7 @@
         }
 
         .shared-card-title {
-            min-height: 2.6em;
+            min-height: 1.35em;
             font-size: 1rem;
             line-height: 1.3;
             overflow-wrap: anywhere;
@@ -566,7 +568,7 @@
 
         .shared-card-score strong {
             color: var(--score-color);
-            font-size: 1.8rem;
+            font-size: 1.48rem;
             line-height: 1;
         }
 
@@ -733,7 +735,27 @@
         }
 
         .vote-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.38rem;
+            min-width: 86px;
+            justify-content: center;
             color: rgba(255, 255, 255, 0.78);
+        }
+
+        .vote-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.15rem;
+            height: 1.15rem;
+            font-size: 1.02rem;
+            line-height: 1;
+        }
+
+        .vote-button strong {
+            color: inherit;
+            font-size: 0.86rem;
         }
 
         .vote-button.active {
@@ -1934,8 +1956,12 @@
                 <button id="drawerDeleteBtn" class="action-btn secondary danger" type="button">申请删除</button>
             </div>
             <div class="vote-strip">
-                <button id="upvoteReportBtn" class="report-tab vote-button" type="button">赞 <strong>0</strong></button>
-                <button id="downvoteReportBtn" class="report-tab vote-button" type="button">踩 <strong>0</strong></button>
+                <button id="upvoteReportBtn" class="report-tab vote-button" type="button" aria-label="点赞" title="点赞">
+                    <span class="vote-icon" aria-hidden="true">▲</span><strong>0</strong>
+                </button>
+                <button id="downvoteReportBtn" class="report-tab vote-button" type="button" aria-label="点踩" title="点踩">
+                    <span class="vote-icon" aria-hidden="true">▼</span><strong>0</strong>
+                </button>
             </div>
             <section class="discussion-panel">
                 <p class="section-note">讨论</p>
@@ -1973,7 +1999,7 @@
 
     <script src="../script.js?v=2026061406"></script>
     <script src="model-verify-share-config.js?v=20260606"></script>
-    <script src="model-verifier.js?v=2026061501"></script>
+    <script src="model-verifier.js?v=2026061503"></script>
 </body>
 
 </html>
