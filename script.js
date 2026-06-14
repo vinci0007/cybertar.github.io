@@ -192,7 +192,7 @@ function scrollToSection(sectionId) {
             }
             .header.cybertar-auth-dock > .cybertar-site-stats {
                 position: absolute;
-                top: 72px;
+                top: calc(60px + 0.9rem);
                 right: 0;
                 margin-top: 0;
                 flex: none;
@@ -200,7 +200,7 @@ function scrollToSection(sectionId) {
             }
             .nav.cybertar-auth-mobile-dock > .cybertar-site-stats {
                 position: absolute;
-                top: calc(100% + 12px);
+                top: calc(100% + 0.9rem);
                 right: 0.75rem;
                 margin-left: 0;
                 flex: none;
