@@ -549,10 +549,17 @@
         }
 
         .verify-overview {
+            position: relative;
+            z-index: 4;
             display: grid;
             grid-template-columns: 232px minmax(0, 1fr);
             gap: 1rem;
             align-items: center;
+            overflow: visible;
+        }
+
+        .verify-overview:has(.risk-evidence-toggle[open]) {
+            z-index: 60;
         }
 
         .critical-risk-card {
@@ -736,7 +743,7 @@
         .risk-evidence-toggle {
             position: relative;
             justify-self: end;
-            z-index: 8;
+            z-index: 70;
         }
 
         .risk-evidence-toggle summary {
@@ -790,6 +797,7 @@
 
         .risk-evidence-panel {
             position: absolute;
+            z-index: 80;
             right: 0;
             top: calc(100% + 0.48rem);
             width: min(430px, calc(100vw - 48px));
@@ -927,6 +935,8 @@
         .compact-evidence-card,
         .compact-flow-card,
         .compact-bonus-card {
+            position: relative;
+            z-index: 1;
             padding: 0.48rem 0.52rem;
             margin-bottom: 0.42rem;
         }
@@ -1099,11 +1109,11 @@
         }
 
         .bonus-item {
-            flex: 0 0 118px;
+            flex: 0 0 clamp(184px, 28vw, 260px);
             min-width: 0;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
-            padding: 0.26rem 0.34rem;
+            padding: 0.4rem 0.48rem;
             background: rgba(255, 255, 255, 0.035);
             color: rgba(255, 255, 255, 0.72);
             scroll-snap-align: start;
@@ -1125,8 +1135,10 @@
         }
 
         .bonus-item div strong {
-            font-size: 0.7rem;
-            line-height: 1.08;
+            overflow: visible;
+            font-size: 0.74rem;
+            line-height: 1.2;
+            white-space: normal;
         }
 
         .bonus-item > strong {
@@ -1146,13 +1158,13 @@
         }
 
         .bonus-item p {
-            margin: 0.06rem 0 0;
-            overflow: hidden;
+            margin: 0.12rem 0 0;
+            overflow: visible;
             color: rgba(255, 255, 255, 0.58);
-            font-size: 0.6rem;
-            line-height: 1.08;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            font-size: 0.64rem;
+            line-height: 1.24;
+            text-overflow: clip;
+            white-space: normal;
         }
 
         .bonus-item.is-skipped {
