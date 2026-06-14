@@ -393,6 +393,14 @@ function scrollToSection(sectionId) {
                 box-shadow: 0 0 12px rgba(124, 255, 0, 0.5);
                 font-style: normal;
             }
+            .cybertar-site-stats.is-offline {
+                border-color: rgba(255, 255, 255, 0.1);
+                color: rgba(255, 255, 255, 0.56);
+            }
+            .cybertar-site-stats.is-offline i {
+                background: rgba(255, 255, 255, 0.42);
+                box-shadow: none;
+            }
             @media (max-width: 720px) {
                 .cybertar-auth-widget {
                     top: 1rem;
@@ -733,6 +741,7 @@ function scrollToSection(sectionId) {
     }
 
     function compactNumber(value) {
+        if (value === undefined || value === null || value === '') return '--';
         const number = Number(value || 0);
         if (!Number.isFinite(number)) return '--';
         if (number >= 1000000) return `${(number / 1000000).toFixed(number >= 10000000 ? 0 : 1)}M`;
@@ -776,6 +785,8 @@ function scrollToSection(sectionId) {
         const online = widget.querySelector('[data-site-online]');
         if (visits) visits.textContent = compactNumber(stats?.totalVisits);
         if (online) online.textContent = compactNumber(stats?.onlineVisitors);
+        widget.classList.remove('is-offline');
+        widget.title = stats?.updatedAt ? `Updated ${stats.updatedAt}` : '';
         widget.hidden = false;
     }
 
@@ -785,7 +796,7 @@ function scrollToSection(sectionId) {
         const widget = document.createElement('div');
         widget.id = 'cybertarSiteStats';
         widget.className = 'cybertar-site-stats';
-        widget.hidden = true;
+        widget.hidden = false;
         widget.setAttribute('aria-label', '站点访问统计');
         widget.innerHTML = `
             <span>访问 <strong data-site-visits>--</strong></span>
@@ -797,8 +808,10 @@ function scrollToSection(sectionId) {
             if (document.hidden && eventName !== 'view') return;
             try {
                 renderSiteStats(widget, await postSiteStats(eventName));
-            } catch {
-                widget.hidden = true;
+            } catch (error) {
+                widget.classList.add('is-offline');
+                widget.title = `统计接口暂不可用：${error?.message || 'unknown error'}`;
+                widget.hidden = false;
             }
         };
 
