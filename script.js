@@ -151,13 +151,15 @@ function scrollToSection(sectionId) {
             }
             .header.cybertar-auth-dock {
                 position: fixed;
-                display: grid;
-                grid-template-columns: auto auto;
-                grid-template-areas: "auth nav";
-                align-items: start;
-                justify-items: end;
-                column-gap: 0.85rem;
-                row-gap: 0;
+                top: 2rem;
+                right: 2rem;
+                left: auto;
+                width: auto;
+                display: inline-flex;
+                align-items: flex-start;
+                justify-content: flex-end;
+                gap: 0.85rem;
+                z-index: 2200;
                 background: transparent !important;
                 border: 0 !important;
                 box-shadow: none !important;
@@ -166,14 +168,13 @@ function scrollToSection(sectionId) {
             }
             .header.cybertar-auth-dock > .cybertar-auth-widget {
                 position: static;
-                grid-area: auth;
-                align-self: center;
-                margin-top: 0;
+                margin-top: 9px;
                 flex: 0 0 auto;
-                order: -1;
+                order: 1;
             }
             .header.cybertar-auth-dock > .nav {
-                grid-area: nav;
+                flex: 0 0 auto;
+                order: 2;
             }
             .header.cybertar-auth-dock > .nav,
             .cybertar-generated-nav {
@@ -203,7 +204,6 @@ function scrollToSection(sectionId) {
                 position: absolute;
                 top: calc(100% + 0.72rem);
                 right: 0;
-                justify-self: auto;
                 margin-top: 0;
                 flex: none;
                 order: 3;
