@@ -950,7 +950,7 @@ function walkAndRedact(value) {
   return Object.fromEntries(Object.entries(value).map(([key, item]) => {
     if (/api.?key|authorization|x-api-key|secret|token/i.test(key)) return [key, '[redacted]'];
     if (key === 'rawPreview') return [key, undefined];
-    if (key === 'preview' || key === 'error') return [key, cleanText(item, 700)];
+    if (key === 'preview' || key === 'error' || key === 'outputText') return [key, cleanText(item, 700)];
     if (key === 'modelIds' && Array.isArray(item)) return [key, item.slice(0, 80)];
     return [key, walkAndRedact(item)];
   }).filter(([, item]) => item !== undefined));
@@ -1017,6 +1017,8 @@ function compactReport(report) {
         credentialCanaryLeakEvidence: Boolean(probe.result.credentialCanaryLeakEvidence),
         promptLeakEvidence: Boolean(probe.result.promptLeakEvidence),
         promptInjectionEvidence: Boolean(probe.result.promptInjectionEvidence),
+        responseEnvelopeInjectionEvidence: Boolean(probe.result.responseEnvelopeInjectionEvidence),
+        responseEchoedRequestEvidence: Boolean(probe.result.responseEchoedRequestEvidence),
         illegalRequestHeaderEvidence: Boolean(probe.result.illegalRequestHeaderEvidence),
         encryptedContentError: Boolean(probe.result.encryptedContentError),
         parseFailure: Boolean(probe.result.parseFailure),
@@ -1038,6 +1040,7 @@ function compactReport(report) {
           upstreamHeaderNames: asArray(probe.result.requestAudit.upstreamHeaderNames).slice(0, 12),
           disallowedUpstreamHeaderNames: asArray(probe.result.requestAudit.disallowedUpstreamHeaderNames).slice(0, 12),
           bodyKeyNames: asArray(probe.result.requestAudit.bodyKeyNames).slice(0, 20),
+          bodyCredentialFieldNames: asArray(probe.result.requestAudit.bodyCredentialFieldNames).slice(0, 12),
           bodyCredentialFieldPresent: Boolean(probe.result.requestAudit.bodyCredentialFieldPresent),
           bodyHeaderFieldPresent: Boolean(probe.result.requestAudit.bodyHeaderFieldPresent),
           auditWarnings: asArray(probe.result.requestAudit.auditWarnings).slice(0, 8)
