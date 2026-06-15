@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const SITE_URL = 'https://cybertar.youngood.tech';
 const root = path.resolve(__dirname, '..');
@@ -32,6 +33,7 @@ const skippedRoutes = routeDefinitions.filter(({ source }) => !fs.existsSync(pat
 const htmlRouteMap = new Map(routes.map(({ source, route }) => [toPosix(source), route]));
 const sourceRouteMap = new Map(routes.map(({ source, route }) => [toPosix(source), route]));
 const legacyRouteMap = Object.fromEntries(routes.map(({ source, route }) => [`/${toPosix(source)}`, route]));
+const assetHashCache = new Map();
 
 function toPosix(value) {
   return value.replace(/\\/g, '/');
@@ -97,6 +99,32 @@ function splitUrl(url) {
   };
 }
 
+function cacheBustedAsset(relativePath) {
+  return /\.(?:js|css)$/i.test(relativePath);
+}
+
+function contentHash(relativePath) {
+  const normalized = toPosix(relativePath).replace(/^\/+/, '');
+  if (assetHashCache.has(normalized)) return assetHashCache.get(normalized);
+  const file = path.join(root, normalized);
+  if (!fs.existsSync(file) || !fs.statSync(file).isFile()) {
+    assetHashCache.set(normalized, '');
+    return '';
+  }
+  const hash = crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex').slice(0, 12);
+  assetHashCache.set(normalized, hash);
+  return hash;
+}
+
+function withContentHash(pathname, search, hash, relativePath) {
+  if (!cacheBustedAsset(relativePath)) return `${pathname}${search}${hash}`;
+  const version = contentHash(relativePath);
+  if (!version) return `${pathname}${search}${hash}`;
+  const params = new URLSearchParams((search || '').replace(/^\?/, ''));
+  params.set('v', version);
+  return `${pathname}?${params.toString()}${hash || ''}`;
+}
+
 function resolveSitePath(fromFile, url) {
   if (shouldLeaveUrl(url)) return url;
 
@@ -106,14 +134,15 @@ function resolveSitePath(fromFile, url) {
   if (pathname.startsWith('/')) {
     const absolutePath = toPosix(path.normalize(pathname)).replace(/^\/+/, '');
     const cleanRoute = htmlRouteMap.get(absolutePath);
-    return cleanRoute ? `${cleanRoute}${search}${hash}` : url;
+    if (cleanRoute) return `${cleanRoute}${search}${hash}`;
+    return withContentHash(pathname, search, hash, absolutePath);
   }
 
   const fromDir = path.dirname(fromFile);
   const resolved = toPosix(path.normalize(path.join(fromDir, pathname))).replace(/^\.\//, '');
   const cleanRoute = htmlRouteMap.get(resolved);
   if (cleanRoute) return `${cleanRoute}${search}${hash}`;
-  return `/${resolved}${search}${hash}`;
+  return withContentHash(`/${resolved}`, search, hash, resolved);
 }
 
 function injectSeo(html, route) {
