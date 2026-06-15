@@ -488,11 +488,17 @@ function purgeCachedJson(request, env, ctx, urlValue, tag) {
 }
 
 function quoteIdent(value) {
-  return `"${String(value || DEFAULT_TABLE).replace(/"/g, '""')}"`;
+  const name = String(value || '').trim();
+  if (!name) throw new Error('database identifier is required');
+  return `"${name.replace(/"/g, '""')}"`;
 }
 
 function tableName(env, key, fallback) {
-  return String(env[key] || fallback).trim() || fallback;
+  return String(env?.[key] || fallback).trim() || fallback;
+}
+
+function quotedTableName(env, key, fallback) {
+  return quoteIdent(tableName(env, key, fallback));
 }
 
 function asArray(value) {
@@ -1416,7 +1422,7 @@ async function ensureSubmissionTables(client, env) {
 }
 
 async function enforceSubmissionRateLimit(client, env, request) {
-  const rateTable = quoteIdent(env.MODEL_VERIFY_RATE_TABLE || DEFAULT_RATE_TABLE);
+  const rateTable = quotedTableName(env, 'MODEL_VERIFY_RATE_TABLE', DEFAULT_RATE_TABLE);
   const submitterHash = await sha256(clientIp(request));
   const rateKey = `share:${submitterHash}`;
   const windowStart = minuteWindowIso();
@@ -1479,7 +1485,7 @@ function forgetSessionUser(sessionHash, env) {
 async function userFromSession(client, env, request) {
   const token = authTokenFromRequest(request);
   if (!token) return null;
-  const sessionTable = quoteIdent(env.MODEL_VERIFY_SESSION_TABLE || DEFAULT_SESSION_TABLE);
+  const sessionTable = quotedTableName(env, 'MODEL_VERIFY_SESSION_TABLE', DEFAULT_SESSION_TABLE);
   const sessionHash = await sha256(token);
   const cached = readSessionUser(sessionHash, env);
   if (cached !== undefined) return cached;
@@ -1495,7 +1501,7 @@ async function userFromSession(client, env, request) {
 }
 
 async function createSession(client, env, githubUser) {
-  const sessionTable = quoteIdent(env.MODEL_VERIFY_SESSION_TABLE || DEFAULT_SESSION_TABLE);
+  const sessionTable = quotedTableName(env, 'MODEL_VERIFY_SESSION_TABLE', DEFAULT_SESSION_TABLE);
   const token = randomToken(32);
   const sessionHash = await sha256(token);
   const role = userRoleByGithubId(githubUser.id, env);
@@ -1529,15 +1535,15 @@ async function createSession(client, env, githubUser) {
 async function logoutSession(client, env, request) {
   const token = authTokenFromRequest(request);
   if (!token) return;
-  const sessionTable = quoteIdent(env.MODEL_VERIFY_SESSION_TABLE || DEFAULT_SESSION_TABLE);
+  const sessionTable = quotedTableName(env, 'MODEL_VERIFY_SESSION_TABLE', DEFAULT_SESSION_TABLE);
   const sessionHash = await sha256(token);
   forgetSessionUser(sessionHash, env);
   await client.query(`delete from ${sessionTable} where session_hash = $1`, [sessionHash]);
 }
 
 async function readSiteStats(client, env) {
-  const statsTable = quoteIdent(env.SITE_STATS_TABLE || DEFAULT_STATS_TABLE);
-  const onlineTable = quoteIdent(env.SITE_ONLINE_TABLE || DEFAULT_ONLINE_TABLE);
+  const statsTable = quotedTableName(env, 'SITE_STATS_TABLE', DEFAULT_STATS_TABLE);
+  const onlineTable = quotedTableName(env, 'SITE_ONLINE_TABLE', DEFAULT_ONLINE_TABLE);
   const onlineWindow = onlineWindowSeconds(env);
   const onlineCutoff = new Date(Date.now() - onlineWindow * 1000).toISOString();
   return withStatementTimeout(client, env.SITE_STATS_QUERY_TIMEOUT_MS || 5000, async () => {
@@ -1555,8 +1561,8 @@ async function readSiteStats(client, env) {
 }
 
 async function recordSiteVisit(client, env, request, payload, options = {}) {
-  const statsTable = quoteIdent(env.SITE_STATS_TABLE || DEFAULT_STATS_TABLE);
-  const onlineTable = quoteIdent(env.SITE_ONLINE_TABLE || DEFAULT_ONLINE_TABLE);
+  const statsTable = quotedTableName(env, 'SITE_STATS_TABLE', DEFAULT_STATS_TABLE);
+  const onlineTable = quotedTableName(env, 'SITE_ONLINE_TABLE', DEFAULT_ONLINE_TABLE);
   const rawVisitorId = visitorIdFromRequest(request, payload) || `${clientIp(request)}:${request.headers.get('user-agent') || ''}`;
   const visitorId = await sha256(rawVisitorId);
   const pagePath = normalizePagePath(payload?.page || payload?.path || '/').slice(0, 300);
@@ -1587,8 +1593,8 @@ async function recordSiteVisit(client, env, request, payload, options = {}) {
 }
 
 async function mirrorSiteStatsSnapshot(client, env, request, payload, stats) {
-  const statsTable = quoteIdent(env.SITE_STATS_TABLE || DEFAULT_STATS_TABLE);
-  const onlineTable = quoteIdent(env.SITE_ONLINE_TABLE || DEFAULT_ONLINE_TABLE);
+  const statsTable = quotedTableName(env, 'SITE_STATS_TABLE', DEFAULT_STATS_TABLE);
+  const onlineTable = quotedTableName(env, 'SITE_ONLINE_TABLE', DEFAULT_ONLINE_TABLE);
   const totalVisits = Math.max(0, Math.round(Number(stats?.totalVisits || stats?.totalVisitCount || 0)));
   return withStatementTimeout(client, env.SITE_STATS_QUERY_TIMEOUT_MS || 5000, async () => {
     const result = await client.query(`
@@ -1746,7 +1752,7 @@ async function handleGitHubCallback(request, env) {
 }
 
 async function findExistingReport(client, env, domain, targetModel) {
-  const table = quoteIdent(env.MODEL_VERIFY_TABLE);
+  const table = quotedTableName(env, 'MODEL_VERIFY_TABLE', DEFAULT_TABLE);
   const result = await client.query(`
     select domain, target_model, provider_name, homepage, shared_at::string as shared_at,
            submitter_github_id, submitter_login, submitter_name, submitter_avatar_url, report
@@ -1758,7 +1764,7 @@ async function findExistingReport(client, env, domain, targetModel) {
 }
 
 async function upsertReportWithClient(client, env, item) {
-  const table = quoteIdent(env.MODEL_VERIFY_TABLE);
+  const table = quotedTableName(env, 'MODEL_VERIFY_TABLE', DEFAULT_TABLE);
   const submitter = item.submitter || {};
   const result = await client.query(`
     upsert into ${table} (
@@ -1785,7 +1791,7 @@ async function upsertReportWithClient(client, env, item) {
 }
 
 async function handleSharedReportSubmission(client, env, item, submitterHash) {
-  const pendingTable = quoteIdent(env.MODEL_VERIFY_PENDING_TABLE || DEFAULT_PENDING_TABLE);
+  const pendingTable = quotedTableName(env, 'MODEL_VERIFY_PENDING_TABLE', DEFAULT_PENDING_TABLE);
   const incomingStats = reportStats(item.report);
   const targetModel = incomingStats.targetModel || 'unknown';
   const pendingKey = `${item.domain}:${targetModel}:${submitterHash}`;
@@ -1886,8 +1892,8 @@ async function handleSharedReportSubmission(client, env, item, submitterHash) {
 }
 
 async function listReports(env, timing = null) {
-  const table = quoteIdent(env.MODEL_VERIFY_TABLE);
-  const deleteRequestTable = quoteIdent(env.MODEL_VERIFY_DELETE_REQUEST_TABLE || DEFAULT_DELETE_REQUEST_TABLE);
+  const table = quotedTableName(env, 'MODEL_VERIFY_TABLE', DEFAULT_TABLE);
+  const deleteRequestTable = quotedTableName(env, 'MODEL_VERIFY_DELETE_REQUEST_TABLE', DEFAULT_DELETE_REQUEST_TABLE);
   return withClient(env, async (client) => {
     if (skipReadSchemaEnsure(env)) {
       timing?.entries.push({ name: 'db_schema_skipped', duration: 0 });
@@ -1943,7 +1949,7 @@ async function listReports(env, timing = null) {
 }
 
 async function deleteReportWithClient(client, env, domain, targetModels) {
-  const table = quoteIdent(env.MODEL_VERIFY_TABLE);
+  const table = quotedTableName(env, 'MODEL_VERIFY_TABLE', DEFAULT_TABLE);
   const candidates = [...new Set(asArray(targetModels)
     .map((item) => String(item || '').trim().toLowerCase())
     .filter(Boolean))];
@@ -1974,8 +1980,8 @@ function reportTargetPayload(payload, url = null) {
 }
 
 async function voteReportWithClient(client, env, request, payload) {
-  const table = quoteIdent(env.MODEL_VERIFY_TABLE);
-  const voteTable = quoteIdent(env.MODEL_VERIFY_VOTE_TABLE || DEFAULT_VOTE_TABLE);
+  const table = quotedTableName(env, 'MODEL_VERIFY_TABLE', DEFAULT_TABLE);
+  const voteTable = quotedTableName(env, 'MODEL_VERIFY_VOTE_TABLE', DEFAULT_VOTE_TABLE);
   const { domain, targetModel } = reportTargetPayload(payload);
   const vote = Number(payload?.vote);
   const previousVote = [1, -1, 0].includes(Number(payload?.previousVote ?? payload?.previous_vote))
@@ -2040,7 +2046,7 @@ async function voteReportWithClient(client, env, request, payload) {
 }
 
 async function requestReportDeletionWithClient(client, env, request, payload) {
-  const deleteRequestTable = quoteIdent(env.MODEL_VERIFY_DELETE_REQUEST_TABLE || DEFAULT_DELETE_REQUEST_TABLE);
+  const deleteRequestTable = quotedTableName(env, 'MODEL_VERIFY_DELETE_REQUEST_TABLE', DEFAULT_DELETE_REQUEST_TABLE);
   const user = await userFromSession(client, env, request);
   if (!user) throw new HttpError(401, 'GitHub login is required');
   const { domain, targetModel } = reportTargetPayload(payload);
@@ -2064,7 +2070,7 @@ async function requestReportDeletionWithClient(client, env, request, payload) {
 }
 
 async function approveDeleteRequestWithClient(client, env, request, payload) {
-  const deleteRequestTable = quoteIdent(env.MODEL_VERIFY_DELETE_REQUEST_TABLE || DEFAULT_DELETE_REQUEST_TABLE);
+  const deleteRequestTable = quotedTableName(env, 'MODEL_VERIFY_DELETE_REQUEST_TABLE', DEFAULT_DELETE_REQUEST_TABLE);
   const reviewer = await requireAdmin(client, env, request, payload);
   const { domain, targetModel, targetModels } = reportTargetPayload(payload);
   if (!domain || !targetModels.length) throw new HttpError(400, 'domain and targetModel are required');
@@ -2099,7 +2105,7 @@ function normalizeDiscussionRow(row) {
 }
 
 async function listDiscussions(env, domain, targetModel, timing = null) {
-  const discussionTable = quoteIdent(env.MODEL_VERIFY_DISCUSSION_TABLE || DEFAULT_DISCUSSION_TABLE);
+  const discussionTable = quotedTableName(env, 'MODEL_VERIFY_DISCUSSION_TABLE', DEFAULT_DISCUSSION_TABLE);
   return withClient(env, async (client) => {
     if (skipReadSchemaEnsure(env)) {
       timing?.entries.push({ name: 'db_schema_skipped', duration: 0 });
@@ -2126,7 +2132,7 @@ async function listDiscussions(env, domain, targetModel, timing = null) {
 }
 
 async function createDiscussionWithClient(client, env, request, payload) {
-  const discussionTable = quoteIdent(env.MODEL_VERIFY_DISCUSSION_TABLE || DEFAULT_DISCUSSION_TABLE);
+  const discussionTable = quotedTableName(env, 'MODEL_VERIFY_DISCUSSION_TABLE', DEFAULT_DISCUSSION_TABLE);
   const user = await userFromSession(client, env, request);
   if (!user) throw new HttpError(401, 'GitHub login is required');
   const domain = String(payload?.domain || '').trim().toLowerCase();
@@ -2145,7 +2151,7 @@ async function createDiscussionWithClient(client, env, request, payload) {
 }
 
 async function discussionTargetForCache(client, env, id) {
-  const discussionTable = quoteIdent(env.MODEL_VERIFY_DISCUSSION_TABLE || DEFAULT_DISCUSSION_TABLE);
+  const discussionTable = quotedTableName(env, 'MODEL_VERIFY_DISCUSSION_TABLE', DEFAULT_DISCUSSION_TABLE);
   const discussionId = String(id || '').trim();
   if (!discussionId) return null;
   const result = await client.query(`
@@ -2159,7 +2165,7 @@ async function discussionTargetForCache(client, env, id) {
 }
 
 async function deleteDiscussionWithClient(client, env, request, payload) {
-  const discussionTable = quoteIdent(env.MODEL_VERIFY_DISCUSSION_TABLE || DEFAULT_DISCUSSION_TABLE);
+  const discussionTable = quotedTableName(env, 'MODEL_VERIFY_DISCUSSION_TABLE', DEFAULT_DISCUSSION_TABLE);
   const user = await userFromSession(client, env, request);
   if (!user) throw new HttpError(401, 'GitHub login is required');
   const id = String(payload?.id || '').trim();
