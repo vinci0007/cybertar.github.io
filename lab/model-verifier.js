@@ -3653,6 +3653,25 @@
         });
     }
 
+    function syncTestPageGap() {
+        const root = document.documentElement;
+        root.style.setProperty('--test-page-gap-offset', '0px');
+
+        const testPanel = $('testPage');
+        if (!testPanel?.classList.contains('active')) return;
+
+        requestAnimationFrame(() => {
+            const tabs = document.querySelector('.page-tabs');
+            const grid = testPanel.querySelector('.verifier-grid');
+            if (!tabs || !grid || !testPanel.classList.contains('active')) return;
+
+            const gap = grid.getBoundingClientRect().top - tabs.getBoundingClientRect().bottom;
+            const targetGap = 14;
+            const pullUp = gap > 42 ? Math.min(gap - targetGap, 128) : 0;
+            root.style.setProperty('--test-page-gap-offset', pullUp ? `-${Math.round(pullUp)}px` : '0px');
+        });
+    }
+
     function activatePage(pageId) {
         if (!pageId) return;
         document.querySelectorAll('.page-tab[data-page]').forEach((button) => {
@@ -3661,6 +3680,7 @@
         document.querySelectorAll('.page-panel').forEach((panel) => {
             panel.classList.toggle('active', panel.id === pageId);
         });
+        syncTestPageGap();
     }
 
     function setupInteractiveEffects() {
@@ -4668,6 +4688,8 @@
     document.querySelectorAll('.report-tab[data-panel]').forEach((button) => {
         button.addEventListener('click', () => activatePanel(button.dataset.panel));
     });
+    window.addEventListener('resize', syncTestPageGap);
+    syncTestPageGap();
 
     if ($('shareBackendLabel')) {
         $('shareBackendLabel').textContent = shareBackendReady() ? '在线汇总已连接' : '在线汇总未连接';
