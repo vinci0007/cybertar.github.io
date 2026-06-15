@@ -2033,6 +2033,28 @@
             transform: translateX(16%);
         }
 
+        .shared-detail-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 9000;
+            width: min(520px, calc(100vw - 18px));
+            height: 100vh;
+            border-left: 1px solid rgba(124, 255, 0, 0.28);
+            transform: translateX(104%);
+            transition:
+                transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+                border-color 0.22s ease,
+                box-shadow 0.22s ease,
+                background 0.22s ease;
+            pointer-events: none;
+        }
+
+        .shared-detail-drawer.open {
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
         .shared-item {
             border-radius: 12px;
             background:

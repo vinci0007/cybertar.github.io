@@ -3680,6 +3680,7 @@
         document.querySelectorAll('.page-panel').forEach((panel) => {
             panel.classList.toggle('active', panel.id === pageId);
         });
+        if (pageId !== 'sharedPage') closeSharedDetail();
         syncTestPageGap();
     }
 

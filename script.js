@@ -153,13 +153,11 @@ function scrollToSection(sectionId) {
                 position: fixed;
                 display: grid;
                 grid-template-columns: auto auto;
-                grid-template-areas:
-                    "auth nav"
-                    ". stats";
+                grid-template-areas: "auth nav";
                 align-items: start;
                 justify-items: end;
-                column-gap: 1rem;
-                row-gap: 1rem;
+                column-gap: 0.85rem;
+                row-gap: 0;
                 background: transparent !important;
                 border: 0 !important;
                 box-shadow: none !important;
@@ -202,12 +200,13 @@ function scrollToSection(sectionId) {
                 z-index: 1001;
             }
             .header.cybertar-auth-dock > .cybertar-site-stats {
-                position: static;
-                grid-area: stats;
-                justify-self: end;
+                position: absolute;
+                top: calc(100% + 0.72rem);
+                right: 0;
+                justify-self: auto;
                 margin-top: 0;
                 flex: none;
-                order: -2;
+                order: 3;
             }
             .nav.cybertar-auth-mobile-dock > .cybertar-site-stats {
                 position: absolute;
