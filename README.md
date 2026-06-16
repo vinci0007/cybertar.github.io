@@ -16,8 +16,10 @@ CyberTAR 是一个面向 AI、开源、创作与效率探索的静态网站。�
 - **Trending Project**: 跟踪 GitHub 与 Hugging Face 的热门项目，支持日榜、周榜、月榜等视图。
 - **Trending Papers**: 展示 Hugging Face Papers 趋势论文，支持多种榜单分类。
 - **工具箱**: 收纳面向效率、创作和开发的小工具入口。
-- **AI Lab 项目集**: 聚合实验项目、灵感原型和可探索页面。
+- **AI Lab 项目集**: 聚合实验原型与可探索页面，包含 Prompt 优化器、SVG/XML 可视化等实验工具。
 - **模型验真**: 在浏览器中测试模型接口兼容性与行为表现，默认采用 Responses 协议与 `gpt-5.5`，可生成结构化报告。
+- **Blogs**: 博客与随笔入口。
+- **沉浸式音频**: AsVox 沉浸式音频体验与 LX Music 在线音乐播放。
 - **语音降噪**: 提供语音处理实验页面。
 - **RSS 订阅**: 为项目和论文趋势提供可订阅的 Feed。
 
@@ -30,6 +32,11 @@ CyberTAR 是一个面向 AI、开源、创作与效率探索的静态网站。�
 - 工具箱: [`/tools`](https://cybertar.youngood.tech/tools)
 - AI Lab: [`/projects`](https://cybertar.youngood.tech/projects)
 - 模型验真: [`/lab/model-verifier`](https://cybertar.youngood.tech/lab/model-verifier)
+- Prompt 优化器: [`/lab/prompt-optimizer`](https://cybertar.youngood.tech/lab/prompt-optimizer)
+- SVG/XML 可视化: [`/lab/svg-monitor`](https://cybertar.youngood.tech/lab/svg-monitor)
+- Blogs: [`/blogs`](https://cybertar.youngood.tech/blogs)
+- 沉浸式音频: [`/entertainment`](https://cybertar.youngood.tech/entertainment)
+- 在线音乐: [`/entertainment/lx_online`](https://cybertar.youngood.tech/entertainment/lx_online)
 - 语音降噪: [`/voice-denoise`](https://cybertar.youngood.tech/voice-denoise)
 - Space: [`/space`](https://cybertar.youngood.tech/space)
 
