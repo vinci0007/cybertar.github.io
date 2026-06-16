@@ -75,11 +75,23 @@ npm run build
 
 构建结果输出到 `_site/`。
 
+## 目录结构
+
+- `index.html` — 沉浸式首页（站点根 `/`）。
+- `pages/` — 二级页面（focus、tools、space、trending-project、huggingface-papers、projects、project-view、voice-denoise）。
+- `assets/` — 共享前端资源（`script.js`、`styles.css`）。
+- `scripts/` — 数据抓取、Feed 生成、clean URLs 构建及管理脚本（`manage.sh`、`generateProjectList.js`）。
+- `lab/` — 实验页面（模型验真、Prompt Optimizer、SVG Monitor 等）。
+- `feeds/`、`images/`、`blogs/`、`knowsnews/`、`entertainment/`、`projects/`、`workers/` — 数据、媒体与子站点资源。
+
+> 页面的公开地址由 `scripts/build-clean-urls.js` 显式定义（如 `/focus/`、`/tools/`），与源文件所在目录无关；调整源文件位置不会改变线上 URL。
+
 ## 维护说明
 
 - 首页截图位于 [`images/website_p.png`](./images/website_p.png)。
 - 趋势数据和 RSS Feed 由 `scripts/` 下的脚本生成。
-- 实验页面主要位于 `lab/`、`projects/` 和独立 HTML 页面中。
+- 实验页面主要位于 `lab/`，二级页面位于 `pages/`，项目集位于 `projects/`。
+- 统一管理脚本现为 `./scripts/manage.sh`（自动切换到仓库根目录运行）。
 
 ## 许可证
 

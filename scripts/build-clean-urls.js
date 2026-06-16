@@ -11,17 +11,17 @@ const excluded = new Set(['.git', '.github', '.vscode', '.claude', '_site', 'nod
 const routeDefinitions = [
   { source: 'index.html', route: '/' },
   { source: 'blogs/index.html', route: '/blogs/' },
-  { source: 'space.html', route: '/space/' },
-  { source: 'trending-project.html', route: '/trending-project/' },
-  { source: 'huggingface-papers.html', route: '/huggingface-papers/' },
-  { source: 'tools.html', route: '/tools/' },
-  { source: 'focus.html', route: '/focus/' },
+  { source: 'pages/space.html', route: '/space/' },
+  { source: 'pages/trending-project.html', route: '/trending-project/' },
+  { source: 'pages/huggingface-papers.html', route: '/huggingface-papers/' },
+  { source: 'pages/tools.html', route: '/tools/' },
+  { source: 'pages/focus.html', route: '/focus/' },
   { source: 'knowsnews/techKnows.html', route: '/knowsnews/techKnows/' },
   { source: 'entertainment/index.html', route: '/entertainment/' },
   { source: 'entertainment/lx_online/index.html', route: '/entertainment/lx_online/' },
-  { source: 'projects.html', route: '/projects/' },
-  { source: 'project-view.html', route: '/project-view/' },
-  { source: 'voice-denoise.html', route: '/voice-denoise/' },
+  { source: 'pages/projects.html', route: '/projects/' },
+  { source: 'pages/project-view.html', route: '/project-view/' },
+  { source: 'pages/voice-denoise.html', route: '/voice-denoise/' },
   { source: 'lab/model-verifier.html', route: '/lab/model-verifier/' },
   { source: 'lab/prompt-optimizer.html', route: '/lab/prompt-optimizer/' },
   { source: 'lab/svg-monitor.html', route: '/lab/svg-monitor/' },
@@ -85,6 +85,7 @@ function shouldLeaveUrl(url) {
     !url ||
     url.startsWith('#') ||
     url.startsWith('?') ||
+    url.includes('${') ||
     isExternalUrl(url) ||
     /^(?:mailto|tel|javascript|data):/i.test(url)
   );
@@ -286,7 +287,7 @@ function write404() {
     <p>页面不存在，或地址已经移动。</p>
     <p><a href="/">返回首页</a></p>
   </main>
-  <script src="/script.js"></script>
+  <script src="/assets/script.js"></script>
 </body>
 </html>
 `;

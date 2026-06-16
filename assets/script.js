@@ -573,18 +573,18 @@ function scrollToSection(sectionId) {
         header.dataset.cybertarGeneratedNav = 'true';
         header.innerHTML = `
             <nav class="nav cybertar-generated-nav" aria-label="主导航">
-                <a href="${siteUrl('index.html')}" class="logo" aria-label="CyberTAR 首页">
-                    <img src="${siteUrl('images/Cybertar.png')}" alt="CyberTAR" class="logo-img">
+                <a href="${siteUrl('/index.html')}" class="logo" aria-label="CyberTAR 首页">
+                    <img src="${siteUrl('/images/Cybertar.png')}" alt="CyberTAR" class="logo-img">
                     <span class="logo-text">CYBERTAR</span>
                 </a>
                 <ul class="nav-links">
-                    <li><a href="${siteUrl('index.html#home')}" class="nav-link">首页</a></li>
-                    <li><a href="${siteUrl('blogs/index.html')}" class="nav-link">Blogs</a></li>
-                    <li><a href="${siteUrl('index.html#projects')}" class="nav-link">AI Lab</a></li>
-                    <li><a href="${siteUrl('space.html')}" class="nav-link">探索</a></li>
-                    <li><a href="${siteUrl('trending-project.html')}" class="nav-link">Trending</a></li>
-                    <li><a href="${siteUrl('lab/model-verifier.html')}" class="nav-link">模型验真</a></li>
-                    <li><a href="${siteUrl('tools.html')}" class="nav-link">工具</a></li>
+                    <li><a href="${siteUrl('/index.html#home')}" class="nav-link">首页</a></li>
+                    <li><a href="${siteUrl('/blogs/index.html')}" class="nav-link">Blogs</a></li>
+                    <li><a href="${siteUrl('/index.html#projects')}" class="nav-link">AI Lab</a></li>
+                    <li><a href="${siteUrl('/pages/space.html')}" class="nav-link">探索</a></li>
+                    <li><a href="${siteUrl('/pages/trending-project.html')}" class="nav-link">Trending</a></li>
+                    <li><a href="${siteUrl('/lab/model-verifier.html')}" class="nav-link">模型验真</a></li>
+                    <li><a href="${siteUrl('/pages/tools.html')}" class="nav-link">工具</a></li>
                 </ul>
                 <button class="nav-toggle" type="button" aria-label="Toggle menu"><span></span><span></span><span></span></button>
             </nav>

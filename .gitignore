@@ -58,6 +58,7 @@ output/
 # 临时文件
 *.tmp
 *.temp
+.codex-http-server.pid
 
 # 环境变量文件
 .env

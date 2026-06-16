@@ -3,6 +3,9 @@
 # Asstar项目统一管理脚本
 # 支持网站部署、自动化设置、数据更新等功能
 
+# 切换到仓库根目录运行（脚本现位于 scripts/ 下，内部路径均相对仓库根）
+cd "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)" || exit 1
+
 # 颜色定义
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -17,7 +20,7 @@ show_help() {
     echo -e "${CYAN}🚀 Asstar项目统一管理脚本${NC}"
     echo ""
     echo -e "${YELLOW}使用方法:${NC}"
-    echo "  ./manage.sh [命令] [选项]"
+    echo "  ./scripts/manage.sh [命令] [选项]"
     echo ""
     echo -e "${YELLOW}可用命令:${NC}"
     echo -e "  ${GREEN}deploy${NC}          - 部署网站到GitHub Pages"
@@ -28,13 +31,13 @@ show_help() {
     echo -e "  ${GREEN}help${NC}            - 显示此帮助信息"
     echo ""
     echo -e "${YELLOW}示例:${NC}"
-    echo "  ./manage.sh deploy              # 部署网站"
-    echo "  ./manage.sh setup               # 设置自动化"
-    echo "  ./manage.sh update github       # 更新GitHub Trending数据"
-    echo "  ./manage.sh update huggingface  # 更新HuggingFace数据"
-    echo "  ./manage.sh update papers       # 更新HuggingFace Papers数据"
-    echo "  ./manage.sh update focus        # 更新实时焦点数据（Tophub聚合）"
-    echo "  ./manage.sh update all          # 更新所有数据"
+    echo "  ./scripts/manage.sh deploy              # 部署网站"
+    echo "  ./scripts/manage.sh setup               # 设置自动化"
+    echo "  ./scripts/manage.sh update github       # 更新GitHub Trending数据"
+    echo "  ./scripts/manage.sh update huggingface  # 更新HuggingFace数据"
+    echo "  ./scripts/manage.sh update papers       # 更新HuggingFace Papers数据"
+    echo "  ./scripts/manage.sh update focus        # 更新实时焦点数据（Tophub聚合）"
+    echo "  ./scripts/manage.sh update all          # 更新所有数据"
     echo ""
 }
 
