@@ -362,9 +362,11 @@ function normalizedCacheUrl(urlValue, baseUrl) {
 }
 
 function cacheKeyForUrl(request, urlValue, tag, origin = request.headers.get('origin') || '') {
+  // Cache data is identical across origins, so the cache key is intentionally
+  // origin-independent. Keying by origin previously split GET reads and POST
+  // purges into mismatched buckets, leaving stale entries that never cleared.
   const url = new URL(normalizedCacheUrl(urlValue, request.url));
   url.searchParams.set('__mv_cache', tag);
-  url.searchParams.set('__mv_origin', origin || 'none');
   return new Request(url.toString(), { method: 'GET' });
 }
 
@@ -443,19 +445,10 @@ async function cachedJson(request, env, ctx, tag, producer, timing = null) {
   const now = Date.now();
   const forceRefresh = cacheRefreshRequested(request);
   if (forceRefresh) {
-    const endProducer = timeSpan(timing, 'producer');
-    try {
-      return json(await producer(), {
-        headers: {
-          ...corsHeaders(request, env),
-          'cache-control': 'no-store',
-          'x-model-verify-cache': 'refresh',
-          ...(timingHeader(timing) ? { 'server-timing': timingHeader(timing) } : {})
-        }
-      });
-    } finally {
-      endProducer();
-    }
+    // Produce fresh data AND write it back to cache, so a forced refresh leaves
+    // the cache current. Otherwise the next non-forced read would serve a stale
+    // entry that the forced fetch never updated.
+    return produceCachedJson(request, env, ctx, tag, memoryKey, edgeKey, producer, 'refresh', timing);
   }
   const memoryEntry = jsonMemoryCache.get(memoryKey);
   if (memoryEntry && now < memoryEntry.expiresAt) {
