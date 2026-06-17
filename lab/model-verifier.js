@@ -37,6 +37,8 @@
     let selectedDiscussionItem = null;
     const proxyAuditHeaderName = 'x-cybertar-proxy-audit';
     const fakeCredentialCanary = 'CYBERTAR_FAKE_SECRET_DO_NOT_ECHO_20260608';
+    const reportSchemaVersion = 2;
+    const modelVerifierVersion = '2026.06.17.1';
 
     const testGroups = {
         model_list: { label: '模型列表', defaultOn: true },
@@ -3798,7 +3800,8 @@
         channel.label = labelForChannel(channel);
 
         return {
-            version: 2,
+            version: reportSchemaVersion,
+            verifierVersion: modelVerifierVersion,
             generatedAt: new Date().toISOString(),
             source: 'cybertar-browser-model-verifier',
             scoring: {
@@ -4015,7 +4018,8 @@
         channel.qualityGates = buildQualityGates(channel);
         channel.label = labelForChannel(channel);
         renderReport({
-            version: 2,
+            version: reportSchemaVersion,
+            verifierVersion: modelVerifierVersion,
             generatedAt: now,
             source: 'sample',
             scoring: {
@@ -4275,7 +4279,8 @@
     function sharedPayload(providerName, homepage, domain) {
         const report = sanitizeReport(currentReport);
         return {
-            version: 2,
+            version: reportSchemaVersion,
+            verifierVersion: modelVerifierVersion,
             providerName,
             homepage,
             domain,
