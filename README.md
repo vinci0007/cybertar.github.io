@@ -98,6 +98,7 @@ npm run build
 - 首页截图位于 [`images/website_p.png`](./images/website_p.png)。
 - 趋势数据和 RSS Feed 由 `scripts/` 下的脚本生成。
 - 实验页面主要位于 `lab/`，二级页面位于 `pages/`，项目集位于 `projects/`。
+- 修改模型验真功能（`lab/model-verifier.js`）时，必须同步提升 `modelVerifierVersion`；生成的验真报告会写入同一个 `verifierVersion`。`npm run build` 会检查这条约束。
 - 统一管理脚本现为 `./scripts/manage.sh`（自动切换到仓库根目录运行）。
 
 ## 许可证
