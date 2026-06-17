@@ -39,6 +39,19 @@
     const fakeCredentialCanary = 'CYBERTAR_FAKE_SECRET_DO_NOT_ECHO_20260608';
     const reportSchemaVersion = 2;
     const modelVerifierVersion = '2026.06.17.1';
+    const officialProviderHosts = {
+        openai: ['api.openai.com'],
+        anthropic: ['api.anthropic.com'],
+        google: ['generativelanguage.googleapis.com'],
+        gemini: ['generativelanguage.googleapis.com'],
+        deepseek: ['api.deepseek.com'],
+        mistral: ['api.mistral.ai'],
+        cohere: ['api.cohere.com'],
+        xai: ['api.x.ai'],
+        alibaba: ['dashscope.aliyuncs.com'],
+        dashscope: ['dashscope.aliyuncs.com'],
+        qwen: ['dashscope.aliyuncs.com']
+    };
 
     const testGroups = {
         model_list: { label: '模型列表', defaultOn: true },
@@ -1186,13 +1199,14 @@
     function authFailureProbe(config, result, probeName = '认证检查') {
         const statusText = result?.statusCode ? `HTTP ${result.statusCode}` : '认证失败';
         const detail = result?.error || result?.preview || 'API Key 无效或无权访问该模型/接口';
+        const channelText = result?.requestAudit?.channelIdentity?.note || '';
         return {
             id: 'auth_failure',
             group: 'identity',
             probe: probeName,
             maxScore: 0,
             score: 0,
-            notes: [`${statusText}：${detail}`, '仅记录为认证反向证据；后续探针继续独立执行。'],
+            notes: [`${statusText}：${detail}`, channelText, '仅记录为当前渠道认证反向证据；后续探针继续独立执行。'].filter(Boolean),
             result: {
                 success: false,
                 statusCode: result?.statusCode,
@@ -1237,6 +1251,43 @@
 
     function hostnameFromUrl(value) {
         try { return new URL(normalizeBaseUrl(value)).hostname.toLowerCase(); } catch { return ''; }
+    }
+
+    function providerClaimCandidates(config) {
+        return uniqueList([
+            String(config?.modelVendor || '').toLowerCase(),
+            String(config?.provider || '').toLowerCase(),
+            String(detectModelProfile(config)?.id || '').toLowerCase()
+        ].filter(Boolean));
+    }
+
+    function officialProviderForHost(host) {
+        const normalized = String(host || '').toLowerCase();
+        if (!normalized) return '';
+        const match = Object.entries(officialProviderHosts).find(([, hosts]) => hosts.some((item) => normalized === item || normalized.endsWith(`.${item}`)));
+        return match ? match[0] : '';
+    }
+
+    function channelIdentity(config, requestUrl = '') {
+        const configuredHost = hostnameFromUrl(config?.baseUrl);
+        const requestHost = hostnameFromUrl(requestUrl) || configuredHost;
+        const officialProvider = officialProviderForHost(requestHost);
+        const claims = providerClaimCandidates(config);
+        const officialForClaim = Boolean(officialProvider && claims.some((claim) => claim === officialProvider || officialProviderHosts[claim]?.includes(requestHost)));
+        return {
+            configuredBaseUrl: normalizeBaseUrl(config?.baseUrl || ''),
+            configuredHost,
+            requestHost,
+            provider: String(config?.provider || ''),
+            modelVendor: String(config?.modelVendor || ''),
+            officialProvider,
+            officialChannel: Boolean(officialProvider),
+            officialForClaim,
+            channelKind: officialProvider ? 'official' : 'compatible_or_proxy',
+            note: officialProvider
+                ? `当前请求命中 ${officialProvider} 官方域名`
+                : '当前请求使用自定义/中转/OpenAI-compatible 渠道；认证和能力结论仅适用于该渠道'
+        };
     }
 
     function providerForRequest(config) {
@@ -1378,6 +1429,7 @@
             suspiciousResponseHeaderNames: suspiciousResponseHeaders,
             redirected: Boolean(response?.redirected),
             responseUrlHost: urlAuditParts(response?.url || '').targetHost,
+            channelIdentity: channelIdentity(config, url),
             ...bodyAudit,
             auditWarnings
         };
@@ -2356,6 +2408,7 @@
     function scoreCacheFieldsProbe(config, probe, result) {
         const base = scoreExpectedTextProbe(config, probe, result);
         const keys = asArray(result.payloadKeys).map((item) => String(item).toLowerCase());
+        const channelText = result?.requestAudit?.channelIdentity?.note || '';
         const expectedKeys = config.protocol === 'responses'
             ? ['id', 'model', 'output']
             : config.protocol === 'messages'
@@ -2368,9 +2421,11 @@
         } else if (keys.length) {
             base.score = Math.min(Math.max(base.score, Math.ceil(probe.maxScore * 0.3)), probe.maxScore);
             base.notes.push(`响应元字段偏少：${keys.slice(0, 8).join(', ')}`);
+            if (channelText) base.notes.push(channelText);
         } else {
             base.score = 0;
             base.notes.push('未观察到可解析响应元字段');
+            if (channelText) base.notes.push(channelText);
         }
         return { score: Math.min(base.score, probe.maxScore), notes: base.notes };
     }
@@ -2407,6 +2462,7 @@
                     statusCode: response.status,
                     modelIds,
                     declaredSupport: modelIds.includes(config.model),
+                    requestAudit: buildRequestAudit(config, url, null, response, 'GET'),
                     error
                 };
                 lastResult = result;
@@ -2430,8 +2486,10 @@
         const maxScore = 8;
         let score = 0;
         const notes = [];
+        const channelText = modelList?.requestAudit?.channelIdentity?.note || '';
         if (!modelList.checked && modelList.error) {
             notes.push(modelList.error);
+            if (channelText) notes.push(channelText);
             return { id: 'model_list', group: 'model_list', probe: '模型列表声明层', maxScore, score, notes, result: { success: false, preview: modelList.error } };
         }
         if (modelList.statusCode >= 200 && modelList.statusCode < 300) {
@@ -2453,6 +2511,7 @@
         } else {
             notes.push(modelList.error || '未获得模型列表');
         }
+        if (channelText) notes.push(channelText);
         return {
             id: 'model_list',
             group: 'model_list',
@@ -3776,6 +3835,7 @@
             endpointBase: config.endpointBase,
             protocol: config.protocol,
             effectiveProtocols,
+            channelIdentity: channelIdentity(config),
             detectionMode: config.detectionMode,
             executionMode: config.executionMode,
             targetModel: config.model,
@@ -3965,6 +4025,7 @@
                         proxyAuditPresent: true,
                         targetHost: 'api.example.com',
                         targetPath: '/v1/responses',
+                        channelIdentity: channelIdentity(sampleConfig, 'https://api.openai.com/v1/responses'),
                         browserHeaderNames: ['content-type'],
                         expectedUpstreamHeaderNames: ['authorization', 'content-type'],
                         upstreamHeaderNames: ['authorization', 'content-type'],
@@ -3992,6 +4053,7 @@
             provider: 'openai',
             protocol: 'auto',
             effectiveProtocols: ['responses'],
+            channelIdentity: channelIdentity(sampleConfig, 'https://api.openai.com/v1/responses'),
             detectionMode: 'full',
             executionMode: 'parallel',
             targetModel: 'gpt-4.1-mini',
