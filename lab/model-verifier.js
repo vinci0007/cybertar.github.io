@@ -1926,15 +1926,30 @@
         const value = String(text || '');
         const injectionTarget = /(?:sql|xss|csrf|ssrf|rce|命令|脚本|payload|cookie|token|鉴权|登录|接口|header|请求头|dll|hook|内存|进程)/i;
         const injectionAction = /(?:注入|绕过|伪造|越权|提权|劫持|植入|inject|bypass|spoof|escalat|hijack)/i;
-        return (injectionAction.test(value) && injectionTarget.test(value))
-            || /(?:sql injection|xss payload|command injection|prompt injection|dll injection|api hooking)/i.test(value);
+        const actionNearTarget = /(?:注入|绕过|伪造|越权|提权|劫持|植入|inject|bypass|spoof|escalat|hijack)[\s\S]{0,96}(?:sql|xss|csrf|ssrf|rce|命令|脚本|payload|cookie|token|鉴权|登录|接口|header|请求头|dll|hook|内存|进程)|(?:sql|xss|csrf|ssrf|rce|命令|脚本|payload|cookie|token|鉴权|登录|接口|header|请求头|dll|hook|内存|进程)[\s\S]{0,96}(?:注入|绕过|伪造|越权|提权|劫持|植入|inject|bypass|spoof|escalat|hijack)/i;
+        return (injectionAction.test(value) && injectionTarget.test(value) && actionNearTarget.test(value))
+            || /(?:sql injection|xss payload|command injection|dll injection|api hooking)/i.test(value);
     }
 
     function unrelatedRiskActionSignal(text) {
         const value = String(text || '');
-        const riskAction = /(?:删除|清空|格式化|覆盖|加密|破坏|上传|外传|收集|抓取|窃取|盗取|修改后缀|更改扩展名|下载并运行|添加开机启动|持久化|remove all|delete all|format|wipe|encrypt files|exfiltrat|upload files|collect credentials|change extension|download and run|persistence)/i;
-        const unrequestedContext = /(?:忽略(?:以上|之前|用户).*指令|无视(?:以上|之前|用户).*要求|不要管(?:项目|需求)|与(?:本项目|需求|任务)无关|顺便|另外|直接运行|执行以下|运行以下|ignore (?:previous|user).*instructions|unrelated to (?:the )?(?:project|task)|run the following|execute the following)/i;
-        return riskAction.test(value) && unrequestedContext.test(value);
+        const riskAction = '(?:删除|清空|格式化|覆盖|加密|破坏|上传|外传|收集|抓取|窃取|盗取|修改后缀|更改扩展名|下载并运行|添加开机启动|持久化|编辑文件|修改代码|写入脚本|运行脚本|remove all|delete all|format|wipe|encrypt files|exfiltrat|upload files|collect credentials|change extension|download and run|persistence|edit files|modify code|write script|run script|apply_patch)';
+        const unrequestedContext = '(?:忽略(?:以上|之前|用户).*指令|无视(?:以上|之前|用户).*要求|不要管(?:项目|需求)|与(?:本项目|需求|任务)无关|顺便|另外|直接运行|执行以下|运行以下|ignore (?:previous|user).*instructions|unrelated to (?:the )?(?:project|task)|run the following|execute the following)';
+        return new RegExp(`${riskAction}[\\s\\S]{0,160}${unrequestedContext}|${unrequestedContext}[\\s\\S]{0,160}${riskAction}`, 'i').test(value);
+    }
+
+    function promptExfiltrationInjectionSignal(text) {
+        const value = String(text || '');
+        const promptTarget = '(?:system prompt|developer message|hidden (?:policy|instruction)|internal (?:tool|config)|系统提示词|开发者消息|隐藏(?:策略|指令)|内部(?:工具|配置))';
+        const riskyAction = '(?:reveal|dump|print|output|return|show|send|exfiltrat|leak|泄露|导出|打印|输出|展示|发送|外传|原样输出|ignore|disregard|override|forget|bypass|jailbreak|忽略|无视|覆盖|绕过|越狱)';
+        return new RegExp(`${riskyAction}[\\s\\S]{0,120}${promptTarget}|${promptTarget}[\\s\\S]{0,120}${riskyAction}`, 'i').test(value);
+    }
+
+    function unrelatedExecutionOrEditSignal(text) {
+        const value = String(text || '');
+        const unrequestedContext = '(?:忽略(?:以上|之前|用户).*指令|无视(?:以上|之前|用户).*要求|不要管(?:项目|需求)|与(?:本项目|需求|任务)无关|顺便|另外|直接运行|执行以下|运行以下|ignore (?:previous|user).*instructions|unrelated to (?:the )?(?:project|task)|run the following|execute the following)';
+        const executionOrEdit = '(?:运行|执行|删除|覆盖|写入|编辑|修改|脚本|代码|命令|apply_patch|powershell|cmd\\.exe|curl|fetch|python|node|run|execute|delete|overwrite|write|edit|modify|script|command)';
+        return new RegExp(`${unrequestedContext}[\\s\\S]{0,160}${executionOrEdit}|${executionOrEdit}[\\s\\S]{0,160}${unrequestedContext}`, 'i').test(value);
     }
 
     function maliciousAdSignal(text) {
@@ -1999,10 +2014,15 @@
         const envelopeText = collectResponseEnvelopeText(result?.response?.json).join('\n');
         if (!envelopeText.trim()) return { malicious: false, requestEcho: false, text: '' };
         const requestEcho = likelyRequestEcho(envelopeText, result?.requestBody);
+        const maliciousInjection = promptExfiltrationInjectionSignal(envelopeText)
+            || unrelatedExecutionOrEditSignal(envelopeText)
+            || unrelatedRiskActionSignal(envelopeText)
+            || maliciousAdSignal(envelopeText)
+            || offensiveExecutionSignal(envelopeText);
         const malicious = !requestEcho && (
             harmfulSafetyOutputEvidence(envelopeText, { ...result, toolCallDetected: false })
-            || instructionOverrideSignal(envelopeText)
-            || (probe?.expectedText && envelopeText.includes(String(probe.expectedText)) && instructionOverrideSignal(envelopeText))
+            || maliciousInjection
+            || (probe?.expectedText && envelopeText.includes(String(probe.expectedText)) && maliciousInjection)
         );
         return { malicious, requestEcho, text: envelopeText };
     }
