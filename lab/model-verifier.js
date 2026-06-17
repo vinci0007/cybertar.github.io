@@ -388,6 +388,102 @@
         expectedText: 'INJECTION-SAFE',
         score: scorePromptInjectionIsolationProbe
     });
+    scoringProbeDefinitions.push({
+        id: 'native_openai_responses_fingerprint',
+        group: 'identity',
+        name: 'OpenAI Responses 原生指纹',
+        maxScore: 0,
+        diagnosticOnly: true,
+        nativeProbeVendors: ['openai'],
+        requestOptions: { temperature: 0, extraBody: { parallel_tool_calls: false } },
+        prompt: () => 'Output only OPENAI-FINGERPRINT-OK.',
+        expectedText: 'OPENAI-FINGERPRINT-OK',
+        score: scoreNativeFingerprintProbe
+    });
+    scoringProbeDefinitions.push({
+        id: 'native_deepseek_reasoning_fingerprint',
+        group: 'identity',
+        name: 'DeepSeek reasoning/cache 指纹',
+        maxScore: 0,
+        diagnosticOnly: true,
+        nativeProbeVendors: ['deepseek'],
+        requestOptions: { temperature: 0, extraBody: { logprobs: true, top_logprobs: 1 } },
+        prompt: () => '请只输出 DEEPSEEK-FINGERPRINT-OK。',
+        expectedText: 'DEEPSEEK-FINGERPRINT-OK',
+        score: scoreNativeFingerprintProbe
+    });
+    scoringProbeDefinitions.push({
+        id: 'native_mistral_safety_fingerprint',
+        group: 'identity',
+        name: 'Mistral safe_prompt 指纹',
+        maxScore: 0,
+        diagnosticOnly: true,
+        nativeProbeVendors: ['mistral'],
+        requestOptions: { temperature: 0, extraBody: { safe_prompt: true, random_seed: 20260617 } },
+        prompt: () => 'Output only MISTRAL-FINGERPRINT-OK.',
+        expectedText: 'MISTRAL-FINGERPRINT-OK',
+        score: scoreNativeFingerprintProbe
+    });
+    scoringProbeDefinitions.push({
+        id: 'native_gemini_openai_fingerprint',
+        group: 'identity',
+        name: 'Gemini OpenAI-compatible 指纹',
+        maxScore: 0,
+        diagnosticOnly: true,
+        nativeProbeVendors: ['google', 'gemini'],
+        requestOptions: { temperature: 0, extraBody: { extra_body: { google: { thinking_config: { thinking_budget: 0 } } } } },
+        prompt: () => 'Output only GEMINI-FINGERPRINT-OK.',
+        expectedText: 'GEMINI-FINGERPRINT-OK',
+        score: scoreNativeFingerprintProbe
+    });
+    scoringProbeDefinitions.push({
+        id: 'native_xai_usage_fingerprint',
+        group: 'identity',
+        name: 'xAI usage 指纹',
+        maxScore: 0,
+        diagnosticOnly: true,
+        nativeProbeVendors: ['xai'],
+        requestOptions: { temperature: 0 },
+        prompt: () => 'Output only XAI-FINGERPRINT-OK.',
+        expectedText: 'XAI-FINGERPRINT-OK',
+        score: scoreNativeFingerprintProbe
+    });
+    scoringProbeDefinitions.push({
+        id: 'native_anthropic_thinking_fingerprint',
+        group: 'identity',
+        name: 'Anthropic content block 指纹',
+        maxScore: 0,
+        diagnosticOnly: true,
+        nativeProbeVendors: ['anthropic', 'claude'],
+        requestOptions: { temperature: 0 },
+        prompt: () => 'Output only ANTHROPIC-FINGERPRINT-OK.',
+        expectedText: 'ANTHROPIC-FINGERPRINT-OK',
+        score: scoreNativeFingerprintProbe
+    });
+    scoringProbeDefinitions.push({
+        id: 'native_cohere_chat_fingerprint',
+        group: 'identity',
+        name: 'Cohere chat/usage 指纹',
+        maxScore: 0,
+        diagnosticOnly: true,
+        nativeProbeVendors: ['cohere'],
+        requestOptions: { temperature: 0, extraBody: { safety_mode: 'STRICT' } },
+        prompt: () => 'Output only COHERE-FINGERPRINT-OK.',
+        expectedText: 'COHERE-FINGERPRINT-OK',
+        score: scoreNativeFingerprintProbe
+    });
+    scoringProbeDefinitions.push({
+        id: 'native_qwen_dashscope_fingerprint',
+        group: 'identity',
+        name: 'DashScope/Qwen 兼容层指纹',
+        maxScore: 0,
+        diagnosticOnly: true,
+        nativeProbeVendors: ['alibaba', 'dashscope', 'qwen'],
+        requestOptions: { temperature: 0, extraBody: { enable_thinking: false } },
+        prompt: () => '请只输出 QWEN-FINGERPRINT-OK。',
+        expectedText: 'QWEN-FINGERPRINT-OK',
+        score: scoreNativeFingerprintProbe
+    });
 
     const weightedProbeCatalog = [
         { code: 'D1', id: 'endpoint_chat', weight: 8, domain: '协议合规', name: '协议连通性' },
@@ -426,7 +522,8 @@
         { id: 'endpoint_meta', domain: '元信息', name: '接口配置完整性', policy: '不计分，仅用于报告复核' },
         { id: 'request_chain_integrity', domain: '链路审计', name: '请求头白名单审计', policy: '进入主评分；仅记录头名称和代理状态，不记录密钥值' },
         { id: 'encrypted_boundary_diagnostic', domain: '诊断项', name: '无效加密内容诊断', policy: '不加分，异常时作为反向证据扣分并进入风险详情' },
-        { id: 'share_payload_safety', domain: '元信息', name: '分享载荷安全检查', policy: '不计分，仅确认分享载荷已脱敏' }
+        { id: 'share_payload_safety', domain: '元信息', name: '分享载荷安全检查', policy: '不计分，仅确认分享载荷已脱敏' },
+        { id: 'response_fingerprint', domain: '诊断项', name: '厂商响应指纹', policy: '不计分，仅记录原生结构、推理字段与兼容性证据' }
     ];
 
     const modelProfileCatalog = [
@@ -883,6 +980,7 @@
             modelProfileSummary(profile),
             `测试语言：${isChineseProfile(profile) ? '中文优先' : profile?.primaryLanguage === 'mixed' ? '中英混合' : '英文优先'}`,
             `适配依据：${asArray(profile?.references).join('；') || '通用保守配置'}`,
+            `阶段摘要：Raw Shape Probe -> Native Capability Probe -> Proxy Consistency Probe`,
             `来源：${asArray(profile?.sourceUrls).join('；') || '未命中特定公开资料'}`
         ]);
     }
@@ -951,6 +1049,122 @@
         const code = payload?.error?.code || payload?.code || payload?.error?.type || '';
         const text = String(message || '').trim();
         return [text, code ? `(${code})` : ''].filter(Boolean).join(' ');
+    }
+
+    function collectObjectPaths(value, path = [], results = []) {
+        if (!value || typeof value !== 'object') return results;
+        if (Array.isArray(value)) {
+            value.forEach((item, index) => collectObjectPaths(item, [...path, String(index)], results));
+            return results;
+        }
+        Object.entries(value).forEach(([key, item]) => {
+            const nextPath = [...path, key];
+            if (item && typeof item === 'object') {
+                results.push(nextPath.join('.'));
+                collectObjectPaths(item, nextPath, results);
+            } else {
+                results.push(nextPath.join('.'));
+            }
+        });
+        return results;
+    }
+
+    function detectResponseFingerprint(payload, requestMeta = {}) {
+        const paths = uniqueList(collectObjectPaths(payload).map((item) => String(item || '').toLowerCase()));
+        const hasPath = (needle) => paths.some((item) => item === needle || item.startsWith(`${needle}.`) || item.includes(`.${needle}.`));
+        const hasAny = (...needles) => needles.some((needle) => hasPath(needle));
+        const fieldPresent = (needle) => paths.some((item) => item.endsWith(needle) || item.includes(`.${needle}`));
+        const requestUrl = String(requestMeta?.url || '').toLowerCase();
+        const requestBody = requestMeta?.requestBody && typeof requestMeta.requestBody === 'object' ? requestMeta.requestBody : {};
+        const results = [];
+        const push = (vendor, evidence, confidence, pathsHint, notes) => {
+            results.push({ vendor, evidence, confidence, pathsHint, notes });
+        };
+
+        if (payload && typeof payload === 'object') {
+            const rootObject = String(payload.object || '').toLowerCase();
+            if (rootObject === 'response' || hasAny('output', 'previous_response_id', 'parallel_tool_calls')) {
+                push('OpenAI', 'response_shape', 'high', ['object', 'output', 'previous_response_id', 'parallel_tool_calls'], 'Responses API / OpenAI-compatible response shape');
+            }
+            if (hasAny('output.output_text', 'output.content.text')) {
+                push('OpenAI', 'output_text', 'high', ['output[].content[].text'], 'OpenAI-style typed output content');
+            }
+            if (hasAny('content') && fieldPresent('signature')) {
+                push('Anthropic', 'thinking_signature', 'very_high', ['content[].type=thinking', 'content[].signature'], 'Anthropic thinking content block');
+            }
+            if (hasAny('redacted_thinking')) {
+                push('Anthropic', 'redacted_thinking', 'very_high', ['content[].type=redacted_thinking'], 'Anthropic redacted thinking block');
+            }
+            if (hasAny('candidates', 'promptfeedback', 'usagemetadata', 'responseid', 'modelversion')) {
+                push('Gemini', 'generate_content_shape', 'very_high', ['candidates[]', 'promptFeedback', 'usageMetadata'], 'Gemini native response shape');
+            }
+            if (fieldPresent('thought') || fieldPresent('thoughtsignature') || fieldPresent('thoughtstokencount')) {
+                push('Gemini', 'thinking_metadata', 'high', ['part.thought', 'thoughtSignature', 'thoughtsTokenCount'], 'Gemini thinking metadata');
+            }
+            if (fieldPresent('reasoning_content')) {
+                push('DeepSeek', 'reasoning_content', 'high', ['reasoning_content'], 'DeepSeek reasoning content field');
+            }
+            if (fieldPresent('prompt_cache_hit_tokens') || fieldPresent('prompt_cache_miss_tokens')) {
+                push('DeepSeek', 'cache_accounting', 'medium_high', ['usage.prompt_cache_hit_tokens', 'usage.prompt_cache_miss_tokens'], 'DeepSeek cache accounting');
+            }
+            if (hasAny('message.content') && hasAny('usage.billed_units', 'usage.tokens')) {
+                push('Cohere', 'chat_shape', 'high', ['message.content[]', 'usage.billed_units'], 'Cohere chat response shape');
+            }
+            if (hasAny('safe_prompt', 'prompt_mode', 'reasoning_effort')) {
+                push('Mistral', 'parameter_acceptance', 'high', ['safe_prompt', 'prompt_mode', 'reasoning_effort'], 'Mistral-native request parameter support');
+            }
+            if (fieldPresent('num_sources_used') || fieldPresent('num_server_side_tools_used') || fieldPresent('cost_in_usd_ticks')) {
+                push('xAI', 'usage_accounting', 'high', ['usage.num_sources_used', 'usage.num_server_side_tools_used', 'usage.cost_in_usd_ticks'], 'xAI usage accounting shape');
+            }
+            if (requestUrl.includes('dashscope.aliyuncs.com') || Object.prototype.hasOwnProperty.call(requestBody, 'enable_thinking')) {
+                push('DashScope/Qwen', 'compatible_endpoint_feature', 'medium', ['baseUrl=dashscope.aliyuncs.com', 'request.enable_thinking'], 'DashScope OpenAI-compatible endpoint or Qwen thinking-control parameter');
+            }
+        }
+
+        if (!results.length && requestMeta?.protocol) {
+            push('generic', 'proxy_shape_only', 'low', [String(requestMeta.protocol)], 'No strong vendor fingerprint detected');
+        }
+
+        return uniqueList(results.map((item) => JSON.stringify(item))).map((item) => JSON.parse(item));
+    }
+
+    function collectResponseFingerprints(results) {
+        return uniqueList(asArray(results)
+            .flatMap((probe) => asArray(probe.result?.responseFingerprints))
+            .map((item) => JSON.stringify(item)))
+            .map((item) => JSON.parse(item));
+    }
+
+    function fingerprintVendors(fingerprints) {
+        return uniqueList(asArray(fingerprints)
+            .map((item) => String(item.vendor || '').trim())
+            .filter(Boolean));
+    }
+
+    function buildFingerprintStageProbes(config, results) {
+        const fingerprints = collectResponseFingerprints(results);
+        const vendors = fingerprintVendors(fingerprints);
+        const claimedVendor = String(config?.modelVendor || config?.provider || 'custom').trim() || 'custom';
+        const rawShape = fingerprints.filter((item) => ['response_shape', 'generate_content_shape', 'chat_shape', 'output_text'].includes(item.evidence));
+        const nativeCapability = fingerprints.filter((item) => ['thinking_signature', 'redacted_thinking', 'thinking_metadata', 'reasoning_content', 'cache_accounting', 'parameter_acceptance', 'usage_accounting'].includes(item.evidence));
+        const proxySignals = fingerprints.filter((item) => item.vendor === 'generic' || item.evidence === 'proxy_shape_only');
+        const claimedMatched = vendors.some((vendor) => vendor.toLowerCase().includes(claimedVendor.toLowerCase()) || claimedVendor.toLowerCase().includes(vendor.toLowerCase()));
+        return [
+            metaProbe(config || {}, 'fingerprint_raw_shape', 'Raw Shape Probe', Boolean(rawShape.length), [
+                rawShape.length ? `原生结构证据：${fingerprintSummary(rawShape)}` : '未检测到强原生响应结构指纹',
+                `候选厂商：${vendors.join(', ') || '未识别'}`
+            ]),
+            metaProbe(config || {}, 'fingerprint_native_capability', 'Native Capability Probe', Boolean(nativeCapability.length), [
+                nativeCapability.length ? `原生能力证据：${fingerprintSummary(nativeCapability)}` : '未检测到推理字段、厂商参数或专有 usage accounting',
+                '该阶段不计分，仅用于后续人工/规则化复核'
+            ]),
+            metaProbe(config || {}, 'fingerprint_proxy_consistency', 'Proxy Consistency Probe', Boolean(fingerprints.length), [
+                `声明厂商：${claimedVendor}`,
+                `响应候选：${vendors.join(', ') || '未识别'}`,
+                claimedMatched ? '声明厂商与响应指纹存在一致证据' : '未形成声明厂商与响应指纹的一致证据',
+                proxySignals.length ? `代理/兼容层信号：${fingerprintSummary(proxySignals)}` : '未检测到仅代理形态信号'
+            ])
+        ];
     }
 
     function encryptedContentSignal(rawText = '', errorText = '') {
@@ -1342,6 +1556,9 @@
         const requestOptions = probe.requestOptions || {};
         const hasTemperature = supportsTemperature(config.model);
         const temperature = Number.isFinite(Number(requestOptions.temperature)) ? Number(requestOptions.temperature) : 0.2;
+        const applyExtraBody = (body) => requestOptions.extraBody && typeof requestOptions.extraBody === 'object'
+            ? { ...body, ...clonePlain(requestOptions.extraBody) }
+            : body;
 
         if (config.protocol === 'responses') {
             const body = { model: config.model, input: responseInput(config, probe, prompt), max_output_tokens: maxTokens };
@@ -1355,7 +1572,7 @@
                 body.tool_choice = 'auto';
             }
             if (requestOptions.stream) body.stream = true;
-            return body;
+            return applyExtraBody(body);
         }
 
         if (config.protocol === 'messages') {
@@ -1370,7 +1587,7 @@
                 body.tools = [{ name: 'lookup_vendor', description: 'Lookup a vendor by name', input_schema: { type: 'object', properties: { vendor: { type: 'string' } }, required: ['vendor'] } }];
             }
             if (requestOptions.stream) body.stream = true;
-            return body;
+            return applyExtraBody(body);
         }
 
         const body = { model: config.model, messages: makeMessages(config, probe, prompt), max_tokens: maxTokens };
@@ -1381,7 +1598,7 @@
             body.tool_choice = 'auto';
         }
         if (requestOptions.stream) body.stream = true;
-        return body;
+        return applyExtraBody(body);
     }
 
     function extractText(payload) {
@@ -1544,6 +1761,23 @@
             base.notes.push('获得响应，但未形成模型字段证据');
         }
         return { score: Math.min(base.score, probe.maxScore), notes: base.notes };
+    }
+
+    function scoreNativeFingerprintProbe(config, probe, result) {
+        const notes = [];
+        if (result.success) {
+            notes.push('厂商专用指纹请求成功');
+        } else {
+            notes.push(result.error || `厂商专用指纹请求未成功：HTTP ${result.statusCode || '失败'}`);
+            notes.push('该探针不计分；失败只说明当前接口未确认该原生能力或被兼容层拦截');
+        }
+        const fingerprints = asArray(result.responseFingerprints);
+        if (fingerprints.length) {
+            notes.push(`响应指纹：${fingerprintSummary(fingerprints)}`);
+        } else {
+            notes.push('未检测到强响应结构指纹');
+        }
+        return { score: 0, notes };
     }
 
     function scoreTextIncludesProbe(probe, result, terms, successPoints = 2) {
@@ -2304,6 +2538,7 @@
                     streamDetected,
                     toolCallDetected: extractToolCall(payload),
                     toolCallNames: extractToolNames(payload),
+                    responseFingerprints: detectResponseFingerprint(payload, { protocol: currentProtocol, url: currentUrl, requestBody: body }),
                     retriedWithoutReasoning: Boolean(retryMeta.withoutReasoning),
                     retriedWithLowerMaxTokens: retryMeta.lowerMaxTokens || 0,
                     parseFailure: attempt.parseFailure,
@@ -2410,9 +2645,23 @@
         return selected;
     }
 
+    function nativeProbeMatchesConfig(probe, config, profile) {
+        const vendors = asArray(probe.nativeProbeVendors).map((item) => String(item || '').toLowerCase());
+        if (!vendors.length) return true;
+        const candidates = [
+            config?.modelVendor,
+            config?.provider,
+            profile?.id,
+            profile?.label
+        ].map((item) => String(item || '').toLowerCase().trim()).filter(Boolean);
+        if (!candidates.length) return false;
+        return vendors.some((vendor) => candidates.some((candidate) => candidate.includes(vendor) || vendor.includes(candidate)));
+    }
+
     function buildProbePlan(config, selected, profile = detectModelProfile(config)) {
         const plan = scoringProbeDefinitions
             .filter((probe) => selected.has(probe.group))
+            .filter((probe) => nativeProbeMatchesConfig(probe, config, profile))
             .map((probe) => adaptProbeForModelProfile(probe, profile, config));
         if (selected.has('stability')) {
             const rounds = clamp(config.stabilityRounds, 2, 8) || 3;
@@ -2974,6 +3223,10 @@
         return `${Math.round((Number(probe.score || 0) / max) * 100)}/100`;
     }
 
+    function fingerprintText(result) {
+        return fingerprintSummary(asArray(result?.responseFingerprints));
+    }
+
     function probeRiskReasons(probe) {
         const result = probe.result || {};
         const reasons = [];
@@ -3016,6 +3269,7 @@
             `HTTP ${result.statusCode ?? (result.success ? 200 : '失败')}`,
             `耗时 ${result.latencyMs ?? 0} ms`,
             `返回模型 ${result.returnedModel || '未返回'}`,
+            fingerprintText(result) ? `厂商指纹 ${fingerprintText(result)}` : '',
             asArray(audit.auditWarnings).length ? `链路警告 ${asArray(audit.auditWarnings).join('；')}` : '',
             asArray(probe.notes).length ? `说明 ${asArray(probe.notes).join('；')}` : '',
             fullResultText(result) ? `完整返回\n${fullResultText(result)}` : ''
@@ -3073,6 +3327,21 @@
             });
         });
         asArray(channel.probes).forEach((probe) => {
+            const fingerprints = asArray(probe.result?.responseFingerprints);
+            if (!fingerprints.length) return;
+            pushItem({
+                kind: '厂商指纹',
+                title: visibleProbeName(probe.probe),
+                badge: fingerprintSummary(fingerprints) || 'fingerprint',
+                reason: fingerprints.map((item) => `${item.vendor}:${item.evidence}`).join('；'),
+                detail: detailLines([
+                    `得分 ${probePercentText(probe)}`,
+                    `厂商指纹 ${fingerprintSummary(fingerprints)}`,
+                    `说明 ${fingerprints.map((item) => item.notes).join('；')}`
+                ])
+            });
+        });
+        asArray(channel.probes).forEach((probe) => {
             const reasons = probeRiskReasons(probe);
             if (!reasons.length) return;
             pushItem({
@@ -3091,7 +3360,8 @@
                 '推荐门槛未达': 3,
                 '历史风险证据': 4,
                 '关键评分项失败': 5,
-                '关键探针失败': 6
+                '关键探针失败': 6,
+                '厂商指纹': 7
             };
             return (order[a.kind] ?? 9) - (order[b.kind] ?? 9);
         });
@@ -3645,6 +3915,7 @@
         }
 
         results.push(metaProbe(config, 'share_payload_safety', '分享载荷安全检查', true, ['API Key、Authorization、token、rawPreview 不会进入分享载荷']));
+        results.push(...buildFingerprintStageProbes(config, results));
 
         const report = buildRunReport(config, total, max, results, modelList, returnedModels, selected, profile);
 
@@ -3682,6 +3953,9 @@
                     latencyMs: 520 + index * 37,
                     returnedModel: 'gpt-4.1-mini',
                     preview: probe.expectedText || '示例响应摘要',
+                    responseFingerprints: [
+                        { vendor: 'OpenAI', evidence: 'response_shape', confidence: 'high', pathsHint: ['object', 'output'], notes: 'Responses API / OpenAI-compatible response shape' }
+                    ],
                     requestAudit: probe.id === 'request_chain_integrity' ? {
                         channel: 'worker-proxy',
                         proxied: true,
@@ -3705,6 +3979,7 @@
             { id: 'adaptive_boundary_consistency', group: 'safety', probe: '边界自适应一致性', maxScore: 4, score: 4, notes: ['控制探针模型：gpt-4.1-mini', '边界探针模型：gpt-4.1-mini', '未观察到边界场景自适应异常'], result: { success: true, latencyMs: 680, returnedModel: 'gpt-4.1-mini', preview: '边界场景一致' } },
             metaProbe({}, 'share_payload_safety', '分享载荷安全检查', true, ['API Key、Authorization、token、rawPreview 不会进入分享载荷'])
         ];
+        probes.push(...buildFingerprintStageProbes(sampleConfig, probes));
         const weightedCatalog = weightedCatalogForProfile(profile);
         const weightedScoring = buildWeightedScoring(probes, Object.keys(testGroups), profile);
         const bonusScoring = buildBonusScoring(probes, profile);
@@ -3850,6 +4125,10 @@
             if (key === 'modelIds' && Array.isArray(item)) return [key, item.slice(0, 80)];
             return [key, walkAndRedact(item)];
         }).filter(([, item]) => item !== undefined));
+    }
+
+    function fingerprintSummary(fingerprints) {
+        return asArray(fingerprints).map((item) => `${item.vendor}:${item.evidence}:${item.confidence}`).join('；');
     }
 
     function sanitizeReport(report) {
