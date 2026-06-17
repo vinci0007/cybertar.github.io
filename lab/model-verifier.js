@@ -2538,7 +2538,7 @@
                     streamDetected,
                     toolCallDetected: extractToolCall(payload),
                     toolCallNames: extractToolNames(payload),
-                    responseFingerprints: detectResponseFingerprint(payload, { protocol: currentProtocol, url: currentUrl, requestBody: body }),
+                    responseFingerprints: detectResponseFingerprint(payload, { protocol: currentProtocol, url: currentUrl, requestBody: attempt.jsonBody }),
                     retriedWithoutReasoning: Boolean(retryMeta.withoutReasoning),
                     retriedWithLowerMaxTokens: retryMeta.lowerMaxTokens || 0,
                     parseFailure: attempt.parseFailure,
