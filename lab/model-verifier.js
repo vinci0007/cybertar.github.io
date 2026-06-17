@@ -38,7 +38,7 @@
     const proxyAuditHeaderName = 'x-cybertar-proxy-audit';
     const fakeCredentialCanary = 'CYBERTAR_FAKE_SECRET_DO_NOT_ECHO_20260608';
     const reportSchemaVersion = 2;
-    const modelVerifierVersion = '2026.06.17.1';
+    const modelVerifierVersion = '2026.06.18.1';
 
     const testGroups = {
         model_list: { label: '模型列表', defaultOn: true },
@@ -4590,6 +4590,10 @@
         };
     }
 
+    function sharedDisplayHomepage(item) {
+        return String(item?.homepage || '').trim() || String(item?.domain || '').trim() || '--';
+    }
+
     function sharedItemKey(item) {
         const channel = asArray(item?.report?.channels)[0] || {};
         const targetModel = String(item?.targetModel || channel.targetModel || '').trim().toLowerCase();
@@ -4713,7 +4717,7 @@
         if (title) title.textContent = item.providerName || item.domain || '未命名服务商';
         if (meta) {
             meta.innerHTML = `
-                <div><span>官网域名</span><strong>${escapeHtml(item.domain || '--')}</strong></div>
+                <div><span>官网地址</span><strong>${escapeHtml(sharedDisplayHomepage(item))}</strong></div>
                 <div><span>目标模型</span><strong>${escapeHtml(item.targetModel || channel.targetModel || '未声明模型')}</strong></div>
                 <div><span>综合得分</span><strong style="color:${scoreColor(score)}">${Number.isFinite(score) ? score : '--'}/100</strong></div>
                 <div><span>热度</span><strong class="shared-heat"><span class="heat-icon" aria-hidden="true">🔥</span>${escapeHtml(formatCompactNumber(votes.heat))}</strong></div>
@@ -4872,7 +4876,7 @@
                         <span class="shared-heat"><span class="heat-icon" aria-hidden="true">🔥</span>${escapeHtml(formatCompactNumber(votes.heat))}</span>
                     </div>
                     <strong class="shared-card-title">${escapeHtml(item.providerName || '未命名服务商')}</strong>
-                    <span class="shared-card-domain">${escapeHtml(item.domain)}</span>
+                    <span class="shared-card-domain">${escapeHtml(sharedDisplayHomepage(item))}</span>
                     <div class="shared-card-score" style="--score-color:${scoreColor(score)}">
                         <strong>${Number.isFinite(score) ? score : '--'}</strong><span>/100</span>
                     </div>
