@@ -1,28 +1,44 @@
 {
   "daily": [
     {
-      "name": "iptv-org /iptv",
-      "description": "Collection of publicly available IPTV channels from all over the world",
+      "name": "freeCodeCamp /freeCodeCamp",
+      "description": "freeCodeCamp.org's open-source codebase and curriculum. Learn math, programming, and computer science for free.",
       "language": "TypeScript",
-      "stars": "123,474",
-      "forks": "6,648",
-      "starsToday": "2,657",
-      "url": "https://github.com/iptv-org/iptv",
+      "stars": "448,636",
+      "forks": "45,047",
+      "starsToday": "633",
+      "url": "https://github.com/freeCodeCamp/freeCodeCamp",
       "builtBy": [
-        "@freearhey",
-        "@iptv-bot",
-        "@BellezaEmporium",
-        "@Dum4G",
-        "@UltraHDR"
+        "@ojeytonwilliams",
+        "@raisedadead",
+        "@camperbot",
+        "@renovate",
+        "@renovate-bot"
+      ]
+    },
+    {
+      "name": "swc-project /swc",
+      "description": "Rust-based platform for the Web",
+      "language": "Rust",
+      "stars": "33,984",
+      "forks": "1,418",
+      "starsToday": "20",
+      "url": "https://github.com/swc-project/swc",
+      "builtBy": [
+        "@kdy1",
+        "@swc-bot",
+        "@alexander-akait",
+        "@magic-akari",
+        "@kwonoj"
       ]
     },
     {
       "name": "teslamate-org /teslamate",
       "description": "A self-hosted data logger for your Tesla 🚘 [main maintainer=@JakobLichterfeld]",
       "language": "Elixir",
-      "stars": "8,338",
-      "forks": "950",
-      "starsToday": "33",
+      "stars": "8,425",
+      "forks": "957",
+      "starsToday": "215",
       "url": "https://github.com/teslamate-org/teslamate",
       "builtBy": [
         "@adriankumpf",
@@ -33,27 +49,43 @@
       ]
     },
     {
-      "name": "Panniantong /Agent-Reach",
-      "description": "Give your AI agent eyes to see the entire internet. Read & search Twitter, Reddit, YouTube, GitHub, Bilibili, XiaoHongShu — one CLI, zero API fees.",
-      "language": "Python",
-      "stars": "31,325",
-      "forks": "2,516",
-      "starsToday": "1,100",
-      "url": "https://github.com/Panniantong/Agent-Reach",
+      "name": "iptv-org /iptv",
+      "description": "Collection of publicly available IPTV channels from all over the world",
+      "language": "TypeScript",
+      "stars": "124,220",
+      "forks": "6,714",
+      "starsToday": "1,197",
+      "url": "https://github.com/iptv-org/iptv",
       "builtBy": [
-        "@Panniantong",
-        "@claude",
-        "@kadaliao",
-        "@hymansun",
-        "@alfred1994"
+        "@freearhey",
+        "@iptv-bot",
+        "@BellezaEmporium",
+        "@Dum4G",
+        "@UltraHDR"
+      ]
+    },
+    {
+      "name": "puppeteer /puppeteer",
+      "description": "JavaScript API for Chrome and Firefox",
+      "language": "TypeScript",
+      "stars": "94,915",
+      "forks": "9,451",
+      "starsToday": "56",
+      "url": "https://github.com/puppeteer/puppeteer",
+      "builtBy": [
+        "@OrKoN",
+        "@release-please",
+        "@aslushnikov",
+        "@dependabot",
+        "@Lightning00Blade"
       ]
     },
     {
       "name": "meshery /meshery",
       "description": "Meshery, the cloud native manager",
       "language": "TypeScript",
-      "stars": "10,726",
-      "forks": "3,441",
+      "stars": "10,868",
+      "forks": "3,449",
       "starsToday": "228",
       "url": "https://github.com/meshery/meshery",
       "builtBy": [
@@ -65,108 +97,28 @@
       ]
     },
     {
-      "name": "chatwoot /chatwoot",
-      "description": "Open-source live-chat, email support, omni-channel desk. An alternative to Intercom, Zendesk, Salesforce Service Cloud etc. 🔥💬",
-      "language": "Ruby",
-      "stars": "31,910",
-      "forks": "7,642",
-      "starsToday": "431",
-      "url": "https://github.com/chatwoot/chatwoot",
-      "builtBy": [
-        "@sojan-official",
-        "@pranavrajs",
-        "@iamsivin",
-        "@muhsin-k",
-        "@scmmishra"
-      ]
-    },
-    {
-      "name": "krahets /hello-algo",
-      "description": "《Hello 算法》：动画图解、一键运行的数据结构与算法教程。支持简中、繁中、English、日本語，提供 Python, Java, C++, C, C#, JS, Go, Swift, Rust, Ruby, Kotlin, TS, Dart 等代码实现",
-      "language": "Java",
-      "stars": "127,245",
-      "forks": "15,168",
-      "starsToday": "71",
-      "url": "https://github.com/krahets/hello-algo",
-      "builtBy": [
-        "@krahets",
-        "@justin-tse",
-        "@coderonion",
-        "@nuomi1",
-        "@Gonglja"
-      ]
-    },
-    {
-      "name": "freeCodeCamp /freeCodeCamp",
-      "description": "freeCodeCamp.org's open-source codebase and curriculum. Learn math, programming, and computer science for free.",
+      "name": "cypress-io /cypress",
+      "description": "Fast, easy and reliable testing for anything that runs in a browser.",
       "language": "TypeScript",
-      "stars": "448,171",
-      "forks": "45,006",
-      "starsToday": "736",
-      "url": "https://github.com/freeCodeCamp/freeCodeCamp",
+      "stars": "50,236",
+      "forks": "3,426",
+      "starsToday": "13",
+      "url": "https://github.com/cypress-io/cypress",
       "builtBy": [
-        "@ojeytonwilliams",
-        "@raisedadead",
-        "@camperbot",
-        "@renovate",
-        "@renovate-bot"
-      ]
-    },
-    {
-      "name": "trycua /cua",
-      "description": "Open-source infrastructure for Computer-Use Agents. Sandboxes, SDKs, and benchmarks to train and evaluate AI agents that can control full desktops (macOS, Linux, Windows).",
-      "language": "HTML",
-      "stars": "18,314",
-      "forks": "1,179",
-      "starsToday": "70",
-      "url": "https://github.com/trycua/cua",
-      "builtBy": [
-        "@f-trycua",
-        "@ddupont808",
-        "@github-actions",
-        "@claude",
-        "@jamesmurdza"
-      ]
-    },
-    {
-      "name": "jwasham /coding-interview-university",
-      "description": "A complete computer science study plan to become a software engineer.",
-      "language": "Unknown",
-      "stars": "352,573",
-      "forks": "83,602",
-      "starsToday": "364",
-      "url": "https://github.com/jwasham/coding-interview-university",
-      "builtBy": [
-        "@jwasham",
-        "@Anri-Lombard",
-        "@avizmarlon",
-        "@esaucedof",
-        "@Ilyushin"
-      ]
-    },
-    {
-      "name": "rohitg00 /ai-engineering-from-scratch",
-      "description": "Learn it. Build it. Ship it for others.",
-      "language": "Python",
-      "stars": "33,485",
-      "forks": "5,461",
-      "starsToday": "562",
-      "url": "https://github.com/rohitg00/ai-engineering-from-scratch",
-      "builtBy": [
-        "@rohitg00",
-        "@github-actions",
-        "@abhinav-m22",
-        "@thereisnotime",
-        "@pzy0006"
+        "@brian-mann",
+        "@chrisbreiding",
+        "@jennifer-shehane",
+        "@renovate-bot",
+        "@flotwig"
       ]
     },
     {
       "name": "music-assistant /server",
       "description": "Music Assistant is a free, opensource Media library manager that connects to your streaming services and a wide range of connected speakers. The server is the beating heart, the core of Music Assistant and must run on an always-on device like a Raspberry Pi, a NAS or an Intel NUC or alike.",
       "language": "Python",
-      "stars": "2,460",
+      "stars": "2,580",
       "forks": "450",
-      "starsToday": "225",
+      "starsToday": "157",
       "url": "https://github.com/music-assistant/server",
       "builtBy": [
         "@marcelveldt",
@@ -177,142 +129,94 @@
       ]
     },
     {
-      "name": "Free-TV /IPTV",
-      "description": "M3U Playlist for free TV channels",
+      "name": "Universal-Debloater-Alliance /universal-android-debloater-next-generation",
+      "description": "Cross-platform GUI written in Rust using ADB to debloat non-rooted Android devices. Improve your privacy, the security and battery life of your device.",
+      "language": "Rust",
+      "stars": "7,351",
+      "forks": "315",
+      "starsToday": "146",
+      "url": "https://github.com/Universal-Debloater-Alliance/universal-android-debloater-next-generation",
+      "builtBy": [
+        "@AnonymousWP",
+        "@0x192",
+        "@Frigyes06",
+        "@Rudxain",
+        "@lavafroth"
+      ]
+    },
+    {
+      "name": "OpenBMB /VoxCPM",
+      "description": "VoxCPM2: Tokenizer-Free TTS for Multilingual Speech Generation, Creative Voice Design, and True-to-Life Cloning",
       "language": "Python",
-      "stars": "17,412",
-      "forks": "2,572",
-      "starsToday": "361",
-      "url": "https://github.com/Free-TV/IPTV",
+      "stars": "30,178",
+      "forks": "3,409",
+      "starsToday": "408",
+      "url": "https://github.com/OpenBMB/VoxCPM",
       "builtBy": [
-        "@KAMI911",
-        "@freetv332",
-        "@NezbednikSK",
-        "@TVKaista",
-        "@infid0"
+        "@Labmem-Zhouyx",
+        "@a710128",
+        "@liuxin99",
+        "@VoxInstruct",
+        "@SuperMarioYL"
       ]
     },
     {
-      "name": "Introduction-to-Autonomous-Robots /Introduction-to-Autonomous-Robots",
-      "description": "Introduction to Autonomous Robots",
-      "language": "TeX",
-      "stars": "3,153",
-      "forks": "667",
-      "starsToday": "489",
-      "url": "https://github.com/Introduction-to-Autonomous-Robots/Introduction-to-Autonomous-Robots",
+      "name": "alibaba /zvec",
+      "description": "A lightweight, lightning-fast, in-process vector database",
+      "language": "C++",
+      "stars": "10,521",
+      "forks": "610",
+      "starsToday": "156",
+      "url": "https://github.com/alibaba/zvec",
       "builtBy": [
-        "@alecive",
-        "@curobotlab",
-        "@correll",
-        "@hayesbh",
-        "@AlWiVo"
+        "@iaojnh",
+        "@feihongxu0824",
+        "@egolearner",
+        "@zhourrr",
+        "@Cuiyus"
       ]
     },
     {
-      "name": "Raphire /Win11Debloat",
-      "description": "A simple, lightweight PowerShell script that allows you to remove pre-installed apps, disable telemetry, as well as perform various other changes to declutter and customize your Windows experience. Win11Debloat works for both Windows 10 and Windows 11.",
-      "language": "PowerShell",
-      "stars": "48,235",
-      "forks": "1,944",
-      "starsToday": "112",
-      "url": "https://github.com/Raphire/Win11Debloat",
+      "name": "rmyndharis /OpenWA",
+      "description": "Free, Open Source, Self-Hosted WhatsApp API Gateway",
+      "language": "TypeScript",
+      "stars": "9,119",
+      "forks": "2,001",
+      "starsToday": "185",
+      "url": "https://github.com/rmyndharis/OpenWA",
       "builtBy": [
-        "@Raphire",
-        "@SashankBhamidi",
-        "@N0tHorizon",
-        "@tsumi",
-        "@kapad"
+        "@rmyndharis",
+        "@dependabot",
+        "@aqilaziz",
+        "@amstrong-bil",
+        "@MrViSiOn"
       ]
     },
     {
-      "name": "mikeroyal /Self-Hosting-Guide",
-      "description": "Self-Hosting Guide. Learn all about locally hosting (on premises & private web servers) and managing software applications by yourself or your organization. Including Cloud, LLMs, WireGuard, Automation, Home Assistant, and Networking.",
-      "language": "Dockerfile",
-      "stars": "21,355",
-      "forks": "1,071",
-      "starsToday": "188",
-      "url": "https://github.com/mikeroyal/Self-Hosting-Guide",
+      "name": "n0-computer /iroh",
+      "description": "IP addresses break, dial keys instead. Modular networking stack in Rust.",
+      "language": "Rust",
+      "stars": "9,324",
+      "forks": "437",
+      "starsToday": "334",
+      "url": "https://github.com/n0-computer/iroh",
       "builtBy": [
-        "@mikeroyal",
-        "@ElianaBrininger",
-        "@fiftin",
-        "@bsamadi",
-        "@dmayboroda"
-      ]
-    },
-    {
-      "name": "itsfatduck /optimizerDuck",
-      "description": "Free, open-source Windows optimization tool for performance, privacy, and simplicity.",
-      "language": "C#",
-      "stars": "3,929",
-      "forks": "170",
-      "starsToday": "340",
-      "url": "https://github.com/itsfatduck/optimizerDuck",
-      "builtBy": [
-        "@itsfatduck",
-        "@klfnn",
-        "@wcxu21",
-        "@mhanelia",
-        "@abc0922001"
-      ]
-    },
-    {
-      "name": "NVIDIA /SkillSpector",
-      "description": "Security scanner for AI agent skills. Detect vulnerabilities, malicious patterns, and security risks.",
-      "language": "Python",
-      "stars": "6,733",
-      "forks": "491",
-      "starsToday": "1,079",
-      "url": "https://github.com/NVIDIA/SkillSpector",
-      "builtBy": [
-        "@keshprad",
-        "@medhdj",
-        "@jcchavezs",
-        "@lrecknagel",
-        "@wernerkasselman-au"
-      ]
-    },
-    {
-      "name": "shiyu-coder /Kronos",
-      "description": "Kronos: A Foundation Model for the Language of Financial Markets",
-      "language": "Python",
-      "stars": "30,455",
-      "forks": "5,217",
-      "starsToday": "396",
-      "url": "https://github.com/shiyu-coder/Kronos",
-      "builtBy": [
-        "@shiyu-coder",
-        "@Luciferbobo",
-        "@CharlesJ-ABu",
-        "@AnMakc",
-        "@randyy179"
+        "@dignifiedquire",
+        "@flub",
+        "@rklaehn",
+        "@Frando",
+        "@ramfox"
       ]
     }
   ],
   "weekly": [
     {
-      "name": "mvanhorn /last30days-skill",
-      "description": "AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary",
-      "language": "Python",
-      "stars": "43,167",
-      "forks": "3,536",
-      "starsToday": "9,676",
-      "url": "https://github.com/mvanhorn/last30days-skill",
-      "builtBy": [
-        "@mvanhorn",
-        "@claude",
-        "@tmchow",
-        "@j-sperling",
-        "@dinakars777"
-      ]
-    },
-    {
       "name": "apple /container",
       "description": "A tool for creating and running Linux containers using lightweight virtual machines on a Mac. It is written in Swift, and optimized for Apple silicon.",
       "language": "Swift",
-      "stars": "37,653",
-      "forks": "1,084",
-      "starsToday": "10,541",
+      "stars": "37,897",
+      "forks": "1,091",
+      "starsToday": "10,896",
       "url": "https://github.com/apple/container",
       "builtBy": [
         "@jglogan",
@@ -323,12 +227,28 @@
       ]
     },
     {
+      "name": "NVIDIA /SkillSpector",
+      "description": "Security scanner for AI agent skills. Detect vulnerabilities, malicious patterns, and security risks.",
+      "language": "Python",
+      "stars": "7,022",
+      "forks": "516",
+      "starsToday": "5,190",
+      "url": "https://github.com/NVIDIA/SkillSpector",
+      "builtBy": [
+        "@keshprad",
+        "@medhdj",
+        "@jcchavezs",
+        "@lrecknagel",
+        "@fallintoplace"
+      ]
+    },
+    {
       "name": "phuryn /pm-skills",
       "description": "PM Skills Marketplace: 100+ agentic skills, commands, and plugins — from discovery to strategy, execution, launch, and growth.",
       "language": "Unknown",
-      "stars": "18,851",
-      "forks": "1,934",
-      "starsToday": "6,117",
+      "stars": "19,054",
+      "forks": "1,955",
+      "starsToday": "5,775",
       "url": "https://github.com/phuryn/pm-skills",
       "builtBy": [
         "@phuryn",
@@ -336,44 +256,12 @@
       ]
     },
     {
-      "name": "NVIDIA /SkillSpector",
-      "description": "Security scanner for AI agent skills. Detect vulnerabilities, malicious patterns, and security risks.",
-      "language": "Python",
-      "stars": "6,733",
-      "forks": "491",
-      "starsToday": "4,633",
-      "url": "https://github.com/NVIDIA/SkillSpector",
-      "builtBy": [
-        "@keshprad",
-        "@medhdj",
-        "@jcchavezs",
-        "@lrecknagel",
-        "@wernerkasselman-au"
-      ]
-    },
-    {
-      "name": "chopratejas /headroom",
-      "description": "Compress tool outputs, logs, files, and RAG chunks before they reach the LLM. 60-95% fewer tokens, same answers. Library, proxy, MCP server.",
-      "language": "Python",
-      "stars": "29,324",
-      "forks": "1,977",
-      "starsToday": "10,660",
-      "url": "https://github.com/chopratejas/headroom",
-      "builtBy": [
-        "@chopratejas",
-        "@JerrettDavis",
-        "@claude",
-        "@Copilot",
-        "@gglucass"
-      ]
-    },
-    {
       "name": "addyosmani /agent-skills",
       "description": "Production-grade engineering skills for AI coding agents.",
       "language": "Shell",
-      "stars": "60,679",
-      "forks": "6,584",
-      "starsToday": "11,088",
+      "stars": "61,357",
+      "forks": "6,637",
+      "starsToday": "11,431",
       "url": "https://github.com/addyosmani/agent-skills",
       "builtBy": [
         "@addyosmani",
@@ -384,12 +272,60 @@
       ]
     },
     {
+      "name": "iptv-org /iptv",
+      "description": "Collection of publicly available IPTV channels from all over the world",
+      "language": "TypeScript",
+      "stars": "124,220",
+      "forks": "6,714",
+      "starsToday": "6,246",
+      "url": "https://github.com/iptv-org/iptv",
+      "builtBy": [
+        "@freearhey",
+        "@iptv-bot",
+        "@BellezaEmporium",
+        "@Dum4G",
+        "@UltraHDR"
+      ]
+    },
+    {
+      "name": "mvanhorn /last30days-skill",
+      "description": "AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary",
+      "language": "Python",
+      "stars": "43,548",
+      "forks": "3,584",
+      "starsToday": "7,226",
+      "url": "https://github.com/mvanhorn/last30days-skill",
+      "builtBy": [
+        "@mvanhorn",
+        "@claude",
+        "@tmchow",
+        "@j-sperling",
+        "@dinakars777"
+      ]
+    },
+    {
+      "name": "chopratejas /headroom",
+      "description": "Compress tool outputs, logs, files, and RAG chunks before they reach the LLM. 60-95% fewer tokens, same answers. Library, proxy, MCP server.",
+      "language": "Python",
+      "stars": "30,139",
+      "forks": "2,036",
+      "starsToday": "9,766",
+      "url": "https://github.com/chopratejas/headroom",
+      "builtBy": [
+        "@chopratejas",
+        "@JerrettDavis",
+        "@claude",
+        "@Copilot",
+        "@gglucass"
+      ]
+    },
+    {
       "name": "Panniantong /Agent-Reach",
       "description": "Give your AI agent eyes to see the entire internet. Read & search Twitter, Reddit, YouTube, GitHub, Bilibili, XiaoHongShu — one CLI, zero API fees.",
       "language": "Python",
-      "stars": "31,326",
-      "forks": "2,516",
-      "starsToday": "5,873",
+      "stars": "32,162",
+      "forks": "2,590",
+      "starsToday": "6,427",
       "url": "https://github.com/Panniantong/Agent-Reach",
       "builtBy": [
         "@Panniantong",
@@ -400,140 +336,12 @@
       ]
     },
     {
-      "name": "RyanCodrai /turbovec",
-      "description": "A vector index built on TurboQuant, written in Rust with Python bindings",
-      "language": "Python",
-      "stars": "11,724",
-      "forks": "1,018",
-      "starsToday": "3,651",
-      "url": "https://github.com/RyanCodrai/turbovec",
-      "builtBy": [
-        "@RyanCodrai",
-        "@claude",
-        "@faysou",
-        "@nicolas-geysse",
-        "@Pringled"
-      ]
-    },
-    {
-      "name": "refactoringhq /tolaria",
-      "description": "Desktop app to manage markdown knowledge bases",
-      "language": "TypeScript",
-      "stars": "16,476",
-      "forks": "1,133",
-      "starsToday": "3,179",
-      "url": "https://github.com/refactoringhq/tolaria",
-      "builtBy": [
-        "@LucaRonin",
-        "@github-actions",
-        "@claude",
-        "@evolanakis",
-        "@riipandi"
-      ]
-    },
-    {
-      "name": "music-assistant /server",
-      "description": "Music Assistant is a free, opensource Media library manager that connects to your streaming services and a wide range of connected speakers. The server is the beating heart, the core of Music Assistant and must run on an always-on device like a Raspberry Pi, a NAS or an Intel NUC or alike.",
-      "language": "Python",
-      "stars": "2,460",
-      "forks": "450",
-      "starsToday": "710",
-      "url": "https://github.com/music-assistant/server",
-      "builtBy": [
-        "@marcelveldt",
-        "@dependabot",
-        "@MarvinSchenkel",
-        "@music-assistant-machine",
-        "@OzGav"
-      ]
-    },
-    {
-      "name": "roboflow /supervision",
-      "description": "We write your reusable computer vision tools. 💜",
-      "language": "Python",
-      "stars": "44,421",
-      "forks": "3,943",
-      "starsToday": "2,360",
-      "url": "https://github.com/roboflow/supervision",
-      "builtBy": [
-        "@SkalskiP",
-        "@onuralpszr",
-        "@pre-commit-ci",
-        "@github-actions",
-        "@LinasKo"
-      ]
-    },
-    {
-      "name": "Leonxlnx /taste-skill",
-      "description": "Taste-Skill - gives your AI good taste. stops the AI from generating boring, generic slop",
-      "language": "Shell",
-      "stars": "44,900",
-      "forks": "3,128",
-      "starsToday": "6,297",
-      "url": "https://github.com/Leonxlnx/taste-skill",
-      "builtBy": [
-        "@Leonxlnx",
-        "@cursoragent",
-        "@claude",
-        "@luojiyin1987",
-        "@jkk442"
-      ]
-    },
-    {
-      "name": "openai /plugins",
-      "description": "OpenAI Plugins",
-      "language": "JavaScript",
-      "stars": "3,114",
-      "forks": "360",
-      "starsToday": "882",
-      "url": "https://github.com/openai/plugins",
-      "builtBy": [
-        "@cching-openai",
-        "@ashwinm-oai",
-        "@Aismit",
-        "@vb-openai",
-        "@gverma-openai"
-      ]
-    },
-    {
-      "name": "mattermost /mattermost",
-      "description": "Mattermost is an open source platform for secure collaboration across the entire software development lifecycle..",
-      "language": "TypeScript",
-      "stars": "37,936",
-      "forks": "8,740",
-      "starsToday": "853",
-      "url": "https://github.com/mattermost/mattermost",
-      "builtBy": [
-        "@jwilander",
-        "@hmhealey",
-        "@coreyhulen",
-        "@crspeller",
-        "@mattermost-build"
-      ]
-    },
-    {
-      "name": "microsoft /markitdown",
-      "description": "Python tool for converting files and office documents to Markdown.",
-      "language": "Python",
-      "stars": "154,369",
-      "forks": "10,678",
-      "starsToday": "5,913",
-      "url": "https://github.com/microsoft/markitdown",
-      "builtBy": [
-        "@afourney",
-        "@gagb",
-        "@sugatoray",
-        "@PetrAPConsulting",
-        "@l-lumin"
-      ]
-    },
-    {
       "name": "asgeirtj /system_prompts_leaks",
       "description": "Extracted system prompts from Anthropic - Claude Fable 5, Opus 4.8, Claude Code, Claude Design. OpenAI - ChatGPT 5.5 Thinking, GPT 5.5 Instant, Codex. Google - Gemini 3.5 Flash, 3.1 Pro, Antigravity. xAI - Grok, Cursor, Copilot, VS Code, Perplexity, and more. Updated regularly.",
       "language": "JavaScript",
-      "stars": "42,607",
-      "forks": "7,078",
-      "starsToday": "935",
+      "stars": "42,841",
+      "forks": "7,107",
+      "starsToday": "1,220",
       "url": "https://github.com/asgeirtj/system_prompts_leaks",
       "builtBy": [
         "@asgeirtj",
@@ -544,28 +352,60 @@
       ]
     },
     {
-      "name": "chatwoot /chatwoot",
-      "description": "Open-source live-chat, email support, omni-channel desk. An alternative to Intercom, Zendesk, Salesforce Service Cloud etc. 🔥💬",
-      "language": "Ruby",
-      "stars": "31,910",
-      "forks": "7,642",
-      "starsToday": "1,472",
-      "url": "https://github.com/chatwoot/chatwoot",
+      "name": "music-assistant /server",
+      "description": "Music Assistant is a free, opensource Media library manager that connects to your streaming services and a wide range of connected speakers. The server is the beating heart, the core of Music Assistant and must run on an always-on device like a Raspberry Pi, a NAS or an Intel NUC or alike.",
+      "language": "Python",
+      "stars": "2,580",
+      "forks": "450",
+      "starsToday": "865",
+      "url": "https://github.com/music-assistant/server",
       "builtBy": [
-        "@sojan-official",
-        "@pranavrajs",
-        "@iamsivin",
-        "@muhsin-k",
-        "@scmmishra"
+        "@marcelveldt",
+        "@dependabot",
+        "@MarvinSchenkel",
+        "@music-assistant-machine",
+        "@OzGav"
+      ]
+    },
+    {
+      "name": "refactoringhq /tolaria",
+      "description": "Desktop app to manage markdown knowledge bases",
+      "language": "TypeScript",
+      "stars": "16,554",
+      "forks": "1,147",
+      "starsToday": "2,537",
+      "url": "https://github.com/refactoringhq/tolaria",
+      "builtBy": [
+        "@LucaRonin",
+        "@github-actions",
+        "@claude",
+        "@evolanakis",
+        "@riipandi"
+      ]
+    },
+    {
+      "name": "lfnovo /open-notebook",
+      "description": "An Open Source implementation of Notebook LM with more flexibility and features",
+      "language": "TypeScript",
+      "stars": "31,144",
+      "forks": "3,533",
+      "starsToday": "2,873",
+      "url": "https://github.com/lfnovo/open-notebook",
+      "builtBy": [
+        "@lfnovo",
+        "@dependabot",
+        "@claude",
+        "@xeader",
+        "@troykelly"
       ]
     },
     {
       "name": "microsoft /PowerToys",
       "description": "Microsoft PowerToys is a collection of utilities that supercharge productivity and customization on Windows",
       "language": "C",
-      "stars": "135,041",
-      "forks": "8,106",
-      "starsToday": "1,129",
+      "stars": "135,086",
+      "forks": "8,109",
+      "starsToday": "1,181",
       "url": "https://github.com/microsoft/PowerToys",
       "builtBy": [
         "@crutkas",
@@ -576,28 +416,108 @@
       ]
     },
     {
-      "name": "huggingface /OpenEnv",
-      "description": "An interface library for RL post training with environments.",
-      "language": "Python",
-      "stars": "2,293",
-      "forks": "397",
-      "starsToday": "319",
-      "url": "https://github.com/huggingface/OpenEnv",
+      "name": "meshery /meshery",
+      "description": "Meshery, the cloud native manager",
+      "language": "TypeScript",
+      "stars": "10,868",
+      "forks": "3,449",
+      "starsToday": "488",
+      "url": "https://github.com/meshery/meshery",
       "builtBy": [
-        "@burtenshaw",
-        "@sergiopaniego",
-        "@pankit-eng",
-        "@init27",
-        "@surfiniaburger"
+        "@leecalcote",
+        "@MUzairS15",
+        "@aabidsofi19",
+        "@amitamrutiya",
+        "@theBeginner86"
+      ]
+    },
+    {
+      "name": "mattermost /mattermost",
+      "description": "Mattermost is an open source platform for secure collaboration across the entire software development lifecycle..",
+      "language": "TypeScript",
+      "stars": "37,968",
+      "forks": "8,744",
+      "starsToday": "918",
+      "url": "https://github.com/mattermost/mattermost",
+      "builtBy": [
+        "@jwilander",
+        "@hmhealey",
+        "@coreyhulen",
+        "@crspeller",
+        "@mattermost-build"
+      ]
+    },
+    {
+      "name": "chatwoot /chatwoot",
+      "description": "Open-source live-chat, email support, omni-channel desk. An alternative to Intercom, Zendesk, Salesforce Service Cloud etc. 🔥💬",
+      "language": "Ruby",
+      "stars": "32,069",
+      "forks": "7,656",
+      "starsToday": "1,930",
+      "url": "https://github.com/chatwoot/chatwoot",
+      "builtBy": [
+        "@sojan-official",
+        "@pranavrajs",
+        "@iamsivin",
+        "@muhsin-k",
+        "@scmmishra"
+      ]
+    },
+    {
+      "name": "LMCache /LMCache",
+      "description": "LMCache: Supercharge Your LLM with the Fastest KV Cache Layer",
+      "language": "Python",
+      "stars": "9,198",
+      "forks": "1,337",
+      "starsToday": "709",
+      "url": "https://github.com/LMCache/LMCache",
+      "builtBy": [
+        "@ApostaC",
+        "@maobaolong",
+        "@YaoJiayi",
+        "@sammshen",
+        "@chunxiaozheng"
+      ]
+    },
+    {
+      "name": "ml-explore /mlx",
+      "description": "MLX: An array framework for Apple silicon",
+      "language": "C++",
+      "stars": "27,077",
+      "forks": "1,918",
+      "starsToday": "336",
+      "url": "https://github.com/ml-explore/mlx",
+      "builtBy": [
+        "@angeloskath",
+        "@zcbenz",
+        "@jagrit06",
+        "@barronalex",
+        "@awni"
+      ]
+    },
+    {
+      "name": "pytest-dev /pytest",
+      "description": "The pytest framework makes it easy to write small tests, yet scales to support complex functional testing",
+      "language": "Python",
+      "stars": "14,160",
+      "forks": "3,187",
+      "starsToday": "240",
+      "url": "https://github.com/pytest-dev/pytest",
+      "builtBy": [
+        "@nicoddemus",
+        "@hpk42",
+        "@bluetech",
+        "@blueyed",
+        "@RonnyPfannschmidt"
       ]
     },
     {
       "name": "x1xhlol /system-prompts-and-models-of-ai-tools",
       "description": "FULL Augment Code, Claude Code, Cluely, CodeBuddy, Comet, Cursor, Devin AI, Junie, Kiro, Leap.new, Lovable, Manus, NotionAI, Orchids.app, Perplexity, Poke, Qoder, Replit, Same.dev, Trae, Traycer AI, VSCode Agent, Warp.dev, Windsurf, Xcode, Z.ai Code, Dia & v0. (And other Open Sourced) System Prompts, Internal Tools & AI Models",
       "language": "Unknown",
-      "stars": "140,625",
-      "forks": "34,695",
-      "starsToday": "1,668",
+      "stars": "140,706",
+      "forks": "34,706",
+      "starsToday": "1,731",
       "url": "https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools",
       "builtBy": [
         "@x1xhlol",
@@ -610,28 +530,12 @@
   ],
   "monthly": [
     {
-      "name": "colbymchenry /codegraph",
-      "description": "Pre-indexed code knowledge graph, auto syncs on code changes, for Claude Code, Codex, Gemini, Cursor, OpenCode, AntiGravity, Kiro, and Hermes Agent — fewer tokens, fewer tool calls, 100% local",
-      "language": "TypeScript",
-      "stars": "50,058",
-      "forks": "3,062",
-      "starsToday": "47,946",
-      "url": "https://github.com/colbymchenry/codegraph",
-      "builtBy": [
-        "@colbymchenry",
-        "@claude",
-        "@omonien",
-        "@andreinknv",
-        "@github-actions"
-      ]
-    },
-    {
       "name": "chopratejas /headroom",
       "description": "Compress tool outputs, logs, files, and RAG chunks before they reach the LLM. 60-95% fewer tokens, same answers. Library, proxy, MCP server.",
       "language": "Python",
-      "stars": "29,324",
-      "forks": "1,977",
-      "starsToday": "26,561",
+      "stars": "30,139",
+      "forks": "2,036",
+      "starsToday": "27,895",
       "url": "https://github.com/chopratejas/headroom",
       "builtBy": [
         "@chopratejas",
@@ -642,28 +546,44 @@
       ]
     },
     {
+      "name": "colbymchenry /codegraph",
+      "description": "Pre-indexed code knowledge graph, auto syncs on code changes, for Claude Code, Codex, Gemini, Cursor, OpenCode, AntiGravity, Kiro, and Hermes Agent — fewer tokens, fewer tool calls, 100% local",
+      "language": "TypeScript",
+      "stars": "50,434",
+      "forks": "3,084",
+      "starsToday": "48,177",
+      "url": "https://github.com/colbymchenry/codegraph",
+      "builtBy": [
+        "@colbymchenry",
+        "@claude",
+        "@omonien",
+        "@andreinknv",
+        "@github-actions"
+      ]
+    },
+    {
       "name": "Egonex-AI /Understand-Anything",
       "description": "Graphs that teach > graphs that impress. Turn any code into an interactive knowledge graph you can explore, search, and ask questions about. Works with Claude Code, Codex, Cursor, Copilot, Gemini CLI, and more.",
       "language": "TypeScript",
-      "stars": "60,996",
-      "forks": "5,037",
-      "starsToday": "45,478",
+      "stars": "61,787",
+      "forks": "5,093",
+      "starsToday": "46,671",
       "url": "https://github.com/Egonex-AI/Understand-Anything",
       "builtBy": [
         "@Lum1104",
         "@claude",
+        "@thejesh23",
         "@ZebangCheng",
-        "@berkcangumusisik",
-        "@tirth8205"
+        "@berkcangumusisik"
       ]
     },
     {
       "name": "harry0703 /MoneyPrinterTurbo",
       "description": "利用AI大模型，一键生成高清短视频 Generate short videos with one click using AI LLM.",
       "language": "Python",
-      "stars": "88,559",
-      "forks": "12,718",
-      "starsToday": "31,448",
+      "stars": "88,895",
+      "forks": "12,772",
+      "starsToday": "31,997",
       "url": "https://github.com/harry0703/MoneyPrinterTurbo",
       "builtBy": [
         "@harry0703",
@@ -677,9 +597,9 @@
       "name": "rohitg00 /ai-engineering-from-scratch",
       "description": "Learn it. Build it. Ship it for others.",
       "language": "Python",
-      "stars": "33,485",
-      "forks": "5,461",
-      "starsToday": "25,209",
+      "stars": "33,740",
+      "forks": "5,498",
+      "starsToday": "25,965",
       "url": "https://github.com/rohitg00/ai-engineering-from-scratch",
       "builtBy": [
         "@rohitg00",
@@ -690,44 +610,12 @@
       ]
     },
     {
-      "name": "tinyhumansai /openhuman",
-      "description": "Your Personal AI super intelligence. Private, Simple and extremely powerful.",
-      "language": "Rust",
-      "stars": "32,355",
-      "forks": "3,130",
-      "starsToday": "24,138",
-      "url": "https://github.com/tinyhumansai/openhuman",
-      "builtBy": [
-        "@senamakel",
-        "@claude",
-        "@graycyrus",
-        "@github-actions",
-        "@M3gA-Mind"
-      ]
-    },
-    {
-      "name": "Imbad0202 /academic-research-skills",
-      "description": "Academic Research Skills for Claude Code: research → write → review → revise → finalize",
-      "language": "Python",
-      "stars": "31,933",
-      "forks": "2,629",
-      "starsToday": "24,428",
-      "url": "https://github.com/Imbad0202/academic-research-skills",
-      "builtBy": [
-        "@Imbad0202",
-        "@claude",
-        "@2023Anita",
-        "@madtriceps",
-        "@xiaolai"
-      ]
-    },
-    {
       "name": "apple /container",
       "description": "A tool for creating and running Linux containers using lightweight virtual machines on a Mac. It is written in Swift, and optimized for Apple silicon.",
       "language": "Swift",
-      "stars": "37,653",
-      "forks": "1,084",
-      "starsToday": "10,915",
+      "stars": "37,897",
+      "forks": "1,091",
+      "starsToday": "11,366",
       "url": "https://github.com/apple/container",
       "builtBy": [
         "@jglogan",
@@ -741,9 +629,9 @@
       "name": "can1357 /oh-my-pi",
       "description": "⌥ AI Coding agent for the terminal — hash-anchored edits, optimized tool harness, LSP, Python, browser, subagents, and more",
       "language": "TypeScript",
-      "stars": "12,727",
-      "forks": "1,080",
-      "starsToday": "8,156",
+      "stars": "12,895",
+      "forks": "1,096",
+      "starsToday": "8,324",
       "url": "https://github.com/can1357/oh-my-pi",
       "builtBy": [
         "@can1357",
@@ -754,12 +642,42 @@
       ]
     },
     {
+      "name": "hardikpandya /stop-slop",
+      "description": "A skill file for removing AI tells from prose",
+      "language": "Unknown",
+      "stars": "11,004",
+      "forks": "778",
+      "starsToday": "7,399",
+      "url": "https://github.com/hardikpandya/stop-slop",
+      "builtBy": [
+        "@hardikpandya",
+        "@claude",
+        "@dctmfoo"
+      ]
+    },
+    {
+      "name": "Imbad0202 /academic-research-skills",
+      "description": "Academic Research Skills for Claude Code: research → write → review → revise → finalize",
+      "language": "Python",
+      "stars": "32,141",
+      "forks": "2,644",
+      "starsToday": "24,323",
+      "url": "https://github.com/Imbad0202/academic-research-skills",
+      "builtBy": [
+        "@Imbad0202",
+        "@claude",
+        "@2023Anita",
+        "@madtriceps",
+        "@xiaolai"
+      ]
+    },
+    {
       "name": "ruvnet /RuView",
       "description": "π RuView turns commodity WiFi signals into real-time spatial intelligence, vital sign monitoring, and presence detection — all without a single pixel of video.",
       "language": "Rust",
-      "stars": "74,118",
-      "forks": "9,889",
-      "starsToday": "17,836",
+      "stars": "74,242",
+      "forks": "9,905",
+      "starsToday": "17,001",
       "url": "https://github.com/ruvnet/RuView",
       "builtBy": [
         "@ruvnet",
@@ -770,26 +688,12 @@
       ]
     },
     {
-      "name": "hardikpandya /stop-slop",
-      "description": "A skill file for removing AI tells from prose",
-      "language": "Unknown",
-      "stars": "10,875",
-      "forks": "774",
-      "starsToday": "7,220",
-      "url": "https://github.com/hardikpandya/stop-slop",
-      "builtBy": [
-        "@hardikpandya",
-        "@claude",
-        "@dctmfoo"
-      ]
-    },
-    {
       "name": "microsoft /markitdown",
       "description": "Python tool for converting files and office documents to Markdown.",
       "language": "Python",
-      "stars": "154,369",
-      "forks": "10,678",
-      "starsToday": "31,148",
+      "stars": "154,735",
+      "forks": "10,717",
+      "starsToday": "31,754",
       "url": "https://github.com/microsoft/markitdown",
       "builtBy": [
         "@afourney",
@@ -800,28 +704,12 @@
       ]
     },
     {
-      "name": "anthropics /knowledge-work-plugins",
-      "description": "Open source repository of plugins primarily intended for knowledge workers to use in Claude Cowork",
-      "language": "Python",
-      "stars": "20,857",
-      "forks": "2,459",
-      "starsToday": "8,644",
-      "url": "https://github.com/anthropics/knowledge-work-plugins",
-      "builtBy": [
-        "@github-actions",
-        "@mattpic-ant",
-        "@bryan-anthropic",
-        "@claude",
-        "@tobinsouth"
-      ]
-    },
-    {
       "name": "Leonxlnx /taste-skill",
       "description": "Taste-Skill - gives your AI good taste. stops the AI from generating boring, generic slop",
       "language": "Shell",
-      "stars": "44,900",
-      "forks": "3,128",
-      "starsToday": "26,989",
+      "stars": "45,337",
+      "forks": "3,161",
+      "starsToday": "27,670",
       "url": "https://github.com/Leonxlnx/taste-skill",
       "builtBy": [
         "@Leonxlnx",
@@ -832,12 +720,44 @@
       ]
     },
     {
+      "name": "anthropics /knowledge-work-plugins",
+      "description": "Open source repository of plugins primarily intended for knowledge workers to use in Claude Cowork",
+      "language": "Python",
+      "stars": "20,943",
+      "forks": "2,467",
+      "starsToday": "8,767",
+      "url": "https://github.com/anthropics/knowledge-work-plugins",
+      "builtBy": [
+        "@github-actions",
+        "@mattpic-ant",
+        "@bryan-anthropic",
+        "@claude",
+        "@tobinsouth"
+      ]
+    },
+    {
+      "name": "tinyhumansai /openhuman",
+      "description": "Your Personal AI super intelligence. Private, Simple and extremely powerful.",
+      "language": "Rust",
+      "stars": "32,457",
+      "forks": "3,137",
+      "starsToday": "22,585",
+      "url": "https://github.com/tinyhumansai/openhuman",
+      "builtBy": [
+        "@senamakel",
+        "@claude",
+        "@graycyrus",
+        "@github-actions",
+        "@M3gA-Mind"
+      ]
+    },
+    {
       "name": "ogulcancelik /herdr",
       "description": "agent multiplexer that lives in your terminal.",
       "language": "Rust",
-      "stars": "5,879",
-      "forks": "351",
-      "starsToday": "4,931",
+      "stars": "6,011",
+      "forks": "356",
+      "starsToday": "5,101",
       "url": "https://github.com/ogulcancelik/herdr",
       "builtBy": [
         "@ogulcancelik",
@@ -851,9 +771,9 @@
       "name": "HKUDS /ViMax",
       "description": "\"ViMax: Agentic Video Generation (Director, Screenwriter, Producer, and Video Generator All-in-One)\"",
       "language": "Python",
-      "stars": "10,188",
-      "forks": "1,493",
-      "starsToday": "6,208",
+      "stars": "10,254",
+      "forks": "1,500",
+      "starsToday": "6,222",
       "url": "https://github.com/HKUDS/ViMax",
       "builtBy": [
         "@xvrrr",
@@ -867,9 +787,9 @@
       "name": "rohitg00 /agentmemory",
       "description": "#1 Persistent memory for AI coding agents based on real-world benchmarks",
       "language": "TypeScript",
-      "stars": "23,039",
-      "forks": "1,901",
-      "starsToday": "13,696",
+      "stars": "23,164",
+      "forks": "1,909",
+      "starsToday": "13,257",
       "url": "https://github.com/rohitg00/agentmemory",
       "builtBy": [
         "@rohitg00",
@@ -880,41 +800,28 @@
       ]
     },
     {
-      "name": "CloakHQ /CloakBrowser",
-      "description": "Stealth Chromium that passes every bot detection test. Drop-in Playwright replacement with source-level fingerprint patches. 30/30 tests passed.",
-      "language": "Python",
-      "stars": "26,298",
-      "forks": "2,075",
-      "starsToday": "14,818",
-      "url": "https://github.com/CloakHQ/CloakBrowser",
+      "name": "cursor /plugins",
+      "description": "Cursor plugin specification and official plugins",
+      "language": "TypeScript",
+      "stars": "1,997",
+      "forks": "151",
+      "starsToday": "1,589",
+      "url": "https://github.com/cursor/plugins",
       "builtBy": [
-        "@Cloak-HQ",
-        "@evelaa123",
-        "@Durafen",
-        "@dependabot",
-        "@honor2030"
-      ]
-    },
-    {
-      "name": "mattpocock /skills",
-      "description": "Skills for Real Engineers. Straight from my .claude directory.",
-      "language": "Shell",
-      "stars": "131,081",
-      "forks": "11,417",
-      "starsToday": "46,419",
-      "url": "https://github.com/mattpocock/skills",
-      "builtBy": [
-        "@mattpocock",
-        "@claude"
+        "@ericzakariasson",
+        "@poteto",
+        "@n2parko",
+        "@cursoragent",
+        "@SamSokolin"
       ]
     },
     {
       "name": "iii-hq /iii",
       "description": "Effortlessly compose, extend, and observe every service in real-time for the first time ever.",
       "language": "Rust",
-      "stars": "18,173",
+      "stars": "18,220",
       "forks": "1,213",
-      "starsToday": "2,542",
+      "starsToday": "2,566",
       "url": "https://github.com/iii-hq/iii",
       "builtBy": [
         "@ytallo",
@@ -925,6 +832,6 @@
       ]
     }
   ],
-  "lastUpdated": "2026-06-16T10:23:49.507883",
-  "totalRepositories": 58
+  "lastUpdated": "2026-06-17T02:55:52.798640",
+  "totalRepositories": 52
 }
