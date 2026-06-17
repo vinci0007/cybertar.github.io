@@ -3046,6 +3046,30 @@
         return labelForScore(score);
     }
 
+    function authenticityAssessment(channel) {
+        const identity = channel?.channelIdentity || {};
+        const probes = asArray(channel?.probes);
+        const identityScore = weightedDomainScore(channel?.weightedScoring, '身份一致');
+        const officialChannel = Boolean(identity.officialChannel);
+        const proxySignals = probes.some((probe) => asArray(probe.result?.responseFingerprints).some((item) => item.vendor === 'generic' || item.evidence === 'proxy_shape_only'));
+        const strongNativeSignals = probes.some((probe) => asArray(probe.result?.responseFingerprints).some((item) => ['response_shape', 'generate_content_shape', 'chat_shape', 'thinking_signature', 'reasoning_content', 'usage_accounting', 'parameter_acceptance'].includes(item.evidence)));
+        const channelTruth = officialChannel
+            ? (identityScore !== null && identityScore >= 75 ? 'channel_consistent' : 'channel_uncertain')
+            : (identityScore !== null && identityScore >= 60 ? 'channel_consistent' : 'channel_uncertain');
+        const upstreamTruth = officialChannel
+            ? (strongNativeSignals ? 'official_likely' : 'official_uncertain')
+            : (proxySignals ? 'proxy_or_compatibility_only' : 'upstream_uncertain');
+        return {
+            channelTruth,
+            upstreamTruth,
+            channelScope: officialChannel ? 'official' : 'compatible_or_proxy',
+            officialChannel,
+            summary: officialChannel
+                ? (upstreamTruth === 'official_likely' ? '官方渠道下的官方语义证据较强' : '官方渠道下的官方语义证据不足')
+                : (upstreamTruth === 'proxy_or_compatibility_only' ? '中转/兼容渠道，仅能判断渠道级一致性' : '中转/兼容渠道，上游官方真伪无法强判')
+        };
+    }
+
     function probePercent(probe) {
         const max = Number(probe.maxScore || 0);
         if (probe.skipped) return null;
@@ -3460,6 +3484,7 @@
         const weighted = channel.weightedScoring || {};
         const bonus = channel.bonusScoring || buildBonusScoring(asArray(channel.probes));
         const modelProfile = channel.modelProfile || weighted.profile || bonus.profile || {};
+        const authenticity = channel.authenticityAssessment || authenticityAssessment(channel);
         const bonusScore = clamp(Number(bonus.score || 0), 0, Number(bonus.maxScore || 10));
         const bonusMax = Number(bonus.maxScore || 10);
         const bonusFill = bonusMax ? clamp((bonusScore / bonusMax) * 100, 0, 100) : 0;
@@ -3644,6 +3669,8 @@
                         <div><span>目标模型</span><strong>${escapeHtml(channel.targetModel || channel.model || $('model').value || '未声明')}</strong></div>
                         <div><span>返回模型</span><strong>${escapeHtml(asArray(channel.returnedModels).filter(Boolean).join(', ') || '未返回')}</strong></div>
                         <div><span>模型族</span><strong>${escapeHtml(modelProfile.label || '通用模型')}</strong></div>
+                        <div><span>渠道级真伪</span><strong>${escapeHtml(authenticity.channelTruth || 'channel_uncertain')}</strong></div>
+                        <div><span>上游官方真伪</span><strong>${escapeHtml(authenticity.upstreamTruth || 'upstream_uncertain')}</strong></div>
                     </div>
                 </div>
             </section>
@@ -3857,6 +3884,7 @@
         channel.scoreAdjustments = adjusted.adjustments;
         channel.scoreCaps = [];
         channel.qualityGates = buildQualityGates(channel);
+        channel.authenticityAssessment = authenticityAssessment(channel);
         channel.label = labelForChannel(channel);
 
         return {
@@ -4078,6 +4106,7 @@
         channel.evidencePenalty = adjusted.penalty;
         channel.scoreAdjustments = adjusted.adjustments;
         channel.qualityGates = buildQualityGates(channel);
+        channel.authenticityAssessment = authenticityAssessment(channel);
         channel.label = labelForChannel(channel);
         renderReport({
             version: reportSchemaVersion,
