@@ -1736,13 +1736,14 @@
         .probe-preview-output {
             display: none;
             grid-column: 1 / -1;
-            max-height: 112px;
+            max-height: min(48vh, 520px);
             overflow: auto;
             margin: 0.18rem 0 0;
-            padding: 0.5rem;
+            padding: 0.7rem;
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.045);
-            color: rgba(255, 255, 255, 0.68);
+            color: rgba(255, 255, 255, 0.74);
+            line-height: 1.55;
         }
 
         .probe-preview {

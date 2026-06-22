@@ -3219,6 +3219,90 @@
         );
     }
 
+    function detailJson(value) {
+        if (value === null || value === undefined || value === '') return '';
+        try {
+            return JSON.stringify(walkAndRedact(value), null, 2);
+        } catch {
+            return String(value);
+        }
+    }
+
+    function probeRequestDetail(result) {
+        const request = result?.request || {};
+        const body = request.body || result?.requestBody || null;
+        return detailLines([
+            `${request.method || 'POST'} ${request.url || result?.requestUrl || '未记录'}`,
+            body ? `请求体\n${detailJson(body)}` : '请求体：未记录'
+        ]);
+    }
+
+    function probeResponseDetail(result) {
+        const response = result?.response || {};
+        const headers = result?.responseHeaders || response.headers || null;
+        return detailLines([
+            `HTTP ${result?.statusCode ?? response.status ?? (result?.success ? 200 : '失败')} ${response.statusText || ''}`.trim(),
+            `响应 URL：${response.url || result?.requestUrl || '未记录'}`,
+            headers ? `响应头\n${detailJson(headers)}` : '',
+            fullResultText(result) ? `响应正文\n${fullResultText(result)}` : `响应摘要\n${result?.preview || result?.error || '无响应摘要'}`
+        ]);
+    }
+
+    function probeAuditDetail(result) {
+        const audit = result?.requestAudit || null;
+        if (!audit) return '';
+        return detailLines([
+            `请求链路：${audit.channel || '未记录'}${audit.proxied ? '（Worker）' : '（直连）'}`,
+            `目标主机：${audit.targetHost || '未记录'}${audit.targetPath || ''}`,
+            `浏览器发送头：${asArray(audit.browserHeaderNames).join(', ') || '未记录'}`,
+            `预期上游头：${asArray(audit.expectedUpstreamHeaderNames).join(', ') || '未记录'}`,
+            `上游发送头：${asArray(audit.upstreamHeaderNames).join(', ') || '未确认'}`,
+            `非白名单上游头：${asArray(audit.disallowedUpstreamHeaderNames).join(', ') || '无'}`,
+            `请求体字段：${asArray(audit.bodyKeyNames).join(', ') || '未记录'}`,
+            `审计警告：${asArray(audit.auditWarnings).join('；') || '无'}`
+        ]);
+    }
+
+    function probeTestDetail(probe) {
+        const result = probe?.result || {};
+        const risks = probeRiskReasons(probe);
+        return detailLines([
+            `探针 ID：${probe?.id || '未记录'}`,
+            `探针名称：${visibleProbeName(probe?.probe || probe?.name)}`,
+            `分组：${testGroups[probe?.group]?.label || probe?.domain || probe?.group || '其他'}`,
+            `得分：${Number(probe?.score || 0)}/${Number(probe?.maxScore || 0)}（${probePercentText(probe)}）`,
+            `耗时：${result.latencyMs ?? 0} ms`,
+            `返回模型：${result.returnedModel || '未返回'}`,
+            `请求协议：${result.requestedProtocol || '未记录'}`,
+            `实际协议：${result.effectiveProtocol || '未记录'}`,
+            result.protocolFallback ? `协议回退：${result.protocolFallbackReason || '已发生'}` : '',
+            result.retriedWithoutReasoning ? '重试：已移除 reasoning 参数' : '',
+            result.retriedWithLowerMaxTokens ? `重试：max tokens 降至 ${result.retriedWithLowerMaxTokens}` : '',
+            result.streamDetected ? '流式响应：已检测到 SSE 流' : '',
+            result.toolCallDetected ? `工具调用：${asArray(result.toolCallNames).join(', ') || '已检测到'}` : '',
+            fingerprintText(result) ? `厂商指纹：${fingerprintText(result)}` : '',
+            asArray(probe?.notes).length ? `计分说明：${asArray(probe.notes).join('；')}` : '计分说明：无备注',
+            risks.length ? `风险信号：${risks.join('；')}` : ''
+        ]);
+    }
+
+    function fullProbeDetail(probe) {
+        const result = probe?.result || {};
+        return detailLines([
+            '【测试详细信息】',
+            probeTestDetail(probe),
+            '',
+            '【测试请求】',
+            probeRequestDetail(result),
+            '',
+            '【返回结果】',
+            probeResponseDetail(result),
+            '',
+            '【链路审计】',
+            probeAuditDetail(result) || '未记录'
+        ]);
+    }
+
     function probePercentText(probe) {
         const max = Number(probe.maxScore || 0);
         if (!max) return '报告项';
@@ -3466,23 +3550,37 @@
                 <p>${escapeHtml(item.policy)}</p>
             </article>
         `).join('');
+        const probesById = new Map();
+        asArray(channel.probes).forEach((probe) => {
+            if (!probe.id) return;
+            if (!probesById.has(probe.id)) probesById.set(probe.id, []);
+            probesById.get(probe.id).push(probe);
+        });
         const weightedProbeRows = asArray(weighted.items).map((item) => {
             const scoreText = item.skipped ? '跳过' : `${Number(item.score || 0)}/100`;
             const pct = item.skipped ? 0 : clamp(Number(item.score || 0), 0, 100);
             const sourceText = sourceProbeText(item.sourceIds);
+            const sourceProbeDetails = asArray(item.sourceIds)
+                .flatMap((sourceId) => probesById.get(sourceId) || [])
+                .map((probe, index) => detailLines([
+                    `—— 来源探针 ${index + 1}：${visibleProbeName(probe.probe)} ——`,
+                    fullProbeDetail(probe)
+                ]));
             const detail = item.skipped
                 ? detailLines([
                     '状态：未计分',
                     `设计权重：${item.weight}`,
                     '说明：没有对应的可执行探针结果，未进入有效分母。',
-                    sourceText
+                    sourceText,
+                    sourceProbeDetails.length ? sourceProbeDetails.join('\n\n') : ''
                 ])
                 : detailLines([
                     '状态：已计分',
                     `设计权重：${item.weight}`,
                     `有效权重：${item.effectiveWeight ?? 0}`,
                     `真实得分：${scoreText}`,
-                    sourceText
+                    sourceText,
+                    sourceProbeDetails.length ? sourceProbeDetails.join('\n\n') : '未找到对应源探针详情。'
                 ]);
             return `
                 <article class="probe-row weighted-probe-row">
@@ -3511,19 +3609,11 @@
             const preview = result.preview || result.error || '无响应摘要';
             const noteText = asArray(item.notes).join('；') || '无备注';
             const sourceText = sourceProbeText([item.id]);
-            const audit = result.requestAudit || null;
-            const auditLines = audit ? [
-                `请求链路：${audit.channel || '未记录'}${audit.proxied ? '（Worker）' : '（直连）'}`,
-                `目标主机：${audit.targetHost || '未记录'}${audit.targetPath ? audit.targetPath : ''}`,
-                `浏览器发送头：${asArray(audit.browserHeaderNames).join(', ') || '未记录'}`,
-                `上游发送头：${asArray(audit.upstreamHeaderNames).join(', ') || '未确认'}`,
-                `审计警告：${asArray(audit.auditWarnings).join('；') || '无'}`
-            ] : [];
             const detail = detailLines([
+                fullProbeDetail(item),
+                '',
+                '【简短摘要】',
                 `HTTP：${status}`,
-                `耗时：${result.latencyMs ?? 0} ms`,
-                `返回模型：${result.returnedModel || '未返回'}`,
-                ...auditLines,
                 `计分说明：${noteText}`,
                 `响应摘要：${preview}`
             ]);
