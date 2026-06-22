@@ -1,0 +1,1204 @@
+{
+  "trending": [
+    {
+      "name": "zai-org/GLM-5.2",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "1,930",
+      "downloads": "33,589",
+      "url": "https://huggingface.co/zai-org/GLM-5.2",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "glm_moe_dsa",
+        "text-generation",
+        "conversational"
+      ]
+    },
+    {
+      "name": "yuxinlu1/gemma-4-12B-coder-fable5-composer2.5-v1-GGUF",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "2,127",
+      "downloads": "414,734",
+      "url": "https://huggingface.co/yuxinlu1/gemma-4-12B-coder-fable5-composer2.5-v1-GGUF",
+      "tags": [
+        "gguf",
+        "gemma4",
+        "coding",
+        "code",
+        "reasoning"
+      ]
+    },
+    {
+      "name": "WeiboAI/VibeThinker-3B",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "586",
+      "downloads": "32,385",
+      "url": "https://huggingface.co/WeiboAI/VibeThinker-3B",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen2",
+        "text-generation",
+        "math"
+      ]
+    },
+    {
+      "name": "MiniMaxAI/MiniMax-M3",
+      "description": "No description available",
+      "task": "image-text-to-text",
+      "parameters": "Unknown",
+      "likes": "1,189",
+      "downloads": "119,967",
+      "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "minimax_m3_vl",
+        "image-text-to-text",
+        "multimodal"
+      ]
+    },
+    {
+      "name": "yuxinlu1/gemma-4-12B-agentic-fable5-composer2.5-v2-3.5x-tau2-GGUF",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "324",
+      "downloads": "50,314",
+      "url": "https://huggingface.co/yuxinlu1/gemma-4-12B-agentic-fable5-composer2.5-v2-3.5x-tau2-GGUF",
+      "tags": [
+        "gguf",
+        "gemma4",
+        "coding",
+        "agentic",
+        "terminal"
+      ]
+    },
+    {
+      "name": "microsoft/FastContext-1.0-4B-SFT",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "277",
+      "downloads": "3,498",
+      "url": "https://huggingface.co/microsoft/FastContext-1.0-4B-SFT",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen3",
+        "text-generation",
+        "Explorer SubAgent"
+      ]
+    },
+    {
+      "name": "moonshotai/Kimi-K2.7-Code",
+      "description": "No description available",
+      "task": "image-text-to-text",
+      "parameters": "Unknown",
+      "likes": "951",
+      "downloads": "412,778",
+      "url": "https://huggingface.co/moonshotai/Kimi-K2.7-Code",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "kimi_k25",
+        "image-feature-extraction",
+        "compressed-tensors"
+      ]
+    },
+    {
+      "name": "unsloth/GLM-5.2-GGUF",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "236",
+      "downloads": "41,846",
+      "url": "https://huggingface.co/unsloth/GLM-5.2-GGUF",
+      "tags": [
+        "gguf",
+        "glm_moe_dsa",
+        "unsloth",
+        "text-generation",
+        "en"
+      ]
+    },
+    {
+      "name": "nvidia/LocateAnything-3B",
+      "description": "No description available",
+      "task": "image-text-to-text",
+      "parameters": "Unknown",
+      "likes": "2,272",
+      "downloads": "247,517",
+      "url": "https://huggingface.co/nvidia/LocateAnything-3B",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "locateanything",
+        "image-feature-extraction",
+        "nvidia"
+      ]
+    },
+    {
+      "name": "HauhauCS/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive",
+      "description": "No description available",
+      "task": "image-text-to-text",
+      "parameters": "Unknown",
+      "likes": "2,090",
+      "downloads": "4,078,305",
+      "url": "https://huggingface.co/HauhauCS/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive",
+      "tags": [
+        "gguf",
+        "uncensored",
+        "qwen3.6",
+        "moe",
+        "vision"
+      ]
+    },
+    {
+      "name": "nvidia/nemotron-3.5-asr-streaming-0.6b",
+      "description": "No description available",
+      "task": "automatic-speech-recognition",
+      "parameters": "Unknown",
+      "likes": "622",
+      "downloads": "34,860",
+      "url": "https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b",
+      "tags": [
+        "nemo",
+        "speech-recognition",
+        "cache-aware ASR",
+        "automatic-speech-recognition",
+        "streaming-asr"
+      ]
+    },
+    {
+      "name": "google/diffusiongemma-26B-A4B-it",
+      "description": "No description available",
+      "task": "image-text-to-text",
+      "parameters": "Unknown",
+      "likes": "1,044",
+      "downloads": "874,368",
+      "url": "https://huggingface.co/google/diffusiongemma-26B-A4B-it",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "diffusion_gemma",
+        "image-text-to-text",
+        "conversational"
+      ]
+    },
+    {
+      "name": "owensong/Inflect-Nano-v1",
+      "description": "No description available",
+      "task": "text-to-speech",
+      "parameters": "Unknown",
+      "likes": "161",
+      "downloads": "0",
+      "url": "https://huggingface.co/owensong/Inflect-Nano-v1",
+      "tags": [
+        "pytorch",
+        "text-to-speech",
+        "tts",
+        "speech-synthesis",
+        "ultra-small"
+      ]
+    },
+    {
+      "name": "lordx64/Qwable-v1",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "152",
+      "downloads": "3,733",
+      "url": "https://huggingface.co/lordx64/Qwable-v1",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen3_5_moe",
+        "image-text-to-text",
+        "qwen"
+      ]
+    },
+    {
+      "name": "zai-org/GLM-5.2-FP8",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "126",
+      "downloads": "334,716",
+      "url": "https://huggingface.co/zai-org/GLM-5.2-FP8",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "glm_moe_dsa",
+        "text-generation",
+        "conversational"
+      ]
+    },
+    {
+      "name": "Mia-AiLab/Qwable-3.6-27b",
+      "description": "No description available",
+      "task": "Unknown",
+      "parameters": "Unknown",
+      "likes": "123",
+      "downloads": "23,958",
+      "url": "https://huggingface.co/Mia-AiLab/Qwable-3.6-27b",
+      "tags": [
+        "transformers",
+        "gguf",
+        "qwen",
+        "qwen3",
+        "qwen3.6"
+      ]
+    },
+    {
+      "name": "datalab-to/lift",
+      "description": "No description available",
+      "task": "image-text-to-text",
+      "parameters": "Unknown",
+      "likes": "119",
+      "downloads": "1,821",
+      "url": "https://huggingface.co/datalab-to/lift",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen3_5",
+        "image-text-to-text",
+        "pdf"
+      ]
+    },
+    {
+      "name": "deepseek-ai/DeepSeek-V4-Pro",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "5,006",
+      "downloads": "2,421,858",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "deepseek_v4",
+        "text-generation",
+        "conversational"
+      ]
+    },
+    {
+      "name": "CohereLabs/North-Mini-Code-1.0",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "477",
+      "downloads": "21,078",
+      "url": "https://huggingface.co/CohereLabs/North-Mini-Code-1.0",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "cohere2_moe",
+        "text-generation",
+        "conversational"
+      ]
+    },
+    {
+      "name": "LiquidAI/LFM2.5-Embedding-350M",
+      "description": "No description available",
+      "task": "sentence-similarity",
+      "parameters": "Unknown",
+      "likes": "98",
+      "downloads": "8,822",
+      "url": "https://huggingface.co/LiquidAI/LFM2.5-Embedding-350M",
+      "tags": [
+        "sentence-transformers",
+        "safetensors",
+        "lfm2",
+        "liquid",
+        "lfm2.5"
+      ]
+    },
+    {
+      "name": "bytkim/Qwen3.6-27B-MTP-pi-tune-GGUF",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "102",
+      "downloads": "52,774",
+      "url": "https://huggingface.co/bytkim/Qwen3.6-27B-MTP-pi-tune-GGUF",
+      "tags": [
+        "gguf",
+        "llama.cpp",
+        "qwen",
+        "qwen3_6",
+        "mtp"
+      ]
+    },
+    {
+      "name": "ostris/ideogram_4_turbotime_lora",
+      "description": "No description available",
+      "task": "text-to-image",
+      "parameters": "Unknown",
+      "likes": "97",
+      "downloads": "3,244",
+      "url": "https://huggingface.co/ostris/ideogram_4_turbotime_lora",
+      "tags": [
+        "diffusers",
+        "text-to-image",
+        "lora",
+        "base_model:ideogram-ai/ideogram-4-fp8",
+        "base_model:adapter:ideogram-ai/ideogram-4-fp8"
+      ]
+    },
+    {
+      "name": "empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "98",
+      "downloads": "6,633",
+      "url": "https://huggingface.co/empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF",
+      "tags": [
+        "gguf",
+        "llama.cpp",
+        "quantized",
+        "qwen3.5",
+        "reasoning"
+      ]
+    },
+    {
+      "name": "google/gemma-4-12B-it",
+      "description": "No description available",
+      "task": "any-to-any",
+      "parameters": "Unknown",
+      "likes": "1,132",
+      "downloads": "1,912,198",
+      "url": "https://huggingface.co/google/gemma-4-12B-it",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "gemma4_unified",
+        "image-text-to-text",
+        "any-to-any"
+      ]
+    },
+    {
+      "name": "Boogu/Boogu-Image-0.1-Edit",
+      "description": "No description available",
+      "task": "Unknown",
+      "parameters": "Unknown",
+      "likes": "89",
+      "downloads": "473",
+      "url": "https://huggingface.co/Boogu/Boogu-Image-0.1-Edit",
+      "tags": [
+        "diffusers",
+        "safetensors",
+        "en",
+        "zh",
+        "license:apache-2.0"
+      ]
+    }
+  ],
+  "likes": [
+    {
+      "name": "deepseek-ai/DeepSeek-R1",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "13,405",
+      "downloads": "6,909,931",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-R1",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "deepseek_v3",
+        "text-generation",
+        "conversational"
+      ]
+    },
+    {
+      "name": "black-forest-labs/FLUX.1-dev",
+      "description": "No description available",
+      "task": "text-to-image",
+      "parameters": "Unknown",
+      "likes": "13,310",
+      "downloads": "1,118,340",
+      "url": "https://huggingface.co/black-forest-labs/FLUX.1-dev",
+      "tags": [
+        "diffusers",
+        "safetensors",
+        "text-to-image",
+        "image-generation",
+        "flux"
+      ]
+    },
+    {
+      "name": "stabilityai/stable-diffusion-xl-base-1.0",
+      "description": "No description available",
+      "task": "text-to-image",
+      "parameters": "Unknown",
+      "likes": "7,837",
+      "downloads": "1,419,494",
+      "url": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+      "tags": [
+        "diffusers",
+        "onnx",
+        "safetensors",
+        "text-to-image",
+        "stable-diffusion"
+      ]
+    },
+    {
+      "name": "CompVis/stable-diffusion-v1-4",
+      "description": "No description available",
+      "task": "text-to-image",
+      "parameters": "Unknown",
+      "likes": "7,025",
+      "downloads": "429,813",
+      "url": "https://huggingface.co/CompVis/stable-diffusion-v1-4",
+      "tags": [
+        "diffusers",
+        "safetensors",
+        "stable-diffusion",
+        "stable-diffusion-diffusers",
+        "text-to-image"
+      ]
+    },
+    {
+      "name": "meta-llama/Meta-Llama-3-8B",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "6,584",
+      "downloads": "1,263,866",
+      "url": "https://huggingface.co/meta-llama/Meta-Llama-3-8B",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "llama",
+        "text-generation",
+        "facebook"
+      ]
+    },
+    {
+      "name": "hexgrad/Kokoro-82M",
+      "description": "No description available",
+      "task": "text-to-speech",
+      "parameters": "Unknown",
+      "likes": "6,374",
+      "downloads": "16,590,664",
+      "url": "https://huggingface.co/hexgrad/Kokoro-82M",
+      "tags": [
+        "text-to-speech",
+        "en",
+        "arxiv:2306.07691",
+        "arxiv:2203.02395",
+        "base_model:yl4579/StyleTTS2-LJSpeech"
+      ]
+    },
+    {
+      "name": "meta-llama/Llama-3.1-8B-Instruct",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "6,130",
+      "downloads": "9,902,957",
+      "url": "https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "llama",
+        "text-generation",
+        "facebook"
+      ]
+    },
+    {
+      "name": "openai/whisper-large-v3",
+      "description": "No description available",
+      "task": "automatic-speech-recognition",
+      "parameters": "Unknown",
+      "likes": "5,849",
+      "downloads": "5,877,324",
+      "url": "https://huggingface.co/openai/whisper-large-v3",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "jax",
+        "safetensors",
+        "whisper"
+      ]
+    },
+    {
+      "name": "black-forest-labs/FLUX.1-schnell",
+      "description": "No description available",
+      "task": "text-to-image",
+      "parameters": "Unknown",
+      "likes": "5,179",
+      "downloads": "226,983",
+      "url": "https://huggingface.co/black-forest-labs/FLUX.1-schnell",
+      "tags": [
+        "diffusers",
+        "safetensors",
+        "text-to-image",
+        "image-generation",
+        "flux"
+      ]
+    },
+    {
+      "name": "bigscience/bloom",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "5,013",
+      "downloads": "5,903",
+      "url": "https://huggingface.co/bigscience/bloom",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tensorboard",
+        "safetensors",
+        "bloom"
+      ]
+    },
+    {
+      "name": "deepseek-ai/DeepSeek-V4-Pro",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "5,006",
+      "downloads": "2,421,858",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "deepseek_v4",
+        "text-generation",
+        "conversational"
+      ]
+    },
+    {
+      "name": "sentence-transformers/all-MiniLM-L6-v2",
+      "description": "No description available",
+      "task": "sentence-similarity",
+      "parameters": "Unknown",
+      "likes": "4,987",
+      "downloads": "248,690,085",
+      "url": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2",
+      "tags": [
+        "sentence-transformers",
+        "pytorch",
+        "tf",
+        "rust",
+        "onnx"
+      ]
+    },
+    {
+      "name": "stabilityai/stable-diffusion-3-medium",
+      "description": "No description available",
+      "task": "text-to-image",
+      "parameters": "Unknown",
+      "likes": "4,979",
+      "downloads": "3,501",
+      "url": "https://huggingface.co/stabilityai/stable-diffusion-3-medium",
+      "tags": [
+        "diffusion-single-file",
+        "text-to-image",
+        "stable-diffusion",
+        "en",
+        "arxiv:2403.03206"
+      ]
+    },
+    {
+      "name": "openai/gpt-oss-120b",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "4,907",
+      "downloads": "4,059,983",
+      "url": "https://huggingface.co/openai/gpt-oss-120b",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "gpt_oss",
+        "text-generation",
+        "vllm"
+      ]
+    },
+    {
+      "name": "Tongyi-MAI/Z-Image-Turbo",
+      "description": "No description available",
+      "task": "text-to-image",
+      "parameters": "Unknown",
+      "likes": "4,848",
+      "downloads": "934,514",
+      "url": "https://huggingface.co/Tongyi-MAI/Z-Image-Turbo",
+      "tags": [
+        "diffusers",
+        "safetensors",
+        "text-to-image",
+        "en",
+        "arxiv:2511.22699"
+      ]
+    },
+    {
+      "name": "meta-llama/Llama-2-7b-chat-hf",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "4,783",
+      "downloads": "262,188",
+      "url": "https://huggingface.co/meta-llama/Llama-2-7b-chat-hf",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "safetensors",
+        "llama",
+        "text-generation"
+      ]
+    },
+    {
+      "name": "openai/gpt-oss-20b",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "4,719",
+      "downloads": "6,881,852",
+      "url": "https://huggingface.co/openai/gpt-oss-20b",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "gpt_oss",
+        "text-generation",
+        "vllm"
+      ]
+    },
+    {
+      "name": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+      "description": "No description available",
+      "task": "Unknown",
+      "parameters": "Unknown",
+      "likes": "4,698",
+      "downloads": "838,932",
+      "url": "https://huggingface.co/mistralai/Mixtral-8x7B-Instruct-v0.1",
+      "tags": [
+        "vllm",
+        "safetensors",
+        "mixtral",
+        "fr",
+        "it"
+      ]
+    },
+    {
+      "name": "meta-llama/Meta-Llama-3-8B-Instruct",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "4,624",
+      "downloads": "1,405,611",
+      "url": "https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "llama",
+        "text-generation",
+        "facebook"
+      ]
+    },
+    {
+      "name": "meta-llama/Llama-2-7b",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "4,505",
+      "downloads": "170",
+      "url": "https://huggingface.co/meta-llama/Llama-2-7b",
+      "tags": [
+        "facebook",
+        "meta",
+        "pytorch",
+        "llama",
+        "llama-2"
+      ]
+    },
+    {
+      "name": "mistralai/Mistral-7B-v0.1",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "4,113",
+      "downloads": "854,440",
+      "url": "https://huggingface.co/mistralai/Mistral-7B-v0.1",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "safetensors",
+        "mistral",
+        "text-generation"
+      ]
+    },
+    {
+      "name": "deepseek-ai/DeepSeek-V3",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "4,091",
+      "downloads": "1,022,811",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V3",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "deepseek_v3",
+        "text-generation",
+        "conversational"
+      ]
+    },
+    {
+      "name": "lllyasviel/ControlNet-v1-1",
+      "description": "No description available",
+      "task": "Unknown",
+      "parameters": "Unknown",
+      "likes": "4,086",
+      "downloads": "0",
+      "url": "https://huggingface.co/lllyasviel/ControlNet-v1-1",
+      "tags": [
+        "license:openrail",
+        "region:us"
+      ]
+    },
+    {
+      "name": "WarriorMama777/OrangeMixs",
+      "description": "No description available",
+      "task": "text-to-image",
+      "parameters": "Unknown",
+      "likes": "3,916",
+      "downloads": "1,706",
+      "url": "https://huggingface.co/WarriorMama777/OrangeMixs",
+      "tags": [
+        "diffusers",
+        "stable-diffusion",
+        "text-to-image",
+        "dataset:Nerfgun3/bad_prompt",
+        "license:creativeml-openrail-m"
+      ]
+    },
+    {
+      "name": "lllyasviel/ControlNet",
+      "description": "No description available",
+      "task": "Unknown",
+      "parameters": "Unknown",
+      "likes": "3,820",
+      "downloads": "1",
+      "url": "https://huggingface.co/lllyasviel/ControlNet",
+      "tags": [
+        "license:openrail",
+        "region:us"
+      ]
+    }
+  ],
+  "downloads": [
+    {
+      "name": "sentence-transformers/all-MiniLM-L6-v2",
+      "description": "No description available",
+      "task": "sentence-similarity",
+      "parameters": "Unknown",
+      "likes": "4,987",
+      "downloads": "248,690,085",
+      "url": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2",
+      "tags": [
+        "sentence-transformers",
+        "pytorch",
+        "tf",
+        "rust",
+        "onnx"
+      ]
+    },
+    {
+      "name": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "description": "No description available",
+      "task": "text-ranking",
+      "parameters": "Unknown",
+      "likes": "268",
+      "downloads": "81,208,618",
+      "url": "https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2",
+      "tags": [
+        "sentence-transformers",
+        "pytorch",
+        "jax",
+        "onnx",
+        "safetensors"
+      ]
+    },
+    {
+      "name": "BAAI/bge-small-en-v1.5",
+      "description": "No description available",
+      "task": "feature-extraction",
+      "parameters": "Unknown",
+      "likes": "495",
+      "downloads": "62,391,563",
+      "url": "https://huggingface.co/BAAI/bge-small-en-v1.5",
+      "tags": [
+        "sentence-transformers",
+        "pytorch",
+        "onnx",
+        "safetensors",
+        "bert"
+      ]
+    },
+    {
+      "name": "google-bert/bert-base-uncased",
+      "description": "No description available",
+      "task": "fill-mask",
+      "parameters": "Unknown",
+      "likes": "2,686",
+      "downloads": "59,044,227",
+      "url": "https://huggingface.co/google-bert/bert-base-uncased",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "rust"
+      ]
+    },
+    {
+      "name": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "description": "No description available",
+      "task": "sentence-similarity",
+      "parameters": "Unknown",
+      "likes": "1,282",
+      "downloads": "52,106,648",
+      "url": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "tags": [
+        "sentence-transformers",
+        "pytorch",
+        "tf",
+        "onnx",
+        "safetensors"
+      ]
+    },
+    {
+      "name": "google/electra-base-discriminator",
+      "description": "No description available",
+      "task": "Unknown",
+      "parameters": "Unknown",
+      "likes": "127",
+      "downloads": "42,732,956",
+      "url": "https://huggingface.co/google/electra-base-discriminator",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "rust"
+      ]
+    },
+    {
+      "name": "sentence-transformers/all-mpnet-base-v2",
+      "description": "No description available",
+      "task": "sentence-similarity",
+      "parameters": "Unknown",
+      "likes": "1,313",
+      "downloads": "34,695,158",
+      "url": "https://huggingface.co/sentence-transformers/all-mpnet-base-v2",
+      "tags": [
+        "sentence-transformers",
+        "pytorch",
+        "onnx",
+        "safetensors",
+        "openvino"
+      ]
+    },
+    {
+      "name": "BAAI/bge-m3",
+      "description": "No description available",
+      "task": "sentence-similarity",
+      "parameters": "Unknown",
+      "likes": "3,135",
+      "downloads": "31,494,482",
+      "url": "https://huggingface.co/BAAI/bge-m3",
+      "tags": [
+        "sentence-transformers",
+        "pytorch",
+        "onnx",
+        "xlm-roberta",
+        "feature-extraction"
+      ]
+    },
+    {
+      "name": "Qwen/Qwen3-0.6B",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "1,352",
+      "downloads": "27,743,993",
+      "url": "https://huggingface.co/Qwen/Qwen3-0.6B",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen3",
+        "text-generation",
+        "conversational"
+      ]
+    },
+    {
+      "name": "openai/clip-vit-base-patch32",
+      "description": "No description available",
+      "task": "zero-shot-image-classification",
+      "parameters": "Unknown",
+      "likes": "962",
+      "downloads": "23,577,032",
+      "url": "https://huggingface.co/openai/clip-vit-base-patch32",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "clip"
+      ]
+    },
+    {
+      "name": "FacebookAI/xlm-roberta-base",
+      "description": "No description available",
+      "task": "fill-mask",
+      "parameters": "Unknown",
+      "likes": "852",
+      "downloads": "21,061,357",
+      "url": "https://huggingface.co/FacebookAI/xlm-roberta-base",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "onnx"
+      ]
+    },
+    {
+      "name": "nomic-ai/nomic-embed-text-v1.5",
+      "description": "No description available",
+      "task": "sentence-similarity",
+      "parameters": "Unknown",
+      "likes": "853",
+      "downloads": "18,782,159",
+      "url": "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5",
+      "tags": [
+        "sentence-transformers",
+        "onnx",
+        "safetensors",
+        "nomic_bert",
+        "feature-extraction"
+      ]
+    },
+    {
+      "name": "laion/clap-htsat-fused",
+      "description": "No description available",
+      "task": "audio-classification",
+      "parameters": "Unknown",
+      "likes": "107",
+      "downloads": "16,675,280",
+      "url": "https://huggingface.co/laion/clap-htsat-fused",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "safetensors",
+        "clap",
+        "feature-extraction"
+      ]
+    },
+    {
+      "name": "hexgrad/Kokoro-82M",
+      "description": "No description available",
+      "task": "text-to-speech",
+      "parameters": "Unknown",
+      "likes": "6,374",
+      "downloads": "16,590,664",
+      "url": "https://huggingface.co/hexgrad/Kokoro-82M",
+      "tags": [
+        "text-to-speech",
+        "en",
+        "arxiv:2306.07691",
+        "arxiv:2203.02395",
+        "base_model:yl4579/StyleTTS2-LJSpeech"
+      ]
+    },
+    {
+      "name": "timm/mobilenetv3_small_100.lamb_in1k",
+      "description": "No description available",
+      "task": "image-classification",
+      "parameters": "Unknown",
+      "likes": "79",
+      "downloads": "16,378,706",
+      "url": "https://huggingface.co/timm/mobilenetv3_small_100.lamb_in1k",
+      "tags": [
+        "timm",
+        "pytorch",
+        "safetensors",
+        "image-classification",
+        "transformers"
+      ]
+    },
+    {
+      "name": "BAAI/bge-reranker-v2-m3",
+      "description": "No description available",
+      "task": "text-classification",
+      "parameters": "Unknown",
+      "likes": "1,049",
+      "downloads": "16,216,095",
+      "url": "https://huggingface.co/BAAI/bge-reranker-v2-m3",
+      "tags": [
+        "sentence-transformers",
+        "safetensors",
+        "xlm-roberta",
+        "text-classification",
+        "transformers"
+      ]
+    },
+    {
+      "name": "Qwen/Qwen3-4B",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "641",
+      "downloads": "16,163,745",
+      "url": "https://huggingface.co/Qwen/Qwen3-4B",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "text-generation",
+        "arxiv:2309.00071",
+        "arxiv:2505.09388"
+      ]
+    },
+    {
+      "name": "amazon/chronos-2",
+      "description": "No description available",
+      "task": "time-series-forecasting",
+      "parameters": "Unknown",
+      "likes": "334",
+      "downloads": "15,640,481",
+      "url": "https://huggingface.co/amazon/chronos-2",
+      "tags": [
+        "chronos-forecasting",
+        "safetensors",
+        "t5",
+        "time series",
+        "forecasting"
+      ]
+    },
+    {
+      "name": "BAAI/bge-large-en-v1.5",
+      "description": "No description available",
+      "task": "feature-extraction",
+      "parameters": "Unknown",
+      "likes": "688",
+      "downloads": "15,234,642",
+      "url": "https://huggingface.co/BAAI/bge-large-en-v1.5",
+      "tags": [
+        "sentence-transformers",
+        "pytorch",
+        "onnx",
+        "safetensors",
+        "bert"
+      ]
+    },
+    {
+      "name": "autogluon/chronos-bolt-small",
+      "description": "No description available",
+      "task": "time-series-forecasting",
+      "parameters": "Unknown",
+      "likes": "44",
+      "downloads": "14,249,304",
+      "url": "https://huggingface.co/autogluon/chronos-bolt-small",
+      "tags": [
+        "safetensors",
+        "t5",
+        "time series",
+        "forecasting",
+        "pretrained models"
+      ]
+    },
+    {
+      "name": "colbert-ir/colbertv2.0",
+      "description": "No description available",
+      "task": "Unknown",
+      "parameters": "Unknown",
+      "likes": "362",
+      "downloads": "13,801,382",
+      "url": "https://huggingface.co/colbert-ir/colbertv2.0",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "onnx",
+        "safetensors",
+        "bert"
+      ]
+    },
+    {
+      "name": "openai-community/gpt2",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "3,307",
+      "downloads": "13,296,854",
+      "url": "https://huggingface.co/openai-community/gpt2",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "tflite"
+      ]
+    },
+    {
+      "name": "Qwen/Qwen3-8B",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "1,154",
+      "downloads": "13,031,970",
+      "url": "https://huggingface.co/Qwen/Qwen3-8B",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen3",
+        "text-generation",
+        "conversational"
+      ]
+    },
+    {
+      "name": "Bingsu/adetailer",
+      "description": "No description available",
+      "task": "Unknown",
+      "parameters": "Unknown",
+      "likes": "729",
+      "downloads": "13,019,569",
+      "url": "https://huggingface.co/Bingsu/adetailer",
+      "tags": [
+        "ultralytics",
+        "pytorch",
+        "dataset:wider_face",
+        "dataset:skytnt/anime-segmentation",
+        "doi:10.57967/hf/3633"
+      ]
+    },
+    {
+      "name": "google/gemma-4-26B-A4B-it",
+      "description": "No description available",
+      "task": "image-text-to-text",
+      "parameters": "Unknown",
+      "likes": "1,172",
+      "downloads": "12,999,904",
+      "url": "https://huggingface.co/google/gemma-4-26B-A4B-it",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "gemma4",
+        "image-text-to-text",
+        "conversational"
+      ]
+    }
+  ],
+  "lastUpdated": "2026-06-22T11:11:49.101440",
+  "totalModels": 75
+}

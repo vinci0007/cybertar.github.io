@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RBTWR9QNMQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-RBTWR9QNMQ');
+    </script>
+    <title>CyberTAR</title>
+    <link rel="icon" type="image/jpeg" href="/images/Cybertar.png">
+    <link rel="stylesheet" href="/assets/styles.css?v=12760a2ed692">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
+    <!-- 引入 Three.js 和 GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    
+    <style>
+        /* 新增背景样式 */
+        body { 
+            background: #050505 !important; 
+            /* 注意：不添加 overflow: hidden 以保持原有滚动功能 */
+        }
+
+        /* 画布容器 */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* 保持在内容之下 (内容 z-index >= 2) */
+        }
+
+        /* 噪点遮罩 - 增加电影质感 */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.05;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Hero 3D Container Styles */
+        #hero-3d-container {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #hero-3d-container canvas {
+            display: block;
+        }
+
+        /* Corner action links */
+        .corner-actions {
+            position: fixed;
+            top: 2rem;
+            left: 0.75rem;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .github-corner-link,
+        .model-verify-corner-link,
+        .login-corner-link {
+            position: static;
+            z-index: 1001;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            color: rgba(255, 255, 255, 0.72);
+            background: rgba(5, 5, 5, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.02);
+            transition: color 0.3s ease, transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .model-verify-corner-link,
+        .login-corner-link {
+            width: auto;
+            min-width: 48px;
+            padding: 0 16px;
+            border-radius: 999px;
+            gap: 8px;
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-size: 0.72rem;
+            letter-spacing: 0.08rem;
+            text-transform: uppercase;
+        }
+
+        .github-corner-link:hover,
+        .model-verify-corner-link:hover,
+        .login-corner-link:hover {
+            color: #fff;
+            transform: translateY(-2px) scale(1.05);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.65), 0 0 24px rgba(255, 255, 255, 0.12);
+        }
+
+        .github-corner-link svg {
+            width: 24px;
+            height: 24px;
+            display: block;
+        }
+
+        .model-verify-corner-link span:first-child {
+            font-size: 1rem;
+        }
+
+        .login-corner-link {
+            cursor: pointer;
+            border-color: rgba(124, 255, 0, 0.24);
+        }
+
+        .auth-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            display: grid;
+            place-items: center;
+            padding: 1.25rem;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .auth-modal[hidden] {
+            display: none;
+        }
+
+        .auth-dialog {
+            width: min(420px, 100%);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 12px;
+            background: rgba(8, 10, 16, 0.96);
+            box-shadow: 0 24px 90px rgba(0, 0, 0, 0.65);
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .auth-dialog header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 1rem 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .auth-dialog h2 {
+            margin: 0;
+            font-size: 1rem;
+            letter-spacing: 0.08rem;
+            text-transform: uppercase;
+        }
+
+        .auth-close {
+            width: 34px;
+            height: 34px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .auth-panel {
+            display: grid;
+            gap: 0.75rem;
+            padding: 1rem;
+        }
+
+        .auth-panel[hidden] {
+            display: none;
+        }
+
+        .auth-field {
+            display: grid;
+            gap: 0.32rem;
+            color: rgba(255, 255, 255, 0.68);
+            font-size: 0.82rem;
+        }
+
+        .auth-field input {
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.32);
+            color: #fff;
+            padding: 0.74rem 0.82rem;
+            outline: none;
+        }
+
+        .auth-action {
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 8px;
+            background: #fff;
+            color: #000;
+            padding: 0.78rem 0.9rem;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .auth-action.secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+        }
+
+        .auth-status {
+            min-height: 1.2rem;
+            color: rgba(255, 255, 255, 0.68);
+            font-size: 0.84rem;
+            line-height: 1.45;
+        }
+
+        @media (max-width: 720px) {
+            .corner-actions {
+                top: 4.75rem;
+                left: 0.75rem;
+                right: auto;
+                flex-wrap: wrap;
+            }
+
+        }
+
+        /* 新增：音频列表样式 */
+        #audio-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        #audio-list li {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+    </style>
+    <link rel="canonical" href="https://cybertar.youngood.tech/">
+    <meta name="description" content="CyberTAR 汇聚 AI、开源趋势、效率工具与实时焦点，帮助创作者和开发者发现前沿项目、论文与灵感。">
+    <meta name="robots" content="index, follow">
+</head>
+
+<body>
+    <!-- 宇宙背景层 -->
+    <div class="noise-overlay"></div>
+    <div id="canvas-container"></div>
+
+    <div class="corner-actions">
+        <a href="https://github.com/vinci0007/cybertar.github.io" class="github-corner-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+                <path d="M12 2C6.477 2 2 6.486 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.866-.014-1.7-2.782.605-3.369-1.344-3.369-1.344-.455-1.158-1.11-1.466-1.11-1.466-.908-.621.069-.608.069-.608 1.004.071 1.532 1.033 1.532 1.033.892 1.531 2.341 1.089 2.91.833.091-.647.35-1.089.636-1.34-2.221-.253-4.555-1.113-4.555-4.953 0-1.094.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.847c.85.004 1.706.115 2.505.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.594 1.028 2.688 0 3.85-2.338 4.697-4.566 4.945.359.31.678.922.678 1.858 0 1.341-.012 2.423-.012 2.752 0 .268.18.58.688.482A10.025 10.025 0 0 0 22 12.021C22 6.486 17.523 2 12 2Z"/>
+            </svg>
+        </a>
+        <a href="/lab/model-verifier/" class="model-verify-corner-link" aria-label="模型验真">
+            <span>LLM</span>
+            <span>模型验真</span>
+        </a>
+    </div>
+
+    <!-- 导航栏 -->
+
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <img src="/images/Cybertar.png" alt="CyberTAR" class="logo-img">
+                <span class="logo-text">Cyber 修仙</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link">首页</a></li>
+                <li><a href="#about" class="nav-link">关于</a></li>
+                <li><a href="/blogs/" class="nav-link">Blogs</a></li>
+                
+                <li><a href="#projects" class="nav-link">AI Lab</a></li>
+                <li><a href="/space/" class="nav-link">探索</a></li>
+
+                <li><a href="/trending-project/" class="nav-link">Trending Project</a></li>
+                <li><a href="/huggingface-papers/" class="nav-link">Trending Papers</a></li>
+                <li><a href="/lab/model-verifier/" class="nav-link">模型验真</a></li>
+                <li><a href="/tools/" class="nav-link">工具</a></li>
+                <li><a href="/focus/" class="nav-link">实时焦点</a></li>
+                <li><a href="/knowsnews/techKnows/" class="nav-link">Tech Knows</a></li>
+                <li><a href="/entertainment/" class="nav-link">娱乐</a></li>
+                <li><a href="#contact" class="nav-link">联系</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- 英雄区域 -->
+        <section id="home" class="hero">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="hero-badge">探索 • 专注 • 创新 • 未来</div>
+                    <h1 class="hero-title">
+                        <span class="title-word">探索未知的边界</span>
+                    </h1>
+                    <p class="hero-subtitle">欢迎来到CyberTAR，让意识，先于光速抵达未知。</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" onclick="scrollToSection('about')">
+                            <span class="btn-text">开始探索</span>
+                            <span class="btn-icon">→</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="scrollToSection('contact')">
+                            <span class="btn-text">了解更多</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div id="hero-3d-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 关于区域 -->
+        <section id="about" class="about">
+            <div class="container">
+                <div class="about-aura"></div>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p class="about-paragraph">在这里，硅基与碳基的认知边界被折叠，范式在零维坍缩，又在高维重写。</p>
+                        <p class="about-paragraph">让思维在尚未抵达之处先完成自我抵达，让未知在尚未发生之前先被体验。</p>
+                    </div>
+                    <div class="about-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">∞</div>
+                            <div class="stat-number">∞</div>
+                            <div class="stat-label">可能性</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⚡</div>
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">创新</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🚀</div>
+                            <div class="stat-number">25/7</div>
+                            <div class="stat-label">探索</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Lab区域 -->
+        <section id="projects" class="projects">
+            <div class="container">
+                <div class="lab-header">
+                    <div class="lab-title-bg">AI LAB</div>
+                    <div class="lab-title-wrapper">
+                        <h2 class="lab-title">AI Lab</h2>
+                        <div class="lab-line-decoder"></div>
+                    </div>
+                </div>
+                <div class="projects-grid" id="projects-grid">
+                    <!-- 动态加载的项目卡片将插入这里 -->
+                </div>
+                <div id="more-projects-container" class="more-projects">
+                    <button id="more-projects-btn" class="btn btn-outline">
+                        <span class="btn-text">查看更多内容</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系区域 (Redesigned: High-End Tech Reveal) -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="lab-header">
+                    <div class="lab-title-bg">CONTACT</div>
+                    <div class="lab-title-wrapper">
+                        <h2 class="lab-title">联系我们</h2>
+                        <div class="lab-line-decoder"></div>
+                    </div>
+                </div>
+                <div class="contact-content">
+                    <div class="contact-cards">
+                        <div class="contact-node">
+                            <div class="node-icon">📧</div>
+                            <div class="node-content">
+                                <h3>MAIL</h3>
+                                <p>tourists0007@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-node">
+                            <div class="node-icon">👥</div>
+                            <div class="node-content">
+                                <h3> QQ </h3>
+                                <p>571266595</p>
+                            </div>
+                        </div>
+                        <a class="contact-node node--explore" href="/lab/model-verifier/">
+                            <div class="node-icon">LLM</div>
+                            <div class="node-content">
+                                <h3>VERIFY</h3>
+                                <p>模型验真</p>
+                            </div>
+                        </a>
+                        <a class="contact-node node--explore" href="/voice-denoise/">
+                            <div class="node-icon">🚀</div>
+                            <div class="node-content">
+                                <h3> PROBE </h3>
+                                <p>SE</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="/images/Cybertar.png" alt="CyberTAR" class="logo-img">
+                    <span class="logo-text">CyberTAR</span>
+                </div>
+                <p class="footer-text">&copy; 2025 CyberTAR . &nbsp;&nbsp; 探索未知</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/assets/script.js?v=b2918f37e941"></script>
+    <script>
+        loadProjects('projects-grid', 3);
+
+        // --- Hero "Voice" 3D Particle Sphere ---
+        (function() {
+            const heroContainer = document.getElementById('hero-3d-container');
+            if (!heroContainer) return;
+
+            const containerWidth = heroContainer.offsetWidth || 500;
+            const containerHeight = heroContainer.offsetHeight || 500;
+
+            // 1. Setup Scene
+            const heroScene = new THREE.Scene();
+            heroScene.fog = new THREE.FogExp2(0x050505, 0.015);
+
+            const heroCamera = new THREE.PerspectiveCamera(75, containerWidth / containerHeight, 0.1, 1000);
+            heroCamera.position.z = 25;
+
+            const heroRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            heroRenderer.setSize(containerWidth, containerHeight);
+            heroRenderer.setPixelRatio(window.devicePixelRatio);
+            heroContainer.appendChild(heroRenderer.domElement);
+
+            // 2. The "Voice" Particle Sphere
+            const sphereGeometry = new THREE.SphereGeometry(8, 128, 128);
+            const sphereMaterial = new THREE.PointsMaterial({
+                size: 0.1,
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.85,
+                blending: THREE.AdditiveBlending,
+                vertexColors: true
+            });
+
+            // Add colors (Cyan to Magenta gradient)
+            const count = sphereGeometry.attributes.position.count;
+            const colors = [];
+            const color1 = new THREE.Color(0xffffff); // White
+            const color2 = new THREE.Color(0xaaaaaa); // Light Gray
+
+            for (let i = 0; i < count; i++) {
+                const mixedColor = color1.clone().lerp(color2, Math.random());
+                colors.push(mixedColor.r, mixedColor.g, mixedColor.b);
+            }
+            sphereGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+            const particleSphere = new THREE.Points(sphereGeometry, sphereMaterial);
+            heroScene.add(particleSphere);
+
+            // --- Eyes Setup (Nexus) ---
+            const eyeGroup = new THREE.Group();
+            heroScene.add(eyeGroup);
+
+            const eyeGeo = new THREE.SphereGeometry(0.35, 32, 32);
+            const eyeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            
+            const leftEye = new THREE.Mesh(eyeGeo, eyeMat);
+            leftEye.position.set(-1.5, 1.2, 8.2); // Shifted up slightly
+            leftEye.scale.set(0, 0, 0); 
+            eyeGroup.add(leftEye);
+
+            const rightEye = new THREE.Mesh(eyeGeo, eyeMat);
+            rightEye.position.set(1.5, 1.2, 8.2); // Shifted up slightly
+            rightEye.scale.set(0, 0, 0); 
+            eyeGroup.add(rightEye);
+
+            // Store original positions for wave animation
+            const originalPositions = sphereGeometry.attributes.position.array.slice();
+
+            // 3. Lighting
+            const ambientLight = new THREE.AmbientLight(0x404040, 2);
+            heroScene.add(ambientLight);
+            const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+            pointLight.position.set(10, 10, 10);
+            heroScene.add(pointLight);
+
+            // 4. Interaction Variables
+            let heroMouseX = 0;
+            let heroMouseY = 0;
+            let heroTime = 0;
+            let amplitude = 0.9;
+            let speed = 1.0;
+            let isHeroHovered = false; // Add hover state
+
+            heroContainer.addEventListener('mouseenter', () => isHeroHovered = true);
+            heroContainer.addEventListener('mouseleave', () => {
+                isHeroHovered = false;
+                heroMouseX = 0;
+                heroMouseY = 0;
+            });
+
+            heroContainer.addEventListener('mousemove', (event) => {
+                const rect = heroContainer.getBoundingClientRect();
+                heroMouseX = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+                heroMouseY = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+            });
+
+            // --- 点击交互：打招呼 (Click Interaction: Greet) ---
+            const greetings = ["HELLO!", "STAY CURIOUS.", "LET'S EXPLORE.", "READY?", "INITIATING...", "WELCOME TO ASSTAR."];
+            let isGreeting = false;
+
+            const greetingEl = document.createElement('div');
+            greetingEl.className = 'hero-greeting';
+            heroContainer.appendChild(greetingEl);
+
+            heroContainer.addEventListener('click', () => {
+                if (isGreeting) return;
+                isGreeting = true;
+
+                // 1. Show Text Bubble
+                const randomText = greetings[Math.floor(Math.random() * greetings.length)];
+                greetingEl.innerText = randomText;
+                greetingEl.classList.add('show');
+
+                // 2. Sphere Reaction (Blink & Pulse)
+                gsap.to(particleSphere.scale, {
+                    x: 1.2, y: 1.2, z: 1.2,
+                    duration: 0.1,
+                    yoyo: true,
+                    repeat: 1,
+                    ease: "power2.out"
+                });
+
+                // Blink eyes
+                gsap.to([leftEye.scale, rightEye.scale], {
+                    y: 0.1,
+                    duration: 0.1,
+                    yoyo: true,
+                    repeat: 1,
+                    ease: "power2.inOut"
+                });
+
+                // 3. Auto Hide
+                setTimeout(() => {
+                    greetingEl.classList.remove('show');
+                    setTimeout(() => { isGreeting = false; }, 500);
+                }, 2000);
+            });
+
+            // 5. Animation Loop
+            function animateHeroSphere() {
+                requestAnimationFrame(animateHeroSphere);
+                heroTime += 0.01 * speed;
+
+                // Wave Simulation
+                const positions = sphereGeometry.attributes.position.array;
+                for (let i = 0; i < count; i++) {
+                    const px = originalPositions[i * 3];
+                    const py = originalPositions[i * 3 + 1];
+                    const pz = originalPositions[i * 3 + 2];
+
+                    const noise = Math.sin(px * 0.5 + heroTime) * Math.cos(py * 0.3 + heroTime) * Math.sin(pz * 0.5 + heroTime);
+                    const displacement = 1 + (noise * 0.18 * amplitude);
+
+                    positions[i * 3] = px * displacement;
+                    positions[i * 3 + 1] = py * displacement;
+                    positions[i * 3 + 2] = pz * displacement;
+                }
+                sphereGeometry.attributes.position.needsUpdate = true;
+
+                // Interaction Logic: Magnetic Stickiness & Elasticity
+                // 1. Position Magnetism (The "Pull" feel)
+                const targetPosX = heroMouseX * 1.2;
+                const targetPosY = -heroMouseY * 1.2;
+                particleSphere.position.x += 0.08 * (targetPosX - particleSphere.position.x);
+                particleSphere.position.y += 0.08 * (targetPosY - particleSphere.position.y);
+
+                // 2. Elastic Scale (The "Sticky" stretching feel)
+                const distToCenter = Math.sqrt(heroMouseX * heroMouseX + heroMouseY * heroMouseY);
+                const targetScale = 1 + distToCenter * 0.15;
+                particleSphere.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+
+                // 3. Rotation (Auto + Reaching towards mouse)
+                particleSphere.rotation.y += 0.003; // Base rotation
+                particleSphere.rotation.x += 0.05 * (heroMouseY * 0.4 - particleSphere.rotation.x);
+                particleSphere.rotation.z += 0.05 * (heroMouseX * 0.2 - particleSphere.rotation.z);
+
+                // --- 眼睛互动逻辑 (Eyes Interaction) ---
+                eyeGroup.position.copy(particleSphere.position);
+                
+                // Only trigger if hovering AND mouse is actually near the sphere (dist < 0.5)
+                const eyeScaleTarget = (isHeroHovered && distToCenter < 0.5) ? 1 : 0; 
+                const eyeScaleVec = new THREE.Vector3(eyeScaleTarget, eyeScaleTarget, eyeScaleTarget);
+                
+                leftEye.scale.lerp(eyeScaleVec, 0.1);
+                rightEye.scale.lerp(eyeScaleVec, 0.1);
+
+                // 让眼睛稍微看向鼠标 (Eye pupils tracking)
+                const lookFactor = 0.4;
+                leftEye.position.x = -1.5 + heroMouseX * lookFactor;
+                leftEye.position.y = 1.2 - heroMouseY * lookFactor;
+                rightEye.position.x = 1.5 + heroMouseX * lookFactor;
+                rightEye.position.y = 1.2 - heroMouseY * lookFactor;
+
+                heroRenderer.render(heroScene, heroCamera);
+            }
+
+            animateHeroSphere();
+
+            // 6. Resize Handler
+            const resizeObserver = new ResizeObserver(() => {
+                const newWidth = heroContainer.offsetWidth;
+                const newHeight = heroContainer.offsetHeight;
+                heroCamera.aspect = newWidth / newHeight;
+                heroCamera.updateProjectionMatrix();
+                heroRenderer.setSize(newWidth, newHeight);
+            });
+            resizeObserver.observe(heroContainer);
+        })();
+    </script>
+</body>
+
+</html>

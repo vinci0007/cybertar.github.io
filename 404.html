@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>页面未找到 | CyberTAR</title>
+  <meta name="robots" content="noindex, follow">
+  <script>
+    const cleanRoutes = ["/","/blogs/","/space/","/trending-project/","/huggingface-papers/","/tools/","/focus/","/knowsnews/techKnows/","/entertainment/","/entertainment/lx_online/","/projects/","/project-view/","/voice-denoise/","/lab/model-verifier/","/lab/prompt-optimizer/","/lab/svg-monitor/"];
+    const legacyRoutes = {"/index.html":"/","/blogs/index.html":"/blogs/","/pages/space.html":"/space/","/pages/trending-project.html":"/trending-project/","/pages/huggingface-papers.html":"/huggingface-papers/","/pages/tools.html":"/tools/","/pages/focus.html":"/focus/","/knowsnews/techKnows.html":"/knowsnews/techKnows/","/entertainment/index.html":"/entertainment/","/entertainment/lx_online/index.html":"/entertainment/lx_online/","/pages/projects.html":"/projects/","/pages/project-view.html":"/project-view/","/pages/voice-denoise.html":"/voice-denoise/","/lab/model-verifier.html":"/lab/model-verifier/","/lab/prompt-optimizer.html":"/lab/prompt-optimizer/","/lab/svg-monitor.html":"/lab/svg-monitor/"};
+    const path = window.location.pathname;
+    if (legacyRoutes[path]) {
+      window.location.replace(legacyRoutes[path] + window.location.search + window.location.hash);
+    }
+    const slashRoute = path.endsWith('/') ? path : path + '/';
+    if (cleanRoutes.includes(slashRoute)) {
+      window.location.replace(slashRoute + window.location.search + window.location.hash);
+    }
+  </script>
+  <style>
+    body{margin:0;min-height:100vh;display:grid;place-items:center;background:#050505;color:#fff;font-family:Arial,sans-serif}
+    main{max-width:560px;padding:32px;text-align:center}
+    a{color:#fff}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>404</h1>
+    <p>页面不存在，或地址已经移动。</p>
+    <p><a href="/">返回首页</a></p>
+  </main>
+  <script src="/assets/script.js"></script>
+</body>
+</html>

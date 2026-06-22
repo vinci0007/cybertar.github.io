@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "node scripts/check-model-verifier-version.js && node scripts/build-clean-urls.js"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}
