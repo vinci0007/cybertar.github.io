@@ -4,9 +4,9 @@
       "name": "simplex-chat /simplex-chat",
       "description": "SimpleX - the first messaging network operating without user identifiers of any kind - 100% private by design! iOS, Android and desktop apps 📱!",
       "language": "Haskell",
-      "stars": "14,169",
-      "forks": "808",
-      "starsToday": "1,469",
+      "stars": "15,187",
+      "forks": "870",
+      "starsToday": "1,180",
       "url": "https://github.com/simplex-chat/simplex-chat",
       "builtBy": [
         "@epoberezkin",
@@ -17,57 +17,12 @@
       ]
     },
     {
-      "name": "xbtlin /ai-berkshire",
-      "description": "AI 时代的伯克希尔：基于 Claude Code / Codex 的价值投资研究框架。巴菲特·芒格·段永平·李录四大师方法论 + 多Agent并行研究。| AI-era Berkshire: a value investing research framework built for Claude Code / Codex. 4 masters' methodologies + multi-agent adversarial analysis.",
-      "language": "Python",
-      "stars": "4,695",
-      "forks": "650",
-      "starsToday": "685",
-      "url": "https://github.com/xbtlin/ai-berkshire",
-      "builtBy": [
-        "@claude",
-        "@xbtlin"
-      ]
-    },
-    {
-      "name": "commaai /openpilot",
-      "description": "openpilot is an operating system for robotics. Currently, it upgrades the driver assistance system on 300+ supported cars.",
-      "language": "Python",
-      "stars": "62,155",
-      "forks": "11,073",
-      "starsToday": "322",
-      "url": "https://github.com/commaai/openpilot",
-      "builtBy": [
-        "@adeebshihadeh",
-        "@sshane",
-        "@deanlee",
-        "@pd0wm",
-        "@haraschax"
-      ]
-    },
-    {
-      "name": "IceWhaleTech /CasaOS",
-      "description": "CasaOS - A simple, easy-to-use, elegant open-source Personal Cloud system.",
-      "language": "Go",
-      "stars": "35,910",
-      "forks": "2,045",
-      "starsToday": "502",
-      "url": "https://github.com/IceWhaleTech/CasaOS",
-      "builtBy": [
-        "@LinkLeong",
-        "@JohnGuan",
-        "@tigerinus",
-        "@jerrykuku",
-        "@allcontributors"
-      ]
-    },
-    {
       "name": "ripienaar /free-for-dev",
       "description": "A list of SaaS, PaaS and IaaS offerings that have free tiers of interest to devops and infradev",
       "language": "HTML",
-      "stars": "124,294",
-      "forks": "13,093",
-      "starsToday": "459",
+      "stars": "125,417",
+      "forks": "13,182",
+      "starsToday": "495",
       "url": "https://github.com/ripienaar/free-for-dev",
       "builtBy": [
         "@ripienaar",
@@ -78,204 +33,119 @@
       ]
     },
     {
-      "name": "google-labs-code /design.md",
-      "description": "A format specification for describing a visual identity to coding agents. DESIGN.md gives agents a persistent, structured understanding of a design system.",
-      "language": "TypeScript",
-      "stars": "22,565",
-      "forks": "1,802",
-      "starsToday": "1,541",
-      "url": "https://github.com/google-labs-code/design.md",
+      "name": "commaai /openpilot",
+      "description": "openpilot is an operating system for robotics. Currently, it upgrades the driver assistance system on 300+ supported cars.",
+      "language": "Python",
+      "stars": "62,445",
+      "forks": "11,096",
+      "starsToday": "266",
+      "url": "https://github.com/commaai/openpilot",
       "builtBy": [
-        "@davideast",
-        "@xkxx",
-        "@mvanhorn",
-        "@tejas100",
-        "@dalmaer"
+        "@adeebshihadeh",
+        "@sshane",
+        "@deanlee",
+        "@pd0wm",
+        "@haraschax"
       ]
     },
     {
-      "name": "microsoft /PowerToys",
-      "description": "Microsoft PowerToys is a collection of utilities that supercharge productivity and customization on Windows",
+      "name": "xbtlin /ai-berkshire",
+      "description": "AI 时代的伯克希尔：基于 Claude Code / Codex 的价值投资研究框架。巴菲特·芒格·段永平·李录四大师方法论 + 多Agent并行研究。| AI-era Berkshire: a value investing research framework built for Claude Code / Codex. 4 masters' methodologies + multi-agent adversarial analysis.",
+      "language": "Python",
+      "stars": "5,508",
+      "forks": "738",
+      "starsToday": "1,445",
+      "url": "https://github.com/xbtlin/ai-berkshire",
+      "builtBy": [
+        "@claude",
+        "@xbtlin",
+        "@CooperSheroy"
+      ]
+    },
+    {
+      "name": "Robbyant /lingbot-map",
+      "description": "A feed-forward 3D foundation model for reconstructing scenes from streaming data",
+      "language": "Python",
+      "stars": "8,276",
+      "forks": "806",
+      "starsToday": "372",
+      "url": "https://github.com/Robbyant/lingbot-map",
+      "builtBy": [
+        "@LinZhuoChen",
+        "@justimyhxu"
+      ]
+    },
+    {
+      "name": "DeusData /codebase-memory-mcp",
+      "description": "High-performance code intelligence MCP server. Indexes codebases into a persistent knowledge graph — average repo in milliseconds. 158 languages, sub-ms queries, 99% fewer tokens. Single static binary, zero dependencies.",
       "language": "C",
-      "stars": "135,780",
-      "forks": "8,171",
-      "starsToday": "57",
-      "url": "https://github.com/microsoft/PowerToys",
+      "stars": "19,896",
+      "forks": "1,436",
+      "starsToday": "2,190",
+      "url": "https://github.com/DeusData/codebase-memory-mcp",
       "builtBy": [
-        "@crutkas",
-        "@bao-qian",
-        "@qianlifeng",
-        "@jaimecbernardo",
-        "@niels9001"
+        "@DeusData",
+        "@claude",
+        "@shanemccarron-maker",
+        "@dependabot",
+        "@dLo999"
       ]
     },
     {
-      "name": "hugohe3 /ppt-master",
-      "description": "AI generates a real, editable PowerPoint from any document — native shapes & animations, speaker notes voiced as audio narration, and the option to follow your own .pptx template, not slide images · by Hugo He",
+      "name": "cupy /cupy",
+      "description": "NumPy & SciPy for GPU",
       "language": "Python",
-      "stars": "33,385",
-      "forks": "2,833",
-      "starsToday": "589",
-      "url": "https://github.com/hugohe3/ppt-master",
+      "stars": "11,554",
+      "forks": "1,069",
+      "starsToday": "174",
+      "url": "https://github.com/cupy/cupy",
       "builtBy": [
-        "@hugohe3",
-        "@claude",
-        "@WodenJay",
-        "@shenqili",
-        "@shandianchengzi"
+        "@kmaehashi",
+        "@leofang",
+        "@okuta",
+        "@unnonouno",
+        "@takagi"
       ]
     },
     {
-      "name": "JCodesMore /ai-website-cloner-template",
-      "description": "Clone any website with one command using AI coding agents",
-      "language": "TypeScript",
-      "stars": "22,378",
-      "forks": "3,201",
-      "starsToday": "750",
-      "url": "https://github.com/JCodesMore/ai-website-cloner-template",
+      "name": "altic-dev /FluidVoice",
+      "description": "FluidVoice - Fastest macOS Offline Dictation app - Voice to Text fully Local. One ⭐ takes us a long way :))",
+      "language": "Swift",
+      "stars": "3,803",
+      "forks": "240",
+      "starsToday": "365",
+      "url": "https://github.com/altic-dev/FluidVoice",
       "builtBy": [
-        "@JCodesMore",
+        "@altic-dev",
+        "@grohith327",
         "@claude",
-        "@oz-agent",
-        "@rishikeshmanohar",
-        "@SABUJ123472"
+        "@BarathwajAnandan",
+        "@yelloduxx"
       ]
     },
     {
-      "name": "garrytan /gstack",
-      "description": "Use Garry Tan's exact Claude Code setup: 23 opinionated tools that serve as CEO, Designer, Eng Manager, Release Manager, Doc Engineer, and QA",
-      "language": "TypeScript",
-      "stars": "117,449",
-      "forks": "17,456",
-      "starsToday": "674",
-      "url": "https://github.com/garrytan/gstack",
-      "builtBy": [
-        "@claude",
-        "@garrytan",
-        "@jbetala7",
-        "@garagon",
-        "@mvanhorn"
-      ]
-    },
-    {
-      "name": "NanmiCoder /MediaCrawler",
-      "description": "小红书笔记 | 评论爬虫、抖音视频 | 评论爬虫、快手视频 | 评论爬虫、B 站视频 ｜ 评论爬虫、微博帖子 ｜ 评论爬虫、百度贴吧帖子 ｜ 百度贴吧评论回复爬虫 | 知乎问答文章｜评论爬虫",
+      "name": "opendatalab /MinerU",
+      "description": "Transforms complex documents like PDFs and Office docs into LLM-ready markdown/JSON for your Agentic workflows.",
       "language": "Python",
-      "stars": "53,899",
-      "forks": "11,025",
-      "starsToday": "394",
-      "url": "https://github.com/NanmiCoder/MediaCrawler",
+      "stars": "71,697",
+      "forks": "6,019",
+      "starsToday": "380",
+      "url": "https://github.com/opendatalab/MinerU",
       "builtBy": [
-        "@NanmiCoder",
-        "@2513502304",
-        "@gaoxiaobei",
-        "@persist-1",
-        "@claude"
-      ]
-    },
-    {
-      "name": "Anil-matcha /Open-Generative-AI",
-      "description": "Unrestricted Open-source alternative to AI video platforms — Free AI image & video generation studio with 200+ models (Flux, Midjourney, Kling, Sora, Veo). No content filters. Self-hosted, MIT licensed.",
-      "language": "JavaScript",
-      "stars": "21,523",
-      "forks": "3,658",
-      "starsToday": "255",
-      "url": "https://github.com/Anil-matcha/Open-Generative-AI",
-      "builtBy": [
-        "@Anil-matcha",
-        "@claude",
-        "@jaiprasad04",
-        "@NgoQuocViet2001",
-        "@taxvui"
-      ]
-    },
-    {
-      "name": "topoteretes /cognee",
-      "description": "Cognee is the open-source AI memory platform for agents. Give your AI agents persistent long-term memory across sessions with a self-hosted knowledge graph engine.",
-      "language": "Python",
-      "stars": "24,261",
-      "forks": "2,268",
-      "starsToday": "780",
-      "url": "https://github.com/topoteretes/cognee",
-      "builtBy": [
-        "@Vasilije1990",
-        "@dexters1",
-        "@hajdul88",
-        "@borisarzentar",
-        "@claude"
-      ]
-    },
-    {
-      "name": "dbt-labs /dbt-core",
-      "description": "dbt enables data analysts and engineers to transform their data using the same practices that software engineers use to build applications.",
-      "language": "Rust",
-      "stars": "13,273",
-      "forks": "2,440",
-      "starsToday": "18",
-      "url": "https://github.com/dbt-labs/dbt-core",
-      "builtBy": [
-        "@drewbanin",
-        "@beckjake",
-        "@jtcohen6",
-        "@claude",
-        "@emmyoop"
-      ]
-    },
-    {
-      "name": "luongnv89 /claude-howto",
-      "description": "A visual, example-driven guide to Claude Code — from basic concepts to advanced agents, with copy-paste templates that bring immediate value.",
-      "language": "Python",
-      "stars": "38,738",
-      "forks": "4,663",
-      "starsToday": "141",
-      "url": "https://github.com/luongnv89/claude-howto",
-      "builtBy": [
-        "@luongnv89",
-        "@claude",
-        "@edocltd",
-        "@toanalien",
-        "@lzw-git-all"
-      ]
-    },
-    {
-      "name": "anomalyco /opencode",
-      "description": "The open source coding agent.",
-      "language": "TypeScript",
-      "stars": "179,962",
-      "forks": "22,118",
-      "starsToday": "392",
-      "url": "https://github.com/anomalyco/opencode",
-      "builtBy": [
-        "@thdxr",
-        "@adamdotdevin",
-        "@rekram1-node",
-        "@opencode-agent",
-        "@actions-user"
-      ]
-    },
-    {
-      "name": "Fission-AI /OpenSpec",
-      "description": "Spec-driven development (SDD) for AI coding assistants.",
-      "language": "TypeScript",
-      "stars": "57,284",
-      "forks": "3,990",
-      "starsToday": "177",
-      "url": "https://github.com/Fission-AI/OpenSpec",
-      "builtBy": [
-        "@TabishB",
-        "@github-actions",
-        "@claude",
-        "@openspec-release-bot",
-        "@fsilvaortiz"
+        "@myhloli",
+        "@Sidney233",
+        "@dt-yy",
+        "@Copilot",
+        "@github-actions"
       ]
     },
     {
       "name": "HKUDS /Vibe-Trading",
       "description": "\"Vibe-Trading: Your Personal Trading Agent\"",
       "language": "Python",
-      "stars": "13,873",
-      "forks": "2,600",
-      "starsToday": "92",
+      "stars": "14,413",
+      "forks": "2,638",
+      "starsToday": "492",
       "url": "https://github.com/HKUDS/Vibe-Trading",
       "builtBy": [
         "@warren618",
@@ -286,32 +156,51 @@
       ]
     },
     {
-      "name": "keycloak /keycloak",
-      "description": "Open Source Identity and Access Management For Modern Applications and Services",
-      "language": "Java",
-      "stars": "35,364",
-      "forks": "8,558",
-      "starsToday": "20",
-      "url": "https://github.com/keycloak/keycloak",
+      "name": "ByteByteGoHq /system-design-101",
+      "description": "Explain complex systems using visuals and simple terms. Help you prepare for system design interviews.",
+      "language": "Unknown",
+      "stars": "84,555",
+      "forks": "9,356",
+      "starsToday": "250",
+      "url": "https://github.com/ByteByteGoHq/system-design-101",
       "builtBy": [
-        "@stianst",
-        "@dependabot",
-        "@patriot1burke",
-        "@mposolda",
-        "@edewit"
+        "@slam",
+        "@nilbuild",
+        "@LombardiDaniel",
+        "@Stephanvs",
+        "@alastairp"
       ]
     },
     {
-      "name": "every-app /open-seo",
-      "description": "Open source alternative to Semrush and Ahrefs",
-      "language": "TypeScript",
-      "stars": "3,567",
-      "forks": "385",
-      "starsToday": "239",
-      "url": "https://github.com/every-app/open-seo",
+      "name": "usestrix /strix",
+      "description": "Open-source AI hackers to find and fix your app’s vulnerabilities.",
+      "language": "Python",
+      "stars": "26,800",
+      "forks": "2,991",
+      "starsToday": "122",
+      "url": "https://github.com/usestrix/strix",
       "builtBy": [
-        "@bensenescu",
-        "@claude"
+        "@0xallam",
+        "@claude",
+        "@dependabot",
+        "@bearsyankees",
+        "@octovimmer"
+      ]
+    },
+    {
+      "name": "browser-use /video-use",
+      "description": "Edit videos with coding agents",
+      "language": "Python",
+      "stars": "11,159",
+      "forks": "1,529",
+      "starsToday": "196",
+      "url": "https://github.com/browser-use/video-use",
+      "builtBy": [
+        "@gregpr07",
+        "@claude",
+        "@antoinersx",
+        "@ShawnPana",
+        "@miguel-heygen"
       ]
     }
   ],
@@ -320,9 +209,9 @@
       "name": "calesthio /OpenMontage",
       "description": "World's first open-source, agentic video production system. 12 pipelines, 52 tools, 500+ agent skills. Turn your AI coding assistant into a full video production studio.",
       "language": "Python",
-      "stars": "25,842",
-      "forks": "2,859",
-      "starsToday": "18,000",
+      "stars": "27,161",
+      "forks": "3,009",
+      "starsToday": "18,703",
       "url": "https://github.com/calesthio/OpenMontage",
       "builtBy": [
         "@calesthio",
@@ -336,9 +225,9 @@
       "name": "DeusData /codebase-memory-mcp",
       "description": "High-performance code intelligence MCP server. Indexes codebases into a persistent knowledge graph — average repo in milliseconds. 158 languages, sub-ms queries, 99% fewer tokens. Single static binary, zero dependencies.",
       "language": "C",
-      "stars": "18,256",
-      "forks": "1,333",
-      "starsToday": "7,674",
+      "stars": "19,897",
+      "forks": "1,436",
+      "starsToday": "8,926",
       "url": "https://github.com/DeusData/codebase-memory-mcp",
       "builtBy": [
         "@DeusData",
@@ -352,9 +241,9 @@
       "name": "kunchenguid /no-mistakes",
       "description": "git push no-mistakes",
       "language": "Go",
-      "stars": "3,885",
-      "forks": "220",
-      "starsToday": "2,229",
+      "stars": "4,101",
+      "forks": "227",
+      "starsToday": "2,449",
       "url": "https://github.com/kunchenguid/no-mistakes",
       "builtBy": [
         "@kunchenguid",
@@ -365,12 +254,28 @@
       ]
     },
     {
+      "name": "palmier-io /palmier-pro",
+      "description": "macOS video editor built for AI",
+      "language": "Swift",
+      "stars": "9,321",
+      "forks": "657",
+      "starsToday": "5,034",
+      "url": "https://github.com/palmier-io/palmier-pro",
+      "builtBy": [
+        "@htin1",
+        "@mricopeng",
+        "@Ti-03",
+        "@cursoragent",
+        "@edu-lara"
+      ]
+    },
+    {
       "name": "google-labs-code /design.md",
       "description": "A format specification for describing a visual identity to coding agents. DESIGN.md gives agents a persistent, structured understanding of a design system.",
       "language": "TypeScript",
-      "stars": "22,565",
-      "forks": "1,802",
-      "starsToday": "6,014",
+      "stars": "22,887",
+      "forks": "1,819",
+      "starsToday": "6,728",
       "url": "https://github.com/google-labs-code/design.md",
       "builtBy": [
         "@davideast",
@@ -381,76 +286,12 @@
       ]
     },
     {
-      "name": "ZhuLinsen /daily_stock_analysis",
-      "description": "LLM 驱动的多市场股票智能分析系统：多源行情、实时新闻、决策看板与自动推送，支持零成本定时运行。 LLM-powered multi-market stock analysis system with multi-source market data, real-time news, decision dashboard, automated notifications, and cost-free scheduled runs.",
-      "language": "Python",
-      "stars": "50,738",
-      "forks": "44,188",
-      "starsToday": "7,137",
-      "url": "https://github.com/ZhuLinsen/daily_stock_analysis",
-      "builtBy": [
-        "@ZhuLinsen",
-        "@massif-01",
-        "@freesme",
-        "@adminlove520",
-        "@Activer007"
-      ]
-    },
-    {
-      "name": "penpot /penpot",
-      "description": "Penpot: The open-source design tool for design and code collaboration",
-      "language": "Clojure",
-      "stars": "54,265",
-      "forks": "3,521",
-      "starsToday": "3,343",
-      "url": "https://github.com/penpot/penpot",
-      "builtBy": [
-        "@niwinz",
-        "@Alotor",
-        "@superalex",
-        "@hirunatan",
-        "@EvaMarco"
-      ]
-    },
-    {
-      "name": "Panniantong /Agent-Reach",
-      "description": "Give your AI agent eyes to see the entire internet. Read & search Twitter, Reddit, YouTube, GitHub, Bilibili, XiaoHongShu — one CLI, zero API fees.",
-      "language": "Python",
-      "stars": "43,791",
-      "forks": "3,479",
-      "starsToday": "7,676",
-      "url": "https://github.com/Panniantong/Agent-Reach",
-      "builtBy": [
-        "@Panniantong",
-        "@claude",
-        "@kadaliao",
-        "@hymansun",
-        "@alfred1994"
-      ]
-    },
-    {
-      "name": "interviewstreet /hiring-agent",
-      "description": "AI agent to evaluate and score resumes.",
-      "language": "Python",
-      "stars": "3,095",
-      "forks": "692",
-      "starsToday": "1,836",
-      "url": "https://github.com/interviewstreet/hiring-agent",
-      "builtBy": [
-        "@sp2hari",
-        "@anxkhn-hacker",
-        "@kaushalkrgupta02",
-        "@G26karthik",
-        "@singla-rhydham"
-      ]
-    },
-    {
       "name": "JCodesMore /ai-website-cloner-template",
       "description": "Clone any website with one command using AI coding agents",
       "language": "TypeScript",
-      "stars": "22,378",
-      "forks": "3,201",
-      "starsToday": "4,565",
+      "stars": "22,959",
+      "forks": "3,286",
+      "starsToday": "5,317",
       "url": "https://github.com/JCodesMore/ai-website-cloner-template",
       "builtBy": [
         "@JCodesMore",
@@ -461,108 +302,12 @@
       ]
     },
     {
-      "name": "jamiepine /voicebox",
-      "description": "The open-source AI voice studio. Clone, dictate, create.",
-      "language": "TypeScript",
-      "stars": "35,073",
-      "forks": "4,217",
-      "starsToday": "3,965",
-      "url": "https://github.com/jamiepine/voicebox",
-      "builtBy": [
-        "@jamiepine",
-        "@claude",
-        "@tomasmach",
-        "@mvanhorn",
-        "@selop"
-      ]
-    },
-    {
-      "name": "stablyai /orca",
-      "description": "Orca is the ADE for working with a fleet of parallel agents. Run any coding agent with your own subscription. Available on desktop and mobile.",
-      "language": "TypeScript",
-      "stars": "8,435",
-      "forks": "585",
-      "starsToday": "2,554",
-      "url": "https://github.com/stablyai/orca",
-      "builtBy": [
-        "@nwparker",
-        "@AmethystLiang",
-        "@orca-ide",
-        "@Jinwoo-H",
-        "@brennanb2025"
-      ]
-    },
-    {
-      "name": "BuilderIO /agent-native",
-      "description": "A framework for building agent-native applications.",
-      "language": "TypeScript",
-      "stars": "2,773",
-      "forks": "275",
-      "starsToday": "1,474",
-      "url": "https://github.com/BuilderIO/agent-native",
-      "builtBy": [
-        "@steve8708",
-        "@github-actions",
-        "@builder-io-integration",
-        "@builderio-bot",
-        "@zuchka"
-      ]
-    },
-    {
-      "name": "mukul975 /Anthropic-Cybersecurity-Skills",
-      "description": "817 structured cybersecurity skills for AI agents · Mapped to 6 frameworks: MITRE ATT&CK, NIST CSF 2.0, MITRE ATLAS, D3FEND, NIST AI RMF & MITRE F3 (Fight Fraud) · agentskills.io standard · Works with Claude Code, GitHub Copilot, Codex CLI, Cursor, Gemini CLI & 20+ platforms · 29 security domains · Apache 2.0",
-      "language": "Python",
-      "stars": "22,340",
-      "forks": "2,553",
-      "starsToday": "5,121",
-      "url": "https://github.com/mukul975/Anthropic-Cybersecurity-Skills",
-      "builtBy": [
-        "@mukul975",
-        "@juliosuas",
-        "@claude",
-        "@andrewibrah",
-        "@ioxoi"
-      ]
-    },
-    {
-      "name": "koala73 /worldmonitor",
-      "description": "Real-time global intelligence dashboard. AI-powered news aggregation, geopolitical monitoring, and infrastructure tracking in a unified situational awareness interface",
-      "language": "TypeScript",
-      "stars": "60,475",
-      "forks": "9,444",
-      "starsToday": "2,735",
-      "url": "https://github.com/koala73/worldmonitor",
-      "builtBy": [
-        "@koala73",
-        "@claude",
-        "@SebastienMelki",
-        "@NewCoder3294",
-        "@lspassos1"
-      ]
-    },
-    {
-      "name": "asgeirtj /system_prompts_leaks",
-      "description": "Extracted system prompts from Anthropic - Claude Fable 5, Opus 4.8, Claude Code, Claude Design. OpenAI - ChatGPT 5.5 Thinking, GPT 5.5 Instant, Codex. Google - Gemini 3.5 Flash, 3.1 Pro, Antigravity. xAI - Grok, Cursor, Copilot, VS Code, Perplexity, and more. Updated regularly.",
-      "language": "JavaScript",
-      "stars": "46,715",
-      "forks": "7,649",
-      "starsToday": "2,775",
-      "url": "https://github.com/asgeirtj/system_prompts_leaks",
-      "builtBy": [
-        "@asgeirtj",
-        "@claude",
-        "@awrreny",
-        "@anonymous619259",
-        "@lcebot"
-      ]
-    },
-    {
       "name": "simplex-chat /simplex-chat",
       "description": "SimpleX - the first messaging network operating without user identifiers of any kind - 100% private by design! iOS, Android and desktop apps 📱!",
       "language": "Haskell",
-      "stars": "14,169",
-      "forks": "808",
-      "starsToday": "1,973",
+      "stars": "15,187",
+      "forks": "870",
+      "starsToday": "3,218",
       "url": "https://github.com/simplex-chat/simplex-chat",
       "builtBy": [
         "@epoberezkin",
@@ -573,12 +318,140 @@
       ]
     },
     {
+      "name": "interviewstreet /hiring-agent",
+      "description": "AI agent to evaluate and score resumes.",
+      "language": "Python",
+      "stars": "3,191",
+      "forks": "702",
+      "starsToday": "1,973",
+      "url": "https://github.com/interviewstreet/hiring-agent",
+      "builtBy": [
+        "@sp2hari",
+        "@anxkhn-hacker",
+        "@kaushalkrgupta02",
+        "@G26karthik",
+        "@singla-rhydham"
+      ]
+    },
+    {
+      "name": "ZhuLinsen /daily_stock_analysis",
+      "description": "LLM 驱动的多市场股票智能分析系统：多源行情、实时新闻、决策看板与自动推送，支持零成本定时运行。 LLM-powered multi-market stock analysis system with multi-source market data, real-time news, decision dashboard, automated notifications, and cost-free scheduled runs.",
+      "language": "Python",
+      "stars": "51,207",
+      "forks": "44,490",
+      "starsToday": "7,045",
+      "url": "https://github.com/ZhuLinsen/daily_stock_analysis",
+      "builtBy": [
+        "@ZhuLinsen",
+        "@massif-01",
+        "@freesme",
+        "@adminlove520",
+        "@Activer007"
+      ]
+    },
+    {
+      "name": "stablyai /orca",
+      "description": "Orca is the ADE for working with a fleet of parallel agents. Run any coding agent with your own subscription. Available on desktop and mobile.",
+      "language": "TypeScript",
+      "stars": "8,670",
+      "forks": "602",
+      "starsToday": "2,769",
+      "url": "https://github.com/stablyai/orca",
+      "builtBy": [
+        "@nwparker",
+        "@AmethystLiang",
+        "@orca-ide",
+        "@Jinwoo-H",
+        "@brennanb2025"
+      ]
+    },
+    {
+      "name": "Panniantong /Agent-Reach",
+      "description": "Give your AI agent eyes to see the entire internet. Read & search Twitter, Reddit, YouTube, GitHub, Bilibili, XiaoHongShu — one CLI, zero API fees.",
+      "language": "Python",
+      "stars": "44,618",
+      "forks": "3,545",
+      "starsToday": "7,692",
+      "url": "https://github.com/Panniantong/Agent-Reach",
+      "builtBy": [
+        "@Panniantong",
+        "@claude",
+        "@kadaliao",
+        "@hymansun",
+        "@alfred1994"
+      ]
+    },
+    {
+      "name": "mukul975 /Anthropic-Cybersecurity-Skills",
+      "description": "817 structured cybersecurity skills for AI agents · Mapped to 6 frameworks: MITRE ATT&CK, NIST CSF 2.0, MITRE ATLAS, D3FEND, NIST AI RMF & MITRE F3 (Fight Fraud) · agentskills.io standard · Works with Claude Code, GitHub Copilot, Codex CLI, Cursor, Gemini CLI & 20+ platforms · 29 security domains · Apache 2.0",
+      "language": "Python",
+      "stars": "22,698",
+      "forks": "2,588",
+      "starsToday": "5,212",
+      "url": "https://github.com/mukul975/Anthropic-Cybersecurity-Skills",
+      "builtBy": [
+        "@mukul975",
+        "@juliosuas",
+        "@claude",
+        "@andrewibrah",
+        "@ioxoi"
+      ]
+    },
+    {
+      "name": "penpot /penpot",
+      "description": "Penpot: The open-source design tool for design and code collaboration",
+      "language": "Clojure",
+      "stars": "54,426",
+      "forks": "3,533",
+      "starsToday": "2,429",
+      "url": "https://github.com/penpot/penpot",
+      "builtBy": [
+        "@niwinz",
+        "@Alotor",
+        "@superalex",
+        "@hirunatan",
+        "@EvaMarco"
+      ]
+    },
+    {
+      "name": "BuilderIO /agent-native",
+      "description": "A framework for building agent-native applications.",
+      "language": "TypeScript",
+      "stars": "2,910",
+      "forks": "288",
+      "starsToday": "1,540",
+      "url": "https://github.com/BuilderIO/agent-native",
+      "builtBy": [
+        "@steve8708",
+        "@github-actions",
+        "@builder-io-integration",
+        "@builderio-bot",
+        "@zuchka"
+      ]
+    },
+    {
+      "name": "jamiepine /voicebox",
+      "description": "The open-source AI voice studio. Clone, dictate, create.",
+      "language": "TypeScript",
+      "stars": "35,486",
+      "forks": "4,261",
+      "starsToday": "3,883",
+      "url": "https://github.com/jamiepine/voicebox",
+      "builtBy": [
+        "@jamiepine",
+        "@claude",
+        "@tomasmach",
+        "@mvanhorn",
+        "@selop"
+      ]
+    },
+    {
       "name": "aws /agent-toolkit-for-aws",
       "description": "Official, AWS-supported MCP servers, skills, and plugins to help AI agents build on AWS",
       "language": "Python",
-      "stars": "1,505",
-      "forks": "127",
-      "starsToday": "524",
+      "stars": "1,552",
+      "forks": "131",
+      "starsToday": "600",
       "url": "https://github.com/aws/agent-toolkit-for-aws",
       "builtBy": [
         "@arnewouters",
@@ -592,9 +465,9 @@
       "name": "alibaba /page-agent",
       "description": "JavaScript in-page GUI agent. Control web interfaces with natural language.",
       "language": "TypeScript",
-      "stars": "20,412",
-      "forks": "1,761",
-      "starsToday": "1,649",
+      "stars": "20,493",
+      "forks": "1,763",
+      "starsToday": "1,778",
       "url": "https://github.com/alibaba/page-agent",
       "builtBy": [
         "@gaomeng1900",
@@ -605,28 +478,12 @@
       ]
     },
     {
-      "name": "bytedance /deer-flow",
-      "description": "An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents and message gateway, it handles different levels of tasks that could take minutes to hours.",
-      "language": "Python",
-      "stars": "75,113",
-      "forks": "10,136",
-      "starsToday": "3,258",
-      "url": "https://github.com/bytedance/deer-flow",
-      "builtBy": [
-        "@MagicCube",
-        "@WillemJiang",
-        "@hetaoBackend",
-        "@claude",
-        "@henry-byted"
-      ]
-    },
-    {
       "name": "Stirling-Tools /Stirling-PDF",
       "description": "#1 PDF Application on GitHub that lets you edit PDFs on any device anywhere",
       "language": "Java",
-      "stars": "84,846",
-      "forks": "7,376",
-      "starsToday": "3,231",
+      "stars": "84,976",
+      "forks": "7,381",
+      "starsToday": "3,079",
       "url": "https://github.com/Stirling-Tools/Stirling-PDF",
       "builtBy": [
         "@Frooodle",
@@ -637,12 +494,44 @@
       ]
     },
     {
+      "name": "koala73 /worldmonitor",
+      "description": "Real-time global intelligence dashboard. AI-powered news aggregation, geopolitical monitoring, and infrastructure tracking in a unified situational awareness interface",
+      "language": "TypeScript",
+      "stars": "60,715",
+      "forks": "9,461",
+      "starsToday": "2,845",
+      "url": "https://github.com/koala73/worldmonitor",
+      "builtBy": [
+        "@koala73",
+        "@claude",
+        "@SebastienMelki",
+        "@NewCoder3294",
+        "@lspassos1"
+      ]
+    },
+    {
+      "name": "NanmiCoder /MediaCrawler",
+      "description": "小红书笔记 | 评论爬虫、抖音视频 | 评论爬虫、快手视频 | 评论爬虫、B 站视频 ｜ 评论爬虫、微博帖子 ｜ 评论爬虫、百度贴吧帖子 ｜ 百度贴吧评论回复爬虫 | 知乎问答文章｜评论爬虫",
+      "language": "Python",
+      "stars": "54,058",
+      "forks": "11,040",
+      "starsToday": "2,472",
+      "url": "https://github.com/NanmiCoder/MediaCrawler",
+      "builtBy": [
+        "@NanmiCoder",
+        "@2513502304",
+        "@gaoxiaobei",
+        "@persist-1",
+        "@claude"
+      ]
+    },
+    {
       "name": "topoteretes /cognee",
       "description": "Cognee is the open-source AI memory platform for agents. Give your AI agents persistent long-term memory across sessions with a self-hosted knowledge graph engine.",
       "language": "Python",
-      "stars": "24,261",
-      "forks": "2,268",
-      "starsToday": "5,519",
+      "stars": "24,937",
+      "forks": "2,312",
+      "starsToday": "6,064",
       "url": "https://github.com/topoteretes/cognee",
       "builtBy": [
         "@Vasilije1990",
@@ -651,6 +540,22 @@
         "@borisarzentar",
         "@claude"
       ]
+    },
+    {
+      "name": "bytedance /deer-flow",
+      "description": "An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents and message gateway, it handles different levels of tasks that could take minutes to hours.",
+      "language": "Python",
+      "stars": "75,276",
+      "forks": "10,159",
+      "starsToday": "2,976",
+      "url": "https://github.com/bytedance/deer-flow",
+      "builtBy": [
+        "@MagicCube",
+        "@WillemJiang",
+        "@hetaoBackend",
+        "@claude",
+        "@henry-byted"
+      ]
     }
   ],
   "monthly": [
@@ -658,9 +563,9 @@
       "name": "apple /container",
       "description": "A tool for creating and running Linux containers using lightweight virtual machines on a Mac. It is written in Swift, and optimized for Apple silicon.",
       "language": "Swift",
-      "stars": "44,065",
-      "forks": "1,309",
-      "starsToday": "17,377",
+      "stars": "44,344",
+      "forks": "1,315",
+      "starsToday": "17,676",
       "url": "https://github.com/apple/container",
       "builtBy": [
         "@jglogan",
@@ -671,28 +576,12 @@
       ]
     },
     {
-      "name": "calesthio /OpenMontage",
-      "description": "World's first open-source, agentic video production system. 12 pipelines, 52 tools, 500+ agent skills. Turn your AI coding assistant into a full video production studio.",
-      "language": "Python",
-      "stars": "25,842",
-      "forks": "2,859",
-      "starsToday": "20,575",
-      "url": "https://github.com/calesthio/OpenMontage",
-      "builtBy": [
-        "@calesthio",
-        "@claude",
-        "@0xDevNinja",
-        "@itsuzef",
-        "@vizionik25"
-      ]
-    },
-    {
       "name": "DeusData /codebase-memory-mcp",
       "description": "High-performance code intelligence MCP server. Indexes codebases into a persistent knowledge graph — average repo in milliseconds. 158 languages, sub-ms queries, 99% fewer tokens. Single static binary, zero dependencies.",
       "language": "C",
-      "stars": "18,256",
-      "forks": "1,333",
-      "starsToday": "13,731",
+      "stars": "19,897",
+      "forks": "1,436",
+      "starsToday": "16,051",
       "url": "https://github.com/DeusData/codebase-memory-mcp",
       "builtBy": [
         "@DeusData",
@@ -703,12 +592,28 @@
       ]
     },
     {
+      "name": "calesthio /OpenMontage",
+      "description": "World's first open-source, agentic video production system. 12 pipelines, 52 tools, 500+ agent skills. Turn your AI coding assistant into a full video production studio.",
+      "language": "Python",
+      "stars": "27,161",
+      "forks": "3,009",
+      "starsToday": "22,408",
+      "url": "https://github.com/calesthio/OpenMontage",
+      "builtBy": [
+        "@calesthio",
+        "@claude",
+        "@0xDevNinja",
+        "@itsuzef",
+        "@vizionik25"
+      ]
+    },
+    {
       "name": "Panniantong /Agent-Reach",
       "description": "Give your AI agent eyes to see the entire internet. Read & search Twitter, Reddit, YouTube, GitHub, Bilibili, XiaoHongShu — one CLI, zero API fees.",
       "language": "Python",
-      "stars": "43,791",
-      "forks": "3,479",
-      "starsToday": "22,848",
+      "stars": "44,618",
+      "forks": "3,545",
+      "starsToday": "23,835",
       "url": "https://github.com/Panniantong/Agent-Reach",
       "builtBy": [
         "@Panniantong",
@@ -719,28 +624,12 @@
       ]
     },
     {
-      "name": "harry0703 /MoneyPrinterTurbo",
-      "description": "利用AI大模型，一键生成高清短视频 Generate short videos with one click using AI LLM.",
-      "language": "Python",
-      "stars": "93,698",
-      "forks": "13,575",
-      "starsToday": "33,794",
-      "url": "https://github.com/harry0703/MoneyPrinterTurbo",
-      "builtBy": [
-        "@harry0703",
-        "@yyhhyyyyyy",
-        "@vuisme",
-        "@claude",
-        "@KevinZhang19870314"
-      ]
-    },
-    {
       "name": "mvanhorn /last30days-skill",
       "description": "AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary",
       "language": "Python",
-      "stars": "47,245",
-      "forks": "3,920",
-      "starsToday": "20,777",
+      "stars": "47,452",
+      "forks": "3,937",
+      "starsToday": "20,899",
       "url": "https://github.com/mvanhorn/last30days-skill",
       "builtBy": [
         "@mvanhorn",
@@ -754,9 +643,9 @@
       "name": "iptv-org /iptv",
       "description": "Collection of publicly available IPTV channels from all over the world",
       "language": "TypeScript",
-      "stars": "128,927",
-      "forks": "7,116",
-      "starsToday": "12,644",
+      "stars": "129,090",
+      "forks": "7,130",
+      "starsToday": "12,819",
       "url": "https://github.com/iptv-org/iptv",
       "builtBy": [
         "@freearhey",
@@ -767,25 +656,28 @@
       ]
     },
     {
-      "name": "phuryn /pm-skills",
-      "description": "PM Skills Marketplace: 100+ agentic skills, commands, and plugins — from discovery to strategy, execution, launch, and growth.",
-      "language": "Unknown",
-      "stars": "21,413",
-      "forks": "2,173",
-      "starsToday": "9,754",
-      "url": "https://github.com/phuryn/pm-skills",
+      "name": "harry0703 /MoneyPrinterTurbo",
+      "description": "利用AI大模型，一键生成高清短视频 Generate short videos with one click using AI LLM.",
+      "language": "Python",
+      "stars": "93,934",
+      "forks": "13,619",
+      "starsToday": "29,272",
+      "url": "https://github.com/harry0703/MoneyPrinterTurbo",
       "builtBy": [
-        "@phuryn",
-        "@claude"
+        "@harry0703",
+        "@yyhhyyyyyy",
+        "@vuisme",
+        "@claude",
+        "@KevinZhang19870314"
       ]
     },
     {
       "name": "lfnovo /open-notebook",
       "description": "An Open Source implementation of Notebook LM with more flexibility and features",
       "language": "TypeScript",
-      "stars": "33,689",
-      "forks": "3,780",
-      "starsToday": "9,933",
+      "stars": "33,801",
+      "forks": "3,789",
+      "starsToday": "10,048",
       "url": "https://github.com/lfnovo/open-notebook",
       "builtBy": [
         "@lfnovo",
@@ -796,28 +688,25 @@
       ]
     },
     {
-      "name": "microsoft /markitdown",
-      "description": "Python tool for converting files and office documents to Markdown.",
-      "language": "Python",
-      "stars": "160,239",
-      "forks": "11,250",
-      "starsToday": "35,017",
-      "url": "https://github.com/microsoft/markitdown",
+      "name": "phuryn /pm-skills",
+      "description": "PM Skills Marketplace: 100+ agentic skills, commands, and plugins — from discovery to strategy, execution, launch, and growth.",
+      "language": "Unknown",
+      "stars": "21,555",
+      "forks": "2,184",
+      "starsToday": "9,864",
+      "url": "https://github.com/phuryn/pm-skills",
       "builtBy": [
-        "@afourney",
-        "@gagb",
-        "@sugatoray",
-        "@PetrAPConsulting",
-        "@l-lumin"
+        "@phuryn",
+        "@claude"
       ]
     },
     {
       "name": "Leonxlnx /taste-skill",
       "description": "Taste-Skill - gives your AI good taste. stops the AI from generating boring, generic slop",
       "language": "JavaScript",
-      "stars": "52,226",
-      "forks": "3,601",
-      "starsToday": "28,908",
+      "stars": "52,629",
+      "forks": "3,632",
+      "starsToday": "27,093",
       "url": "https://github.com/Leonxlnx/taste-skill",
       "builtBy": [
         "@Leonxlnx",
@@ -828,12 +717,28 @@
       ]
     },
     {
+      "name": "microsoft /markitdown",
+      "description": "Python tool for converting files and office documents to Markdown.",
+      "language": "Python",
+      "stars": "160,689",
+      "forks": "11,297",
+      "starsToday": "34,072",
+      "url": "https://github.com/microsoft/markitdown",
+      "builtBy": [
+        "@afourney",
+        "@gagb",
+        "@sugatoray",
+        "@PetrAPConsulting",
+        "@l-lumin"
+      ]
+    },
+    {
       "name": "openai /plugins",
       "description": "OpenAI Plugins",
       "language": "JavaScript",
-      "stars": "3,681",
-      "forks": "427",
-      "starsToday": "2,404",
+      "stars": "3,717",
+      "forks": "433",
+      "starsToday": "2,436",
       "url": "https://github.com/openai/plugins",
       "builtBy": [
         "@cching-openai",
@@ -847,41 +752,25 @@
       "name": "tashfeenahmed /freellmapi",
       "description": "OpenAI-compatible proxy that stacks the free tiers of 16 LLM providers (~1.7B tokens/month) behind one /v1 endpoint — plus any custom OpenAI-compatible endpoint. Smart routing, automatic failover, encrypted keys. Personal experimentation only.",
       "language": "TypeScript",
-      "stars": "13,595",
-      "forks": "2,028",
-      "starsToday": "7,737",
+      "stars": "13,819",
+      "forks": "2,056",
+      "starsToday": "7,784",
       "url": "https://github.com/tashfeenahmed/freellmapi",
       "builtBy": [
         "@tashfeenahmed",
         "@claude",
         "@Tazrif-Raim",
         "@nordbyte",
-        "@v0rtex1223"
-      ]
-    },
-    {
-      "name": "mukul975 /Anthropic-Cybersecurity-Skills",
-      "description": "817 structured cybersecurity skills for AI agents · Mapped to 6 frameworks: MITRE ATT&CK, NIST CSF 2.0, MITRE ATLAS, D3FEND, NIST AI RMF & MITRE F3 (Fight Fraud) · agentskills.io standard · Works with Claude Code, GitHub Copilot, Codex CLI, Cursor, Gemini CLI & 20+ platforms · 29 security domains · Apache 2.0",
-      "language": "Python",
-      "stars": "22,340",
-      "forks": "2,553",
-      "starsToday": "11,529",
-      "url": "https://github.com/mukul975/Anthropic-Cybersecurity-Skills",
-      "builtBy": [
-        "@mukul975",
-        "@juliosuas",
-        "@claude",
-        "@andrewibrah",
-        "@ioxoi"
+        "@jasnoorgill"
       ]
     },
     {
       "name": "can1357 /oh-my-pi",
       "description": "⌥ AI Coding agent for the terminal — hash-anchored edits, optimized tool harness, LSP, Python, browser, subagents, and more",
       "language": "TypeScript",
-      "stars": "14,922",
-      "forks": "1,324",
-      "starsToday": "7,339",
+      "stars": "15,023",
+      "forks": "1,337",
+      "starsToday": "6,959",
       "url": "https://github.com/can1357/oh-my-pi",
       "builtBy": [
         "@can1357",
@@ -892,12 +781,28 @@
       ]
     },
     {
+      "name": "mukul975 /Anthropic-Cybersecurity-Skills",
+      "description": "817 structured cybersecurity skills for AI agents · Mapped to 6 frameworks: MITRE ATT&CK, NIST CSF 2.0, MITRE ATLAS, D3FEND, NIST AI RMF & MITRE F3 (Fight Fraud) · agentskills.io standard · Works with Claude Code, GitHub Copilot, Codex CLI, Cursor, Gemini CLI & 20+ platforms · 29 security domains · Apache 2.0",
+      "language": "Python",
+      "stars": "22,698",
+      "forks": "2,588",
+      "starsToday": "11,207",
+      "url": "https://github.com/mukul975/Anthropic-Cybersecurity-Skills",
+      "builtBy": [
+        "@mukul975",
+        "@juliosuas",
+        "@claude",
+        "@andrewibrah",
+        "@ioxoi"
+      ]
+    },
+    {
       "name": "ogulcancelik /herdr",
       "description": "agent multiplexer that lives in your terminal.",
       "language": "Rust",
-      "stars": "7,807",
-      "forks": "479",
-      "starsToday": "5,076",
+      "stars": "7,964",
+      "forks": "490",
+      "starsToday": "5,186",
       "url": "https://github.com/ogulcancelik/herdr",
       "builtBy": [
         "@ogulcancelik",
@@ -911,9 +816,9 @@
       "name": "asgeirtj /system_prompts_leaks",
       "description": "Extracted system prompts from Anthropic - Claude Fable 5, Opus 4.8, Claude Code, Claude Design. OpenAI - ChatGPT 5.5 Thinking, GPT 5.5 Instant, Codex. Google - Gemini 3.5 Flash, 3.1 Pro, Antigravity. xAI - Grok, Cursor, Copilot, VS Code, Perplexity, and more. Updated regularly.",
       "language": "JavaScript",
-      "stars": "46,715",
-      "forks": "7,649",
-      "starsToday": "5,827",
+      "stars": "46,894",
+      "forks": "7,672",
+      "starsToday": "6,089",
       "url": "https://github.com/asgeirtj/system_prompts_leaks",
       "builtBy": [
         "@asgeirtj",
@@ -924,28 +829,28 @@
       ]
     },
     {
-      "name": "Egonex-AI /Understand-Anything",
-      "description": "Graphs that teach > graphs that impress. Turn any code into an interactive knowledge graph you can explore, search, and ask questions about. Works with Claude Code, Codex, Cursor, Copilot, Gemini CLI, and more.",
+      "name": "stablyai /orca",
+      "description": "Orca is the ADE for working with a fleet of parallel agents. Run any coding agent with your own subscription. Available on desktop and mobile.",
       "language": "TypeScript",
-      "stars": "68,768",
-      "forks": "5,680",
-      "starsToday": "30,783",
-      "url": "https://github.com/Egonex-AI/Understand-Anything",
+      "stars": "8,670",
+      "forks": "602",
+      "starsToday": "4,966",
+      "url": "https://github.com/stablyai/orca",
       "builtBy": [
-        "@Lum1104",
-        "@claude",
-        "@thejesh23",
-        "@ZebangCheng",
-        "@berkcangumusisik"
+        "@nwparker",
+        "@AmethystLiang",
+        "@orca-ide",
+        "@Jinwoo-H",
+        "@brennanb2025"
       ]
     },
     {
       "name": "supermemoryai /supermemory",
       "description": "Memory and context engine + app that is extremely fast, scalable, and can be run fully locally. The Memory API for the AI era.",
       "language": "TypeScript",
-      "stars": "27,793",
-      "forks": "2,401",
-      "starsToday": "5,121",
+      "stars": "27,881",
+      "forks": "2,405",
+      "starsToday": "5,193",
       "url": "https://github.com/supermemoryai/supermemory",
       "builtBy": [
         "@Dhravya",
@@ -956,38 +861,38 @@
       ]
     },
     {
-      "name": "NVlabs /Eagle",
-      "description": "Eagle: Frontier Vision-Language Models with Data-Centric Strategies",
-      "language": "Python",
-      "stars": "2,827",
-      "forks": "258",
-      "starsToday": "1,816",
-      "url": "https://github.com/NVlabs/Eagle",
+      "name": "simplex-chat /simplex-chat",
+      "description": "SimpleX - the first messaging network operating without user identifiers of any kind - 100% private by design! iOS, Android and desktop apps 📱!",
+      "language": "Haskell",
+      "stars": "15,187",
+      "forks": "870",
+      "starsToday": "3,395",
+      "url": "https://github.com/simplex-chat/simplex-chat",
       "builtBy": [
-        "@Chrisding",
-        "@FuxiaoLiu",
-        "@zhiqi-li",
-        "@flyinglynx",
-        "@cg1177"
+        "@epoberezkin",
+        "@spaced4ndy",
+        "@avently",
+        "@shumvgolove",
+        "@mlanp"
       ]
     },
     {
-      "name": "colbymchenry /codegraph",
-      "description": "Pre-indexed code knowledge graph, auto syncs on code changes, for Claude Code, Codex, Gemini, Cursor, OpenCode, AntiGravity, Kiro, and Hermes Agent — fewer tokens, fewer tool calls, 100% local",
-      "language": "TypeScript",
-      "stars": "55,469",
-      "forks": "3,423",
-      "starsToday": "26,455",
-      "url": "https://github.com/colbymchenry/codegraph",
+      "name": "Open-LLM-VTuber /Open-LLM-VTuber",
+      "description": "Talk to any LLM with hands-free voice interaction, voice interruption, and Live2D taking face running locally across platforms",
+      "language": "Python",
+      "stars": "12,041",
+      "forks": "1,406",
+      "starsToday": "4,172",
+      "url": "https://github.com/Open-LLM-VTuber/Open-LLM-VTuber",
       "builtBy": [
-        "@colbymchenry",
-        "@claude",
-        "@omonien",
-        "@github-actions",
-        "@andreinknv"
+        "@t41372",
+        "@ylxmf2005",
+        "@lozion203",
+        "@Y0oMu",
+        "@HITHZQ"
       ]
     }
   ],
-  "lastUpdated": "2026-06-28T08:31:25.679159",
-  "totalRepositories": 62
+  "lastUpdated": "2026-06-29T02:45:38.962946",
+  "totalRepositories": 56
 }
