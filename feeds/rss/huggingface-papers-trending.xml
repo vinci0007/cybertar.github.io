@@ -6,63 +6,63 @@
 <description>Trending papers on HuggingFace, curated by Cybertar.</description>
 <language>en</language>
 <generator>Cybertar RSS Generator</generator>
-<lastBuildDate>Thu, 23 Jul 2026 02:04:13 +0000</lastBuildDate>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<lastBuildDate>Thu, 23 Jul 2026 07:55:32 +0000</lastBuildDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <atom:link href="https://cybertar.youngood.tech/feeds/rss/huggingface-papers-trending.xml" rel="self" type="application/rss+xml" />
 <item>
 <title>Unlimited OCR Works</title>
 <link>https://huggingface.co/papers/2606.23050</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2606.23050</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri  Unlimited OCR introduces Reference Sliding Window Attention to eliminate growing memory consumption during long-sequence OCR tasks, enabling efficient transcription of multiple pages in a single forward pass. BAIDU · P</p>]]></description>
 </item>
 <item>
 <title>Geometric Context Transformer for Streaming 3D Reconstruction</title>
 <link>https://huggingface.co/papers/2604.14141</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2604.14141</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by nielsr  LingBot-Map is a feed-forward 3D foundation model that reconstructs scenes from video streams using a geometric context transformer architecture with specialized attention mechanisms for coordinate grounding, dense geom</p>]]></description>
 </item>
 <item>
 <title>SkillOpt: Executive Strategy for Self-Evolving Agent Skills</title>
 <link>https://huggingface.co/papers/2605.23904</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2605.23904</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri  SkillOpt introduces a systematic text-space optimizer for agent skills that trains skills as external agent state with stable updates and zero deployment inference overhead, achieving superior performance across multip</p>]]></description>
 </item>
 <item>
 <title>Moonshine: Speech Recognition for Live Transcription and Voice Commands</title>
 <link>https://huggingface.co/papers/2410.15608</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2410.15608</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Moonshine, an encoder-decoder transformer architecture for speech recognition, uses Rotary Position Embedding, reducing compute requirements without decreasing accuracy. 6 authors · Published on Oct 21, 2024 Upvote 13 GitHub 10.3k arXiv Pag</p>]]></description>
 </item>
 <item>
 <title>Flavors of Moonshine: Tiny Specialized ASR Models for Edge Devices</title>
 <link>https://huggingface.co/papers/2509.02523</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2509.02523</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by evanking  Monolingual ASR models trained on a balanced mix of high-quality, pseudo-labeled, and synthetic data outperform multilingual models for small model sizes, achieving superior error rates and enabling on-device ASR for </p>]]></description>
 </item>
 <item>
 <title>Mage-Flow: An Efficient Native-Resolution Foundation Model for Image Generation and Editing</title>
 <link>https://huggingface.co/papers/2607.19064</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2607.19064</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Xinjie-Q  Large-scale visual generators are increasingly capable but costly to train, fine-tune, and deploy. We introduce Mage-Flow, a compact 4B-scale generative stack for efficient text-to-image generation and instruction-bas</p>]]></description>
 </item>
 <item>
 <title>TradingAgents: Multi-Agents LLM Financial Trading Framework</title>
 <link>https://huggingface.co/papers/2412.20138</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2412.20138</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>A multi-agent framework using large language models for stock trading simulates real-world trading firms, improving performance metrics like cumulative returns and Sharpe ratio. 4 authors · Published on Dec 28, 2024 Upvote 115 GitHub 94.1k </p>]]></description>
 </item>
 <item>
 <title>Efficient Guided Generation for Large Language Models</title>
 <link>https://huggingface.co/papers/2307.09702</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2307.09702</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>An efficient method guides language model text generation using regular expressions and context-free grammars with minimal overhead. 2 authors · Published on Jul 19, 2023 Upvote 8 GitHub 15.1k arXiv Page  An efficient method guides language</p>]]></description>
 </item>
 <item>
@@ -70,143 +70,136 @@
   Agents</title>
 <link>https://huggingface.co/papers/2407.16741</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2407.16741</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by akhaliq  OpenDevin is a platform for developing AI agents that interact with the world by writing code, using command lines, and browsing the web, with support for multiple agents and evaluation benchmarks. 24 authors · Publish</p>]]></description>
+</item>
+<item>
+<title>Kronos: A Foundation Model for the Language of Financial Markets</title>
+<link>https://huggingface.co/papers/2508.02739</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2508.02739</guid>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Kronos, a specialized pre-training framework for financial K-line data, outperforms existing models in forecasting and synthetic data generation through a unique tokenizer and autoregressive pre-training on a large dataset. 7 authors · Publ</p>]]></description>
 </item>
 <item>
 <title>MinerU2.5: A Decoupled Vision-Language Model for Efficient
   High-Resolution Document Parsing</title>
 <link>https://huggingface.co/papers/2509.22186</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2509.22186</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri  MinerU2.5, a 1.2B-parameter document parsing vision-language model, achieves state-of-the-art recognition accuracy with computational efficiency through a coarse-to-fine parsing strategy. 61 authors · Published on Sep </p>]]></description>
-</item>
-<item>
-<title>Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory</title>
-<link>https://huggingface.co/papers/2504.19413</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2504.19413</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by akhaliq  Mem0, a memory-centric architecture with graph-based memory, enhances long-term conversational coherence in LLMs by efficiently extracting, consolidating, and retrieving information, outperforming existing memory syste</p>]]></description>
 </item>
 <item>
 <title>Xiaomi-Robotics-1: Scaling Vision-Language-Action Models with over 100K Hours of Real-World Trajectories</title>
 <link>https://huggingface.co/papers/2607.15330</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2607.15330</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by YeWen27  We present Xiaomi-Robotics-1, a foundational vision-language-action (VLA) model capable of (1) following diverse language instructions to perform a wide range of mobile manipulation tasks in unseen environments out-of-</p>]]></description>
 </item>
 <item>
 <title>HOMIE: Human-object Centric Video Personalization via Multimodal Intelligent Enchancement</title>
 <link>https://huggingface.co/papers/2607.18217</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2607.18217</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by CNcreator0331  Human-object centric video personalization (HOCVP) is a core task within subject-driven video generation. However, existing methods suffer from two key limitations. First, most approaches focusing on inter-subjec</p>]]></description>
 </item>
 <item>
-<title>Kronos: A Foundation Model for the Language of Financial Markets</title>
-<link>https://huggingface.co/papers/2508.02739</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2508.02739</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Kronos, a specialized pre-training framework for financial K-line data, outperforms existing models in forecasting and synthetic data generation through a unique tokenizer and autoregressive pre-training on a large dataset. 7 authors · Publ</p>]]></description>
+<title>Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory</title>
+<link>https://huggingface.co/papers/2504.19413</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2504.19413</guid>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by akhaliq  Mem0, a memory-centric architecture with graph-based memory, enhances long-term conversational coherence in LLMs by efficiently extracting, consolidating, and retrieving information, outperforming existing memory syste</p>]]></description>
 </item>
 <item>
 <title>Efficient Memory Management for Large Language Model Serving with
   PagedAttention</title>
 <link>https://huggingface.co/papers/2309.06180</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2309.06180</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by akhaliq  PagedAttention algorithm and vLLM system enhance the throughput of large language models by efficiently managing memory and reducing waste in the key-value cache. 9 authors · Published on Sep 12, 2023 Upvote 63 GitHub </p>]]></description>
 </item>
 <item>
 <title>ResearchStudio-Idea: An Evidence-Grounded Research-Ideation Skill Suite from ML Conference Outcomes</title>
 <link>https://huggingface.co/papers/2607.04439</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2607.04439</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by fistyyyy  ResearchStudio-Idea provides a skill suite for effective research ideation that combines literature search, novelty checking, and pattern-guided generation to produce traceable research proposals. Microsoft · Publishe</p>]]></description>
-</item>
-<item>
-<title>AlayaWorld: Interactive Long-Horizon World Modeling -- Full Technical Report</title>
-<link>https://huggingface.co/papers/2607.18367</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2607.18367</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by kpzhang996  Unlike conventional video game development, which relies on labor-intensive pipelines for asset production, animation, physics, and programming, video world models generate interactive environments from user inputs </p>]]></description>
 </item>
 <item>
 <title>Kairos: A Native World Model Stack for Physical AI</title>
 <link>https://huggingface.co/papers/2606.16533</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2606.16533</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by shanyou92  Kairos is a world model framework that learns from diverse experiences, maintains persistent states through hybrid temporal attention mechanisms, and operates efficiently across different hardware platforms for physi</p>]]></description>
+</item>
+<item>
+<title>AlayaWorld: Interactive Long-Horizon World Modeling -- Full Technical Report</title>
+<link>https://huggingface.co/papers/2607.18367</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2607.18367</guid>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by kpzhang996  Unlike conventional video game development, which relies on labor-intensive pipelines for asset production, animation, physics, and programming, video world models generate interactive environments from user inputs </p>]]></description>
 </item>
 <item>
 <title>PaddleOCR-VL-1.6: Expanding the Frontier of Document Parsing with Under-Optimized Region Refinement and Progressive Post-Training</title>
 <link>https://huggingface.co/papers/2606.03264</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2606.03264</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by ChengCui  PaddleOCR-VL-1.6 enhances document parsing performance through targeted data optimization and progressive post-training techniques, achieving state-of-the-art results on OmniDocBench v1.6. PaddlePaddle · Published on </p>]]></description>
 </item>
 <item>
 <title>AutoDev: Automated AI-Driven Development</title>
 <link>https://huggingface.co/papers/2403.08299</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2403.08299</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>AutoDev is an AI-driven software development framework that automates complex engineering tasks within a secure Docker environment, achieving high performance in code and test generation. 5 authors · Published on Mar 13, 2024 Upvote 18 GitH</p>]]></description>
-</item>
-<item>
-<title>RESOURCE2SKILL: Distilling Executable Agent Skills from Human-Created Multimodal Resources</title>
-<link>https://huggingface.co/papers/2606.29538</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2606.29538</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Yif29  Skills are a useful abstraction for software agents, turning human and agent experience into reusable procedural knowledge. Yet existing skill libraries are mostly hand-written, text-centric, or derived from agent traces</p>]]></description>
 </item>
 <item>
 <title>SenseNova-U1: Unifying Multimodal Understanding and Generation with NEO-unify Architecture</title>
 <link>https://huggingface.co/papers/2605.12500</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2605.12500</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Paranioar  Unified vision-language models treat understanding and generation as integrated processes rather than separate tasks, demonstrating strong performance across multiple multimodal capabilities including image synthesis</p>]]></description>
+</item>
+<item>
+<title>RESOURCE2SKILL: Distilling Executable Agent Skills from Human-Created Multimodal Resources</title>
+<link>https://huggingface.co/papers/2606.29538</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2606.29538</guid>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Yif29  Skills are a useful abstraction for software agents, turning human and agent experience into reusable procedural knowledge. Yet existing skill libraries are mostly hand-written, text-centric, or derived from agent traces</p>]]></description>
 </item>
 <item>
 <title>KnowAct-GUIClaw: Know Deeply, Act Perfectly, Personal GUI Assistant with Self-Evolving Memory and Skill</title>
 <link>https://huggingface.co/papers/2607.12625</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2607.12625</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by YunxinLi  OpenClaw has emerged as a leading agent framework for complex task automation, yet it faces insufficient cross-platform GUI interaction support and a well-built self-evolution mechanism. These flaws limit its adaptati</p>]]></description>
+</item>
+<item>
+<title>VibeVoice Technical Report</title>
+<link>https://huggingface.co/papers/2508.19205</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2508.19205</guid>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by unilm  VibeVoice synthesizes long-form multi-speaker speech using next-token diffusion and a highly efficient continuous speech tokenizer, achieving superior performance and fidelity. Microsoft Research · Published on Aug 26, 2</p>]]></description>
 </item>
 <item>
 <title>SmolDocling: An ultra-compact vision-language model for end-to-end
   multi-modal document conversion</title>
 <link>https://huggingface.co/papers/2503.11576</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2503.11576</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by andito  SmolDocling is a compact vision-language model that performs end-to-end document conversion with robust performance across various document types using 256M parameters and a new markup format. IBM Granite · Published on</p>]]></description>
-</item>
-<item>
-<title>VibeVoice Technical Report</title>
-<link>https://huggingface.co/papers/2508.19205</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2508.19205</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by unilm  VibeVoice synthesizes long-form multi-speaker speech using next-token diffusion and a highly efficient continuous speech tokenizer, achieving superior performance and fidelity. Microsoft Research · Published on Aug 26, 2</p>]]></description>
-</item>
-<item>
-<title>Generative World Renderer at the Speed of Play</title>
-<link>https://huggingface.co/papers/2607.18703</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2607.18703</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by wangzx1994  Generative world renderer AlayaRenderer receives structured world states exported from physics engines and synthesizes RGB frames. Unlike models that generate frames from text/control-hints prompts, AlayaRenderer pr</p>]]></description>
 </item>
 <item>
 <title>EverMemOS: A Self-Organizing Memory Operating System for Structured Long-Horizon Reasoning</title>
 <link>https://huggingface.co/papers/2601.02163</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2601.02163</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>EverMemOS presents a self-organizing memory system for large language models that processes dialogue streams into structured memory cells and scenes to enhance long-term interaction capabilities. 11 authors · Published on Jan 5, 2026 Upvote</p>]]></description>
 </item>
 <item>
 <title>Infinite Worlds with Versatile Interactions</title>
 <link>https://huggingface.co/papers/2607.07534</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2607.07534</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri  An advanced world modeling system with extended interaction capabilities, real-time processing, diverse interactive elements, and multi-agent behavior control for collaborative virtual environments. Robbyant · Publishe</p>]]></description>
 </item>
 <item>
@@ -214,157 +207,164 @@
   Applications</title>
 <link>https://huggingface.co/papers/2508.16279</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2508.16279</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri  AgentScope enhances agentic applications by providing flexible tool-based interactions, unified interfaces, and advanced infrastructure based on the ReAct paradigm, supporting efficient and safe development and deploym</p>]]></description>
+</item>
+<item>
+<title>Zep: A Temporal Knowledge Graph Architecture for Agent Memory</title>
+<link>https://huggingface.co/papers/2501.13956</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2501.13956</guid>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Zep, a memory layer service, outperforms MemGPT in the DMR benchmark and LongMemEval by excelling in dynamic knowledge integration and temporal reasoning, critical for enterprise use cases. 5 authors · Published on Jan 20, 2025 Upvote 15 Gi</p>]]></description>
+</item>
+<item>
+<title>Generative World Renderer at the Speed of Play</title>
+<link>https://huggingface.co/papers/2607.18703</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2607.18703</guid>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by wangzx1994  Generative world renderer AlayaRenderer receives structured world states exported from physics engines and synthesizes RGB frames. Unlike models that generate frames from text/control-hints prompts, AlayaRenderer pr</p>]]></description>
 </item>
 <item>
 <title>LightRAG: Simple and Fast Retrieval-Augmented Generation</title>
 <link>https://huggingface.co/papers/2410.05779</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2410.05779</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>LightRAG improves Retrieval-Augmented Generation by integrating graph structures for enhanced contextual awareness and efficient information retrieval, achieving better accuracy and response times. 5 authors · Published on Oct 8, 2024 Upvot</p>]]></description>
 </item>
 <item>
 <title>Very Large-Scale Multi-Agent Simulation in AgentScope</title>
 <link>https://huggingface.co/papers/2407.17789</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2407.17789</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by akhaliq  Enhancements to the AgentScope platform improve scalability, efficiency, and ease of use for large-scale multi-agent simulations through distributed mechanisms, flexible environments, and user-friendly tools. 8 authors</p>]]></description>
-</item>
-<item>
-<title>DataFlow: An LLM-Driven Framework for Unified Data Preparation and Workflow Automation in the Era of Data-Centric AI</title>
-<link>https://huggingface.co/papers/2512.16676</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2512.16676</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by zbhpku  DataFlow is an LLM-driven data preparation framework that enhances data quality and reproducibility for various tasks, improving LLM performance with automatically generated pipelines. Peking University · Published on D</p>]]></description>
 </item>
 <item>
 <title>Continuous Audio Language Models</title>
 <link>https://huggingface.co/papers/2509.06926</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2509.06926</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Audio Language Models (ALM) have emerged as the dominant paradigm for speech
 and music generation by representing audio as sequences of discrete tokens.
 Yet, unlike text tokens, which are invertible, audio tokens are extracted from
 lossy co</p>]]></description>
 </item>
 <item>
+<title>SearchOS-V1: Towards Robust Open-Domain Information-Seeking Agent Collaboration</title>
+<link>https://huggingface.co/papers/2607.15257</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2607.15257</guid>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri  Recent advances in Tool-Integrated Large Language Models have made web search a core capability of information-seeking agents. However, as interaction histories grow, agents increasingly struggle to track task progress</p>]]></description>
+</item>
+<item>
 <title>ARIS: Autonomous Research via Adversarial Multi-Agent Collaboration</title>
 <link>https://huggingface.co/papers/2605.03042</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2605.03042</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by RuofengYang  ARIS is an open-source research harness that uses cross-model adversarial collaboration to ensure reliable long-term research outcomes through coordinated execution, orchestration, and assurance layers. Shanghai Ji</p>]]></description>
 </item>
 <item>
 <title>Orca: The World is in Your Mind</title>
 <link>https://huggingface.co/papers/2606.30534</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2606.30534</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by yh-wang  Orca establishes a unified world latent space through next-state-prediction modeling using multimodal data and demonstrates superior performance in downstream tasks compared to specialized baselines. 57 authors · Publi</p>]]></description>
 </item>
 <item>
-<title>Zep: A Temporal Knowledge Graph Architecture for Agent Memory</title>
-<link>https://huggingface.co/papers/2501.13956</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2501.13956</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Zep, a memory layer service, outperforms MemGPT in the DMR benchmark and LongMemEval by excelling in dynamic knowledge integration and temporal reasoning, critical for enterprise use cases. 5 authors · Published on Jan 20, 2025 Upvote 15 Gi</p>]]></description>
+<title>DataFlow: An LLM-Driven Framework for Unified Data Preparation and Workflow Automation in the Era of Data-Centric AI</title>
+<link>https://huggingface.co/papers/2512.16676</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2512.16676</guid>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by zbhpku  DataFlow is an LLM-driven data preparation framework that enhances data quality and reproducibility for various tasks, improving LLM performance with automatically generated pipelines. Peking University · Published on D</p>]]></description>
 </item>
 <item>
 <title>Long-Horizon-Terminal-Bench: Testing the Limits of Agents on Long-Horizon Terminal Tasks with Dense Reward-Based Grading</title>
 <link>https://huggingface.co/papers/2607.08964</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2607.08964</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by zli12321  AI agents have become capable of autonomously completing short, well-specified tasks. However, existing terminal benchmarks largely focus on simple problems that finish within minutes and are evaluated only by their f</p>]]></description>
 </item>
 <item>
 <title>Masked Visual Actions for Unified World Modeling</title>
 <link>https://huggingface.co/papers/2607.19343</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2607.19343</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri  Video models absorb rich priors over how the visual world moves, interacts, and responds to contact, making them promising substrates for robotic world modeling. The central challenge is how to communicate action to su</p>]]></description>
-</item>
-<item>
-<title>VideoChat3: Fully Open Video MLLM for Efficient and Generalist Video Understanding</title>
-<link>https://huggingface.co/papers/2607.14935</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2607.14935</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by lmwang  Recent advances in video understanding have spanned motion, long video, and streaming interaction, driving this field toward real-world applications. Despite this progress, current open-source models remain limited in s</p>]]></description>
-</item>
-<item>
-<title>OmniFlatten: An End-to-end GPT Model for Seamless Voice Conversation</title>
-<link>https://huggingface.co/papers/2410.17799</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2410.17799</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>A novel GPT-based model, OmniFlatten, enables real-time natural full-duplex spoken dialogue through a multi-stage post-training technique that integrates speech and text without altering the original model's architecture. 9 authors · Publis</p>]]></description>
-</item>
-<item>
-<title>LMCache: An Efficient KV Cache Layer for Enterprise-Scale LLM Inference</title>
-<link>https://huggingface.co/papers/2510.09665</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2510.09665</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>LMCACHE enables efficient KV cache management for large language models by storing caches outside GPU memory, supporting cache reuse across queries and inference engines while achieving significant throughput improvements. 11 authors · Publ</p>]]></description>
 </item>
 <item>
 <title>Ultralytics YOLO26: Unified Real-Time End-to-End Vision Models</title>
 <link>https://huggingface.co/papers/2606.03748</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2606.03748</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by nielsr  YOLO26 addresses real-time vision challenges through a unified model family with NMS-free inference, improved training strategies, and multi-task capabilities spanning detection, segmentation, and pose estimation. Ultra</p>]]></description>
 </item>
 <item>
-<title>SearchOS-V1: Towards Robust Open-Domain Information-Seeking Agent Collaboration</title>
-<link>https://huggingface.co/papers/2607.15257</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2607.15257</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri  Recent advances in Tool-Integrated Large Language Models have made web search a core capability of information-seeking agents. However, as interaction histories grow, agents increasingly struggle to track task progress</p>]]></description>
+<title>OmniFlatten: An End-to-end GPT Model for Seamless Voice Conversation</title>
+<link>https://huggingface.co/papers/2410.17799</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2410.17799</guid>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>A novel GPT-based model, OmniFlatten, enables real-time natural full-duplex spoken dialogue through a multi-stage post-training technique that integrates speech and text without altering the original model's architecture. 9 authors · Publis</p>]]></description>
 </item>
 <item>
 <title>MuScriptor: An Open Model for Multi-Instrument Music Transcription</title>
 <link>https://huggingface.co/papers/2607.08168</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2607.08168</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by ameroyer  Existing methods for automatic music transcription are often limited to single-instrument recordings or fail on complex, real music mixes. Although previous work utilizes synthetic training data, the resulting models </p>]]></description>
+</item>
+<item>
+<title>LMCache: An Efficient KV Cache Layer for Enterprise-Scale LLM Inference</title>
+<link>https://huggingface.co/papers/2510.09665</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2510.09665</guid>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>LMCACHE enables efficient KV cache management for large language models by storing caches outside GPU memory, supporting cache reuse across queries and inference engines while achieving significant throughput improvements. 11 authors · Publ</p>]]></description>
+</item>
+<item>
+<title>VideoChat3: Fully Open Video MLLM for Efficient and Generalist Video Understanding</title>
+<link>https://huggingface.co/papers/2607.14935</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2607.14935</guid>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by lmwang  Recent advances in video understanding have spanned motion, long video, and streaming interaction, driving this field toward real-world applications. Despite this progress, current open-source models remain limited in s</p>]]></description>
+</item>
+<item>
+<title>ABot-World-0: Infinite Interactive World Rollout on a Single Desktop GPU</title>
+<link>https://huggingface.co/papers/2607.19191</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2607.19191</guid>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri  We present ABot-World-0, an action-conditioned video world model for real-time, long-horizon closed-loop interaction, supported by a multi-source data infrastructure spanning AAA games, simulation engines, and internet</p>]]></description>
 </item>
 <item>
 <title>RAGU: A Multi-Step GraphRAG Engine with a Compact Domain-Adapted LLM</title>
 <link>https://huggingface.co/papers/2607.11683</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2607.11683</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by bond005  Graph retrieval-augmented generation (GraphRAG) enhances large language models with structured knowledge, yet existing systems construct knowledge graphs in a single extraction pass, producing noisy entities and brittl</p>]]></description>
 </item>
 <item>
-<title>SEED: Self-Evolving On-Policy Distillation for Agentic Reinforcement Learning</title>
-<link>https://huggingface.co/papers/2607.14777</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2607.14777</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Jinyang23  Large language models are increasingly trained as interactive agents for long-horizon tasks involving multi-turn interaction, tool use, and environment feedback. Outcome-based reinforcement learning (RL) provides a p</p>]]></description>
+<title>A decoder-only foundation model for time-series forecasting</title>
+<link>https://huggingface.co/papers/2310.10688</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2310.10688</guid>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>A large language model adapted for time-series forecasting achieves near-optimal zero-shot performance on diverse datasets across different time scales and granularities. 4 authors · Published on Oct 14, 2023 Upvote 37 GitHub 27.1k arXiv Pa</p>]]></description>
 </item>
 <item>
 <title>HuggingFace's Transformers: State-of-the-art Natural Language Processing</title>
 <link>https://huggingface.co/papers/1910.03771</link>
 <guid isPermaLink="true">https://huggingface.co/papers/1910.03771</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Transformers library provides state-of-the-art Transformer architectures and pretrained models for natural language processing tasks with a unified API and emphasis on extensibility and robust deployment. Hugging Face · Published on Oct 9, </p>]]></description>
 </item>
 <item>
 <title>Scaling Mixture-of-Experts Video Pretraining for Embodied Intelligence</title>
 <link>https://huggingface.co/papers/2607.07675</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2607.07675</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri  LingBot-Video presents a DiT-based video pretraining framework with Mixture-of-Experts architecture, specialized data augmentation, and multi-dimensional reward system for embodied intelligence applications. Robbyant ·</p>]]></description>
-</item>
-<item>
-<title>A decoder-only foundation model for time-series forecasting</title>
-<link>https://huggingface.co/papers/2310.10688</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2310.10688</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>A large language model adapted for time-series forecasting achieves near-optimal zero-shot performance on diverse datasets across different time scales and granularities. 4 authors · Published on Oct 14, 2023 Upvote 37 GitHub 27.1k arXiv Pa</p>]]></description>
 </item>
 <item>
 <title>GigaWorld-1: A Roadmap to Build World Models for Robot Policy Evaluation</title>
 <link>https://huggingface.co/papers/2607.02642</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2607.02642</guid>
-<pubDate>Thu, 23 Jul 2026 02:04:04 +0000</pubDate>
+<pubDate>Thu, 23 Jul 2026 07:55:23 +0000</pubDate>
 <description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Jeff-Wang  World models for robotic policy evaluation are systematically studied through a new benchmark, revealing that long-horizon rollout consistency and robot-specific controllability are more important than short-term vis</p>]]></description>
 </item>
 </channel>
