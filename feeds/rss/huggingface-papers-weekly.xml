@@ -6,120 +6,253 @@
 <description>Weekly picks from HuggingFace Papers, curated by Cybertar.</description>
 <language>en</language>
 <generator>Cybertar RSS Generator</generator>
-<lastBuildDate>Mon, 10 Aug 2026 06:49:36 +0000</lastBuildDate>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
+<lastBuildDate>Tue, 11 Aug 2026 01:07:54 +0000</lastBuildDate>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
 <atom:link href="https://cybertar.youngood.tech/feeds/rss/huggingface-papers-weekly.xml" rel="self" type="application/rss+xml" />
+<item>
+<title>SFT Conflicts, RL Coexists: A Theoretical and Empirical Analysis of Multi-Task Learning for LLMs</title>
+<link>https://huggingface.co/papers/2608.03573</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.03573</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by JokerJan 32  Chinese Academic of Science Institute of Automation 19 1</p>]]></description>
+</item>
+<item>
+<title>Beyond Simply Environment Scaling: Designing Effective Environment Distributions for Multimodal Agent Learning</title>
+<link>https://huggingface.co/papers/2608.03571</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.03571</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by JokerJan 28  Chinese Academic of Science Institute of Automation 11 1</p>]]></description>
+</item>
 <item>
 <title>SimWAM: A Simple World Action Model for End-to-End Autonomous Driving</title>
 <link>https://huggingface.co/papers/2608.07468</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2608.07468</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by dkliang 18  H-EmbodVis 15 1</p>]]></description>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by dkliang 22  H-EmbodVis 28 1</p>]]></description>
 </item>
 <item>
 <title>YOLO-PEFT: Parameter-Efficient Fine-Tuning on YOLO Family</title>
 <link>https://huggingface.co/papers/2608.07051</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2608.07051</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by gatilin 10  Tencent 1</p>]]></description>
-</item>
-<item>
-<title>Reinforcement Learning with Evolving Rubrics as Rewards for Audio Reasoning</title>
-<link>https://huggingface.co/papers/2608.02831</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2608.02831</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by ParadiseYu 8  University of Maryland College Park 2 1</p>]]></description>
-</item>
-<item>
-<title>Uncertainty-Aware World Model for Aerial Image-Goal Navigation</title>
-<link>https://huggingface.co/papers/2608.05597</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2608.05597</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by DurYi 5  Tsinghua University 2 2</p>]]></description>
-</item>
-<item>
-<title>Addressable Memory for Video World Models</title>
-<link>https://huggingface.co/papers/2608.07408</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2608.07408</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 4  NVIDIA</p>]]></description>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by gatilin 15  Tencent 1</p>]]></description>
 </item>
 <item>
 <title>StreamArena: Toward Continuous, Interactive, and Long-Horizon Agentic Streaming Video Understanding</title>
 <link>https://huggingface.co/papers/2608.05703</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2608.05703</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by hkuzxc 4  Xiaohongshu 0 1</p>]]></description>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by hkuzxc 14  Xiaohongshu 6 1</p>]]></description>
 </item>
 <item>
-<title>Skaling: Chinchilla's Exponents Meet Kaplan's Coupling</title>
-<link>https://huggingface.co/papers/2608.07222</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2608.07222</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 3  AI at Meta</p>]]></description>
+<title>MatrAIx: Simulating the World with 8.3 Billion Persona Agents</title>
+<link>https://huggingface.co/papers/2608.04205</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.04205</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by MatrAIx 14  MatrAIx 498 1</p>]]></description>
 </item>
 <item>
-<title>Characterizing the Quality Profile of AI-Generated C++ in Production</title>
-<link>https://huggingface.co/papers/2608.06640</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2608.06640</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 3  Google</p>]]></description>
+<title>DCAS: Decoupling CLI Agent Scaffolding to Internalize Planning across Scaffolds</title>
+<link>https://huggingface.co/papers/2608.06113</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.06113</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by nemocbb 13  Centre for Software Excellence 1</p>]]></description>
 </item>
 <item>
-<title>When Privileged Guidance Misaligns: State-Matched Routing and Contextualized Self-Distillation for Multi-Turn Agents</title>
-<link>https://huggingface.co/papers/2608.05219</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2608.05219</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Junzhuo 3  · 4 authors 1 1</p>]]></description>
+<title>When Activation Oracles Learn Not to Read: Concept-Specific Blind Spots in Fine-Tuned Oracles</title>
+<link>https://huggingface.co/papers/2607.23379</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2607.23379</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Atmyre 10  Queen Mary University of London 1</p>]]></description>
+</item>
+<item>
+<title>Efficient Knowledge Distillation for LLMs: Offline Top-K Logits and a Fused Chunked KL Loss</title>
+<link>https://huggingface.co/papers/2608.03796</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.03796</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Iker 9  Multiverse Computing 3 2</p>]]></description>
+</item>
+<item>
+<title>Reinforcement Learning with Evolving Rubrics as Rewards for Audio Reasoning</title>
+<link>https://huggingface.co/papers/2608.02831</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.02831</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by ParadiseYu 9  University of Maryland College Park 3 1</p>]]></description>
+</item>
+<item>
+<title>Relevant but Incomplete: Referential Dangling as a Paradigm-Level Failure Mode in Hard Prompt Compression</title>
+<link>https://huggingface.co/papers/2608.04569</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.04569</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by JusperLee 8  Tsinghua University 3 2</p>]]></description>
 </item>
 <item>
 <title>Douyin Multimodal Embedding Model Technical Report</title>
 <link>https://huggingface.co/papers/2608.02148</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2608.02148</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Haon-Chen 3  ByteDance 1</p>]]></description>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Haon-Chen 8  ByteDance 1</p>]]></description>
 </item>
 <item>
-<title>The Optimizer Is the Agent: Reasoning-Driven Search across Prompts, Programs, and ML Workflows</title>
-<link>https://huggingface.co/papers/2608.06714</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2608.06714</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 2  · 8 authors</p>]]></description>
+<title>Uncertainty-Aware World Model for Aerial Image-Goal Navigation</title>
+<link>https://huggingface.co/papers/2608.05597</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.05597</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by DurYi 7  Tsinghua University 4 2</p>]]></description>
+</item>
+<item>
+<title>Small Foundation Models of Human Cognition and Behaviour</title>
+<link>https://huggingface.co/papers/2608.05224</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.05224</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by nick-sh-oh 7  socius labs 4 3</p>]]></description>
 </item>
 <item>
 <title>Modular TTT: Rethinking Test-Time Training as Composable Modules</title>
 <link>https://huggingface.co/papers/2608.07110</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2608.07110</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 2  ByteDance Seed</p>]]></description>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 6  ByteDance Seed</p>]]></description>
 </item>
 <item>
-<title>Do AI Personas Grow? Analyzing and Benchmarking Personality Evolution in LLM Agents After Life Events</title>
-<link>https://huggingface.co/papers/2608.06485</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2608.06485</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by sci-m-wang 2  KinaMind 0 1</p>]]></description>
-</item>
-<item>
-<title>PrivacyPeek: Auditing What LLM-Based Agents Acquire, Not Just What They Say</title>
-<link>https://huggingface.co/papers/2606.00152</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2606.00152</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by xuan269 2  · 8 authors 3 1</p>]]></description>
+<title>Addressable Memory for Video World Models</title>
+<link>https://huggingface.co/papers/2608.07408</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.07408</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 6  NVIDIA</p>]]></description>
 </item>
 <item>
 <title>Round-Trip Consistency: Bidirectional Diffusion Models Can Predict Their Own Rollout Errors</title>
 <link>https://huggingface.co/papers/2608.00675</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2608.00675</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by AScheinker 2  · 1 authors 8 2</p>]]></description>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by AScheinker 6  · 1 authors 9 2</p>]]></description>
+</item>
+<item>
+<title>Skaling: Chinchilla's Exponents Meet Kaplan's Coupling</title>
+<link>https://huggingface.co/papers/2608.07222</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.07222</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 5  AI at Meta</p>]]></description>
+</item>
+<item>
+<title>The Optimizer Is the Agent: Reasoning-Driven Search across Prompts, Programs, and ML Workflows</title>
+<link>https://huggingface.co/papers/2608.06714</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.06714</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 4  · 8 authors</p>]]></description>
+</item>
+<item>
+<title>Characterizing the Quality Profile of AI-Generated C++ in Production</title>
+<link>https://huggingface.co/papers/2608.06640</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.06640</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 4  Google</p>]]></description>
+</item>
+<item>
+<title>Multi-Agent Forensic Reasoning for Generalizable Deepfake Video Detection</title>
+<link>https://huggingface.co/papers/2608.06865</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.06865</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by XavierJiezou 3  · 9 authors 0 1</p>]]></description>
+</item>
+<item>
+<title>Zero Gap Is Not Restoration: Stratified Per-Question Probability Evaluation and Step-wise Mitigation of Benchmark Contamination</title>
+<link>https://huggingface.co/papers/2608.07341</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.07341</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by onnookk 3  Zhejiang University 1</p>]]></description>
+</item>
+<item>
+<title>Do AI Personas Grow? Analyzing and Benchmarking Personality Evolution in LLM Agents After Life Events</title>
+<link>https://huggingface.co/papers/2608.06485</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.06485</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by sci-m-wang 3  KinaMind 0 1</p>]]></description>
+</item>
+<item>
+<title>When Privileged Guidance Misaligns: State-Matched Routing and Contextualized Self-Distillation for Multi-Turn Agents</title>
+<link>https://huggingface.co/papers/2608.05219</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.05219</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Junzhuo 3  · 4 authors 1 1</p>]]></description>
 </item>
 <item>
 <title>Can MLLMs Decode the Creative Leap? Introducing C4 for Cross-Concept Understanding</title>
 <link>https://huggingface.co/papers/2608.06501</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2608.06501</guid>
-<pubDate>Mon, 10 Aug 2026 06:49:27 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by sci-m-wang 1  KinaMind 1</p>]]></description>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by sci-m-wang 2  KinaMind 1</p>]]></description>
+</item>
+<item>
+<title>PrivacyPeek: Auditing What LLM-Based Agents Acquire, Not Just What They Say</title>
+<link>https://huggingface.co/papers/2606.00152</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2606.00152</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by xuan269 2  · 8 authors 3 1</p>]]></description>
+</item>
+<item>
+<title>Adversarial Attacks for Good: A Survey of Proactive Protection across the Visual Content Lifecycle</title>
+<link>https://huggingface.co/papers/2608.04314</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.04314</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by hanxunh 2  · 17 authors 1</p>]]></description>
+</item>
+<item>
+<title>Complementary Matrix-Gated QKAN Fast-Weight Programmers for Quantum Dynamics Forecasting</title>
+<link>https://huggingface.co/papers/2607.27945</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2607.27945</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Jim137 2  · 17 authors 1</p>]]></description>
+</item>
+<item>
+<title>Capek 0.5: An Execution-Centric Vision-Language Model for Embodied Intelligence</title>
+<link>https://huggingface.co/papers/2608.06756</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.06756</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by zhehuderek 1  xpeng-robotics 1</p>]]></description>
+</item>
+<item>
+<title>Enfold: Folding World Model Imagination into Predictive Representations for Ultra-Efficient Embodied Control</title>
+<link>https://huggingface.co/papers/2607.26657</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2607.26657</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by zwl666666 1  · 13 authors 15 2</p>]]></description>
+</item>
+<item>
+<title>CLIP-CC-Bench: Evaluating Paragraph-Level Video Descriptions in Video-Language Models</title>
+<link>https://huggingface.co/papers/2608.04302</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.04302</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by GitAliGator 1  MINT Lab 1 3</p>]]></description>
+</item>
+<item>
+<title>Towards Interpretable Foundation Models for Retinal Fundus Images</title>
+<link>https://huggingface.co/papers/2603.18846</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2603.18846</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by CamilaR20 1  Eberhard Karls Universität Tübingen 0 1</p>]]></description>
+</item>
+<item>
+<title>FATE: Frame-Level Audio-Visual Temporal Embedding</title>
+<link>https://huggingface.co/papers/2608.01310</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.01310</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Guan123 1  Renmin University of China 7 1</p>]]></description>
+</item>
+<item>
+<title>DuplexGen: Adaptive Synthesis of Human-AI Turn-Taking Dialogues</title>
+<link>https://huggingface.co/papers/2607.26178</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2607.26178</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by takyoung 1  University of Illinois at Urbana-Champaign 5 1</p>]]></description>
+</item>
+<item>
+<title>OneEmo: A Unified Multimodal Reasoning Model for Emotion Perception, Understanding, and Interaction</title>
+<link>https://huggingface.co/papers/2608.06013</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.06013</guid>
+<pubDate>Tue, 11 Aug 2026 01:07:45 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Jiaha0Hu4ng -  · 6 authors 8 1</p>]]></description>
 </item>
 </channel>
 </rss>
