@@ -1,12 +1,156 @@
 {
   "daily": [
     {
+      "name": "harry0703 /MoneyPrinterTurbo",
+      "description": "利用 AI 大模型和自动化工作流，根据主题或关键词一键生成高清短视频。Generate HD short videos from a topic or keyword with an automated AI workflow.",
+      "language": "Python",
+      "stars": "106,017",
+      "forks": "16,114",
+      "starsToday": "1,189",
+      "url": "https://github.com/harry0703/MoneyPrinterTurbo",
+      "builtBy": [
+        "@harry0703",
+        "@yyhhyyyyyy",
+        "@vuisme",
+        "@claude",
+        "@pcbntt"
+      ]
+    },
+    {
+      "name": "usestrix /strix",
+      "description": "Open-source AI penetration testing tool to find and fix your app’s vulnerabilities.",
+      "language": "Python",
+      "stars": "54,168",
+      "forks": "5,798",
+      "starsToday": "598",
+      "url": "https://github.com/usestrix/strix",
+      "builtBy": [
+        "@0xallam",
+        "@claude",
+        "@bearsyankees",
+        "@devin-ai-integration",
+        "@dependabot"
+      ]
+    },
+    {
+      "name": "nautechsystems /nautilus_trader",
+      "description": "Production-grade Rust-native trading engine with deterministic event-driven architecture",
+      "language": "Rust",
+      "stars": "25,914",
+      "forks": "3,371",
+      "starsToday": "120",
+      "url": "https://github.com/nautechsystems/nautilus_trader",
+      "builtBy": [
+        "@cjdsellers",
+        "@limx0",
+        "@filipmacek",
+        "@faysou",
+        "@davidsblom"
+      ]
+    },
+    {
+      "name": "akitaonrails /ai-memory",
+      "description": "Solution for long term memory for agent coding CLIs and to facilitate handoff between different agent vendors",
+      "language": "Rust",
+      "stars": "2,053",
+      "forks": "193",
+      "starsToday": "207",
+      "url": "https://github.com/akitaonrails/ai-memory",
+      "builtBy": [
+        "@akitaonrails",
+        "@claude",
+        "@djalmajr",
+        "@wblech",
+        "@rthiago"
+      ]
+    },
+    {
+      "name": "mukul975 /Anthropic-Cybersecurity-Skills",
+      "description": "817 structured cybersecurity skills for AI agents · Mapped to 6 frameworks: MITRE ATT&CK, NIST CSF 2.0, MITRE ATLAS, D3FEND, NIST AI RMF & MITRE F3 (Fight Fraud) · agentskills.io standard · Works with Claude Code, GitHub Copilot, Codex CLI, Cursor, Gemini CLI & 20+ platforms · 29 security domains · Apache 2.0",
+      "language": "Python",
+      "stars": "28,425",
+      "forks": "3,446",
+      "starsToday": "198",
+      "url": "https://github.com/mukul975/Anthropic-Cybersecurity-Skills",
+      "builtBy": [
+        "@mukul975",
+        "@valorisa",
+        "@juliosuas",
+        "@claude",
+        "@andrewibrah"
+      ]
+    },
+    {
+      "name": "AlexsJones /llmfit",
+      "description": "Hundreds of models & providers. One command to find what runs on your hardware.",
+      "language": "Rust",
+      "stars": "32,266",
+      "forks": "2,001",
+      "starsToday": "198",
+      "url": "https://github.com/AlexsJones/llmfit",
+      "builtBy": [
+        "@AlexsJones",
+        "@claude",
+        "@dependabot",
+        "@three-foxes-in-a-trenchcoat",
+        "@github-actions"
+      ]
+    },
+    {
+      "name": "santifer /career-ops",
+      "description": "Open-source AI job search: scan job portals, evaluate listings with a structured A-F rubric into a 1.0-5.0 score, tailor your CV, track applications — runs locally in your AI coding CLI (Claude Code, Codex, OpenCode, Antigravity…)",
+      "language": "JavaScript",
+      "stars": "64,639",
+      "forks": "12,650",
+      "starsToday": "218",
+      "url": "https://github.com/santifer/career-ops",
+      "builtBy": [
+        "@santifer",
+        "@claude",
+        "@Schlaflied",
+        "@Scott-Emberson",
+        "@abankar1"
+      ]
+    },
+    {
+      "name": "jundot /omlx",
+      "description": "LLM inference server with continuous batching & SSD caching for Apple Silicon — managed from the macOS menu bar",
+      "language": "Python",
+      "stars": "18,987",
+      "forks": "1,644",
+      "starsToday": "78",
+      "url": "https://github.com/jundot/omlx",
+      "builtBy": [
+        "@jundot",
+        "@claude",
+        "@cfbraun",
+        "@JimStenstrom",
+        "@github-actions"
+      ]
+    },
+    {
+      "name": "immich-app /immich",
+      "description": "High performance self-hosted photo and video management solution.",
+      "language": "TypeScript",
+      "stars": "111,155",
+      "forks": "6,574",
+      "starsToday": "175",
+      "url": "https://github.com/immich-app/immich",
+      "builtBy": [
+        "@alextran1502",
+        "@jrasm91",
+        "@renovate",
+        "@danieldietzler",
+        "@shenlong-tanwen"
+      ]
+    },
+    {
       "name": "cordiverse /cordis",
       "description": "Meta-Framework of Spatiotemporal Composability",
       "language": "TypeScript",
-      "stars": "5,071",
-      "forks": "273",
-      "starsToday": "720",
+      "stars": "5,583",
+      "forks": "297",
+      "starsToday": "957",
       "url": "https://github.com/cordiverse/cordis",
       "builtBy": [
         "@shigma",
@@ -17,110 +161,30 @@
       ]
     },
     {
-      "name": "basecamp /omarchy",
-      "description": "Beautiful, Modern & Opinionated Linux",
-      "language": "Shell",
-      "stars": "25,578",
-      "forks": "2,608",
-      "starsToday": "270",
-      "url": "https://github.com/basecamp/omarchy",
-      "builtBy": [
-        "@dhh",
-        "@ryanrhughes",
-        "@claude",
-        "@tahayvr",
-        "@pomartel"
-      ]
-    },
-    {
-      "name": "unslothai /unsloth",
-      "description": "Local UI to run and train LLMs and diffusion models, including Qwen3.8, Kimi K3, MiniMax-H3, Gemma 4, DeepSeek-V4, FLUX and more.",
-      "language": "Python",
-      "stars": "72,789",
-      "forks": "6,560",
-      "starsToday": "572",
-      "url": "https://github.com/unslothai/unsloth",
-      "builtBy": [
-        "@danielhanchen",
-        "@pre-commit-ci",
-        "@shimmyshimmer",
-        "@wasimysaid",
-        "@Datta0"
-      ]
-    },
-    {
-      "name": "OpenCut-app /OpenCut",
-      "description": "The open-source CapCut alternative",
+      "name": "agalwood /Motrix",
+      "description": "A full-featured download manager.",
       "language": "TypeScript",
-      "stars": "84,094",
-      "forks": "8,304",
-      "starsToday": "150",
-      "url": "https://github.com/OpenCut-app/OpenCut",
+      "stars": "53,076",
+      "forks": "4,928",
+      "starsToday": "344",
+      "url": "https://github.com/agalwood/Motrix",
       "builtBy": [
-        "@mazeincoding",
-        "@izadoesdev",
-        "@anwarulislam",
-        "@khanguyen74",
-        "@DevloperAmanSingh"
-      ]
-    },
-    {
-      "name": "public-apis /public-apis",
-      "description": "A collective list of free APIs",
-      "language": "Python",
-      "stars": "462,196",
-      "forks": "51,046",
-      "starsToday": "1,588",
-      "url": "https://github.com/public-apis/public-apis",
-      "builtBy": [
-        "@matheusfelipeog",
-        "@davemachado",
-        "@ArindamOSS",
-        "@pawelborkar",
-        "@jbrooksuk"
-      ]
-    },
-    {
-      "name": "ToolJet /ToolJet",
-      "description": "ToolJet is the open-source foundation of ToolJet AI - the enterprise app generation platform for building internal tools, dashboard, business applications, workflows and AI agents 🚀",
-      "language": "JavaScript",
-      "stars": "40,205",
-      "forks": "5,338",
-      "starsToday": "452",
-      "url": "https://github.com/ToolJet/ToolJet",
-      "builtBy": [
-        "@johnsoncherian",
-        "@adishM98",
-        "@Navaneeth-pk",
-        "@gsmithun4",
-        "@arpitnath"
-      ]
-    },
-    {
-      "name": "cactus-compute /needle",
-      "description": "14MB foundation model for tiny devices; phones, wearables, smart home, and robots.",
-      "language": "Python",
-      "stars": "6,769",
-      "forks": "439",
-      "starsToday": "443",
-      "url": "https://github.com/cactus-compute/needle",
-      "builtBy": [
-        "@HenryNdubuaku",
-        "@ncylich",
-        "@kar-m",
-        "@justinl66",
-        "@jakmro"
+        "@agalwood",
+        "@shatyuka",
+        "@dicarne",
+        "@kant",
+        "@Raistlin916"
       ]
     }
   ],
   "weekly": [
     {
       "name": "cathrynlavery /diagram-design",
-      "description": "29 editorial diagram types for Claude Code. Self-contained HTML + SVG. No shadows, no Mermaid-slop.",
+      "description": "27 editorial diagram types for Claude Code. Self-contained HTML + SVG. No shadows, no Mermaid-slop.",
       "language": "HTML",
-      "stars": "19,828",
-      "forks": "1,216",
-      "starsToday": "15,600",
+      "stars": "20,687",
+      "forks": "1,270",
+      "starsToday": "16,260",
       "url": "https://github.com/cathrynlavery/diagram-design",
       "builtBy": [
         "@cathrynlavery",
@@ -134,9 +198,9 @@
       "name": "semantica-agi /semantica",
       "description": "Graph-Native Infrastructure for Context and Accountable AI Systems",
       "language": "Python",
-      "stars": "8,293",
-      "forks": "849",
-      "starsToday": "5,284",
+      "stars": "8,576",
+      "forks": "877",
+      "starsToday": "4,746",
       "url": "https://github.com/semantica-agi/semantica",
       "builtBy": [
         "@KaifAhmad1",
@@ -147,60 +211,12 @@
       ]
     },
     {
-      "name": "PrimeIntellect-ai /prime-agent",
-      "description": "A self-improving RLM agent for coding workflows and long-running autonomous tasks.",
-      "language": "TypeScript",
-      "stars": "16,668",
-      "forks": "1,796",
-      "starsToday": "6,435",
-      "url": "https://github.com/PrimeIntellect-ai/prime-agent",
-      "builtBy": [
-        "@kevinjosethomas",
-        "@snimu",
-        "@sethkarten",
-        "@alexzhang13",
-        "@samsja"
-      ]
-    },
-    {
-      "name": "NVIDIA-NeMo /Switchyard",
-      "description": "Switchyard lets LLM applications route traffic across models and providers while preserving native OpenAI and Anthropic API compatibility - enabling flexible model selection, benchmarking, and cost/performance optimization.",
-      "language": "Rust",
-      "stars": "1,719",
-      "forks": "154",
-      "starsToday": "1,435",
-      "url": "https://github.com/NVIDIA-NeMo/Switchyard",
-      "builtBy": [
-        "@nachiketb-nvidia",
-        "@elyasmnvidian",
-        "@grahamking",
-        "@ayushag-nv",
-        "@ryan-lempka"
-      ]
-    },
-    {
-      "name": "megadose /holehe",
-      "description": "holehe allows you to check if the mail is used on different sites like twitter, instagram and will retrieve information on sites with the forgotten password function.",
-      "language": "Python",
-      "stars": "13,330",
-      "forks": "1,762",
-      "starsToday": "1,287",
-      "url": "https://github.com/megadose/holehe",
-      "builtBy": [
-        "@megadose",
-        "@Eriys",
-        "@novitae",
-        "@mxrch",
-        "@byt3loss"
-      ]
-    },
-    {
       "name": "cactus-compute /needle",
       "description": "14MB foundation model for tiny devices; phones, wearables, smart home, and robots.",
       "language": "Python",
-      "stars": "6,769",
-      "forks": "439",
-      "starsToday": "2,950",
+      "stars": "7,133",
+      "forks": "458",
+      "starsToday": "3,627",
       "url": "https://github.com/cactus-compute/needle",
       "builtBy": [
         "@HenryNdubuaku",
@@ -211,12 +227,44 @@
       ]
     },
     {
+      "name": "megadose /holehe",
+      "description": "holehe allows you to check if the mail is used on different sites like twitter, instagram and will retrieve information on sites with the forgotten password function.",
+      "language": "Python",
+      "stars": "13,446",
+      "forks": "1,774",
+      "starsToday": "1,416",
+      "url": "https://github.com/megadose/holehe",
+      "builtBy": [
+        "@megadose",
+        "@Eriys",
+        "@novitae",
+        "@mxrch",
+        "@byt3loss"
+      ]
+    },
+    {
+      "name": "PrimeIntellect-ai /prime-agent",
+      "description": "A self-improving RLM agent for coding workflows and long-running autonomous tasks.",
+      "language": "TypeScript",
+      "stars": "16,929",
+      "forks": "1,817",
+      "starsToday": "4,328",
+      "url": "https://github.com/PrimeIntellect-ai/prime-agent",
+      "builtBy": [
+        "@kevinjosethomas",
+        "@snimu",
+        "@sethkarten",
+        "@alexzhang13",
+        "@samsja"
+      ]
+    },
+    {
       "name": "macro-inc /macro",
       "description": "Macro is a unified workspace for teams: email, chat, docs, tasks, agents, calls, and CRM — @-linked together with shared AI memory.",
       "language": "Rust",
-      "stars": "3,445",
-      "forks": "345",
-      "starsToday": "2,588",
+      "stars": "3,560",
+      "forks": "358",
+      "starsToday": "2,724",
       "url": "https://github.com/macro-inc/macro",
       "builtBy": [
         "@whutchinson98",
@@ -230,9 +278,9 @@
       "name": "vitali87 /code-graph-rag",
       "description": "The ultimate RAG for your monorepo. Query, understand, and edit multi-language codebases with the power of AI and knowledge graphs",
       "language": "Python",
-      "stars": "4,449",
-      "forks": "599",
-      "starsToday": "1,686",
+      "stars": "4,538",
+      "forks": "609",
+      "starsToday": "1,135",
       "url": "https://github.com/vitali87/code-graph-rag",
       "builtBy": [
         "@vitali87",
@@ -243,44 +291,28 @@
       ]
     },
     {
-      "name": "ToolJet /ToolJet",
-      "description": "ToolJet is the open-source foundation of ToolJet AI - the enterprise app generation platform for building internal tools, dashboard, business applications, workflows and AI agents 🚀",
-      "language": "JavaScript",
-      "stars": "40,205",
-      "forks": "5,338",
-      "starsToday": "1,518",
-      "url": "https://github.com/ToolJet/ToolJet",
+      "name": "unslothai /unsloth",
+      "description": "Local UI to run and train LLMs and diffusion models, including Qwen3.8, Kimi K3, MiniMax-H3, Gemma 4, DeepSeek-V4, FLUX and more.",
+      "language": "Python",
+      "stars": "73,225",
+      "forks": "6,601",
+      "starsToday": "3,329",
+      "url": "https://github.com/unslothai/unsloth",
       "builtBy": [
-        "@johnsoncherian",
-        "@adishM98",
-        "@Navaneeth-pk",
-        "@gsmithun4",
-        "@arpitnath"
-      ]
-    },
-    {
-      "name": "addyosmani /agent-skills",
-      "description": "Production-grade engineering skills for AI coding agents.",
-      "language": "JavaScript",
-      "stars": "87,831",
-      "forks": "9,409",
-      "starsToday": "2,882",
-      "url": "https://github.com/addyosmani/agent-skills",
-      "builtBy": [
-        "@addyosmani",
-        "@nucliweb",
-        "@federicobartoli",
-        "@claude",
-        "@Liyuk"
+        "@danielhanchen",
+        "@pre-commit-ci",
+        "@shimmyshimmer",
+        "@wasimysaid",
+        "@Datta0"
       ]
     },
     {
       "name": "3b1b /manim",
       "description": "Animation engine for explanatory math videos",
       "language": "Python",
-      "stars": "91,392",
-      "forks": "7,556",
-      "starsToday": "1,978",
+      "stars": "91,498",
+      "forks": "7,560",
+      "starsToday": "1,724",
       "url": "https://github.com/3b1b/manim",
       "builtBy": [
         "@3b1b",
@@ -294,9 +326,9 @@
       "name": "basecamp /omarchy",
       "description": "Beautiful, Modern & Opinionated Linux",
       "language": "Shell",
-      "stars": "25,578",
-      "forks": "2,608",
-      "starsToday": "759",
+      "stars": "25,988",
+      "forks": "2,646",
+      "starsToday": "1,477",
       "url": "https://github.com/basecamp/omarchy",
       "builtBy": [
         "@dhh",
@@ -307,28 +339,44 @@
       ]
     },
     {
-      "name": "unslothai /unsloth",
-      "description": "Local UI to run and train LLMs and diffusion models, including Qwen3.8, Kimi K3, MiniMax-H3, Gemma 4, DeepSeek-V4, FLUX and more.",
-      "language": "Python",
-      "stars": "72,789",
-      "forks": "6,560",
-      "starsToday": "2,645",
-      "url": "https://github.com/unslothai/unsloth",
+      "name": "addyosmani /agent-skills",
+      "description": "Production-grade engineering skills for AI coding agents.",
+      "language": "JavaScript",
+      "stars": "88,052",
+      "forks": "9,439",
+      "starsToday": "2,575",
+      "url": "https://github.com/addyosmani/agent-skills",
       "builtBy": [
-        "@danielhanchen",
-        "@pre-commit-ci",
-        "@shimmyshimmer",
-        "@wasimysaid",
-        "@Datta0"
+        "@addyosmani",
+        "@nucliweb",
+        "@federicobartoli",
+        "@claude",
+        "@Liyuk"
+      ]
+    },
+    {
+      "name": "lightningpixel /modly",
+      "description": "Desktop app to generate 3D models from images or prompt using local AI — runs entirely on your GPU",
+      "language": "TypeScript",
+      "stars": "6,367",
+      "forks": "634",
+      "starsToday": "1,338",
+      "url": "https://github.com/lightningpixel/modly",
+      "builtBy": [
+        "@lightningpixel",
+        "@Lorchie",
+        "@iammojogo-sudo",
+        "@DrHepa",
+        "@jokrasno"
       ]
     },
     {
       "name": "TencentCloud /TencentDB-Agent-Memory",
       "description": "TencentDB Agent Memory is a team-level memory hub for AI Agents — turning conversations, docs, and code into four reusable memory assets (Chat Memory, Skill, LLM-Wiki, Code-Graph) that are governed, shared, and equipped across agents and frameworks.",
       "language": "TypeScript",
-      "stars": "22,343",
-      "forks": "2,039",
-      "starsToday": "3,637",
+      "stars": "22,622",
+      "forks": "2,063",
+      "starsToday": "3,389",
       "url": "https://github.com/TencentCloud/TencentDB-Agent-Memory",
       "builtBy": [
         "@Yuntong8888",
@@ -336,45 +384,46 @@
       ]
     },
     {
-      "name": "Lightricks /LTX-2",
-      "description": "Official Python inference and LoRA trainer package for the LTX-2 audio–video generative model.",
+      "name": "anthropics /skills",
+      "description": "Public repository for Agent Skills",
       "language": "Python",
-      "stars": "9,071",
-      "forks": "1,430",
-      "starsToday": "497",
-      "url": "https://github.com/Lightricks/LTX-2",
+      "stars": "170,010",
+      "forks": "20,237",
+      "starsToday": "2,714",
+      "url": "https://github.com/anthropics/skills",
       "builtBy": [
-        "@michaellightricks",
-        "@github-actions",
-        "@Bmantl",
-        "@AlexeyKravtsov1987"
-      ]
-    },
-    {
-      "name": "paperclipai /paperclip",
-      "description": "The open-source app everyone uses to manage agents at work",
-      "language": "TypeScript",
-      "stars": "78,579",
-      "forks": "14,393",
-      "starsToday": "2,499",
-      "url": "https://github.com/paperclipai/paperclip",
-      "builtBy": [
-        "@cryppadotta",
-        "@Paperclip-Paperclip",
+        "@rlancemartin",
+        "@klazuka",
         "@claude",
-        "@devinfoley",
-        "@forgottendev"
+        "@ericharmeling",
+        "@maheshmurag"
       ]
     }
   ],
   "monthly": [
     {
+      "name": "ayghri /i-have-adhd",
+      "description": "A skill to stop your coding agent from burying the answer. ADHD-friendly output.",
+      "language": "Python",
+      "stars": "21,470",
+      "forks": "1,365",
+      "starsToday": "20,926",
+      "url": "https://github.com/ayghri/i-have-adhd",
+      "builtBy": [
+        "@ayghri",
+        "@thejesh23",
+        "@commie70",
+        "@jabrahamtech",
+        "@claude"
+      ]
+    },
+    {
       "name": "bojieli /ai-agent-book",
       "description": "《深入理解 AI Agent：设计原理与工程实践》（李博杰 著）开源主仓库：全书正文、编译版 PDF 与按章配套代码",
       "language": "Python",
-      "stars": "38,074",
-      "forks": "4,192",
-      "starsToday": "37,110",
+      "stars": "38,515",
+      "forks": "4,245",
+      "starsToday": "37,085",
       "url": "https://github.com/bojieli/ai-agent-book",
       "builtBy": [
         "@bojieli",
@@ -388,9 +437,9 @@
       "name": "diegosouzapw /OmniRoute",
       "description": "Never stop coding. Free MIT AI gateway: one endpoint, 340 providers (90+ free), 1200+ models — Kimi, Claude, GPT, Gemini, GLM, DeepSeek, MiniMax. Works with Claude Code, Codex, Cursor, OpenCode, Cline & Copilot. Quota-aware auto-fallback, RTK+Caveman compression saves 15-95% tokens, MCP/A2A, Desktop/PWA. Built by 450+ contributors",
       "language": "TypeScript",
-      "stars": "49,299",
-      "forks": "6,720",
-      "starsToday": "31,374",
+      "stars": "49,840",
+      "forks": "6,787",
+      "starsToday": "31,675",
       "url": "https://github.com/diegosouzapw/OmniRoute",
       "builtBy": [
         "@diegosouzapw",
@@ -404,9 +453,9 @@
       "name": "koala73 /worldmonitor",
       "description": "Real-time global intelligence dashboard. AI-powered news aggregation, geopolitical monitoring, and infrastructure tracking in a unified situational awareness interface",
       "language": "TypeScript",
-      "stars": "82,480",
-      "forks": "12,314",
-      "starsToday": "20,810",
+      "stars": "82,678",
+      "forks": "12,339",
+      "starsToday": "21,062",
       "url": "https://github.com/koala73/worldmonitor",
       "builtBy": [
         "@koala73",
@@ -417,12 +466,25 @@
       ]
     },
     {
+      "name": "TencentCloud /TencentDB-Agent-Memory",
+      "description": "TencentDB Agent Memory is a team-level memory hub for AI Agents — turning conversations, docs, and code into four reusable memory assets (Chat Memory, Skill, LLM-Wiki, Code-Graph) that are governed, shared, and equipped across agents and frameworks.",
+      "language": "TypeScript",
+      "stars": "22,622",
+      "forks": "2,063",
+      "starsToday": "13,625",
+      "url": "https://github.com/TencentCloud/TencentDB-Agent-Memory",
+      "builtBy": [
+        "@Yuntong8888",
+        "@Maxwell-Code07"
+      ]
+    },
+    {
       "name": "1jehuang /jcode",
       "description": "The most RAM efficient harness",
       "language": "Rust",
-      "stars": "17,771",
-      "forks": "1,996",
-      "starsToday": "9,481",
+      "stars": "17,855",
+      "forks": "2,002",
+      "starsToday": "9,578",
       "url": "https://github.com/1jehuang/jcode",
       "builtBy": [
         "@1jehuang",
@@ -433,25 +495,12 @@
       ]
     },
     {
-      "name": "TencentCloud /TencentDB-Agent-Memory",
-      "description": "TencentDB Agent Memory is a team-level memory hub for AI Agents — turning conversations, docs, and code into four reusable memory assets (Chat Memory, Skill, LLM-Wiki, Code-Graph) that are governed, shared, and equipped across agents and frameworks.",
-      "language": "TypeScript",
-      "stars": "22,343",
-      "forks": "2,039",
-      "starsToday": "13,308",
-      "url": "https://github.com/TencentCloud/TencentDB-Agent-Memory",
-      "builtBy": [
-        "@Yuntong8888",
-        "@Maxwell-Code07"
-      ]
-    },
-    {
       "name": "zhaoxuya520 /reverse-skill",
       "description": "Reverse Engineering / Authorized Penetration Testing / Security Research Skill Router Pack AI-powered routing + On-demand toolchain bootstrapping + Self-evolving knowledge base Supports Claude Code, Kiro, Cursor, Cline, and other AI coding clients 逆向/渗透/安全技能路由包 - AI 自动路由 + 按需自举工具链 + 自动进化经验库 | 支持 Claude Code / Kiro / Cursor / Cline 等代码 AI 客户端",
       "language": "PowerShell",
-      "stars": "25,782",
-      "forks": "3,494",
-      "starsToday": "17,554",
+      "stars": "26,023",
+      "forks": "3,527",
+      "starsToday": "17,807",
       "url": "https://github.com/zhaoxuya520/reverse-skill",
       "builtBy": [
         "@zhaoxuya520",
@@ -465,9 +514,9 @@
       "name": "pingdotgg /t3code",
       "description": "No description available",
       "language": "TypeScript",
-      "stars": "18,987",
-      "forks": "4,403",
-      "starsToday": "5,027",
+      "stars": "19,098",
+      "forks": "4,433",
+      "starsToday": "5,096",
       "url": "https://github.com/pingdotgg/t3code",
       "builtBy": [
         "@juliusmarminge",
@@ -478,59 +527,44 @@
       ]
     },
     {
+      "name": "microsoft /AI-For-Beginners",
+      "description": "12 Weeks, 24 Lessons, AI for All!",
+      "language": "Jupyter Notebook",
+      "stars": "65,197",
+      "forks": "12,657",
+      "starsToday": "12,969",
+      "url": "https://github.com/microsoft/AI-For-Beginners",
+      "builtBy": [
+        "@leestott",
+        "@skytin1004",
+        "@jlooper",
+        "@shwars",
+        "@BethanyJep"
+      ]
+    },
+    {
       "name": "earendil-works /pi",
       "description": "AI agent toolkit: unified LLM API, agent loop, TUI, coding agent CLI",
       "language": "TypeScript",
-      "stars": "91,785",
-      "forks": "11,379",
-      "starsToday": "19,903",
+      "stars": "92,355",
+      "forks": "11,444",
+      "starsToday": "20,481",
       "url": "https://github.com/earendil-works/pi",
       "builtBy": [
         "@badlogic",
         "@mitsuhiko",
         "@github-actions",
         "@christianklotz",
-        "@davidbrai"
-      ]
-    },
-    {
-      "name": "every-app /open-seo",
-      "description": "Open source alternative to Semrush and Ahrefs",
-      "language": "TypeScript",
-      "stars": "12,244",
-      "forks": "1,397",
-      "starsToday": "7,870",
-      "url": "https://github.com/every-app/open-seo",
-      "builtBy": [
-        "@bensenescu",
-        "@claude",
-        "@bookingseo",
-        "@jeremypenguin-max",
-        "@mvanhorn"
-      ]
-    },
-    {
-      "name": "mattpocock /skills",
-      "description": "Skills for Real Engineers. Straight from my .agents directory.",
-      "language": "Shell",
-      "stars": "219,533",
-      "forks": "18,902",
-      "starsToday": "46,346",
-      "url": "https://github.com/mattpocock/skills",
-      "builtBy": [
-        "@mattpocock",
-        "@claude",
-        "@github-actions",
-        "@gabimoncha"
+        "@cristinaponcela"
       ]
     },
     {
       "name": "virgiliojr94 /book-to-skill",
       "description": "Turn any technical book PDF into a Claude Code skill — ready to study, reference, and use while you work.",
       "language": "Python",
-      "stars": "22,313",
-      "forks": "2,357",
-      "starsToday": "13,494",
+      "stars": "22,556",
+      "forks": "2,378",
+      "starsToday": "13,818",
       "url": "https://github.com/virgiliojr94/book-to-skill",
       "builtBy": [
         "@virgiliojr94",
@@ -541,12 +575,27 @@
       ]
     },
     {
+      "name": "mattpocock /skills",
+      "description": "Skills for Real Engineers. Straight from my .agents directory.",
+      "language": "Shell",
+      "stars": "220,336",
+      "forks": "18,989",
+      "starsToday": "45,839",
+      "url": "https://github.com/mattpocock/skills",
+      "builtBy": [
+        "@mattpocock",
+        "@claude",
+        "@github-actions",
+        "@gabimoncha"
+      ]
+    },
+    {
       "name": "stablyai /orca",
       "description": "Orca is the ADE for working with a fleet of parallel agents. Run any coding agent with your own subscription. Available on desktop, mobile and VPS.",
       "language": "TypeScript",
-      "stars": "46,757",
-      "forks": "3,263",
-      "starsToday": "26,429",
+      "stars": "47,418",
+      "forks": "3,292",
+      "starsToday": "26,504",
       "url": "https://github.com/stablyai/orca",
       "builtBy": [
         "@nwparker",
@@ -557,12 +606,28 @@
       ]
     },
     {
+      "name": "every-app /open-seo",
+      "description": "Open source alternative to Semrush and Ahrefs",
+      "language": "TypeScript",
+      "stars": "12,394",
+      "forks": "1,415",
+      "starsToday": "8,017",
+      "url": "https://github.com/every-app/open-seo",
+      "builtBy": [
+        "@bensenescu",
+        "@claude",
+        "@bookingseo",
+        "@jeremypenguin-max",
+        "@mvanhorn"
+      ]
+    },
+    {
       "name": "HKUDS /DeepTutor",
       "description": "DeepTutor: Lifelong Personalized Tutoring.https://deeptutor.info/.",
       "language": "Python",
-      "stars": "35,990",
-      "forks": "4,534",
-      "starsToday": "9,425",
+      "stars": "36,144",
+      "forks": "4,549",
+      "starsToday": "9,118",
       "url": "https://github.com/HKUDS/DeepTutor",
       "builtBy": [
         "@pancacake",
@@ -573,28 +638,12 @@
       ]
     },
     {
-      "name": "tirth8205 /code-review-graph",
-      "description": "Local-first code intelligence graph for MCP and CLI. Builds a persistent map of your codebase so AI coding tools read only what matters, with benchmarked context reductions on reviews and large-repo workflows.",
-      "language": "Python",
-      "stars": "30,378",
-      "forks": "2,777",
-      "starsToday": "10,934",
-      "url": "https://github.com/tirth8205/code-review-graph",
-      "builtBy": [
-        "@tirth8205",
-        "@claude",
-        "@gzenz",
-        "@HsiangNianian",
-        "@jaissebastian"
-      ]
-    },
-    {
       "name": "agegr /pi-web",
       "description": "Web UI for the pi coding agent",
       "language": "TypeScript",
-      "stars": "4,488",
-      "forks": "626",
-      "starsToday": "3,175",
+      "stars": "4,606",
+      "forks": "634",
+      "starsToday": "3,349",
       "url": "https://github.com/agegr/pi-web",
       "builtBy": [
         "@agegr",
@@ -605,28 +654,28 @@
       ]
     },
     {
-      "name": "Nutlope /hallmark",
-      "description": "Anti-AI-slop design skill for Claude Code, Cursor, and Codex.",
-      "language": "CSS",
-      "stars": "25,369",
-      "forks": "1,292",
-      "starsToday": "15,143",
-      "url": "https://github.com/Nutlope/hallmark",
+      "name": "tirth8205 /code-review-graph",
+      "description": "Local-first code intelligence graph for MCP and CLI. Builds a persistent map of your codebase so AI coding tools read only what matters, with benchmarked context reductions on reviews and large-repo workflows.",
+      "language": "Python",
+      "stars": "30,441",
+      "forks": "2,779",
+      "starsToday": "10,960",
+      "url": "https://github.com/tirth8205/code-review-graph",
       "builtBy": [
-        "@Luffixos",
-        "@Nutlope",
+        "@tirth8205",
         "@claude",
-        "@riccardogiorato",
-        "@JaySmith502"
+        "@gzenz",
+        "@HsiangNianian",
+        "@jaissebastian"
       ]
     },
     {
       "name": "lyogavin /airllm",
       "description": "AirLLM 70B inference with single 4GB GPU",
       "language": "Jupyter Notebook",
-      "stars": "31,378",
-      "forks": "3,330",
-      "starsToday": "8,712",
+      "stars": "31,474",
+      "forks": "3,340",
+      "starsToday": "8,585",
       "url": "https://github.com/lyogavin/airllm",
       "builtBy": [
         "@lyogavin",
@@ -637,28 +686,28 @@
       ]
     },
     {
-      "name": "different-ai /openwork",
-      "description": "The open-source alternative to Claude Cowork (powered by opencode)",
-      "language": "TypeScript",
-      "stars": "22,477",
-      "forks": "2,223",
-      "starsToday": "5,703",
-      "url": "https://github.com/different-ai/openwork",
+      "name": "Nutlope /hallmark",
+      "description": "Anti-AI-slop design skill for Claude Code, Cursor, and Codex.",
+      "language": "CSS",
+      "stars": "25,558",
+      "forks": "1,302",
+      "starsToday": "14,015",
+      "url": "https://github.com/Nutlope/hallmark",
       "builtBy": [
-        "@benjaminshafii",
-        "@src-opn",
-        "@jcllobet",
-        "@release-bot",
-        "@actions-user"
+        "@Luffixos",
+        "@Nutlope",
+        "@claude",
+        "@riccardogiorato",
+        "@JaySmith502"
       ]
     },
     {
       "name": "megadose /holehe",
       "description": "holehe allows you to check if the mail is used on different sites like twitter, instagram and will retrieve information on sites with the forgotten password function.",
       "language": "Python",
-      "stars": "13,330",
-      "forks": "1,762",
-      "starsToday": "1,588",
+      "stars": "13,446",
+      "forks": "1,774",
+      "starsToday": "1,717",
       "url": "https://github.com/megadose/holehe",
       "builtBy": [
         "@megadose",
@@ -669,22 +718,38 @@
       ]
     },
     {
-      "name": "tt-a1i /archify",
-      "description": "Agent skill for beautiful, verifiable architecture, workflow, sequence, data-flow, and lifecycle diagrams—self-contained HTML with motion and crisp export.",
-      "language": "HTML",
-      "stars": "13,547",
-      "forks": "990",
-      "starsToday": "7,964",
-      "url": "https://github.com/tt-a1i/archify",
+      "name": "different-ai /openwork",
+      "description": "The open-source alternative to Claude Cowork (powered by opencode)",
+      "language": "TypeScript",
+      "stars": "22,562",
+      "forks": "2,229",
+      "starsToday": "5,799",
+      "url": "https://github.com/different-ai/openwork",
       "builtBy": [
-        "@tt-a1i",
-        "@cursoragent",
+        "@benjaminshafii",
+        "@src-opn",
+        "@jcllobet",
+        "@release-bot",
+        "@actions-user"
+      ]
+    },
+    {
+      "name": "opengeos /GeoLibre",
+      "description": "A lightweight, cloud-native GIS platform for visualizing, exploring, and analyzing geospatial data. It runs in the web browser, on the desktop, on mobile, and inside Jupyter notebooks.",
+      "language": "TypeScript",
+      "stars": "6,315",
+      "forks": "634",
+      "starsToday": "4,545",
+      "url": "https://github.com/opengeos/GeoLibre",
+      "builtBy": [
+        "@giswqs",
+        "@pre-commit-ci",
+        "@dependabot",
         "@claude",
-        "@Yangtze-Seventh",
-        "@ShiroKSH"
+        "@Ayush7614"
       ]
     }
   ],
-  "lastUpdated": "2026-08-17T05:58:06.921127",
-  "totalRepositories": 43
+  "lastUpdated": "2026-08-18T00:46:54.468897",
+  "totalRepositories": 47
 }
