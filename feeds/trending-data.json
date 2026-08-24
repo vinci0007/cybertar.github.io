@@ -4,9 +4,9 @@
       "name": "openai /codex",
       "description": "Lightweight coding agent that runs in your terminal",
       "language": "Rust",
-      "stars": "113,935",
-      "forks": "17,419",
-      "starsToday": "1,544",
+      "stars": "115,170",
+      "forks": "17,564",
+      "starsToday": "2,715",
       "url": "https://github.com/openai/codex",
       "builtBy": [
         "@jif-oai",
@@ -17,12 +17,28 @@
       ]
     },
     {
+      "name": "freestylefly /awesome-gpt-image-2",
+      "description": "Prompt as Code | GPT-Image2 工业级提示词引擎与模板库，470+ 个案例逆向工程，20+ 套工业级模板，并提炼出Skills，持续更新中",
+      "language": "JavaScript",
+      "stars": "12,707",
+      "forks": "1,427",
+      "starsToday": "401",
+      "url": "https://github.com/freestylefly/awesome-gpt-image-2",
+      "builtBy": [
+        "@freestylefly",
+        "@claude",
+        "@ImgBotApp",
+        "@LengShangbai",
+        "@sscodeai"
+      ]
+    },
+    {
       "name": "mattpocock /skills",
       "description": "Skills for Real Engineers. Straight from my .agents directory.",
       "language": "Shell",
-      "stars": "232,500",
-      "forks": "19,840",
-      "starsToday": "2,683",
+      "stars": "233,853",
+      "forks": "19,945",
+      "starsToday": "2,447",
       "url": "https://github.com/mattpocock/skills",
       "builtBy": [
         "@mattpocock",
@@ -32,302 +48,12 @@
       ]
     },
     {
-      "name": "affaan-m /ECC",
-      "description": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
-      "language": "JavaScript",
-      "stars": "242,248",
-      "forks": "36,707",
-      "starsToday": "411",
-      "url": "https://github.com/affaan-m/ECC",
-      "builtBy": [
-        "@affaan-m",
-        "@claude",
-        "@haelyra",
-        "@pangerlkr",
-        "@dependabot"
-      ]
-    },
-    {
-      "name": "obra /superpowers",
-      "description": "An agentic skills framework & software development methodology that works.",
-      "language": "Shell",
-      "stars": "276,292",
-      "forks": "24,714",
-      "starsToday": "592",
-      "url": "https://github.com/obra/superpowers",
-      "builtBy": [
-        "@obra",
-        "@arittr",
-        "@claude",
-        "@clkao",
-        "@jjshanks"
-      ]
-    },
-    {
-      "name": "Wei-Shaw /sub2api",
-      "description": "Sub2API 一站式开源中转服务，让 Claude、Openai 、Gemini、Grok订阅统一接入，支持拼车共享，更高效分摊成本，原生工具无缝使用。",
-      "language": "Go",
-      "stars": "38,854",
-      "forks": "8,043",
-      "starsToday": "278",
-      "url": "https://github.com/Wei-Shaw/sub2api",
-      "builtBy": [
-        "@Wei-Shaw",
-        "@IanShaw027",
-        "@touwaeriol",
-        "@claude",
-        "@wucm667"
-      ]
-    },
-    {
-      "name": "makeplane /plane",
-      "description": "🔥🔥🔥 Open-source Jira, Linear, Monday, and ClickUp alternative. Plane is a modern project management platform to manage tasks, sprints, docs, and triage.",
-      "language": "TypeScript",
-      "stars": "57,301",
-      "forks": "5,448",
-      "starsToday": "263",
-      "url": "https://github.com/makeplane/plane",
-      "builtBy": [
-        "@anmolsinghbhatia",
-        "@aaryan610",
-        "@pablohashescobar",
-        "@sriramveeraghanta",
-        "@NarayanBavisetti"
-      ]
-    },
-    {
-      "name": "n8n-io /n8n",
-      "description": "Fair-code workflow automation platform with native AI capabilities. Combine visual building with custom code, self-host or cloud, 400+ integrations.",
-      "language": "TypeScript",
-      "stars": "201,912",
-      "forks": "60,310",
-      "starsToday": "149",
-      "url": "https://github.com/n8n-io/n8n",
-      "builtBy": [
-        "@janober",
-        "@claude",
-        "@ivov",
-        "@netroy",
-        "@RicardoE105"
-      ]
-    },
-    {
-      "name": "anthropics /claude-code",
-      "description": "Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands.",
-      "language": "Python",
-      "stars": "142,614",
-      "forks": "22,843",
-      "starsToday": "127",
-      "url": "https://github.com/anthropics/claude-code",
-      "builtBy": [
-        "@actions-user",
-        "@bcherny",
-        "@claude",
-        "@ant-kurt",
-        "@ashwin-ant"
-      ]
-    },
-    {
-      "name": "AprilNEA /OpenLogi",
-      "description": "⚡️A native, local-first alternative to Logitech Options+, written in Rust 🦀 — remap buttons, DPI, and SmartShift over HID++. No account, no telemetry.",
-      "language": "Rust",
-      "stars": "14,106",
-      "forks": "375",
-      "starsToday": "959",
-      "url": "https://github.com/AprilNEA/OpenLogi",
-      "builtBy": [
-        "@AprilNEA",
-        "@davidbudnick",
-        "@aprilnea",
-        "@cserby",
-        "@tagawa0525"
-      ]
-    },
-    {
-      "name": "modular /modular",
-      "description": "The Modular Platform (includes MAX & Mojo)",
-      "language": "Mojo",
-      "stars": "28,877",
-      "forks": "3,067",
-      "starsToday": "395",
-      "url": "https://github.com/modular/modular",
-      "builtBy": [
-        "@abduld",
-        "@lattner",
-        "@JoeLoser",
-        "@keith",
-        "@atomicapple0"
-      ]
-    },
-    {
-      "name": "multica-ai /andrej-karpathy-skills",
-      "description": "A single CLAUDE.md file to improve Claude Code behavior, derived from Andrej Karpathy's observations on LLM coding pitfalls.",
-      "language": "Unknown",
-      "stars": "205,413",
-      "forks": "21,015",
-      "starsToday": "315",
-      "url": "https://github.com/multica-ai/andrej-karpathy-skills",
-      "builtBy": [
-        "@forrestchang",
-        "@claude",
-        "@back1ply",
-        "@herobrine19",
-        "@szkocot"
-      ]
-    },
-    {
-      "name": "mahlernim /google-timeline-visualizer",
-      "description": "Visualize your year in travel using your Google Location History (Timeline) data",
-      "language": "Kotlin",
-      "stars": "2,600",
-      "forks": "307",
-      "starsToday": "441",
-      "url": "https://github.com/mahlernim/google-timeline-visualizer",
-      "builtBy": [
-        "@mahlernim",
-        "@claude",
-        "@petercpg",
-        "@fede1608",
-        "@AhmaadKaleeem"
-      ]
-    },
-    {
-      "name": "ripienaar /free-for-dev",
-      "description": "A list of SaaS, PaaS and IaaS offerings that have free tiers of interest to devops and infradev",
-      "language": "HTML",
-      "stars": "134,019",
-      "forks": "14,033",
-      "starsToday": "829",
-      "url": "https://github.com/ripienaar/free-for-dev",
-      "builtBy": [
-        "@ripienaar",
-        "@FatGrizzly",
-        "@Skxxtz",
-        "@thispsj",
-        "@TraderStf"
-      ]
-    },
-    {
-      "name": "microsoft /TypeScript",
-      "description": "TypeScript is a superset of JavaScript that compiles to clean JavaScript output.",
-      "language": "Go",
-      "stars": "110,569",
-      "forks": "13,745",
-      "starsToday": "104",
-      "url": "https://github.com/microsoft/TypeScript",
-      "builtBy": [
-        "@ahejlsberg",
-        "@sheetalkamat",
-        "@DanielRosenwasser",
-        "@sandersn",
-        "@mhegazy"
-      ]
-    },
-    {
-      "name": "cursor /plugins",
-      "description": "Cursor plugin specification and official plugins",
-      "language": "TypeScript",
-      "stars": "4,700",
-      "forks": "384",
-      "starsToday": "286",
-      "url": "https://github.com/cursor/plugins",
-      "builtBy": [
-        "@poteto",
-        "@cursoragent",
-        "@ericzakariasson",
-        "@n2parko",
-        "@SamSokolin"
-      ]
-    },
-    {
-      "name": "PostHog /posthog",
-      "description": "🦔 PostHog is the leading platform for building self-driving products. Our developer tools – AI observability, analytics, session replay, flags, experiments, error tracking, logs, and more – capture all the context agents need to diagnose problems, uncover opportunities, and ship fixes. Steer it all from Slack, web, desktop, or the MCP.",
-      "language": "Python",
-      "stars": "38,681",
-      "forks": "3,248",
-      "starsToday": "286",
-      "url": "https://github.com/PostHog/posthog",
-      "builtBy": [
-        "@github-actions",
-        "@pauldambra",
-        "@claude",
-        "@Twixes",
-        "@Gilbert09"
-      ]
-    },
-    {
-      "name": "Tencent /AI-Infra-Guard",
-      "description": "A full-stack AI Red Teaming platform securing AI ecosystems via Agent Scan, Skills Scan, MCP scan, AI Infra scan and LLM jailbreak evaluation.",
-      "language": "Python",
-      "stars": "5,570",
-      "forks": "524",
-      "starsToday": "150",
-      "url": "https://github.com/Tencent/AI-Infra-Guard",
-      "builtBy": [
-        "@boy-hack",
-        "@aigsec",
-        "@rocie799",
-        "@zonalalala",
-        "@y3oZ"
-      ]
-    }
-  ],
-  "weekly": [
-    {
-      "name": "cursor /plugins",
-      "description": "Cursor plugin specification and official plugins",
-      "language": "TypeScript",
-      "stars": "4,700",
-      "forks": "384",
-      "starsToday": "1,693",
-      "url": "https://github.com/cursor/plugins",
-      "builtBy": [
-        "@poteto",
-        "@cursoragent",
-        "@ericzakariasson",
-        "@n2parko",
-        "@SamSokolin"
-      ]
-    },
-    {
-      "name": "cordiverse /cordis",
-      "description": "Meta-Framework of Spatiotemporal Composability",
-      "language": "TypeScript",
-      "stars": "7,142",
-      "forks": "414",
-      "starsToday": "3,364",
-      "url": "https://github.com/cordiverse/cordis",
-      "builtBy": [
-        "@shigma",
-        "@Hieuzest",
-        "@undefined-moe",
-        "@CyanChanges",
-        "@imccyu"
-      ]
-    },
-    {
-      "name": "volcengine /OpenViking",
-      "description": "Self-evolving Context Database for AI Agents. Unify Agent Memory, Knowledge RAG and Skills.",
-      "language": "Python",
-      "stars": "32,156",
-      "forks": "2,453",
-      "starsToday": "3,447",
-      "url": "https://github.com/volcengine/OpenViking",
-      "builtBy": [
-        "@qin-ctx",
-        "@claude",
-        "@zhoujh01",
-        "@ZaynJarvis",
-        "@r266-tech"
-      ]
-    },
-    {
       "name": "basecamp /omarchy",
       "description": "Beautiful, Modern & Opinionated Linux",
       "language": "Shell",
-      "stars": "28,430",
-      "forks": "2,895",
-      "starsToday": "3,151",
+      "stars": "29,130",
+      "forks": "2,960",
+      "starsToday": "750",
       "url": "https://github.com/basecamp/omarchy",
       "builtBy": [
         "@dhh",
@@ -338,12 +64,238 @@
       ]
     },
     {
+      "name": "AprilNEA /OpenLogi",
+      "description": "⚡️A native, local-first alternative to Logitech Options+, written in Rust 🦀 — remap buttons, DPI, and SmartShift over HID++. No account, no telemetry.",
+      "language": "Rust",
+      "stars": "14,943",
+      "forks": "400",
+      "starsToday": "1,009",
+      "url": "https://github.com/AprilNEA/OpenLogi",
+      "builtBy": [
+        "@AprilNEA",
+        "@davidbudnick",
+        "@aprilnea",
+        "@cserby",
+        "@github-actions"
+      ]
+    },
+    {
+      "name": "block /buzz",
+      "description": "A hive mind communication platform",
+      "language": "Rust",
+      "stars": "30,105",
+      "forks": "3,827",
+      "starsToday": "410",
+      "url": "https://github.com/block/buzz",
+      "builtBy": [
+        "@wesbillman",
+        "@wpfleger96",
+        "@tlongwell-block",
+        "@claude",
+        "@klopez4212"
+      ]
+    },
+    {
+      "name": "apache /maka",
+      "description": "Apache Maka (Incubating) is a local-first AI agent workspace. Model messages, tool calls, tool results, permission decisions, and termination events are recorded as an append-only log.",
+      "language": "TypeScript",
+      "stars": "2,354",
+      "forks": "269",
+      "starsToday": "51",
+      "url": "https://github.com/apache/maka",
+      "builtBy": [
+        "@jackwener",
+        "@Astro-Han",
+        "@likun666661",
+        "@M4n5ter",
+        "@hqhq1025"
+      ]
+    },
+    {
+      "name": "Alishahryar1 /free-claude-code",
+      "description": "Use Claude Code, Codex, Pi, and OpenCode for free (1.3B+ free tokens) from your terminal, app, IDE, or phone like OpenClaw (voice supported + ToS friendly)",
+      "language": "Python",
+      "stars": "47,962",
+      "forks": "7,892",
+      "starsToday": "1,081",
+      "url": "https://github.com/Alishahryar1/free-claude-code",
+      "builtBy": [
+        "@Alishahryar1",
+        "@cursoragent",
+        "@dependabot",
+        "@claude",
+        "@rishiskhare"
+      ]
+    },
+    {
+      "name": "tinyhumansai /openhuman",
+      "description": "Your Personal AI super intelligence. A brain that builds a local-first memory of your life, a fantastic orchestrator of agent fleets and workflows, and a deep researcher.",
+      "language": "Rust",
+      "stars": "36,743",
+      "forks": "3,670",
+      "starsToday": "39",
+      "url": "https://github.com/tinyhumansai/openhuman",
+      "builtBy": [
+        "@senamakel",
+        "@medullabot",
+        "@graycyrus",
+        "@claude",
+        "@M3gA-Mind"
+      ]
+    },
+    {
+      "name": "affaan-m /ECC",
+      "description": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
+      "language": "JavaScript",
+      "stars": "242,555",
+      "forks": "36,719",
+      "starsToday": "427",
+      "url": "https://github.com/affaan-m/ECC",
+      "builtBy": [
+        "@affaan-m",
+        "@claude",
+        "@haelyra",
+        "@pangerlkr",
+        "@dependabot"
+      ]
+    },
+    {
+      "name": "ruvnet /ruflo",
+      "description": "🌊 The original agent meta-harness. Deploy intelligent multi-player swarms, coordinate autonomous workflows, and build conversational AI systems. Features adaptive memory, self-learning intelligence, RAG integration, and native Claude Code / Codex / Hermes and many more Integrated",
+      "language": "TypeScript",
+      "stars": "69,071",
+      "forks": "8,273",
+      "starsToday": "131",
+      "url": "https://github.com/ruvnet/ruflo",
+      "builtBy": [
+        "@ruvnet",
+        "@claude",
+        "@proffesor-for-testing",
+        "@dajiaohuang",
+        "@alexx-ftw"
+      ]
+    },
+    {
+      "name": "VoltAgent /awesome-agent-skills",
+      "description": "A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex, Gemini CLI, Cursor, and more.",
+      "language": "Unknown",
+      "stars": "31,292",
+      "forks": "3,364",
+      "starsToday": "156",
+      "url": "https://github.com/VoltAgent/awesome-agent-skills",
+      "builtBy": [
+        "@necatiozmen",
+        "@claude",
+        "@Shasikhan",
+        "@noelo",
+        "@kriptoburak"
+      ]
+    },
+    {
+      "name": "virgiliojr94 /book-to-skill",
+      "description": "Turn any technical book PDF into a Claude Code skill — ready to study, reference, and use while you work.",
+      "language": "Python",
+      "stars": "24,658",
+      "forks": "2,580",
+      "starsToday": "417",
+      "url": "https://github.com/virgiliojr94/book-to-skill",
+      "builtBy": [
+        "@virgiliojr94",
+        "@claude",
+        "@dex0shubham",
+        "@Copilot",
+        "@Hotragn"
+      ]
+    },
+    {
+      "name": "dani-garcia /vaultwarden",
+      "description": "Unofficial Bitwarden compatible server written in Rust, formerly known as bitwarden_rs",
+      "language": "Rust",
+      "stars": "65,958",
+      "forks": "3,126",
+      "starsToday": "78",
+      "url": "https://github.com/dani-garcia/vaultwarden",
+      "builtBy": [
+        "@dani-garcia",
+        "@BlackDex",
+        "@jjlin",
+        "@mprasil",
+        "@stefan0xC"
+      ]
+    },
+    {
+      "name": "anthropics /claude-plugins-community",
+      "description": "Community plugin marketplace for Claude Cowork and Claude Code. Read-only mirror — submit plugins at clau.de/plugin-directory-submission.",
+      "language": "Python",
+      "stars": "946",
+      "forks": "126",
+      "starsToday": "225",
+      "url": "https://github.com/anthropics/claude-plugins-community",
+      "builtBy": [
+        "@github-actions",
+        "@bryan-anthropic",
+        "@claude",
+        "@tobinsouth",
+        "@ThariqS"
+      ]
+    },
+    {
+      "name": "ripienaar /free-for-dev",
+      "description": "A list of SaaS, PaaS and IaaS offerings that have free tiers of interest to devops and infradev",
+      "language": "HTML",
+      "stars": "134,424",
+      "forks": "14,062",
+      "starsToday": "615",
+      "url": "https://github.com/ripienaar/free-for-dev",
+      "builtBy": [
+        "@ripienaar",
+        "@FatGrizzly",
+        "@Skxxtz",
+        "@thispsj",
+        "@TraderStf"
+      ]
+    },
+    {
+      "name": "Comfy-Org /ComfyUI",
+      "description": "The most powerful and modular diffusion model GUI, api and backend with a graph/nodes interface.",
+      "language": "Python",
+      "stars": "129,385",
+      "forks": "15,255",
+      "starsToday": "201",
+      "url": "https://github.com/Comfy-Org/ComfyUI",
+      "builtBy": [
+        "@comfyanonymous",
+        "@bigcat88",
+        "@pythongosssss",
+        "@comfyui-wiki",
+        "@rattus128"
+      ]
+    },
+    {
+      "name": "NousResearch /hermes-agent",
+      "description": "The agent that grows with you",
+      "language": "Python",
+      "stars": "234,987",
+      "forks": "47,345",
+      "starsToday": "454",
+      "url": "https://github.com/NousResearch/hermes-agent",
+      "builtBy": [
+        "@teknium1",
+        "@OutThisLife",
+        "@kshitijk4poor",
+        "@claude",
+        "@benbarclay"
+      ]
+    }
+  ],
+  "weekly": [
+    {
       "name": "modular /modular",
       "description": "The Modular Platform (includes MAX & Mojo)",
       "language": "Mojo",
-      "stars": "28,877",
-      "forks": "3,067",
-      "starsToday": "2,017",
+      "stars": "28,972",
+      "forks": "3,076",
+      "starsToday": "2,176",
       "url": "https://github.com/modular/modular",
       "builtBy": [
         "@abduld",
@@ -357,9 +309,9 @@
       "name": "harry0703 /MoneyPrinterTurbo",
       "description": "利用 AI 大模型和自动化工作流，根据主题或关键词一键生成高清短视频。Generate HD short videos from a topic or keyword with an automated AI workflow.",
       "language": "Python",
-      "stars": "114,793",
-      "forks": "17,425",
-      "starsToday": "10,953",
+      "stars": "115,296",
+      "forks": "17,515",
+      "starsToday": "11,167",
       "url": "https://github.com/harry0703/MoneyPrinterTurbo",
       "builtBy": [
         "@harry0703",
@@ -370,299 +322,12 @@
       ]
     },
     {
-      "name": "AprilNEA /OpenLogi",
-      "description": "⚡️A native, local-first alternative to Logitech Options+, written in Rust 🦀 — remap buttons, DPI, and SmartShift over HID++. No account, no telemetry.",
-      "language": "Rust",
-      "stars": "14,106",
-      "forks": "375",
-      "starsToday": "4,993",
-      "url": "https://github.com/AprilNEA/OpenLogi",
-      "builtBy": [
-        "@AprilNEA",
-        "@davidbudnick",
-        "@aprilnea",
-        "@cserby",
-        "@tagawa0525"
-      ]
-    },
-    {
-      "name": "public-apis /public-apis",
-      "description": "A collective list of free APIs",
-      "language": "Python",
-      "stars": "468,744",
-      "forks": "51,714",
-      "starsToday": "9,381",
-      "url": "https://github.com/public-apis/public-apis",
-      "builtBy": [
-        "@matheusfelipeog",
-        "@davemachado",
-        "@ArindamOSS",
-        "@pawelborkar",
-        "@jbrooksuk"
-      ]
-    },
-    {
-      "name": "cathrynlavery /diagram-design",
-      "description": "38 editorial diagram types for Claude Code, Codex, and Pi. Self-contained HTML + SVG. No shadows. No Mermaid slop.",
-      "language": "HTML",
-      "stars": "25,546",
-      "forks": "1,570",
-      "starsToday": "7,368",
-      "url": "https://github.com/cathrynlavery/diagram-design",
-      "builtBy": [
-        "@cathrynlavery",
-        "@parveen0029",
-        "@mvanhorn",
-        "@web-flow",
-        "@0xDarkMatter"
-      ]
-    },
-    {
-      "name": "akitaonrails /ai-memory",
-      "description": "Solution for long term memory for agent coding CLIs and to facilitate handoff between different agent vendors",
-      "language": "Rust",
-      "stars": "4,120",
-      "forks": "301",
-      "starsToday": "2,575",
-      "url": "https://github.com/akitaonrails/ai-memory",
-      "builtBy": [
-        "@akitaonrails",
-        "@claude",
-        "@djalmajr",
-        "@wblech",
-        "@rthiago"
-      ]
-    },
-    {
-      "name": "jundot /omlx",
-      "description": "LLM inference server with continuous batching & SSD caching for Apple Silicon — managed from the macOS menu bar",
-      "language": "Python",
-      "stars": "20,367",
-      "forks": "1,724",
-      "starsToday": "1,597",
-      "url": "https://github.com/jundot/omlx",
-      "builtBy": [
-        "@jundot",
-        "@claude",
-        "@cfbraun",
-        "@JimStenstrom",
-        "@github-actions"
-      ]
-    },
-    {
-      "name": "semantica-agi /semantica",
-      "description": "Graph-Native Infrastructure for Context and Accountable AI Systems",
-      "language": "Python",
-      "stars": "10,313",
-      "forks": "1,111",
-      "starsToday": "2,450",
-      "url": "https://github.com/semantica-agi/semantica",
-      "builtBy": [
-        "@KaifAhmad1",
-        "@Sameer6305",
-        "@claude",
-        "@ZohaibHassan16",
-        "@dependabot"
-      ]
-    },
-    {
-      "name": "AlexsJones /llmfit",
-      "description": "Hundreds of models & providers. One command to find what runs on your hardware.",
-      "language": "Rust",
-      "stars": "33,603",
-      "forks": "2,101",
-      "starsToday": "1,949",
-      "url": "https://github.com/AlexsJones/llmfit",
-      "builtBy": [
-        "@AlexsJones",
-        "@claude",
-        "@dependabot",
-        "@three-foxes-in-a-trenchcoat",
-        "@github-actions"
-      ]
-    },
-    {
-      "name": "NVIDIA-NeMo /Switchyard",
-      "description": "Switchyard lets LLM applications route traffic across models and providers while preserving native OpenAI and Anthropic API compatibility - enabling flexible model selection, benchmarking, and cost/performance optimization.",
-      "language": "Rust",
-      "stars": "2,246",
-      "forks": "193",
-      "starsToday": "635",
-      "url": "https://github.com/NVIDIA-NeMo/Switchyard",
-      "builtBy": [
-        "@nachiketb-nvidia",
-        "@elyasmnvidian",
-        "@grahamking",
-        "@ayushag-nv",
-        "@ryan-lempka"
-      ]
-    },
-    {
-      "name": "eneskirca /nodeterm",
-      "description": "Node-based terminal manager for AI coding agents — tmux-backed terminals and parallel agent sessions as draggable nodes on an infinite pan/zoom canvas. macOS, Linux, and a browser Server Edition.",
-      "language": "TypeScript",
-      "stars": "1,064",
-      "forks": "112",
-      "starsToday": "424",
-      "url": "https://github.com/eneskirca/nodeterm",
-      "builtBy": [
-        "@eneskirca",
-        "@claude",
-        "@dkattan",
-        "@gor3a",
-        "@parsa222"
-      ]
-    }
-  ],
-  "monthly": [
-    {
-      "name": "block /buzz",
-      "description": "A hive mind communication platform",
-      "language": "Rust",
-      "stars": "29,821",
-      "forks": "3,792",
-      "starsToday": "26,583",
-      "url": "https://github.com/block/buzz",
-      "builtBy": [
-        "@wesbillman",
-        "@wpfleger96",
-        "@tlongwell-block",
-        "@claude",
-        "@klopez4212"
-      ]
-    },
-    {
-      "name": "ayghri /i-have-adhd",
-      "description": "A skill to stop your coding agent from burying the answer. ADHD-friendly output.",
-      "language": "Python",
-      "stars": "23,288",
-      "forks": "1,489",
-      "starsToday": "15,557",
-      "url": "https://github.com/ayghri/i-have-adhd",
-      "builtBy": [
-        "@ayghri",
-        "@thejesh23",
-        "@commie70",
-        "@jabrahamtech",
-        "@claude"
-      ]
-    },
-    {
-      "name": "TencentCloud /TencentDB-Agent-Memory",
-      "description": "TencentDB Agent Memory is a team-level memory hub for AI Agents — turning conversations, docs, and code into four reusable memory assets (Chat Memory, Skill, LLM-Wiki, Code-Graph) that are governed, shared, and equipped across agents and frameworks.",
-      "language": "TypeScript",
-      "stars": "23,889",
-      "forks": "2,204",
-      "starsToday": "14,702",
-      "url": "https://github.com/TencentCloud/TencentDB-Agent-Memory",
-      "builtBy": [
-        "@Yuntong8888",
-        "@Maxwell-Code07"
-      ]
-    },
-    {
-      "name": "citrolabs /ego-lite",
-      "description": "The fastest browser for AI agents to run browser automation, built for sharing your logged-in browser state with your AI agents, like Codex or Claude Code, without disturbing you. Zero cost, zero config.",
-      "language": "JavaScript",
-      "stars": "12,790",
-      "forks": "672",
-      "starsToday": "11,724",
-      "url": "https://github.com/citrolabs/ego-lite",
-      "builtBy": [
-        "@section9-lab",
-        "@claude",
-        "@WUXM5",
-        "@aute",
-        "@braxtonROSE4"
-      ]
-    },
-    {
-      "name": "permissionlesstech /bitchat",
-      "description": "bluetooth mesh chat, IRC vibes",
-      "language": "Swift",
-      "stars": "35,807",
-      "forks": "5,687",
-      "starsToday": "9,757",
-      "url": "https://github.com/permissionlesstech/bitchat",
-      "builtBy": [
-        "@jackjackbits",
-        "@claude",
-        "@qalandarov",
-        "@actions-user",
-        "@callebtc"
-      ]
-    },
-    {
-      "name": "zhaoxuya520 /reverse-skill",
-      "description": "Reverse Engineering / Authorized Penetration Testing / Security Research Skill Router Pack AI-powered routing + On-demand toolchain bootstrapping + Self-evolving knowledge base Supports Claude Code, Kiro, Cursor, Cline, and other AI coding clients 逆向/渗透/安全技能路由包 - AI 自动路由 + 按需自举工具链 + 自动进化经验库 | 支持 Claude Code / Kiro / Cursor / Cline 等代码 AI 客户端",
-      "language": "PowerShell",
-      "stars": "27,452",
-      "forks": "3,741",
-      "starsToday": "18,829",
-      "url": "https://github.com/zhaoxuya520/reverse-skill",
-      "builtBy": [
-        "@zhaoxuya520",
-        "@dhicoc",
-        "@jhuang-tw",
-        "@doublecurry",
-        "@sakukir"
-      ]
-    },
-    {
-      "name": "diegosouzapw /OmniRoute",
-      "description": "Never stop coding. Free MIT AI gateway: one endpoint, 340 providers (90+ free), 1200+ models — Kimi, Claude, GPT, Gemini, GLM, DeepSeek, MiniMax. Works with Claude Code, Codex, Cursor, OpenCode, Cline & Copilot. Quota-aware auto-fallback, RTK+Caveman compression saves 15-95% tokens, MCP/A2A, Desktop/PWA. Built by 450+ contributors",
-      "language": "TypeScript",
-      "stars": "53,350",
-      "forks": "7,289",
-      "starsToday": "29,023",
-      "url": "https://github.com/diegosouzapw/OmniRoute",
-      "builtBy": [
-        "@diegosouzapw",
-        "@backryun",
-        "@oyi77",
-        "@claude",
-        "@dependabot"
-      ]
-    },
-    {
-      "name": "microsoft /AI-For-Beginners",
-      "description": "12 Weeks, 24 Lessons, AI for All!",
-      "language": "Jupyter Notebook",
-      "stars": "66,379",
-      "forks": "12,840",
-      "starsToday": "13,881",
-      "url": "https://github.com/microsoft/AI-For-Beginners",
-      "builtBy": [
-        "@leestott",
-        "@skytin1004",
-        "@jlooper",
-        "@shwars",
-        "@BethanyJep"
-      ]
-    },
-    {
-      "name": "pingdotgg /t3code",
-      "description": "No description available",
-      "language": "TypeScript",
-      "stars": "20,088",
-      "forks": "4,738",
-      "starsToday": "5,879",
-      "url": "https://github.com/pingdotgg/t3code",
-      "builtBy": [
-        "@juliusmarminge",
-        "@codex",
-        "@t3dotgg",
-        "@claude",
-        "@cursoragent"
-      ]
-    },
-    {
       "name": "basecamp /omarchy",
       "description": "Beautiful, Modern & Opinionated Linux",
       "language": "Shell",
-      "stars": "28,430",
-      "forks": "2,895",
-      "starsToday": "4,036",
+      "stars": "29,130",
+      "forks": "2,960",
+      "starsToday": "3,660",
       "url": "https://github.com/basecamp/omarchy",
       "builtBy": [
         "@dhh",
@@ -673,28 +338,251 @@
       ]
     },
     {
-      "name": "bojieli /ai-agent-book",
-      "description": "《深入理解 AI Agent：设计原理与工程实践》（李博杰 著）开源主仓库：全书正文、编译版 PDF 与按章配套代码",
-      "language": "Python",
-      "stars": "40,998",
-      "forks": "4,526",
-      "starsToday": "24,229",
-      "url": "https://github.com/bojieli/ai-agent-book",
+      "name": "AprilNEA /OpenLogi",
+      "description": "⚡️A native, local-first alternative to Logitech Options+, written in Rust 🦀 — remap buttons, DPI, and SmartShift over HID++. No account, no telemetry.",
+      "language": "Rust",
+      "stars": "14,943",
+      "forks": "400",
+      "starsToday": "6,078",
+      "url": "https://github.com/AprilNEA/OpenLogi",
       "builtBy": [
-        "@bojieli",
+        "@AprilNEA",
+        "@davidbudnick",
+        "@aprilnea",
+        "@cserby",
+        "@github-actions"
+      ]
+    },
+    {
+      "name": "cordiverse /cordis",
+      "description": "Meta-Framework of Spatiotemporal Composability",
+      "language": "TypeScript",
+      "stars": "7,237",
+      "forks": "419",
+      "starsToday": "2,725",
+      "url": "https://github.com/cordiverse/cordis",
+      "builtBy": [
+        "@shigma",
+        "@Hieuzest",
+        "@undefined-moe",
+        "@CyanChanges",
+        "@imccyu"
+      ]
+    },
+    {
+      "name": "volcengine /OpenViking",
+      "description": "Self-evolving Context Database for AI Agents. Unify Agent Memory, Knowledge RAG and Skills.",
+      "language": "Python",
+      "stars": "32,484",
+      "forks": "2,482",
+      "starsToday": "3,799",
+      "url": "https://github.com/volcengine/OpenViking",
+      "builtBy": [
+        "@qin-ctx",
         "@claude",
-        "@santhreal",
-        "@whanyu1212",
-        "@thejesh23"
+        "@zhoujh01",
+        "@ZaynJarvis",
+        "@r266-tech"
+      ]
+    },
+    {
+      "name": "public-apis /public-apis",
+      "description": "A collective list of free APIs",
+      "language": "Python",
+      "stars": "469,213",
+      "forks": "51,756",
+      "starsToday": "8,295",
+      "url": "https://github.com/public-apis/public-apis",
+      "builtBy": [
+        "@matheusfelipeog",
+        "@davemachado",
+        "@ArindamOSS",
+        "@pawelborkar",
+        "@jbrooksuk"
+      ]
+    },
+    {
+      "name": "jundot /omlx",
+      "description": "LLM inference server with continuous batching & SSD caching for Apple Silicon — managed from the macOS menu bar",
+      "language": "Python",
+      "stars": "20,448",
+      "forks": "1,731",
+      "starsToday": "1,671",
+      "url": "https://github.com/jundot/omlx",
+      "builtBy": [
+        "@jundot",
+        "@claude",
+        "@cfbraun",
+        "@JimStenstrom",
+        "@github-actions"
+      ]
+    },
+    {
+      "name": "anthropics /claude-plugins-community",
+      "description": "Community plugin marketplace for Claude Cowork and Claude Code. Read-only mirror — submit plugins at clau.de/plugin-directory-submission.",
+      "language": "Python",
+      "stars": "946",
+      "forks": "126",
+      "starsToday": "406",
+      "url": "https://github.com/anthropics/claude-plugins-community",
+      "builtBy": [
+        "@github-actions",
+        "@bryan-anthropic",
+        "@claude",
+        "@tobinsouth",
+        "@ThariqS"
+      ]
+    },
+    {
+      "name": "cursor /plugins",
+      "description": "Cursor plugin specification and official plugins",
+      "language": "TypeScript",
+      "stars": "4,822",
+      "forks": "396",
+      "starsToday": "1,761",
+      "url": "https://github.com/cursor/plugins",
+      "builtBy": [
+        "@poteto",
+        "@cursoragent",
+        "@ericzakariasson",
+        "@n2parko",
+        "@SamSokolin"
+      ]
+    },
+    {
+      "name": "apache /maka",
+      "description": "Apache Maka (Incubating) is a local-first AI agent workspace. Model messages, tool calls, tool results, permission decisions, and termination events are recorded as an append-only log.",
+      "language": "TypeScript",
+      "stars": "2,354",
+      "forks": "269",
+      "starsToday": "859",
+      "url": "https://github.com/apache/maka",
+      "builtBy": [
+        "@jackwener",
+        "@Astro-Han",
+        "@likun666661",
+        "@M4n5ter",
+        "@hqhq1025"
+      ]
+    }
+  ],
+  "monthly": [
+    {
+      "name": "block /buzz",
+      "description": "A hive mind communication platform",
+      "language": "Rust",
+      "stars": "30,105",
+      "forks": "3,827",
+      "starsToday": "24,429",
+      "url": "https://github.com/block/buzz",
+      "builtBy": [
+        "@wesbillman",
+        "@wpfleger96",
+        "@tlongwell-block",
+        "@claude",
+        "@klopez4212"
+      ]
+    },
+    {
+      "name": "TencentCloud /TencentDB-Agent-Memory",
+      "description": "TencentDB Agent Memory is a team-level memory hub for AI Agents — turning conversations, docs, and code into four reusable memory assets (Chat Memory, Skill, LLM-Wiki, Code-Graph) that are governed, shared, and equipped across agents and frameworks.",
+      "language": "TypeScript",
+      "stars": "24,022",
+      "forks": "2,215",
+      "starsToday": "14,878",
+      "url": "https://github.com/TencentCloud/TencentDB-Agent-Memory",
+      "builtBy": [
+        "@Yuntong8888",
+        "@Maxwell-Code07"
+      ]
+    },
+    {
+      "name": "ayghri /i-have-adhd",
+      "description": "A skill to stop your coding agent from burying the answer. ADHD-friendly output.",
+      "language": "Python",
+      "stars": "23,481",
+      "forks": "1,502",
+      "starsToday": "14,450",
+      "url": "https://github.com/ayghri/i-have-adhd",
+      "builtBy": [
+        "@ayghri",
+        "@thejesh23",
+        "@commie70",
+        "@jabrahamtech",
+        "@claude"
+      ]
+    },
+    {
+      "name": "zhaoxuya520 /reverse-skill",
+      "description": "Reverse Engineering / Authorized Penetration Testing / Security Research Skill Router Pack AI-powered routing + On-demand toolchain bootstrapping + Self-evolving knowledge base Supports Claude Code, Kiro, Cursor, Cline, and other AI coding clients 逆向/渗透/安全技能路由包 - AI 自动路由 + 按需自举工具链 + 自动进化经验库 | 支持 Claude Code / Kiro / Cursor / Cline 等代码 AI 客户端",
+      "language": "PowerShell",
+      "stars": "27,880",
+      "forks": "3,796",
+      "starsToday": "19,063",
+      "url": "https://github.com/zhaoxuya520/reverse-skill",
+      "builtBy": [
+        "@zhaoxuya520",
+        "@dhicoc",
+        "@jhuang-tw",
+        "@doublecurry",
+        "@sakukir"
+      ]
+    },
+    {
+      "name": "basecamp /omarchy",
+      "description": "Beautiful, Modern & Opinionated Linux",
+      "language": "Shell",
+      "stars": "29,130",
+      "forks": "2,960",
+      "starsToday": "4,850",
+      "url": "https://github.com/basecamp/omarchy",
+      "builtBy": [
+        "@dhh",
+        "@ryanrhughes",
+        "@claude",
+        "@tahayvr",
+        "@pomartel"
+      ]
+    },
+    {
+      "name": "microsoft /AI-For-Beginners",
+      "description": "12 Weeks, 24 Lessons, AI for All!",
+      "language": "Jupyter Notebook",
+      "stars": "66,538",
+      "forks": "12,861",
+      "starsToday": "13,993",
+      "url": "https://github.com/microsoft/AI-For-Beginners",
+      "builtBy": [
+        "@leestott",
+        "@skytin1004",
+        "@jlooper",
+        "@shwars",
+        "@BethanyJep"
+      ]
+    },
+    {
+      "name": "diegosouzapw /OmniRoute",
+      "description": "Never stop coding. Free MIT AI gateway: one endpoint, 350 providers (90+ free), 1200+ models Kimi, Claude, GPT, Gemini, GLM, DeepSeek, MiniMax. Works with Claude Code, Codex, Cursor, OpenCode, Cline & Copilot. Quota-aware auto-fallback, RTK+Caveman compression saves 15-95% tokens, MCP/A2A, Desktop/PWA. Built by 450+ contributors",
+      "language": "TypeScript",
+      "stars": "53,862",
+      "forks": "7,367",
+      "starsToday": "27,573",
+      "url": "https://github.com/diegosouzapw/OmniRoute",
+      "builtBy": [
+        "@diegosouzapw",
+        "@backryun",
+        "@oyi77",
+        "@claude",
+        "@dependabot"
       ]
     },
     {
       "name": "virgiliojr94 /book-to-skill",
       "description": "Turn any technical book PDF into a Claude Code skill — ready to study, reference, and use while you work.",
       "language": "Python",
-      "stars": "24,245",
-      "forks": "2,557",
-      "starsToday": "14,737",
+      "stars": "24,658",
+      "forks": "2,580",
+      "starsToday": "15,086",
       "url": "https://github.com/virgiliojr94/book-to-skill",
       "builtBy": [
         "@virgiliojr94",
@@ -705,12 +593,92 @@
       ]
     },
     {
+      "name": "pingdotgg /t3code",
+      "description": "No description available",
+      "language": "TypeScript",
+      "stars": "20,185",
+      "forks": "4,768",
+      "starsToday": "5,876",
+      "url": "https://github.com/pingdotgg/t3code",
+      "builtBy": [
+        "@juliusmarminge",
+        "@codex",
+        "@t3dotgg",
+        "@claude",
+        "@cursoragent"
+      ]
+    },
+    {
+      "name": "citrolabs /ego-lite",
+      "description": "The fastest browser for AI agents to run browser automation, built for sharing your logged-in browser state with your AI agents, like Codex or Claude Code, without disturbing you. Zero cost, zero config.",
+      "language": "JavaScript",
+      "stars": "12,976",
+      "forks": "676",
+      "starsToday": "11,598",
+      "url": "https://github.com/citrolabs/ego-lite",
+      "builtBy": [
+        "@section9-lab",
+        "@claude",
+        "@WUXM5",
+        "@aute",
+        "@braxtonROSE4"
+      ]
+    },
+    {
+      "name": "bojieli /ai-agent-book",
+      "description": "《深入理解 AI Agent：设计原理与工程实践》（李博杰 著）开源主仓库：全书正文、编译版 PDF 与按章配套代码",
+      "language": "Python",
+      "stars": "41,193",
+      "forks": "4,549",
+      "starsToday": "23,452",
+      "url": "https://github.com/bojieli/ai-agent-book",
+      "builtBy": [
+        "@bojieli",
+        "@claude",
+        "@santhreal",
+        "@whanyu1212",
+        "@thejesh23"
+      ]
+    },
+    {
+      "name": "cactus-compute /needle",
+      "description": "14MB foundation model for tiny devices; phones, wearables, smart home, and robots.",
+      "language": "Python",
+      "stars": "8,747",
+      "forks": "564",
+      "starsToday": "5,464",
+      "url": "https://github.com/cactus-compute/needle",
+      "builtBy": [
+        "@HenryNdubuaku",
+        "@ncylich",
+        "@kar-m",
+        "@justinl66",
+        "@LeonSGP43"
+      ]
+    },
+    {
+      "name": "volcengine /OpenViking",
+      "description": "Self-evolving Context Database for AI Agents. Unify Agent Memory, Knowledge RAG and Skills.",
+      "language": "Python",
+      "stars": "32,484",
+      "forks": "2,482",
+      "starsToday": "5,332",
+      "url": "https://github.com/volcengine/OpenViking",
+      "builtBy": [
+        "@qin-ctx",
+        "@claude",
+        "@zhoujh01",
+        "@ZaynJarvis",
+        "@r266-tech"
+      ]
+    },
+    {
       "name": "mattpocock /skills",
       "description": "Skills for Real Engineers. Straight from my .agents directory.",
       "language": "Shell",
-      "stars": "232,500",
-      "forks": "19,840",
-      "starsToday": "50,486",
+      "stars": "233,853",
+      "forks": "19,945",
+      "starsToday": "50,629",
       "url": "https://github.com/mattpocock/skills",
       "builtBy": [
         "@mattpocock",
@@ -723,9 +691,9 @@
       "name": "1jehuang /jcode",
       "description": "The most RAM efficient harness",
       "language": "Rust",
-      "stars": "18,264",
-      "forks": "2,054",
-      "starsToday": "7,782",
+      "stars": "18,354",
+      "forks": "2,067",
+      "starsToday": "7,570",
       "url": "https://github.com/1jehuang/jcode",
       "builtBy": [
         "@1jehuang",
@@ -736,60 +704,12 @@
       ]
     },
     {
-      "name": "cactus-compute /needle",
-      "description": "14MB foundation model for tiny devices; phones, wearables, smart home, and robots.",
-      "language": "Python",
-      "stars": "8,621",
-      "forks": "558",
-      "starsToday": "5,263",
-      "url": "https://github.com/cactus-compute/needle",
-      "builtBy": [
-        "@HenryNdubuaku",
-        "@ncylich",
-        "@kar-m",
-        "@justinl66",
-        "@LeonSGP43"
-      ]
-    },
-    {
-      "name": "cursor /plugins",
-      "description": "Cursor plugin specification and official plugins",
-      "language": "TypeScript",
-      "stars": "4,700",
-      "forks": "384",
-      "starsToday": "2,159",
-      "url": "https://github.com/cursor/plugins",
-      "builtBy": [
-        "@poteto",
-        "@cursoragent",
-        "@ericzakariasson",
-        "@n2parko",
-        "@SamSokolin"
-      ]
-    },
-    {
-      "name": "volcengine /OpenViking",
-      "description": "Self-evolving Context Database for AI Agents. Unify Agent Memory, Knowledge RAG and Skills.",
-      "language": "Python",
-      "stars": "32,156",
-      "forks": "2,453",
-      "starsToday": "4,899",
-      "url": "https://github.com/volcengine/OpenViking",
-      "builtBy": [
-        "@qin-ctx",
-        "@claude",
-        "@zhoujh01",
-        "@ZaynJarvis",
-        "@r266-tech"
-      ]
-    },
-    {
       "name": "earendil-works /pi",
       "description": "AI agent toolkit: unified LLM API, agent loop, TUI, coding agent CLI",
       "language": "TypeScript",
-      "stars": "95,586",
-      "forks": "11,821",
-      "starsToday": "20,460",
+      "stars": "95,916",
+      "forks": "11,864",
+      "starsToday": "20,046",
       "url": "https://github.com/earendil-works/pi",
       "builtBy": [
         "@badlogic",
@@ -803,9 +723,9 @@
       "name": "megadose /holehe",
       "description": "holehe allows you to check if the mail is used on different sites like twitter, instagram and will retrieve information on sites with the forgotten password function.",
       "language": "Python",
-      "stars": "14,020",
-      "forks": "1,818",
-      "starsToday": "2,252",
+      "stars": "14,075",
+      "forks": "1,822",
+      "starsToday": "2,328",
       "url": "https://github.com/megadose/holehe",
       "builtBy": [
         "@megadose",
@@ -814,8 +734,40 @@
         "@mxrch",
         "@byt3loss"
       ]
+    },
+    {
+      "name": "modular /modular",
+      "description": "The Modular Platform (includes MAX & Mojo)",
+      "language": "Mojo",
+      "stars": "28,972",
+      "forks": "3,076",
+      "starsToday": "2,426",
+      "url": "https://github.com/modular/modular",
+      "builtBy": [
+        "@abduld",
+        "@lattner",
+        "@JoeLoser",
+        "@keith",
+        "@atomicapple0"
+      ]
+    },
+    {
+      "name": "lyogavin /airllm",
+      "description": "AirLLM 70B inference with single 4GB GPU",
+      "language": "Jupyter Notebook",
+      "stars": "32,287",
+      "forks": "3,416",
+      "starsToday": "8,428",
+      "url": "https://github.com/lyogavin/airllm",
+      "builtBy": [
+        "@lyogavin",
+        "@cursoragent",
+        "@eltociear",
+        "@NavodPeiris",
+        "@claude"
+      ]
     }
   ],
-  "lastUpdated": "2026-08-23T05:52:28.803642",
-  "totalRepositories": 51
+  "lastUpdated": "2026-08-24T00:50:17.392743",
+  "totalRepositories": 48
 }
