@@ -5,7 +5,7 @@
       "description": "No description available",
       "task": "image-text-to-text",
       "parameters": "Unknown",
-      "likes": "4,213",
+      "likes": "4,294",
       "downloads": "52,341",
       "url": "https://huggingface.co/Qwen/Qwen3.8-Flash-Next",
       "tags": [
@@ -21,7 +21,7 @@
       "description": "No description available",
       "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "1,557",
+      "likes": "1,625",
       "downloads": "189,793",
       "url": "https://huggingface.co/zai-org/GLM-5.3-Flash",
       "tags": [
@@ -37,7 +37,7 @@
       "description": "No description available",
       "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "1,207",
+      "likes": "1,274",
       "downloads": "8,804",
       "url": "https://huggingface.co/zai-org/GLM-5.3",
       "tags": [
@@ -53,7 +53,7 @@
       "description": "No description available",
       "task": "image-text-to-text",
       "parameters": "Unknown",
-      "likes": "13,182",
+      "likes": "13,262",
       "downloads": "4,028,839",
       "url": "https://huggingface.co/Qwen/Qwen3.8-27B",
       "tags": [
@@ -69,7 +69,7 @@
       "description": "No description available",
       "task": "image-text-to-text",
       "parameters": "Unknown",
-      "likes": "538",
+      "likes": "567",
       "downloads": "188,061",
       "url": "https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF",
       "tags": [
@@ -85,7 +85,7 @@
       "description": "No description available",
       "task": "Unknown",
       "parameters": "Unknown",
-      "likes": "3,163",
+      "likes": "3,187",
       "downloads": "8,363,481",
       "url": "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF",
       "tags": [
@@ -97,27 +97,11 @@
       ]
     },
     {
-      "name": "OBLITERATUS/Qwen3.8-27B-OBLITERATED",
-      "description": "No description available",
-      "task": "text-generation",
-      "parameters": "Unknown",
-      "likes": "890",
-      "downloads": "645,554",
-      "url": "https://huggingface.co/OBLITERATUS/Qwen3.8-27B-OBLITERATED",
-      "tags": [
-        "mlx",
-        "safetensors",
-        "gguf",
-        "qwen3_5",
-        "abliterated"
-      ]
-    },
-    {
       "name": "Lightricks/LTX-2.5",
       "description": "No description available",
       "task": "image-to-video",
       "parameters": "Unknown",
-      "likes": "2,053",
+      "likes": "2,139",
       "downloads": "1,044,661",
       "url": "https://huggingface.co/Lightricks/LTX-2.5",
       "tags": [
@@ -129,19 +113,19 @@
       ]
     },
     {
-      "name": "orcarouter/Qwen3.8-27B-Uncensored-MLX",
+      "name": "OBLITERATUS/Qwen3.8-27B-OBLITERATED",
       "description": "No description available",
-      "task": "image-text-to-text",
+      "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "1,198",
-      "downloads": "97,508",
-      "url": "https://huggingface.co/orcarouter/Qwen3.8-27B-Uncensored-MLX",
+      "likes": "920",
+      "downloads": "645,554",
+      "url": "https://huggingface.co/OBLITERATUS/Qwen3.8-27B-OBLITERATED",
       "tags": [
         "mlx",
         "safetensors",
+        "gguf",
         "qwen3_5",
-        "abliterated",
-        "qwen3.8"
+        "abliterated"
       ]
     },
     {
@@ -149,7 +133,7 @@
       "description": "No description available",
       "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "263",
+      "likes": "285",
       "downloads": "1,394",
       "url": "https://huggingface.co/tencent/Hy4-preview",
       "tags": [
@@ -165,7 +149,7 @@
       "description": "No description available",
       "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "259",
+      "likes": "273",
       "downloads": "27,288",
       "url": "https://huggingface.co/unsloth/GLM-5.3-Flash-GGUF",
       "tags": [
@@ -177,11 +161,27 @@
       ]
     },
     {
+      "name": "orcarouter/Qwen3.8-27B-Uncensored-MLX",
+      "description": "No description available",
+      "task": "image-text-to-text",
+      "parameters": "Unknown",
+      "likes": "1,218",
+      "downloads": "97,508",
+      "url": "https://huggingface.co/orcarouter/Qwen3.8-27B-Uncensored-MLX",
+      "tags": [
+        "mlx",
+        "safetensors",
+        "qwen3_5",
+        "abliterated",
+        "qwen3.8"
+      ]
+    },
+    {
       "name": "HauhauCS/Qwen3.8-27B-Uncensored-HauhauCS-Aggressive-MTP-GGUF",
       "description": "No description available",
       "task": "image-text-to-text",
       "parameters": "Unknown",
-      "likes": "730",
+      "likes": "748",
       "downloads": "1,061,687",
       "url": "https://huggingface.co/HauhauCS/Qwen3.8-27B-Uncensored-HauhauCS-Aggressive-MTP-GGUF",
       "tags": [
@@ -193,27 +193,11 @@
       ]
     },
     {
-      "name": "orcarouter/Qwen3.8-27B-Uncensored-FP8",
-      "description": "No description available",
-      "task": "image-text-to-text",
-      "parameters": "Unknown",
-      "likes": "1,244",
-      "downloads": "290,216",
-      "url": "https://huggingface.co/orcarouter/Qwen3.8-27B-Uncensored-FP8",
-      "tags": [
-        "transformers",
-        "safetensors",
-        "qwen3_5",
-        "image-text-to-text",
-        "abliterated"
-      ]
-    },
-    {
       "name": "MiniMaxAI/MiniMax-H3",
       "description": "No description available",
       "task": "image-text-to-video",
       "parameters": "Unknown",
-      "likes": "4,597",
+      "likes": "4,623",
       "downloads": "5,018,833",
       "url": "https://huggingface.co/MiniMaxAI/MiniMax-H3",
       "tags": [
@@ -225,11 +209,27 @@
       ]
     },
     {
+      "name": "orcarouter/Qwen3.8-27B-Uncensored-FP8",
+      "description": "No description available",
+      "task": "image-text-to-text",
+      "parameters": "Unknown",
+      "likes": "1,260",
+      "downloads": "290,216",
+      "url": "https://huggingface.co/orcarouter/Qwen3.8-27B-Uncensored-FP8",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen3_5",
+        "image-text-to-text",
+        "abliterated"
+      ]
+    },
+    {
       "name": "BreezeBlue/Breeze-TTS-2",
       "description": "No description available",
       "task": "text-to-speech",
       "parameters": "Unknown",
-      "likes": "179",
+      "likes": "192",
       "downloads": "1,017",
       "url": "https://huggingface.co/BreezeBlue/Breeze-TTS-2",
       "tags": [
@@ -245,7 +245,7 @@
       "description": "No description available",
       "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "487",
+      "likes": "497",
       "downloads": "106,562",
       "url": "https://huggingface.co/ornith-ai/Ornith-1.5-35B-A3B",
       "tags": [
@@ -257,27 +257,11 @@
       ]
     },
     {
-      "name": "JonathanColetti/Qwen3.8-27B-Uncensored-GGUF",
-      "description": "No description available",
-      "task": "text-generation",
-      "parameters": "Unknown",
-      "likes": "813",
-      "downloads": "1,843,237",
-      "url": "https://huggingface.co/JonathanColetti/Qwen3.8-27B-Uncensored-GGUF",
-      "tags": [
-        "llama.cpp",
-        "gguf",
-        "uncensored",
-        "qwen3.8",
-        "mtp"
-      ]
-    },
-    {
       "name": "orcarouter/Qwen3.8-27B-Uncensored-GGUF",
       "description": "No description available",
       "task": "image-text-to-text",
       "parameters": "Unknown",
-      "likes": "537",
+      "likes": "558",
       "downloads": "215,892",
       "url": "https://huggingface.co/orcarouter/Qwen3.8-27B-Uncensored-GGUF",
       "tags": [
@@ -293,7 +277,7 @@
       "description": "No description available",
       "task": "text-to-video",
       "parameters": "Unknown",
-      "likes": "159",
+      "likes": "162",
       "downloads": "4,250",
       "url": "https://huggingface.co/alibaba-pai/MiniMax-H3-Fun-Controlnet-Union",
       "tags": [
@@ -305,19 +289,19 @@
       ]
     },
     {
-      "name": "huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF",
+      "name": "FastVideo/FastVideo-FastH3-4-step-Preview-v1-VSA-DataFree",
       "description": "No description available",
-      "task": "image-text-to-text",
+      "task": "text-to-video",
       "parameters": "Unknown",
-      "likes": "429",
-      "downloads": "1,485,837",
-      "url": "https://huggingface.co/huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF",
+      "likes": "153",
+      "downloads": "0",
+      "url": "https://huggingface.co/FastVideo/FastVideo-FastH3-4-step-Preview-v1-VSA-DataFree",
       "tags": [
-        "transformers",
-        "gguf",
-        "abliterated",
-        "uncensored",
-        "huihui"
+        "fastvideo",
+        "diffusers",
+        "safetensors",
+        "text-to-video",
+        "video"
       ]
     },
     {
@@ -325,7 +309,7 @@
       "description": "No description available",
       "task": "image-text-to-text",
       "parameters": "Unknown",
-      "likes": "150",
+      "likes": "155",
       "downloads": "44,281",
       "url": "https://huggingface.co/Qwen/Qwen3.8-Flash-Next-FP8",
       "tags": [
@@ -337,11 +321,43 @@
       ]
     },
     {
+      "name": "huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF",
+      "description": "No description available",
+      "task": "image-text-to-text",
+      "parameters": "Unknown",
+      "likes": "439",
+      "downloads": "1,485,837",
+      "url": "https://huggingface.co/huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF",
+      "tags": [
+        "transformers",
+        "gguf",
+        "abliterated",
+        "uncensored",
+        "huihui"
+      ]
+    },
+    {
+      "name": "JonathanColetti/Qwen3.8-27B-Uncensored-GGUF",
+      "description": "No description available",
+      "task": "text-generation",
+      "parameters": "Unknown",
+      "likes": "823",
+      "downloads": "1,843,237",
+      "url": "https://huggingface.co/JonathanColetti/Qwen3.8-27B-Uncensored-GGUF",
+      "tags": [
+        "llama.cpp",
+        "gguf",
+        "uncensored",
+        "qwen3.8",
+        "mtp"
+      ]
+    },
+    {
       "name": "thomsonreuters/Thomson-1.0-Small",
       "description": "No description available",
       "task": "image-text-to-text",
       "parameters": "Unknown",
-      "likes": "147",
+      "likes": "151",
       "downloads": "831",
       "url": "https://huggingface.co/thomsonreuters/Thomson-1.0-Small",
       "tags": [
@@ -357,7 +373,7 @@
       "description": "No description available",
       "task": "text-to-video",
       "parameters": "Unknown",
-      "likes": "138",
+      "likes": "142",
       "downloads": "13,767",
       "url": "https://huggingface.co/alibaba-pai/MiniMax-H3-Acc-LoRAs",
       "tags": [
@@ -369,27 +385,11 @@
       ]
     },
     {
-      "name": "deepseek-ai/DeepSeek-V4-Flash-0731",
-      "description": "No description available",
-      "task": "text-generation",
-      "parameters": "Unknown",
-      "likes": "3,794",
-      "downloads": "4,330,482",
-      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731",
-      "tags": [
-        "transformers",
-        "safetensors",
-        "deepseek_v4",
-        "text-generation",
-        "conversational"
-      ]
-    },
-    {
       "name": "pipecat-ai/phonellm-alpha-1",
       "description": "No description available",
       "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "127",
+      "likes": "136",
       "downloads": "2,668",
       "url": "https://huggingface.co/pipecat-ai/phonellm-alpha-1",
       "tags": [
@@ -407,7 +407,7 @@
       "description": "No description available",
       "task": "text-to-image",
       "parameters": "Unknown",
-      "likes": "14,296",
+      "likes": "14,305",
       "downloads": "677,927",
       "url": "https://huggingface.co/black-forest-labs/FLUX.1-dev",
       "tags": [
@@ -423,7 +423,7 @@
       "description": "No description available",
       "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "13,593",
+      "likes": "13,595",
       "downloads": "2,722,280",
       "url": "https://huggingface.co/deepseek-ai/DeepSeek-R1",
       "tags": [
@@ -439,7 +439,7 @@
       "description": "No description available",
       "task": "image-text-to-text",
       "parameters": "Unknown",
-      "likes": "13,182",
+      "likes": "13,262",
       "downloads": "4,028,839",
       "url": "https://huggingface.co/Qwen/Qwen3.8-27B",
       "tags": [
@@ -455,7 +455,7 @@
       "description": "No description available",
       "task": "image-text-to-text",
       "parameters": "Unknown",
-      "likes": "11,071",
+      "likes": "11,083",
       "downloads": "2,701,014",
       "url": "https://huggingface.co/moonshotai/Kimi-K3",
       "tags": [
@@ -471,7 +471,7 @@
       "description": "No description available",
       "task": "text-to-image",
       "parameters": "Unknown",
-      "likes": "8,079",
+      "likes": "8,081",
       "downloads": "1,623,274",
       "url": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
       "tags": [
@@ -503,7 +503,7 @@
       "description": "No description available",
       "task": "text-to-speech",
       "parameters": "Unknown",
-      "likes": "6,771",
+      "likes": "6,775",
       "downloads": "11,541,931",
       "url": "https://huggingface.co/hexgrad/Kokoro-82M",
       "tags": [
@@ -519,7 +519,7 @@
       "description": "No description available",
       "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "6,695",
+      "likes": "6,704",
       "downloads": "5,879,470",
       "url": "https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct",
       "tags": [
@@ -551,7 +551,7 @@
       "description": "No description available",
       "task": "automatic-speech-recognition",
       "parameters": "Unknown",
-      "likes": "6,197",
+      "likes": "6,201",
       "downloads": "4,593,248",
       "url": "https://huggingface.co/openai/whisper-large-v3",
       "tags": [
@@ -567,7 +567,7 @@
       "description": "No description available",
       "task": "text-to-image",
       "parameters": "Unknown",
-      "likes": "5,627",
+      "likes": "5,632",
       "downloads": "604,032",
       "url": "https://huggingface.co/black-forest-labs/FLUX.1-schnell",
       "tags": [
@@ -599,7 +599,7 @@
       "description": "No description available",
       "task": "sentence-similarity",
       "parameters": "Unknown",
-      "likes": "5,277",
+      "likes": "5,279",
       "downloads": "247,672,573",
       "url": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2",
       "tags": [
@@ -615,7 +615,7 @@
       "description": "No description available",
       "task": "text-to-image",
       "parameters": "Unknown",
-      "likes": "5,170",
+      "likes": "5,173",
       "downloads": "702,770",
       "url": "https://huggingface.co/Tongyi-MAI/Z-Image-Turbo",
       "tags": [
@@ -631,7 +631,7 @@
       "description": "No description available",
       "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "5,132",
+      "likes": "5,135",
       "downloads": "5,173,458",
       "url": "https://huggingface.co/openai/gpt-oss-120b",
       "tags": [
@@ -647,7 +647,7 @@
       "description": "No description available",
       "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "5,059",
+      "likes": "5,060",
       "downloads": "1,832,948",
       "url": "https://huggingface.co/zai-org/GLM-5.2",
       "tags": [
@@ -695,7 +695,7 @@
       "description": "No description available",
       "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "4,967",
+      "likes": "4,968",
       "downloads": "6,434,202",
       "url": "https://huggingface.co/openai/gpt-oss-20b",
       "tags": [
@@ -711,7 +711,7 @@
       "description": "No description available",
       "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "4,859",
+      "likes": "4,860",
       "downloads": "1,644,597",
       "url": "https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct",
       "tags": [
@@ -759,7 +759,7 @@
       "description": "No description available",
       "task": "image-text-to-video",
       "parameters": "Unknown",
-      "likes": "4,597",
+      "likes": "4,623",
       "downloads": "5,018,833",
       "url": "https://huggingface.co/MiniMaxAI/MiniMax-H3",
       "tags": [
@@ -791,7 +791,7 @@
       "description": "No description available",
       "task": "image-text-to-text",
       "parameters": "Unknown",
-      "likes": "4,213",
+      "likes": "4,294",
       "downloads": "52,341",
       "url": "https://huggingface.co/Qwen/Qwen3.8-Flash-Next",
       "tags": [
@@ -809,7 +809,7 @@
       "description": "No description available",
       "task": "sentence-similarity",
       "parameters": "Unknown",
-      "likes": "5,277",
+      "likes": "5,279",
       "downloads": "247,672,573",
       "url": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2",
       "tags": [
@@ -921,7 +921,7 @@
       "description": "No description available",
       "task": "time-series-forecasting",
       "parameters": "Unknown",
-      "likes": "414",
+      "likes": "415",
       "downloads": "29,823,830",
       "url": "https://huggingface.co/amazon/chronos-2",
       "tags": [
@@ -953,7 +953,7 @@
       "description": "No description available",
       "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "1,555",
+      "likes": "1,556",
       "downloads": "22,399,005",
       "url": "https://huggingface.co/Qwen/Qwen3-0.6B",
       "tags": [
@@ -969,7 +969,7 @@
       "description": "No description available",
       "task": "translation",
       "parameters": "Unknown",
-      "likes": "594",
+      "likes": "595",
       "downloads": "22,040,557",
       "url": "https://huggingface.co/google-t5/t5-small",
       "tags": [
@@ -985,7 +985,7 @@
       "description": "No description available",
       "task": "Unknown",
       "parameters": "Unknown",
-      "likes": "1,593",
+      "likes": "1,602",
       "downloads": "20,268,528",
       "url": "https://huggingface.co/Comfy-Org/MiniMax-H3",
       "tags": [
@@ -1113,7 +1113,7 @@
       "description": "No description available",
       "task": "text-generation",
       "parameters": "Unknown",
-      "likes": "3,429",
+      "likes": "3,430",
       "downloads": "14,034,662",
       "url": "https://huggingface.co/openai-community/gpt2",
       "tags": [
@@ -1145,7 +1145,7 @@
       "description": "No description available",
       "task": "feature-extraction",
       "parameters": "Unknown",
-      "likes": "717",
+      "likes": "718",
       "downloads": "13,399,705",
       "url": "https://huggingface.co/BAAI/bge-large-en-v1.5",
       "tags": [
@@ -1177,7 +1177,7 @@
       "description": "No description available",
       "task": "image-text-to-text",
       "parameters": "Unknown",
-      "likes": "1,873",
+      "likes": "1,875",
       "downloads": "12,507,912",
       "url": "https://huggingface.co/Qwen/Qwen3.5-9B",
       "tags": [
@@ -1205,6 +1205,6 @@
       ]
     }
   ],
-  "lastUpdated": "2026-08-29T11:43:18.481191",
+  "lastUpdated": "2026-08-30T02:48:54.636477",
   "totalModels": 75
 }
