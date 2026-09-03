@@ -1,143 +1,83 @@
 {
   "daily": [
     {
-      "title": "StudentSim: Training LLM-based Student Simulators",
+      "title": "SolarWM: Open Data and Scalable Training for Long-Horizon Video World Models",
       "authors": "Unknown",
-      "abstract": "Submitted by EmpathYang 247  Microsoft Research 10 1",
-      "url": "https://huggingface.co/papers/2609.01591"
+      "abstract": "Submitted by junchao-cuhk 12  Chinese University of Hong Kong, Shenzhen 1",
+      "url": "https://huggingface.co/papers/2609.02886"
     },
     {
-      "title": "Qwen-Drive-1.0: An Initial Step towards a Vision-Language Foundation Model for Autonomous Driving",
+      "title": "It Takes Two to Match: Co-Evolving Generative Retriever with Reinforcement Learning",
       "authors": "Unknown",
-      "abstract": "Submitted by taesiri 77  Qwen 1",
-      "url": "https://huggingface.co/papers/2609.00111"
+      "abstract": "Submitted by Leo-Dai 9  Apple 1",
+      "url": "https://huggingface.co/papers/2609.00638"
     },
     {
-      "title": "SMELT: Scaling Laws for Compute-Matched MoE Looped Transformers",
+      "title": "Cliff: Learning Process Rewards from the First Mistake",
       "authors": "Unknown",
-      "abstract": "Submitted by CheeryLJH 55  ByteDance Seed 1",
-      "url": "https://huggingface.co/papers/2609.01343"
+      "abstract": "Submitted by HakHan 5  · 6 authors 1",
+      "url": "https://huggingface.co/papers/2609.02817"
     },
     {
-      "title": "UI-Venus-2 Technical Report",
+      "title": "Influence-Directed Distillation: Solving the Diversity Bottleneck in Sampled-Token On-Policy Distillation",
       "authors": "Unknown",
-      "abstract": "Submitted by taesiri 50  Ant Group",
-      "url": "https://huggingface.co/papers/2609.00028"
+      "abstract": "Submitted by Leo-Dai 3  Blibli 1",
+      "url": "https://huggingface.co/papers/2608.29846"
     },
     {
-      "title": "ZimaBlue: Evolving Generalizable World Action Models through Scalable Video Pre-training",
+      "title": "PaperCompiler: Faithful Paper-to-Code Generation via Repository-Level Specification Compilation",
       "authors": "Unknown",
-      "abstract": "Submitted by fenglinglwb 36  Joy Future Academy 3 1",
-      "url": "https://huggingface.co/papers/2609.00188"
+      "abstract": "Submitted by jaehong31 1  Nanyang Technological University Singapore 1",
+      "url": "https://huggingface.co/papers/2609.02272"
     },
     {
-      "title": "H3-World: Turning Language Understanding into World Control",
+      "title": "ExecRetrieval: Measuring the Functional-Correctness Gap in Code-Embedding Retrieval",
       "authors": "Unknown",
-      "abstract": "Submitted by INV-WZQ 30  · 5 authors 8 1",
-      "url": "https://huggingface.co/papers/2609.01560"
+      "abstract": "Submitted by AaryanK 1  Kennesaw State University 1",
+      "url": "https://huggingface.co/papers/2609.01865"
     },
     {
-      "title": "Hi-Q: Hierarchical Evidence-guided Query Refinement for Multi-Hop Question Answering",
+      "title": "Kirin: Animal Motion Generation from In-the-Wild Video",
       "authors": "Unknown",
-      "abstract": "Submitted by jueunkim 22  Pohang University of Science and Technology 1",
-      "url": "https://huggingface.co/papers/2608.30468"
+      "abstract": "Submitted by taesiri -  · 5 authors",
+      "url": "https://huggingface.co/papers/2609.01823"
     },
     {
-      "title": "Evaluating Multimodal LLMs as Generalist Vision-Language-Action Agents for Drone Control: Commanding, Approaching, Tracking and Searching",
+      "title": "MULTI3IR: A Benchmark for Multi-perspective Multi-domain Multi-modal Information Retrieval",
       "authors": "Unknown",
-      "abstract": "Submitted by gwkrsrch 17  HyperCLOVA X 0 1",
-      "url": "https://huggingface.co/papers/2609.01404"
-    },
-    {
-      "title": "Uncovering Understanding-Generation Synergy in Native Unified Multimodal Models: From Representation, Task to System",
-      "authors": "Unknown",
-      "abstract": "Submitted by craigwu 17  · 6 authors 1",
-      "url": "https://huggingface.co/papers/2609.01607"
-    },
-    {
-      "title": "Safin-1: Safety from Within through Memory-Native State Evolution",
-      "authors": "Unknown",
-      "abstract": "Submitted by Mingzh21 17  Shanghai AI Laboratory 1 1",
-      "url": "https://huggingface.co/papers/2609.00092"
-    },
-    {
-      "title": "DiagEvo: Diagnosis-Guided Self-Evolution via Hierarchical Error Memory",
-      "authors": "Unknown",
-      "abstract": "Submitted by dingyii 9  LongCat 1",
-      "url": "https://huggingface.co/papers/2609.00768"
-    },
-    {
-      "title": "EM^2Mem: Event-Centric Multimodal Memory for Large Language Models",
-      "authors": "Unknown",
-      "abstract": "Submitted by 231sm 6  ZJUNLP 1",
-      "url": "https://huggingface.co/papers/2609.00551"
-    },
-    {
-      "title": "Control-Data Flow Separation: Stable Prompt Optimization in Multi-Agent LLMs",
-      "authors": "Unknown",
-      "abstract": "Submitted by yuntian-deng 5  University of Waterloo 1 1",
-      "url": "https://huggingface.co/papers/2609.00621"
-    },
-    {
-      "title": "InternReviewer & InternAdvocate: Objective Reward and Evaluation for Agentic Reinforcement Learning in Peer Review and Rebuttal",
-      "authors": "Unknown",
-      "abstract": "Submitted by Xuerui2312 5  Shanghai AI Laboratory 1",
-      "url": "https://huggingface.co/papers/2608.28612"
-    },
-    {
-      "title": "Agents in the Large: Perception-Centered Architecture for Persistent Agents",
-      "authors": "Unknown",
-      "abstract": "Submitted by Liusc2020 4  Fudan University 1",
-      "url": "https://huggingface.co/papers/2608.30478"
-    },
-    {
-      "title": "E-Commerce Bench: Evaluating LLM Agents on Long-Horizon Autonomous Business Operation",
-      "authors": "Unknown",
-      "abstract": "Submitted by Frinkleko 4  Qwen 5 1",
-      "url": "https://huggingface.co/papers/2608.30730"
-    },
-    {
-      "title": "Harness-of-Harness: Multi-Day Autonomous Software Development with Continual Improvement",
-      "authors": "Unknown",
-      "abstract": "Submitted by taesiri 3  · 9 authors",
-      "url": "https://huggingface.co/papers/2609.01481"
-    },
-    {
-      "title": "The Mechanics of Democratic Dominance: A System Dynamics Paradigm for Dynamic Consent Engineering",
-      "authors": "Unknown",
-      "abstract": "Submitted by sukriramli 3  · 1 authors 1",
-      "url": "https://huggingface.co/papers/2608.27509"
-    },
-    {
-      "title": "ReFlowSET: Representation-Aligned Latent Flow Matching for SAR-to-EO Image Translation",
-      "authors": "Unknown",
-      "abstract": "Submitted by JeonghyeokDo 2  KAIST 2 1",
-      "url": "https://huggingface.co/papers/2609.00968"
-    },
-    {
-      "title": "Recursive Criticality of AI Self-Improvement",
-      "authors": "Unknown",
-      "abstract": "Submitted by mbur -  · 1 authors 0 5",
-      "url": "https://huggingface.co/papers/2609.00137"
+      "abstract": "Submitted by seokwon99 -  Seoul National University 1",
+      "url": "https://huggingface.co/papers/2608.30949"
     }
   ],
   "weekly": [
     {
       "title": "StudentSim: Training LLM-based Student Simulators",
       "authors": "Unknown",
-      "abstract": "Submitted by EmpathYang 247  Microsoft Research 10 1",
+      "abstract": "Submitted by EmpathYang 468  Microsoft Research 10 3",
       "url": "https://huggingface.co/papers/2609.01591"
+    },
+    {
+      "title": "Qwen-Drive-1.0: An Initial Step towards a Vision-Language Foundation Model for Autonomous Driving",
+      "authors": "Unknown",
+      "abstract": "Submitted by taesiri 345  Qwen 5",
+      "url": "https://huggingface.co/papers/2609.00111"
     },
     {
       "title": "Does On-Policy Distillation Really Distill? From Noisy Teacher to Self-Improvement",
       "authors": "Unknown",
-      "abstract": "Submitted by Tuwhy 115  Purdue University 16 3",
+      "abstract": "Submitted by Tuwhy 127  Purdue University 16 3",
       "url": "https://huggingface.co/papers/2608.31046"
+    },
+    {
+      "title": "Lucida: Parse, Generate, and Place for Composable Real-to-Sim Scene Modeling",
+      "authors": "Unknown",
+      "abstract": "Submitted by MinghanQin 99  ByteDance Seed 2",
+      "url": "https://huggingface.co/papers/2608.30821"
     },
     {
       "title": "LoopArena: Benchmarking Models as Runtime Controllers for Loop Engineering",
       "authors": "Unknown",
-      "abstract": "Submitted by CokeWang 99  AMAP-ML 76 4",
+      "abstract": "Submitted by CokeWang 99  AMAP-ML 76 5",
       "url": "https://huggingface.co/papers/2608.28281"
     },
     {
@@ -147,70 +87,70 @@
       "url": "https://huggingface.co/papers/2608.31106"
     },
     {
-      "title": "Lucida: Parse, Generate, and Place for Composable Real-to-Sim Scene Modeling",
-      "authors": "Unknown",
-      "abstract": "Submitted by MinghanQin 91  ByteDance Seed 2",
-      "url": "https://huggingface.co/papers/2608.30821"
-    },
-    {
       "title": "DART-SD: Diamond-topology Aware Retrieval and Tuning for Self-Distillation of Multi-Turn Tool-Calling Agents",
       "authors": "Unknown",
-      "abstract": "Submitted by Hangrui-Xu 88  ByteDance 3",
+      "abstract": "Submitted by Hangrui-Xu 90  ByteDance 3",
       "url": "https://huggingface.co/papers/2608.18524"
     },
     {
       "title": "Beyond Data Scaling: Representation-Centric Continued Pre-training for Vision-Language-Action Models",
       "authors": "Unknown",
-      "abstract": "Submitted by Senqiao 85  Star Vision Language Action Models 3.58k 2",
+      "abstract": "Submitted by Senqiao 88  Star Vision Language Action Models 3.58k 2",
       "url": "https://huggingface.co/papers/2608.27550"
     },
     {
-      "title": "Qwen-Drive-1.0: An Initial Step towards a Vision-Language Foundation Model for Autonomous Driving",
+      "title": "SMELT: Scaling Laws for Compute-Matched MoE Looped Transformers",
       "authors": "Unknown",
-      "abstract": "Submitted by taesiri 77  Qwen 1",
-      "url": "https://huggingface.co/papers/2609.00111"
+      "abstract": "Submitted by CheeryLJH 77  ByteDance Seed 2",
+      "url": "https://huggingface.co/papers/2609.01343"
     },
     {
       "title": "GenFirst: Generation Before Reconstruction for Stable End-to-End Latent Generative Modeling",
       "authors": "Unknown",
-      "abstract": "Submitted by Yiyuan 60  ByteDance Seed 2",
+      "abstract": "Submitted by Yiyuan 61  ByteDance Seed 2",
       "url": "https://huggingface.co/papers/2608.29335"
     },
     {
       "title": "Agentic Artifact Creation: Systems, Evaluation, Principles, and Opportunities",
       "authors": "Unknown",
-      "abstract": "Submitted by GeminiLight 57  Hong Kong University of Science and Technology(GuangZhou) 17 3",
+      "abstract": "Submitted by GeminiLight 60  Hong Kong University of Science and Technology(GuangZhou) 17 3",
       "url": "https://huggingface.co/papers/2608.28122"
-    },
-    {
-      "title": "SMELT: Scaling Laws for Compute-Matched MoE Looped Transformers",
-      "authors": "Unknown",
-      "abstract": "Submitted by CheeryLJH 55  ByteDance Seed 1",
-      "url": "https://huggingface.co/papers/2609.01343"
     },
     {
       "title": "UI-Venus-2 Technical Report",
       "authors": "Unknown",
-      "abstract": "Submitted by taesiri 50  Ant Group",
+      "abstract": "Submitted by taesiri 56  Ant Group 1",
       "url": "https://huggingface.co/papers/2609.00028"
     },
     {
       "title": "Normalized Low-Rank Adaptation",
       "authors": "Unknown",
-      "abstract": "Submitted by Jo1uck 47  · 5 authors 19 3",
+      "abstract": "Submitted by Jo1uck 50  · 5 authors 19 3",
       "url": "https://huggingface.co/papers/2608.31036"
     },
     {
       "title": "Code as Worlds: Agentic Discovery of Executable World Representations for Physical Reasoning",
       "authors": "Unknown",
-      "abstract": "Submitted by manchery 46  MirroS 367 2",
+      "abstract": "Submitted by manchery 47  MirroS 367 2",
       "url": "https://huggingface.co/papers/2608.27549"
     },
     {
       "title": "On the Design of Qwen3.8-Next Architecture: Evaluation, Efficiency, and Training Stability",
       "authors": "Unknown",
-      "abstract": "Submitted by taesiri 42  Qwen 1",
+      "abstract": "Submitted by taesiri 46  Qwen 1",
       "url": "https://huggingface.co/papers/2608.30320"
+    },
+    {
+      "title": "H3-World: Turning Language Understanding into World Control",
+      "authors": "Unknown",
+      "abstract": "Submitted by INV-WZQ 42  · 5 authors 8 3",
+      "url": "https://huggingface.co/papers/2609.01560"
+    },
+    {
+      "title": "ZimaBlue: Evolving Generalizable World Action Models through Scalable Video Pre-training",
+      "authors": "Unknown",
+      "abstract": "Submitted by fenglinglwb 40  Joy Future Academy 3 2",
+      "url": "https://huggingface.co/papers/2609.00188"
     },
     {
       "title": "J-Zero: Unified Challenger--Solver--Judge Co-Evolution from Zero Data",
@@ -221,38 +161,44 @@
     {
       "title": "StarHarness: Evolving Harnesses with Stratified Search for Enterprise Environments",
       "authors": "Unknown",
-      "abstract": "Submitted by dotvignesh 37  ServiceNow-AI 2",
+      "abstract": "Submitted by dotvignesh 39  ServiceNow-AI 2",
       "url": "https://huggingface.co/papers/2608.24804"
-    },
-    {
-      "title": "ZimaBlue: Evolving Generalizable World Action Models through Scalable Video Pre-training",
-      "authors": "Unknown",
-      "abstract": "Submitted by fenglinglwb 36  Joy Future Academy 3 1",
-      "url": "https://huggingface.co/papers/2609.00188"
     },
     {
       "title": "PaperGym: Rubric-Centered Evolution for Research-Plan Generation",
       "authors": "Unknown",
-      "abstract": "Submitted by LZXzju 35  · 9 authors 21 2",
+      "abstract": "Submitted by LZXzju 36  · 9 authors 21 2",
       "url": "https://huggingface.co/papers/2608.31119"
     },
     {
       "title": "Puro-2B: Poor Lab's Qwen2-1.5B Trained on RTX 5090 within $5090",
       "authors": "Unknown",
-      "abstract": "Submitted by harryleafchen 32  PACMAN Group, Tsinghua University 63 7",
+      "abstract": "Submitted by harryleafchen 35  PACMAN Group, Tsinghua University 63 7",
       "url": "https://huggingface.co/papers/2608.27370"
+    },
+    {
+      "title": "From Production Traffic to Post-Training: Building a Self-Hosted LLM That Covers the Corporate Request Mix",
+      "authors": "Unknown",
+      "abstract": "Submitted by kenkaneki 32  T-Tech 3",
+      "url": "https://huggingface.co/papers/2609.01572"
     },
     {
       "title": "Revisiting Local Context for Long-Horizon Streaming 3D Reconstruction",
       "authors": "Unknown",
-      "abstract": "Submitted by qian43 31  Alibaba AMAP CV Lab 372 4",
+      "abstract": "Submitted by qian43 32  Alibaba AMAP CV Lab 372 4",
       "url": "https://huggingface.co/papers/2608.27529"
     },
     {
-      "title": "H3-World: Turning Language Understanding into World Control",
+      "title": "Act with Intent: Distilling Behavior Intent for Vision-Language-Action Models",
       "authors": "Unknown",
-      "abstract": "Submitted by INV-WZQ 30  · 5 authors 8 1",
-      "url": "https://huggingface.co/papers/2609.01560"
+      "abstract": "Submitted by leesangoh 30  Pohang University of Science and Technology 5 2",
+      "url": "https://huggingface.co/papers/2608.23478"
+    },
+    {
+      "title": "CogEvol: Towards Efficient and Reliable Learning Environment Generation",
+      "authors": "Unknown",
+      "abstract": "Submitted by tsq2000 29  元知进化（北京）科技有限公司 30 2",
+      "url": "https://huggingface.co/papers/2608.30968"
     },
     {
       "title": "Fast Weight Attention for Continual Learning",
@@ -261,82 +207,88 @@
       "url": "https://huggingface.co/papers/2608.27763"
     },
     {
-      "title": "Act with Intent: Distilling Behavior Intent for Vision-Language-Action Models",
+      "title": "SHAPE of Chain-of-Thought in Math Reasoning",
       "authors": "Unknown",
-      "abstract": "Submitted by leesangoh 29  Pohang University of Science and Technology 5 2",
-      "url": "https://huggingface.co/papers/2608.23478"
-    },
-    {
-      "title": "CogEvol: Towards Efficient and Reliable Learning Environment Generation",
-      "authors": "Unknown",
-      "abstract": "Submitted by tsq2000 28  元知进化（北京）科技有限公司 30 2",
-      "url": "https://huggingface.co/papers/2608.30968"
+      "abstract": "Submitted by Riasok 29  Seoul National University 2 2",
+      "url": "https://huggingface.co/papers/2608.28600"
     },
     {
       "title": "LayerRecall: A State-Conditioned Memory Router for Long-Horizon Consistency in Video Generation",
       "authors": "Unknown",
-      "abstract": "Submitted by Yixuan-Ding-ZJU 27  Zhejiang University 11 2",
+      "abstract": "Submitted by Yixuan-Ding-ZJU 28  Zhejiang University 11 2",
       "url": "https://huggingface.co/papers/2608.28460"
-    },
-    {
-      "title": "SHAPE of Chain-of-Thought in Math Reasoning",
-      "authors": "Unknown",
-      "abstract": "Submitted by Riasok 26  Seoul National University 2 2",
-      "url": "https://huggingface.co/papers/2608.28600"
     },
     {
       "title": "LightNav-0: Eliciting VLM Spatial Intelligence for Generalist Embodied Navigation",
       "authors": "Unknown",
-      "abstract": "Submitted by xinhang0111 25  Light Origins 253 2",
+      "abstract": "Submitted by xinhang0111 27  Light Origins 253 2",
       "url": "https://huggingface.co/papers/2608.30935"
     },
     {
-      "title": "ContextPilot: Teaching Agents for Proactive Context Management via Fine-grained RL",
+      "title": "Hi-Q: Hierarchical Evidence-guided Query Refinement for Multi-Hop Question Answering",
       "authors": "Unknown",
-      "abstract": "Submitted by Junrulu 25  Tencent 75 2",
-      "url": "https://huggingface.co/papers/2608.28476"
+      "abstract": "Submitted by jueunkim 26  Pohang University of Science and Technology 2",
+      "url": "https://huggingface.co/papers/2608.30468"
     },
     {
       "title": "Super Library Agent: Joint Generation and Maintenance of Multiple Applications Beyond the Single Codebase",
       "authors": "Unknown",
-      "abstract": "Submitted by Sung10230 24  KAIST AI 0 4",
+      "abstract": "Submitted by Sung10230 26  KAIST AI 0 4",
       "url": "https://huggingface.co/papers/2608.29310"
     },
     {
       "title": "Evaluating the Hidden Costs of Personalization in Large Language Models",
       "authors": "Unknown",
-      "abstract": "Submitted by alexWang2002 24  University of Illinois at Urbana-Champaign 0 2",
+      "abstract": "Submitted by alexWang2002 26  University of Illinois at Urbana-Champaign 0 2",
       "url": "https://huggingface.co/papers/2608.28833"
+    },
+    {
+      "title": "ContextPilot: Teaching Agents for Proactive Context Management via Fine-grained RL",
+      "authors": "Unknown",
+      "abstract": "Submitted by Junrulu 26  Tencent 75 2",
+      "url": "https://huggingface.co/papers/2608.28476"
     },
     {
       "title": "Scaling Large Reasoning Models beyond Human Supervision: A Path toward Superintelligence",
       "authors": "Unknown",
-      "abstract": "Submitted by visity 23  · 19 authors 12 2",
+      "abstract": "Submitted by visity 24  · 19 authors 12 2",
       "url": "https://huggingface.co/papers/2608.31075"
-    },
-    {
-      "title": "Hi-Q: Hierarchical Evidence-guided Query Refinement for Multi-Hop Question Answering",
-      "authors": "Unknown",
-      "abstract": "Submitted by jueunkim 22  Pohang University of Science and Technology 1",
-      "url": "https://huggingface.co/papers/2608.30468"
-    },
-    {
-      "title": "Evaluating Multimodal LLMs as Generalist Vision-Language-Action Agents for Drone Control: Commanding, Approaching, Tracking and Searching",
-      "authors": "Unknown",
-      "abstract": "Submitted by gwkrsrch 17  HyperCLOVA X 0 1",
-      "url": "https://huggingface.co/papers/2609.01404"
     },
     {
       "title": "Uncovering Understanding-Generation Synergy in Native Unified Multimodal Models: From Representation, Task to System",
       "authors": "Unknown",
-      "abstract": "Submitted by craigwu 17  · 6 authors 1",
+      "abstract": "Submitted by craigwu 22  · 6 authors 2",
       "url": "https://huggingface.co/papers/2609.01607"
+    },
+    {
+      "title": "Evaluating Multimodal LLMs as Generalist Vision-Language-Action Agents for Drone Control: Commanding, Approaching, Tracking and Searching",
+      "authors": "Unknown",
+      "abstract": "Submitted by gwkrsrch 21  HyperCLOVA X 0 2",
+      "url": "https://huggingface.co/papers/2609.01404"
     },
     {
       "title": "Safin-1: Safety from Within through Memory-Native State Evolution",
       "authors": "Unknown",
-      "abstract": "Submitted by Mingzh21 17  Shanghai AI Laboratory 1 1",
+      "abstract": "Submitted by Mingzh21 20  Shanghai AI Laboratory 1 2",
       "url": "https://huggingface.co/papers/2609.00092"
+    },
+    {
+      "title": "Blind Men and the Elephant: Probing the Epistemic Myopia of LLMs under Long-Tail Divergent Knowledge",
+      "authors": "Unknown",
+      "abstract": "Submitted by Junrulu 17  Tencent 4 2",
+      "url": "https://huggingface.co/papers/2608.28478"
+    },
+    {
+      "title": "AgentJudgeBench: A Multi-Difficulty Benchmark for Evaluating LLM Judges on Agentic Tool-Calling",
+      "authors": "Unknown",
+      "abstract": "Submitted by amitsaha 17  ServiceNow-AI 2",
+      "url": "https://huggingface.co/papers/2608.26623"
+    },
+    {
+      "title": "Learning to Evaluate Before Improving: Automatic Rubric Induction for Automatic Research Agents",
+      "authors": "Unknown",
+      "abstract": "Submitted by 231sm 16  ZJUNLP 22 2",
+      "url": "https://huggingface.co/papers/2608.31076"
     },
     {
       "title": "Locate Anything in Videos: Rethinking Efficient Generative Spatio-Temporal Video Grounding",
@@ -345,16 +297,28 @@
       "url": "https://huggingface.co/papers/2608.28192"
     },
     {
-      "title": "Blind Men and the Elephant: Probing the Epistemic Myopia of LLMs under Long-Tail Divergent Knowledge",
+      "title": "DiagEvo: Diagnosis-Guided Self-Evolution via Hierarchical Error Memory",
       "authors": "Unknown",
-      "abstract": "Submitted by Junrulu 16  Tencent 4 2",
-      "url": "https://huggingface.co/papers/2608.28478"
+      "abstract": "Submitted by dingyii 15  LongCat 2",
+      "url": "https://huggingface.co/papers/2609.00768"
     },
     {
-      "title": "Learning to Evaluate Before Improving: Automatic Rubric Induction for Automatic Research Agents",
+      "title": "Ring Forcing: Towards Precise Long-Term Memory for Autoregressive Video Diffusion",
       "authors": "Unknown",
-      "abstract": "Submitted by 231sm 15  ZJUNLP 22 2",
-      "url": "https://huggingface.co/papers/2608.31076"
+      "abstract": "Submitted by chenguolin 15  · 9 authors 2",
+      "url": "https://huggingface.co/papers/2608.26794"
+    },
+    {
+      "title": "Paint What You See: Benchmarking Dexterous Visual Tool Use in Multimodal Agents",
+      "authors": "Unknown",
+      "abstract": "Submitted by DongyangChen 15  EASEL-Bench 0 2",
+      "url": "https://huggingface.co/papers/2608.25417"
+    },
+    {
+      "title": "StepGuard: Learning Step-Level Guardrails with Scalable Supervision and Safety-Utility Balancing",
+      "authors": "Unknown",
+      "abstract": "Submitted by yushaohan 15  AI45Research 3 2",
+      "url": "https://huggingface.co/papers/2608.24777"
     },
     {
       "title": "Matrix-Game 3.5: Enhancing Real-Time Streaming Interactive World Models with Patch Memory",
@@ -369,72 +333,48 @@
       "url": "https://huggingface.co/papers/2608.28444"
     },
     {
-      "title": "Paint What You See: Benchmarking Dexterous Visual Tool Use in Multimodal Agents",
+      "title": "Video Generative Models as Geometry Learner",
       "authors": "Unknown",
-      "abstract": "Submitted by DongyangChen 14  EASEL-Bench 0 2",
-      "url": "https://huggingface.co/papers/2608.25417"
+      "abstract": "Submitted by taesiri 13  · 5 authors 1",
+      "url": "https://huggingface.co/papers/2608.28549"
     },
     {
-      "title": "StepGuard: Learning Step-Level Guardrails with Scalable Supervision and Safety-Utility Balancing",
+      "title": "SolarWM: Open Data and Scalable Training for Long-Horizon Video World Models",
       "authors": "Unknown",
-      "abstract": "Submitted by yushaohan 14  AI45Research 3 2",
-      "url": "https://huggingface.co/papers/2608.24777"
-    },
-    {
-      "title": "Ring Forcing: Towards Precise Long-Term Memory for Autoregressive Video Diffusion",
-      "authors": "Unknown",
-      "abstract": "Submitted by chenguolin 13  · 9 authors 2",
-      "url": "https://huggingface.co/papers/2608.26794"
+      "abstract": "Submitted by junchao-cuhk 12  Chinese University of Hong Kong, Shenzhen 1",
+      "url": "https://huggingface.co/papers/2609.02886"
     },
     {
       "title": "Lies We Can See: Joint Verbal and Non-Verbal Deception by VLM Agents in Embodied Social Interactions",
       "authors": "Unknown",
-      "abstract": "Submitted by ahnpersie 12  Seoul National University 5 2",
+      "abstract": "Submitted by ahnpersie 12  Seoul National University 8 2",
       "url": "https://huggingface.co/papers/2608.30428"
-    },
-    {
-      "title": "Video Generative Models as Geometry Learner",
-      "authors": "Unknown",
-      "abstract": "Submitted by taesiri 12  · 5 authors 1",
-      "url": "https://huggingface.co/papers/2608.28549"
-    },
-    {
-      "title": "PonderPounce: A Pretrained MLLM as an Episode Context Engine for Robot Control",
-      "authors": "Unknown",
-      "abstract": "Submitted by lastdefiance20 12  maum-ai 3 2",
-      "url": "https://huggingface.co/papers/2608.24115"
-    },
-    {
-      "title": "Keep-or-Drop? Adaptive Tokenizer for Compact Video Representation",
-      "authors": "Unknown",
-      "abstract": "Submitted by yeon-kyeong 11  Kakao Corp. 2",
-      "url": "https://huggingface.co/papers/2608.24293"
-    },
-    {
-      "title": "Chain-of-Thought Faithfulness of Reasoning Models Varies with Where and How Preference Cues Are Delivered",
-      "authors": "Unknown",
-      "abstract": "Submitted by pminervini 10  EdinburghNLP - Natural Language Processing Group at the University of Edinburgh 2 2",
-      "url": "https://huggingface.co/papers/2608.29464"
-    },
-    {
-      "title": "DiagEvo: Diagnosis-Guided Self-Evolution via Hierarchical Error Memory",
-      "authors": "Unknown",
-      "abstract": "Submitted by dingyii 9  LongCat 1",
-      "url": "https://huggingface.co/papers/2609.00768"
     }
   ],
   "monthly": [
     {
       "title": "StudentSim: Training LLM-based Student Simulators",
       "authors": "Unknown",
-      "abstract": "Submitted by EmpathYang 247  Microsoft Research 10 1",
+      "abstract": "Submitted by EmpathYang 468  Microsoft Research 10 3",
       "url": "https://huggingface.co/papers/2609.01591"
+    },
+    {
+      "title": "Qwen-Drive-1.0: An Initial Step towards a Vision-Language Foundation Model for Autonomous Driving",
+      "authors": "Unknown",
+      "abstract": "Submitted by taesiri 345  Qwen 5",
+      "url": "https://huggingface.co/papers/2609.00111"
     },
     {
       "title": "Does On-Policy Distillation Really Distill? From Noisy Teacher to Self-Improvement",
       "authors": "Unknown",
-      "abstract": "Submitted by Tuwhy 115  Purdue University 16 3",
+      "abstract": "Submitted by Tuwhy 127  Purdue University 16 3",
       "url": "https://huggingface.co/papers/2608.31046"
+    },
+    {
+      "title": "Lucida: Parse, Generate, and Place for Composable Real-to-Sim Scene Modeling",
+      "authors": "Unknown",
+      "abstract": "Submitted by MinghanQin 99  ByteDance Seed 2",
+      "url": "https://huggingface.co/papers/2608.30821"
     },
     {
       "title": "DreamX-Creator: Democratizing Native Audio-Video Generation at 2K Resolution",
@@ -443,130 +383,136 @@
       "url": "https://huggingface.co/papers/2608.31106"
     },
     {
-      "title": "Lucida: Parse, Generate, and Place for Composable Real-to-Sim Scene Modeling",
+      "title": "SMELT: Scaling Laws for Compute-Matched MoE Looped Transformers",
       "authors": "Unknown",
-      "abstract": "Submitted by MinghanQin 91  ByteDance Seed 2",
-      "url": "https://huggingface.co/papers/2608.30821"
-    },
-    {
-      "title": "Qwen-Drive-1.0: An Initial Step towards a Vision-Language Foundation Model for Autonomous Driving",
-      "authors": "Unknown",
-      "abstract": "Submitted by taesiri 77  Qwen 1",
-      "url": "https://huggingface.co/papers/2609.00111"
+      "abstract": "Submitted by CheeryLJH 77  ByteDance Seed 2",
+      "url": "https://huggingface.co/papers/2609.01343"
     },
     {
       "title": "GenFirst: Generation Before Reconstruction for Stable End-to-End Latent Generative Modeling",
       "authors": "Unknown",
-      "abstract": "Submitted by Yiyuan 60  ByteDance Seed 2",
+      "abstract": "Submitted by Yiyuan 61  ByteDance Seed 2",
       "url": "https://huggingface.co/papers/2608.29335"
-    },
-    {
-      "title": "SMELT: Scaling Laws for Compute-Matched MoE Looped Transformers",
-      "authors": "Unknown",
-      "abstract": "Submitted by CheeryLJH 55  ByteDance Seed 1",
-      "url": "https://huggingface.co/papers/2609.01343"
     },
     {
       "title": "UI-Venus-2 Technical Report",
       "authors": "Unknown",
-      "abstract": "Submitted by taesiri 50  Ant Group",
+      "abstract": "Submitted by taesiri 56  Ant Group 1",
       "url": "https://huggingface.co/papers/2609.00028"
     },
     {
       "title": "Normalized Low-Rank Adaptation",
       "authors": "Unknown",
-      "abstract": "Submitted by Jo1uck 47  · 5 authors 19 3",
+      "abstract": "Submitted by Jo1uck 50  · 5 authors 19 3",
       "url": "https://huggingface.co/papers/2608.31036"
     },
     {
       "title": "On the Design of Qwen3.8-Next Architecture: Evaluation, Efficiency, and Training Stability",
       "authors": "Unknown",
-      "abstract": "Submitted by taesiri 42  Qwen 1",
+      "abstract": "Submitted by taesiri 46  Qwen 1",
       "url": "https://huggingface.co/papers/2608.30320"
+    },
+    {
+      "title": "H3-World: Turning Language Understanding into World Control",
+      "authors": "Unknown",
+      "abstract": "Submitted by INV-WZQ 42  · 5 authors 8 3",
+      "url": "https://huggingface.co/papers/2609.01560"
     },
     {
       "title": "ZimaBlue: Evolving Generalizable World Action Models through Scalable Video Pre-training",
       "authors": "Unknown",
-      "abstract": "Submitted by fenglinglwb 36  Joy Future Academy 3 1",
+      "abstract": "Submitted by fenglinglwb 40  Joy Future Academy 3 2",
       "url": "https://huggingface.co/papers/2609.00188"
     },
     {
       "title": "PaperGym: Rubric-Centered Evolution for Research-Plan Generation",
       "authors": "Unknown",
-      "abstract": "Submitted by LZXzju 35  · 9 authors 21 2",
+      "abstract": "Submitted by LZXzju 36  · 9 authors 21 2",
       "url": "https://huggingface.co/papers/2608.31119"
     },
     {
-      "title": "H3-World: Turning Language Understanding into World Control",
+      "title": "From Production Traffic to Post-Training: Building a Self-Hosted LLM That Covers the Corporate Request Mix",
       "authors": "Unknown",
-      "abstract": "Submitted by INV-WZQ 30  · 5 authors 8 1",
-      "url": "https://huggingface.co/papers/2609.01560"
+      "abstract": "Submitted by kenkaneki 32  T-Tech 3",
+      "url": "https://huggingface.co/papers/2609.01572"
     },
     {
       "title": "CogEvol: Towards Efficient and Reliable Learning Environment Generation",
       "authors": "Unknown",
-      "abstract": "Submitted by tsq2000 28  元知进化（北京）科技有限公司 30 2",
+      "abstract": "Submitted by tsq2000 29  元知进化（北京）科技有限公司 30 2",
       "url": "https://huggingface.co/papers/2608.30968"
     },
     {
       "title": "SHAPE of Chain-of-Thought in Math Reasoning",
       "authors": "Unknown",
-      "abstract": "Submitted by Riasok 26  Seoul National University 2 2",
+      "abstract": "Submitted by Riasok 29  Seoul National University 2 2",
       "url": "https://huggingface.co/papers/2608.28600"
     },
     {
       "title": "LightNav-0: Eliciting VLM Spatial Intelligence for Generalist Embodied Navigation",
       "authors": "Unknown",
-      "abstract": "Submitted by xinhang0111 25  Light Origins 253 2",
+      "abstract": "Submitted by xinhang0111 27  Light Origins 253 2",
       "url": "https://huggingface.co/papers/2608.30935"
+    },
+    {
+      "title": "Hi-Q: Hierarchical Evidence-guided Query Refinement for Multi-Hop Question Answering",
+      "authors": "Unknown",
+      "abstract": "Submitted by jueunkim 26  Pohang University of Science and Technology 2",
+      "url": "https://huggingface.co/papers/2608.30468"
     },
     {
       "title": "Super Library Agent: Joint Generation and Maintenance of Multiple Applications Beyond the Single Codebase",
       "authors": "Unknown",
-      "abstract": "Submitted by Sung10230 24  KAIST AI 0 4",
+      "abstract": "Submitted by Sung10230 26  KAIST AI 0 4",
       "url": "https://huggingface.co/papers/2608.29310"
     },
     {
       "title": "Evaluating the Hidden Costs of Personalization in Large Language Models",
       "authors": "Unknown",
-      "abstract": "Submitted by alexWang2002 24  University of Illinois at Urbana-Champaign 0 2",
+      "abstract": "Submitted by alexWang2002 26  University of Illinois at Urbana-Champaign 0 2",
       "url": "https://huggingface.co/papers/2608.28833"
     },
     {
       "title": "Scaling Large Reasoning Models beyond Human Supervision: A Path toward Superintelligence",
       "authors": "Unknown",
-      "abstract": "Submitted by visity 23  · 19 authors 12 2",
+      "abstract": "Submitted by visity 24  · 19 authors 12 2",
       "url": "https://huggingface.co/papers/2608.31075"
-    },
-    {
-      "title": "Hi-Q: Hierarchical Evidence-guided Query Refinement for Multi-Hop Question Answering",
-      "authors": "Unknown",
-      "abstract": "Submitted by jueunkim 22  Pohang University of Science and Technology 1",
-      "url": "https://huggingface.co/papers/2608.30468"
-    },
-    {
-      "title": "Evaluating Multimodal LLMs as Generalist Vision-Language-Action Agents for Drone Control: Commanding, Approaching, Tracking and Searching",
-      "authors": "Unknown",
-      "abstract": "Submitted by gwkrsrch 17  HyperCLOVA X 0 1",
-      "url": "https://huggingface.co/papers/2609.01404"
     },
     {
       "title": "Uncovering Understanding-Generation Synergy in Native Unified Multimodal Models: From Representation, Task to System",
       "authors": "Unknown",
-      "abstract": "Submitted by craigwu 17  · 6 authors 1",
+      "abstract": "Submitted by craigwu 22  · 6 authors 2",
       "url": "https://huggingface.co/papers/2609.01607"
+    },
+    {
+      "title": "Evaluating Multimodal LLMs as Generalist Vision-Language-Action Agents for Drone Control: Commanding, Approaching, Tracking and Searching",
+      "authors": "Unknown",
+      "abstract": "Submitted by gwkrsrch 21  HyperCLOVA X 0 2",
+      "url": "https://huggingface.co/papers/2609.01404"
     },
     {
       "title": "Safin-1: Safety from Within through Memory-Native State Evolution",
       "authors": "Unknown",
-      "abstract": "Submitted by Mingzh21 17  Shanghai AI Laboratory 1 1",
+      "abstract": "Submitted by Mingzh21 20  Shanghai AI Laboratory 1 2",
       "url": "https://huggingface.co/papers/2609.00092"
+    },
+    {
+      "title": "AgentJudgeBench: A Multi-Difficulty Benchmark for Evaluating LLM Judges on Agentic Tool-Calling",
+      "authors": "Unknown",
+      "abstract": "Submitted by amitsaha 17  ServiceNow-AI 2",
+      "url": "https://huggingface.co/papers/2608.26623"
     },
     {
       "title": "Learning to Evaluate Before Improving: Automatic Rubric Induction for Automatic Research Agents",
       "authors": "Unknown",
-      "abstract": "Submitted by 231sm 15  ZJUNLP 22 2",
+      "abstract": "Submitted by 231sm 16  ZJUNLP 22 2",
       "url": "https://huggingface.co/papers/2608.31076"
+    },
+    {
+      "title": "DiagEvo: Diagnosis-Guided Self-Evolution via Hierarchical Error Memory",
+      "authors": "Unknown",
+      "abstract": "Submitted by dingyii 15  LongCat 2",
+      "url": "https://huggingface.co/papers/2609.00768"
     },
     {
       "title": "Matrix-Game 3.5: Enhancing Real-Time Streaming Interactive World Models with Patch Memory",
@@ -575,10 +521,22 @@
       "url": "https://huggingface.co/papers/2608.29910"
     },
     {
+      "title": "SolarWM: Open Data and Scalable Training for Long-Horizon Video World Models",
+      "authors": "Unknown",
+      "abstract": "Submitted by junchao-cuhk 12  Chinese University of Hong Kong, Shenzhen 1",
+      "url": "https://huggingface.co/papers/2609.02886"
+    },
+    {
       "title": "Lies We Can See: Joint Verbal and Non-Verbal Deception by VLM Agents in Embodied Social Interactions",
       "authors": "Unknown",
-      "abstract": "Submitted by ahnpersie 12  Seoul National University 5 2",
+      "abstract": "Submitted by ahnpersie 12  Seoul National University 8 2",
       "url": "https://huggingface.co/papers/2608.30428"
+    },
+    {
+      "title": "Chain-of-Thought Faithfulness of Reasoning Models Varies with Where and How Preference Cues Are Delivered",
+      "authors": "Unknown",
+      "abstract": "Submitted by pminervini 11  EdinburghNLP - Natural Language Processing Group at the University of Edinburgh 2 2",
+      "url": "https://huggingface.co/papers/2608.29464"
     },
     {
       "title": "Keep-or-Drop? Adaptive Tokenizer for Compact Video Representation",
@@ -587,28 +545,58 @@
       "url": "https://huggingface.co/papers/2608.24293"
     },
     {
-      "title": "Chain-of-Thought Faithfulness of Reasoning Models Varies with Where and How Preference Cues Are Delivered",
+      "title": "Harness-of-Harness: Multi-Day Autonomous Software Development with Continual Improvement",
       "authors": "Unknown",
-      "abstract": "Submitted by pminervini 10  EdinburghNLP - Natural Language Processing Group at the University of Edinburgh 2 2",
-      "url": "https://huggingface.co/papers/2608.29464"
+      "abstract": "Submitted by taesiri 10  · 9 authors 1",
+      "url": "https://huggingface.co/papers/2609.01481"
     },
     {
-      "title": "DiagEvo: Diagnosis-Guided Self-Evolution via Hierarchical Error Memory",
+      "title": "It Takes Two to Match: Co-Evolving Generative Retriever with Reinforcement Learning",
       "authors": "Unknown",
-      "abstract": "Submitted by dingyii 9  LongCat 1",
-      "url": "https://huggingface.co/papers/2609.00768"
+      "abstract": "Submitted by Leo-Dai 9  Apple 1",
+      "url": "https://huggingface.co/papers/2609.00638"
     },
     {
-      "title": "GUI-CC: Benchmarking Contextual Consistency of GUI World Models as Agent Environments",
+      "title": "EM^2Mem: Event-Centric Multimodal Memory for Large Language Models",
       "authors": "Unknown",
-      "abstract": "Submitted by minuzero 8  · 8 authors 1 1",
-      "url": "https://huggingface.co/papers/2609.00048"
+      "abstract": "Submitted by 231sm 9  ZJUNLP 2",
+      "url": "https://huggingface.co/papers/2609.00551"
     },
     {
       "title": "PaperBanana-Interact: Scientific Diagram Refinement with Multi-Turn Human Feedback",
       "authors": "Unknown",
-      "abstract": "Submitted by taesiri 7  Google 1",
+      "abstract": "Submitted by taesiri 9  Google 1",
       "url": "https://huggingface.co/papers/2608.30241"
+    },
+    {
+      "title": "Control-Data Flow Separation: Stable Prompt Optimization in Multi-Agent LLMs",
+      "authors": "Unknown",
+      "abstract": "Submitted by yuntian-deng 8  University of Waterloo 1 2",
+      "url": "https://huggingface.co/papers/2609.00621"
+    },
+    {
+      "title": "Agents in the Large: Perception-Centered Architecture for Persistent Agents",
+      "authors": "Unknown",
+      "abstract": "Submitted by Liusc2020 8  Fudan University 2",
+      "url": "https://huggingface.co/papers/2608.30478"
+    },
+    {
+      "title": "E-Commerce Bench: Evaluating LLM Agents on Long-Horizon Autonomous Business Operation",
+      "authors": "Unknown",
+      "abstract": "Submitted by Frinkleko 8  Qwen 5 2",
+      "url": "https://huggingface.co/papers/2608.30730"
+    },
+    {
+      "title": "Scaffolding Foundation Models into Physical-World Agents Pushes the Frontier of Long-Horizon Navigation",
+      "authors": "Unknown",
+      "abstract": "Submitted by taesiri 8  · 10 authors 1",
+      "url": "https://huggingface.co/papers/2608.30396"
+    },
+    {
+      "title": "CAST: Critique-Aware Supervision for Training Reliable Long-Horizon Tool-Calling Agents",
+      "authors": "Unknown",
+      "abstract": "Submitted by sahsaeedi 7  · 9 authors 2",
+      "url": "https://huggingface.co/papers/2608.30147"
     },
     {
       "title": "MNIST-PRO: MNIST is Back as a Partially Observable World for AI Agents",
@@ -617,34 +605,22 @@
       "url": "https://huggingface.co/papers/2608.31022"
     },
     {
-      "title": "EM^2Mem: Event-Centric Multimodal Memory for Large Language Models",
-      "authors": "Unknown",
-      "abstract": "Submitted by 231sm 6  ZJUNLP 1",
-      "url": "https://huggingface.co/papers/2609.00551"
-    },
-    {
-      "title": "Scaffolding Foundation Models into Physical-World Agents Pushes the Frontier of Long-Horizon Navigation",
-      "authors": "Unknown",
-      "abstract": "Submitted by taesiri 6  · 10 authors 1",
-      "url": "https://huggingface.co/papers/2608.30396"
-    },
-    {
-      "title": "CAST: Critique-Aware Supervision for Training Reliable Long-Horizon Tool-Calling Agents",
-      "authors": "Unknown",
-      "abstract": "Submitted by sahsaeedi 6  · 9 authors 2",
-      "url": "https://huggingface.co/papers/2608.30147"
-    },
-    {
       "title": "Weaving Visual Narratives: Agentic Image Bundle Composition Beyond Atomic Visual Matching",
       "authors": "Unknown",
-      "abstract": "Submitted by CyberDancer 6  Shanghai Jiao Tong University 2 2",
+      "abstract": "Submitted by CyberDancer 7  Shanghai Jiao Tong University 2 2",
       "url": "https://huggingface.co/papers/2608.28695"
     },
     {
-      "title": "Control-Data Flow Separation: Stable Prompt Optimization in Multi-Agent LLMs",
+      "title": "InternReviewer & InternAdvocate: Objective Reward and Evaluation for Agentic Reinforcement Learning in Peer Review and Rebuttal",
       "authors": "Unknown",
-      "abstract": "Submitted by yuntian-deng 5  University of Waterloo 1 1",
-      "url": "https://huggingface.co/papers/2609.00621"
+      "abstract": "Submitted by Xuerui2312 7  Shanghai AI Laboratory 2",
+      "url": "https://huggingface.co/papers/2608.28612"
+    },
+    {
+      "title": "Cliff: Learning Process Rewards from the First Mistake",
+      "authors": "Unknown",
+      "abstract": "Submitted by HakHan 5  · 6 authors 1",
+      "url": "https://huggingface.co/papers/2609.02817"
     },
     {
       "title": "WebWorld: The Browser as a World Model for Self-Improving Web Code",
@@ -659,77 +635,29 @@
       "url": "https://huggingface.co/papers/2608.30135"
     },
     {
-      "title": "InternReviewer & InternAdvocate: Objective Reward and Evaluation for Agentic Reinforcement Learning in Peer Review and Rebuttal",
-      "authors": "Unknown",
-      "abstract": "Submitted by Xuerui2312 5  Shanghai AI Laboratory 1",
-      "url": "https://huggingface.co/papers/2608.28612"
-    },
-    {
-      "title": "Agents in the Large: Perception-Centered Architecture for Persistent Agents",
-      "authors": "Unknown",
-      "abstract": "Submitted by Liusc2020 4  Fudan University 1",
-      "url": "https://huggingface.co/papers/2608.30478"
-    },
-    {
-      "title": "E-Commerce Bench: Evaluating LLM Agents on Long-Horizon Autonomous Business Operation",
-      "authors": "Unknown",
-      "abstract": "Submitted by Frinkleko 4  Qwen 5 1",
-      "url": "https://huggingface.co/papers/2608.30730"
-    },
-    {
-      "title": "ContextBias: Controlled Evaluation of Bias Persistence Under Context Shift in Text-to-Image Models",
-      "authors": "Unknown",
-      "abstract": "Submitted by shaghayegh 4  Technical University of Munich 2",
-      "url": "https://huggingface.co/papers/2608.29847"
-    },
-    {
-      "title": "CoVA-SFT: A Large-Scale Dataset for Chain of Visual Abstractions",
-      "authors": "Unknown",
-      "abstract": "Submitted by tsunghanwu 4  University of California, Berkeley 2",
-      "url": "https://huggingface.co/papers/2608.28958"
-    },
-    {
       "title": "EvoGenUI-Bench: Evaluating LLMs as Multi-Turn Generative UI Assistants",
       "authors": "Unknown",
-      "abstract": "Submitted by pengyue-polaron 4  MAPS Research 0 1",
+      "abstract": "Submitted by pengyue-polaron 5  MAPS Research 0 2",
       "url": "https://huggingface.co/papers/2608.29387"
     },
     {
       "title": "SafeAtlas-VL: Beyond Binary Multimodal Safety with Large-Scale Data and Guard Models",
       "authors": "Unknown",
-      "abstract": "Submitted by zrwang1211 4  Shanghai Jiao Tong University 3 2",
+      "abstract": "Submitted by zrwang1211 5  Shanghai Jiao Tong University 3 2",
       "url": "https://huggingface.co/papers/2608.29098"
-    },
-    {
-      "title": "Harness-of-Harness: Multi-Day Autonomous Software Development with Continual Improvement",
-      "authors": "Unknown",
-      "abstract": "Submitted by taesiri 3  · 9 authors",
-      "url": "https://huggingface.co/papers/2609.01481"
     },
     {
       "title": "The Safeguard Worked. Is the LLM System Safer?",
       "authors": "Unknown",
-      "abstract": "Submitted by wpydcr 3  · 3 authors 1",
+      "abstract": "Submitted by wpydcr 4  · 3 authors 2",
       "url": "https://huggingface.co/papers/2609.00519"
-    },
-    {
-      "title": "The Mechanics of Democratic Dominance: A System Dynamics Paradigm for Dynamic Consent Engineering",
-      "authors": "Unknown",
-      "abstract": "Submitted by sukriramli 3  · 1 authors 1",
-      "url": "https://huggingface.co/papers/2608.27509"
-    },
-    {
-      "title": "BLARM: Animating 3D Objects from Video via Blending Latent Rigid Motion Primitives",
-      "authors": "Unknown",
-      "abstract": "Submitted by taesiri 3  Roblox Corporation 1",
-      "url": "https://huggingface.co/papers/2608.31113"
     }
   ],
   "trending": [
     {
       "title": "BDH-CQ: In-Context Learning with Recurrent Latent Reasoning",
       "authors": "Unknown",
-      "abstract": "Submitted by janchorowski  A 150M-parameter reasoning model using recurrent latent reasoning and in-context learning achieves a new cost-accuracy frontier on ARC-AGI-1. Pathway · Published on Aug 10, 2026 Upvote 766 GitHub 9.93k arXiv Page ",
+      "abstract": "Submitted by janchorowski  A 150M-parameter reasoning model using recurrent latent reasoning and in-context learning achieves a new cost-accuracy frontier on ARC-AGI-1. Pathway · Published on Aug 10, 2026 Upvote 769 GitHub 10.3k arXiv Page ",
       "url": "https://huggingface.co/papers/2608.09888"
     },
     {
@@ -745,6 +673,12 @@
       "url": "https://huggingface.co/papers/2412.20138"
     },
     {
+      "title": "A decoder-only foundation model for time-series forecasting",
+      "authors": "Unknown",
+      "abstract": "A large language model adapted for time-series forecasting achieves near-optimal zero-shot performance on diverse datasets across different time scales and granularities. 4 authors · Published on Oct 14, 2023 Upvote 39 GitHub 29.4k arXiv Pa",
+      "url": "https://huggingface.co/papers/2310.10688"
+    },
+    {
       "title": "Prime Agent: A Self-Improving RLM Harness",
       "authors": "Unknown",
       "abstract": "Submitted by milkkarten  Prime Agent is an open-source harness that uses recursive subagents, persistent computation, and agent-to-agent coordination to extend language models' long-horizon capabilities across coding and reasoning tasks. Pr",
@@ -755,12 +689,6 @@
       "authors": "Unknown",
       "abstract": "Submitted by xinhang0111  LightNav-0 is a compact generalist navigation model that leverages a pretrained vision-language model’s spatial reasoning via unified pointing tokens and action tokenization to achieve state-of-the-art embodied nav",
       "url": "https://huggingface.co/papers/2608.30935"
-    },
-    {
-      "title": "A decoder-only foundation model for time-series forecasting",
-      "authors": "Unknown",
-      "abstract": "A large language model adapted for time-series forecasting achieves near-optimal zero-shot performance on diverse datasets across different time scales and granularities. 4 authors · Published on Oct 14, 2023 Upvote 39 GitHub 28.8k arXiv Pa",
-      "url": "https://huggingface.co/papers/2310.10688"
     },
     {
       "title": "Revisiting Local Context for Long-Horizon Streaming 3D Reconstruction",
@@ -777,7 +705,7 @@
     {
       "title": "Code as Worlds: Agentic Discovery of Executable World Representations for Physical Reasoning",
       "authors": "Unknown",
-      "abstract": "Submitted by manchery  Code-as-World represents physical environments as executable code to enable quantitative reasoning and scalable supervision for vision-language models. MirroS · Published on Aug 27, 2026 Upvote 46 GitHub 367 arXiv Pag",
+      "abstract": "Submitted by manchery  Code-as-World represents physical environments as executable code to enable quantitative reasoning and scalable supervision for vision-language models. MirroS · Published on Aug 27, 2026 Upvote 47 GitHub 367 arXiv Pag",
       "url": "https://huggingface.co/papers/2608.27549"
     },
     {
@@ -937,22 +865,16 @@
       "url": "https://huggingface.co/papers/1910.03771"
     },
     {
-      "title": "JIT-Agent: Scaling Harness Intelligence via Just-in-Time Harness Evolution",
+      "title": "PDFMathTranslate: Scientific Document Translation Preserving Layouts",
       "authors": "Unknown",
-      "abstract": "Submitted by greeky  JIT-Agent is a trainable model that synthesizes adaptive agent harnesses for off-the-shelf LLMs, improving performance across diverse models and tasks. National University of Singapore · Published on Aug 26, 2026 Upvote",
-      "url": "https://huggingface.co/papers/2608.25593"
+      "abstract": "PDFMathTranslate enables layout-preserving scientific document translation using large language models and precise layout detection, offering improved precision, flexibility, and efficiency. 4 authors · Published on Jul 2, 2025 Upvote 3 Git",
+      "url": "https://huggingface.co/papers/2507.03009"
     },
     {
       "title": "OmniFlatten: An End-to-end GPT Model for Seamless Voice Conversation",
       "authors": "Unknown",
       "abstract": "A novel GPT-based model, OmniFlatten, enables real-time natural full-duplex spoken dialogue through a multi-stage post-training technique that integrates speech and text without altering the original model's architecture. 9 authors · Publis",
       "url": "https://huggingface.co/papers/2410.17799"
-    },
-    {
-      "title": "PDFMathTranslate: Scientific Document Translation Preserving Layouts",
-      "authors": "Unknown",
-      "abstract": "PDFMathTranslate enables layout-preserving scientific document translation using large language models and precise layout detection, offering improved precision, flexibility, and efficiency. 4 authors · Published on Jul 2, 2025 Upvote 3 Git",
-      "url": "https://huggingface.co/papers/2507.03009"
     },
     {
       "title": "Continuous Audio Language Models",
@@ -991,6 +913,12 @@
       "url": "https://huggingface.co/papers/2608.26103"
     },
     {
+      "title": "JIT-Agent: Scaling Harness Intelligence via Just-in-Time Harness Evolution",
+      "authors": "Unknown",
+      "abstract": "Submitted by greeky  JIT-Agent is a trainable model that synthesizes adaptive agent harnesses for off-the-shelf LLMs, improving performance across diverse models and tasks. National University of Singapore · Published on Aug 26, 2026 Upvote",
+      "url": "https://huggingface.co/papers/2608.25593"
+    },
+    {
       "title": "Zep: A Temporal Knowledge Graph Architecture for Agent Memory",
       "authors": "Unknown",
       "abstract": "Zep, a memory layer service, outperforms MemGPT in the DMR benchmark and LongMemEval by excelling in dynamic knowledge integration and temporal reasoning, critical for enterprise use cases. 5 authors · Published on Jan 20, 2025 Upvote 16 Gi",
@@ -1015,21 +943,21 @@
       "url": "https://huggingface.co/papers/2606.03748"
     },
     {
-      "title": "IndexTTS: An Industrial-Level Controllable and Efficient Zero-Shot\n  Text-To-Speech System",
-      "authors": "Unknown",
-      "abstract": "IndexTTS, an enhanced text-to-speech system combining XTTS and Tortoise models, offers improved naturalness, enhanced voice cloning, and controllable usage through hybrid character-pinyin modeling and optimized vector quantization. 5 author",
-      "url": "https://huggingface.co/papers/2502.05512"
-    },
-    {
       "title": "LLM-as-a-Verifier: A General-Purpose Verification Framework",
       "authors": "Unknown",
       "abstract": "Submitted by taesiri  LLM-as-a-Verifier introduces a probabilistic verification framework that scales across multiple dimensions to improve solution correctness assessment and agent performance across various benchmarks. 9 authors · Publish",
       "url": "https://huggingface.co/papers/2607.05391"
+    },
+    {
+      "title": "LLMRouter: Unified Infrastructure for Developing, Evaluating, and Deploying LLM Routers",
+      "authors": "Unknown",
+      "abstract": "Submitted by taofeng  LLM routing is formalized as a sequential decision process with a unified benchmark and modular infrastructure to compare and improve cost-effective model selection. University of Illinois at Urbana-Champaign · Publish",
+      "url": "https://huggingface.co/papers/2608.06867"
     }
   ],
-  "lastUpdated": "2026-09-02T09:47:07.070169",
+  "lastUpdated": "2026-09-03T02:21:43.453058",
   "totals": {
-    "daily": 20,
+    "daily": 8,
     "weekly": 50,
     "monthly": 50,
     "trending": 50
