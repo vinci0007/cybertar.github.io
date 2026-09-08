@@ -6,141 +6,204 @@
 <description>Weekly picks from HuggingFace Papers, curated by Cybertar.</description>
 <language>en</language>
 <generator>Cybertar RSS Generator</generator>
-<lastBuildDate>Mon, 07 Sep 2026 10:34:33 +0000</lastBuildDate>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
+<lastBuildDate>Tue, 08 Sep 2026 02:22:45 +0000</lastBuildDate>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
 <atom:link href="https://cybertar.youngood.tech/feeds/rss/huggingface-papers-weekly.xml" rel="self" type="application/rss+xml" />
+<item>
+<title>Bilevel Coordinated Reflection: A Game-Theoretic Approach to Multi-Agent LLM Systems</title>
+<link>https://huggingface.co/papers/2609.02750</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.02750</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by scyyc9 94  · 6 authors 5 2</p>]]></description>
+</item>
 <item>
 <title>Iris: Climbing to the Search Frontier</title>
 <link>https://huggingface.co/papers/2609.04304</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2609.04304</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by circleLZY 45  AllSpark Research 2 3</p>]]></description>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by circleLZY 50  AllSpark Research 37 4</p>]]></description>
 </item>
 <item>
 <title>Motion-Omni: End-to-End Joint Speech and Full-Body Motion for Spoken Dialogue</title>
 <link>https://huggingface.co/papers/2609.04250</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2609.04250</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by itaowe 34  Peking University 1 1</p>]]></description>
-</item>
-<item>
-<title>WorldSculpt: Generating Compositional Worlds from Grounded Videos</title>
-<link>https://huggingface.co/papers/2609.05416</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.05416</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 16  · 12 authors 3</p>]]></description>
-</item>
-<item>
-<title>Enoki: Efficient Multi-Level Hallucination Detection</title>
-<link>https://huggingface.co/papers/2609.00581</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.00581</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by julia-bel 13  s-nlp 2 1</p>]]></description>
-</item>
-<item>
-<title>Ask Before You Optimize: Dynamic Pre-Formulation Clarification for Interactive Optimization</title>
-<link>https://huggingface.co/papers/2609.05258</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.05258</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Chenyu-Zhou 12  AIOR 3 1</p>]]></description>
-</item>
-<item>
-<title>Bilevel Coordinated Reflection: A Game-Theoretic Approach to Multi-Agent LLM Systems</title>
-<link>https://huggingface.co/papers/2609.02750</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.02750</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by scyyc9 9  · 6 authors 0 1</p>]]></description>
-</item>
-<item>
-<title>Don't Drop Dropout: Optimizing Layer Sparsity for Efficient LLM Training and Inference</title>
-<link>https://huggingface.co/papers/2609.05275</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.05275</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 8  Cerebras 1</p>]]></description>
-</item>
-<item>
-<title>RISE: Recursive Improvement via Self-Extrapolating Policy Distillation</title>
-<link>https://huggingface.co/papers/2609.05295</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.05295</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 5  Salesforce AI Research</p>]]></description>
-</item>
-<item>
-<title>MaxKernel: Agentic Kernel Generation for TPUs</title>
-<link>https://huggingface.co/papers/2609.04523</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.04523</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 5  Google 61</p>]]></description>
-</item>
-<item>
-<title>Training-Free Speech-Centric Omni Understanding with Frozen VLMs</title>
-<link>https://huggingface.co/papers/2609.04242</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.04242</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by ankanmbz 4  Mohamed Bin Zayed University of Artificial Intelligence 9 1</p>]]></description>
-</item>
-<item>
-<title>Beneath the Surface of Chains-of-Thought: A Mechanistic Interpretation of Reasoning Operations in LLMs</title>
-<link>https://huggingface.co/papers/2609.04753</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.04753</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by sg-jeong28 3  NAVER AI Lab 0 1</p>]]></description>
-</item>
-<item>
-<title>When Models Edit Too Much: On the Fidelity of Minimal Code Edits</title>
-<link>https://huggingface.co/papers/2609.04061</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.04061</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by tyzhu 3  National University of Singapore 19 1</p>]]></description>
-</item>
-<item>
-<title>Group Adaptive Clipping Policy Optimization</title>
-<link>https://huggingface.co/papers/2609.00444</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.00444</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by shengjia-toronto 3  Amazon 5 1</p>]]></description>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by itaowe 36  Peking University 8 2</p>]]></description>
 </item>
 <item>
 <title>The Attention Triangle in Audio-Video Models</title>
 <link>https://huggingface.co/papers/2609.03586</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2609.03586</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by SagiPolaczek 2  Tel Aviv University 1 1</p>]]></description>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by SagiPolaczek 25  Tel Aviv University 2 3</p>]]></description>
 </item>
 <item>
-<title>To See a World in a Living Context: Unified Indoor-Outdoor Urban World Generation</title>
-<link>https://huggingface.co/papers/2608.05879</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2608.05879</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by xB1n 2  · 6 authors 1</p>]]></description>
+<title>WorldSculpt: Generating Compositional Worlds from Grounded Videos</title>
+<link>https://huggingface.co/papers/2609.05416</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.05416</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 21  · 12 authors 48 1</p>]]></description>
+</item>
+<item>
+<title>Enoki: Efficient Multi-Level Hallucination Detection</title>
+<link>https://huggingface.co/papers/2609.00581</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.00581</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by julia-bel 16  s-nlp 11 2</p>]]></description>
+</item>
+<item>
+<title>Ask Before You Optimize: Dynamic Pre-Formulation Clarification for Interactive Optimization</title>
+<link>https://huggingface.co/papers/2609.05258</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.05258</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Chenyu-Zhou 15  AIOR 6 3</p>]]></description>
+</item>
+<item>
+<title>Don't Drop Dropout: Optimizing Layer Sparsity for Efficient LLM Training and Inference</title>
+<link>https://huggingface.co/papers/2609.05275</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.05275</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 15  Cerebras 2</p>]]></description>
+</item>
+<item>
+<title>UniMate: One Unified Model to Animate Diverse Skeletons</title>
+<link>https://huggingface.co/papers/2609.05415</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.05415</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Linzhan 12  Princeton University 49 2</p>]]></description>
+</item>
+<item>
+<title>Beneath the Surface of Chains-of-Thought: A Mechanistic Interpretation of Reasoning Operations in LLMs</title>
+<link>https://huggingface.co/papers/2609.04753</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.04753</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by sg-jeong28 10  NAVER AI Lab 0 2</p>]]></description>
+</item>
+<item>
+<title>RISE: Recursive Improvement via Self-Extrapolating Policy Distillation</title>
+<link>https://huggingface.co/papers/2609.05295</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.05295</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 9  Salesforce AI Research 1</p>]]></description>
+</item>
+<item>
+<title>MaxKernel: Agentic Kernel Generation for TPUs</title>
+<link>https://huggingface.co/papers/2609.04523</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.04523</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by taesiri 9  Google 62 1</p>]]></description>
+</item>
+<item>
+<title>Dr. Claw: An AI Scientist Workspace for Vibe Research</title>
+<link>https://huggingface.co/papers/2609.00365</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.00365</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by songdj 8  · 13 authors 1.06k 2</p>]]></description>
+</item>
+<item>
+<title>One Editor, Many Edits: A Unified Training-Free Framework for Diverse Video Editing</title>
+<link>https://huggingface.co/papers/2609.04190</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.04190</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by juvekaradheesh 6  PLAN Lab @University of Illinois Urbana-Champaign 1 2</p>]]></description>
+</item>
+<item>
+<title>Group Adaptive Clipping Policy Optimization</title>
+<link>https://huggingface.co/papers/2609.00444</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.00444</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by shengjia-toronto 5  Amazon 5 2</p>]]></description>
 </item>
 <item>
 <title>τ^τ-Bench: An Environment for End-To-End, Realistic Agent Construction</title>
 <link>https://huggingface.co/papers/2609.04611</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2609.04611</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by benshi34 1  Sierra Technologies, Inc. 1 1</p>]]></description>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by benshi34 4  Sierra Technologies, Inc. 2 2</p>]]></description>
+</item>
+<item>
+<title>When Models Edit Too Much: On the Fidelity of Minimal Code Edits</title>
+<link>https://huggingface.co/papers/2609.04061</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.04061</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by tyzhu 4  National University of Singapore 19 2</p>]]></description>
+</item>
+<item>
+<title>Training-Free Speech-Centric Omni Understanding with Frozen VLMs</title>
+<link>https://huggingface.co/papers/2609.04242</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.04242</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by ankanmbz 4  Mohamed Bin Zayed University of Artificial Intelligence 9 2</p>]]></description>
+</item>
+<item>
+<title>HarvestBench: Measuring Whether LLM Agents Will Pay to Avoid Killing Animals</title>
+<link>https://huggingface.co/papers/2609.04444</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.04444</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by sparrow8i8 3  Compassion aligned machine learning 2</p>]]></description>
 </item>
 <item>
 <title>When Quantization Breaks Memory: Recurrent-State Write-Back in Low-Precision Temporal Inference</title>
 <link>https://huggingface.co/papers/2609.04490</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2609.04490</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Ismailerbas 1  · 3 authors 1</p>]]></description>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Ismailerbas 3  · 3 authors 2</p>]]></description>
 </item>
 <item>
 <title>ShallowStream: Index Shallow then Answer Deep for Streaming Video Understanding</title>
 <link>https://huggingface.co/papers/2609.02780</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2609.02780</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by JitaiHao 1  · 4 authors 1 1</p>]]></description>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by JitaiHao 3  · 4 authors 1 2</p>]]></description>
+</item>
+<item>
+<title>To See a World in a Living Context: Unified Indoor-Outdoor Urban World Generation</title>
+<link>https://huggingface.co/papers/2608.05879</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.05879</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by xB1n 3  · 6 authors 2</p>]]></description>
+</item>
+<item>
+<title>Knowing What Not to Answer: Selective Non-Compliance in Vision-Language Models</title>
+<link>https://huggingface.co/papers/2609.04720</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.04720</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by mz-kim 2  Pohang University of Science and Technology 1 2</p>]]></description>
+</item>
+<item>
+<title>Refuse without Refusal: A Structural Analysis of Safety-Tuning Responses for Reducing False Refusals in Language Models</title>
+<link>https://huggingface.co/papers/2609.04714</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.04714</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by mz-kim 2  Pohang University of Science and Technology 1 2</p>]]></description>
+</item>
+<item>
+<title>The 2026 PNPL Competition: Word Classification and Efficient Cross-Subject Generalisation in LibriBrain100</title>
+<link>https://huggingface.co/papers/2609.03231</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.03231</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by latentdulhan 2  Parker Jones Neural Processing Lab (PNPL) 2</p>]]></description>
 </item>
 <item>
 <title>AdaptVPR: Route-Aware Hard Positive Generation for Robust Visual Place Recognition</title>
 <link>https://huggingface.co/papers/2609.04369</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2609.04369</guid>
-<pubDate>Mon, 07 Sep 2026 10:34:24 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by shunpeng -  · 9 authors 1 1</p>]]></description>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by shunpeng 2  · 9 authors 2 2</p>]]></description>
+</item>
+<item>
+<title>Real-World Knowledge-Guided Change Data Synthesis for Remote Sensing</title>
+<link>https://huggingface.co/papers/2608.24263</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2608.24263</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by LingQi1234 2  Wuhan Univeristy 13 1</p>]]></description>
+</item>
+<item>
+<title>Unfold The World: Factorize 4D Properties in Reinforcing Spatial Reasoning</title>
+<link>https://huggingface.co/papers/2609.03729</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.03729</guid>
+<pubDate>Tue, 08 Sep 2026 02:22:36 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by scott-yjyang 1  Hong Kong University of Science and Technology(GuangZhou) 4 2</p>]]></description>
 </item>
 </channel>
 </rss>
