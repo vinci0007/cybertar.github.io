@@ -4,9 +4,9 @@
       "name": "alibaba /open-code-review",
       "description": "Fast, efficient, battle-tested at Alibaba's scale. Hybrid architecture code review tool: deterministic pipelines + LLM Agent, precise line-level comments, built-in multi-language ruleset (NPE, thread-safety, XSS, SQL injection), OpenAI & Anthropic compatible.",
       "language": "Go",
-      "stars": "30,049",
-      "forks": "2,141",
-      "starsToday": "2,756",
+      "stars": "32,190",
+      "forks": "2,273",
+      "starsToday": "3,231",
       "url": "https://github.com/alibaba/open-code-review",
       "builtBy": [
         "@lizhengfeng101",
@@ -17,12 +17,26 @@
       ]
     },
     {
+      "name": "cloudflare /security-audit-skill",
+      "description": "A coding-agent skill for multi-phase security audits with independently verified, machine-readable findings",
+      "language": "JavaScript",
+      "stars": "7,477",
+      "forks": "430",
+      "starsToday": "927",
+      "url": "https://github.com/cloudflare/security-audit-skill",
+      "builtBy": [
+        "@literally-dan",
+        "@CooperSheroy",
+        "@kennysarnoski-jarvis"
+      ]
+    },
+    {
       "name": "JustVugg /colibri",
       "description": "Run frontier MoE models on hardware you already own — pure C, zero deps, experts streamed from disk. Tiny engine, immense model. 🐦",
       "language": "C",
-      "stars": "34,470",
-      "forks": "3,611",
-      "starsToday": "2,026",
+      "stars": "35,094",
+      "forks": "3,689",
+      "starsToday": "1,546",
       "url": "https://github.com/JustVugg/colibri",
       "builtBy": [
         "@JustVugg",
@@ -33,12 +47,76 @@
       ]
     },
     {
+      "name": "abue-ammar /tinycast",
+      "description": "Tinycast — a tiny, fully native macOS launcher, hotkeys, and clipboard history.",
+      "language": "Swift",
+      "stars": "5,662",
+      "forks": "273",
+      "starsToday": "1,179",
+      "url": "https://github.com/abue-ammar/tinycast",
+      "builtBy": [
+        "@abue-ammar",
+        "@list-jonas",
+        "@mathieusouflis",
+        "@mickyyy68",
+        "@notsoshu"
+      ]
+    },
+    {
+      "name": "jamiepine /voicebox",
+      "description": "The open-source AI voice studio. Clone, dictate, create.",
+      "language": "TypeScript",
+      "stars": "54,438",
+      "forks": "6,792",
+      "starsToday": "417",
+      "url": "https://github.com/jamiepine/voicebox",
+      "builtBy": [
+        "@jamiepine",
+        "@claude",
+        "@tomasmach",
+        "@mvanhorn",
+        "@selop"
+      ]
+    },
+    {
+      "name": "Lakr233 /vphone-cli",
+      "description": "No description available",
+      "language": "Swift",
+      "stars": "13,388",
+      "forks": "1,592",
+      "starsToday": "547",
+      "url": "https://github.com/Lakr233/vphone-cli",
+      "builtBy": [
+        "@Lakr233",
+        "@zqxwce",
+        "@claude",
+        "@TastyHeadphones",
+        "@mpass99"
+      ]
+    },
+    {
+      "name": "anthropics /knowledge-work-plugins",
+      "description": "Open source repository of plugins primarily intended for knowledge workers to use in Claude Cowork",
+      "language": "Python",
+      "stars": "24,316",
+      "forks": "2,923",
+      "starsToday": "110",
+      "url": "https://github.com/anthropics/knowledge-work-plugins",
+      "builtBy": [
+        "@github-actions",
+        "@jordanecker-ant",
+        "@bryan-anthropic",
+        "@claude",
+        "@mattpic-ant"
+      ]
+    },
+    {
       "name": "ever-co /ever-gauzy",
       "description": "Ever® Gauzy™ - Open Business Management Platform (ERP/CRM/HRM/ATS/PM) -https://gauzy.co",
       "language": "TypeScript",
-      "stars": "7,013",
-      "forks": "1,071",
-      "starsToday": "634",
+      "stars": "7,358",
+      "forks": "1,090",
+      "starsToday": "778",
       "url": "https://github.com/ever-co/ever-gauzy",
       "builtBy": [
         "@rahul-rocket",
@@ -49,76 +127,28 @@
       ]
     },
     {
-      "name": "debpalash /VoiceStudio",
-      "description": "VoiceStudio is the open-source, fully-local ElevenLabs alternative — voice cloning, voice design, video dubbing, dictation, transcription & audiobook creation in 646 languages.",
-      "language": "Python",
-      "stars": "31,624",
-      "forks": "3,750",
-      "starsToday": "2,072",
-      "url": "https://github.com/debpalash/VoiceStudio",
-      "builtBy": [
-        "@debpalash",
-        "@claude",
-        "@velixio",
-        "@paoloantinori",
-        "@psiberfunk"
-      ]
-    },
-    {
-      "name": "Homebrew /BrewUI",
-      "description": "📺 Homebrew's official macOS GUI",
-      "language": "Swift",
-      "stars": "1,683",
-      "forks": "41",
-      "starsToday": "271",
-      "url": "https://github.com/Homebrew/BrewUI",
-      "builtBy": [
-        "@graeme",
-        "@claude",
-        "@BrewTestBot",
-        "@MikeMcQuaid",
-        "@ZhongRuoyu"
-      ]
-    },
-    {
-      "name": "melgarafael /DeskcommCRM",
-      "description": "Open-source AI sales OS — self-hosted CRM with native AI agents + WhatsApp (WAHA). Open alternative to Kommo, Octadesk & Intercom for any business that sells by chat. MCP-ready, multi-tenant, LGPD.",
-      "language": "TypeScript",
-      "stars": "3,013",
-      "forks": "698",
-      "starsToday": "193",
-      "url": "https://github.com/melgarafael/DeskcommCRM",
-      "builtBy": [
-        "@melgarafael",
-        "@claude",
-        "@jmpo",
-        "@JowaniOrantes",
-        "@IanCouto"
-      ]
-    },
-    {
-      "name": "alphaXiv /OpenResearch",
-      "description": "Turn your coding agents into research agents",
+      "name": "ankitects /anki",
+      "description": "Anki is a smart spaced repetition flashcard program",
       "language": "Rust",
-      "stars": "3,774",
-      "forks": "243",
-      "starsToday": "531",
-      "url": "https://github.com/alphaXiv/OpenResearch",
+      "stars": "30,904",
+      "forks": "3,214",
+      "starsToday": "58",
+      "url": "https://github.com/ankitects/anki",
       "builtBy": [
-        "@sox8502",
-        "@rehaanahmad2013",
-        "@myles332",
-        "@claude",
-        "@dajiaohuang"
+        "@dae",
+        "@hgiesel",
+        "@RumovZ",
+        "@abdnh",
+        "@Arthur-Milchior"
       ]
     },
     {
       "name": "NationalSecurityAgency /ghidra",
       "description": "Ghidra is a software reverse engineering (SRE) framework",
       "language": "Java",
-      "stars": "77,201",
-      "forks": "8,525",
-      "starsToday": "725",
+      "stars": "77,884",
+      "forks": "8,618",
+      "starsToday": "1,059",
       "url": "https://github.com/NationalSecurityAgency/ghidra",
       "builtBy": [
         "@ryanmkurtz",
@@ -129,60 +159,140 @@
       ]
     },
     {
-      "name": "danny-avila /LibreChat",
-      "description": "Enhanced ChatGPT Clone: Features Agents, MCP, Skills, DeepSeek, Anthropic, AWS, OpenAI, Responses API, Azure, Groq, o1, GPT-5, Mistral, OpenRouter, Vertex AI, Gemini, Artifacts, AI model switching, message search, Code Interpreter, langchain, DALL-E-3, OpenAPI Actions, Functions, Secure Multi-User Auth, Presets, open-source for self-hosting. Active",
+      "name": "anthropics /claude-code",
+      "description": "Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands.",
       "language": "TypeScript",
-      "stars": "44,036",
-      "forks": "9,042",
-      "starsToday": "254",
-      "url": "https://github.com/danny-avila/LibreChat",
+      "stars": "145,561",
+      "forks": "23,494",
+      "starsToday": "165",
+      "url": "https://github.com/anthropics/claude-code",
       "builtBy": [
-        "@danny-avila",
-        "@berry-13",
-        "@github-actions",
-        "@dustinhealy",
-        "@wtlyu"
+        "@actions-user",
+        "@poteat",
+        "@bcherny",
+        "@claude",
+        "@ant-kurt"
       ]
     },
     {
-      "name": "pacifio /atlas",
-      "description": "Source control for agents. Use multiple coding agents, track their changes and query them in one place",
-      "language": "Rust",
-      "stars": "4,773",
-      "forks": "286",
-      "starsToday": "91",
-      "url": "https://github.com/pacifio/atlas",
-      "builtBy": [
-        "@pacifio",
-        "@Ukaykhingmarma28",
-        "@uzayer",
-        "@ahammadnafiz",
-        "@claude"
-      ]
-    },
-    {
-      "name": "MG1937 /ASC",
-      "description": "ASC is a super FAST Android decompiler front-end designed for Agents/Mobile Researchers.",
+      "name": "roboflow /supervision",
+      "description": "We write your reusable computer vision tools. 💜",
       "language": "Python",
-      "stars": "1,353",
-      "forks": "208",
-      "starsToday": "129",
-      "url": "https://github.com/MG1937/ASC",
+      "stars": "50,626",
+      "forks": "4,814",
+      "starsToday": "260",
+      "url": "https://github.com/roboflow/supervision",
       "builtBy": [
-        "@MG1937",
-        "@ZacharyZcR",
-        "@jygzyc",
-        "@TsingShui",
-        "@0Chencc"
+        "@SkalskiP",
+        "@onuralpszr",
+        "@Borda",
+        "@pre-commit-ci",
+        "@github-actions"
+      ]
+    },
+    {
+      "name": "alphaXiv /OpenResearch",
+      "description": "Turn your coding agents into research agents",
+      "language": "Rust",
+      "stars": "4,478",
+      "forks": "277",
+      "starsToday": "1,017",
+      "url": "https://github.com/alphaXiv/OpenResearch",
+      "builtBy": [
+        "@sox8502",
+        "@myles332",
+        "@claude",
+        "@rehaanahmad2013",
+        "@dajiaohuang"
+      ]
+    },
+    {
+      "name": "supabase /supabase",
+      "description": "The Postgres development platform. Supabase gives you a dedicated Postgres database to build your web, mobile, and AI applications.",
+      "language": "TypeScript",
+      "stars": "109,777",
+      "forks": "14,049",
+      "starsToday": "120",
+      "url": "https://github.com/supabase/supabase",
+      "builtBy": [
+        "@joshenlim",
+        "@kiwicopple",
+        "@MildTomato",
+        "@saltcod",
+        "@alaister"
+      ]
+    },
+    {
+      "name": "rlaope /oh-my-hermes",
+      "description": "All in one plugin for Hermes Agent ⚚ the coding intelligence, a long-term memory system and model optimized workflow packages",
+      "language": "Python",
+      "stars": "2,582",
+      "forks": "185",
+      "starsToday": "80",
+      "url": "https://github.com/rlaope/oh-my-hermes",
+      "builtBy": [
+        "@rlaope",
+        "@sionic-khope",
+        "@frirenai",
+        "@claude",
+        "@sisyphus-dev-ai"
+      ]
+    },
+    {
+      "name": "Tencent /WeKnora",
+      "description": "Open-source LLM knowledge platform: turn raw documents into a queryable RAG, an autonomous reasoning agent, and a self-maintaining Wiki.",
+      "language": "Go",
+      "stars": "25,437",
+      "forks": "3,488",
+      "starsToday": "1,197",
+      "url": "https://github.com/Tencent/WeKnora",
+      "builtBy": [
+        "@lyingbug",
+        "@voidkey",
+        "@begoniezhao",
+        "@claude",
+        "@dependabot"
+      ]
+    },
+    {
+      "name": "SnailSploit /Claude-Red",
+      "description": "claude-red is a curated library of offensive security skills designed for the Claude skills system. Each skill is a structured SKILL.md file that primes Claude with expert-level methodology for a specific attack surface — from SQLi to shellcode, EDR evasion to exploit development.",
+      "language": "Python",
+      "stars": "5,804",
+      "forks": "744",
+      "starsToday": "367",
+      "url": "https://github.com/SnailSploit/Claude-Red",
+      "builtBy": [
+        "@SnailSploit",
+        "@claude",
+        "@LvL23HT",
+        "@yogesh-tessl",
+        "@IzenJ"
+      ]
+    },
+    {
+      "name": "multimodal-art-projection /YuE",
+      "description": "YuE2: frontier music generation with symbolic planning, zero-shot covers, and agentic music editing.",
+      "language": "Python",
+      "stars": "9,399",
+      "forks": "1,014",
+      "starsToday": "332",
+      "url": "https://github.com/multimodal-art-projection/YuE",
+      "builtBy": [
+        "@a43992899",
+        "@hf-lin",
+        "@Yiming-Liang",
+        "@yongyizang",
+        "@Skrill2001"
       ]
     },
     {
       "name": "addyosmani /agent-skills",
       "description": "Production-grade engineering skills for AI coding agents.",
       "language": "JavaScript",
-      "stars": "95,081",
-      "forks": "10,084",
-      "starsToday": "307",
+      "stars": "95,513",
+      "forks": "10,113",
+      "starsToday": "658",
       "url": "https://github.com/addyosmani/agent-skills",
       "builtBy": [
         "@addyosmani",
@@ -193,35 +303,35 @@
       ]
     },
     {
-      "name": "tonhowtf /omniget",
-      "description": "Download Udemy and Hotmart courses, YouTube videos, music and books — 1,800+ sites, no terminal. Free open-source desktop app for Windows, macOS and Linux, with a built-in course player, PDF/EPUB reader and music library. Powered by yt-dlp. Your files stay on your computer.",
-      "language": "Rust",
-      "stars": "13,356",
-      "forks": "1,126",
-      "starsToday": "258",
-      "url": "https://github.com/tonhowtf/omniget",
+      "name": "cline /cline",
+      "description": "Autonomous coding agent as an SDK, IDE extension, or CLI assistant.",
+      "language": "TypeScript",
+      "stars": "68,403",
+      "forks": "7,386",
+      "starsToday": "112",
+      "url": "https://github.com/cline/cline",
       "builtBy": [
-        "@tonhowtf",
-        "@InstaZDLL",
-        "@claude",
-        "@cursoragent",
-        "@D0n-A"
+        "@saoudrizwan",
+        "@abeatrix",
+        "@celestial-vault",
+        "@arafatkatze",
+        "@BarreiroT"
       ]
     },
     {
-      "name": "earendil-works /pi",
-      "description": "AI agent toolkit: unified LLM API, agent loop, TUI, coding agent CLI",
-      "language": "TypeScript",
-      "stars": "106,097",
-      "forks": "13,342",
-      "starsToday": "458",
-      "url": "https://github.com/earendil-works/pi",
+      "name": "affaan-m /ECC",
+      "description": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
+      "language": "JavaScript",
+      "stars": "260,360",
+      "forks": "38,970",
+      "starsToday": "1,057",
+      "url": "https://github.com/affaan-m/ECC",
       "builtBy": [
-        "@badlogic",
-        "@mitsuhiko",
-        "@davidbrai",
-        "@cristinaponcela",
-        "@christianklotz"
+        "@affaan-m",
+        "@haelyra",
+        "@claude",
+        "@dependabot",
+        "@pangerlkr"
       ]
     }
   ],
@@ -230,9 +340,9 @@
       "name": "ayghri /i-have-adhd",
       "description": "A skill to stop your coding agent from burying the answer. ADHD-friendly output.",
       "language": "Python",
-      "stars": "46,576",
-      "forks": "2,710",
-      "starsToday": "17,880",
+      "stars": "46,956",
+      "forks": "2,732",
+      "starsToday": "13,737",
       "url": "https://github.com/ayghri/i-have-adhd",
       "builtBy": [
         "@ayghri",
@@ -246,73 +356,25 @@
       "name": "bilawalsidhu /gods-eye-view",
       "description": "A spy satellite simulator in your browser, except the data is real. Live open source spatial intelligence on a photorealistic 3D globe.",
       "language": "JavaScript",
-      "stars": "35,235",
-      "forks": "7,053",
-      "starsToday": "15,193",
+      "stars": "36,030",
+      "forks": "7,212",
+      "starsToday": "14,777",
       "url": "https://github.com/bilawalsidhu/gods-eye-view",
       "builtBy": [
         "@samehkhamis",
         "@bilawalsidhu",
         "@Tom-Neverwinter",
-        "@claude",
-        "@daikaginza"
-      ]
-    },
-    {
-      "name": "openai /plugins",
-      "description": "OpenAI Plugins",
-      "language": "JavaScript",
-      "stars": "6,813",
-      "forks": "891",
-      "starsToday": "1,206",
-      "url": "https://github.com/openai/plugins",
-      "builtBy": [
-        "@cching-openai",
-        "@ashwinm-oai",
-        "@Aismit",
-        "@vb-openai",
-        "@gverma-openai"
-      ]
-    },
-    {
-      "name": "affaan-m /ECC",
-      "description": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
-      "language": "JavaScript",
-      "stars": "259,641",
-      "forks": "38,838",
-      "starsToday": "5,398",
-      "url": "https://github.com/affaan-m/ECC",
-      "builtBy": [
-        "@affaan-m",
-        "@haelyra",
-        "@claude",
-        "@dependabot",
-        "@pangerlkr"
-      ]
-    },
-    {
-      "name": "mksglu /context-mode",
-      "description": "Context window optimization for AI coding agents. Sandboxes tool output (98% reduction), persists session memory, and enforces routing across 17 platforms via MCP + hooks.",
-      "language": "TypeScript",
-      "stars": "23,156",
-      "forks": "1,673",
-      "starsToday": "1,832",
-      "url": "https://github.com/mksglu/context-mode",
-      "builtBy": [
-        "@mksglu",
-        "@claude",
-        "@github-actions",
-        "@ipedro",
-        "@ousamabenyounes"
+        "@manjunath22466",
+        "@claude"
       ]
     },
     {
       "name": "alibaba /open-code-review",
       "description": "Fast, efficient, battle-tested at Alibaba's scale. Hybrid architecture code review tool: deterministic pipelines + LLM Agent, precise line-level comments, built-in multi-language ruleset (NPE, thread-safety, XSS, SQL injection), OpenAI & Anthropic compatible.",
       "language": "Go",
-      "stars": "30,050",
-      "forks": "2,141",
-      "starsToday": "5,169",
+      "stars": "32,192",
+      "forks": "2,273",
+      "starsToday": "8,594",
       "url": "https://github.com/alibaba/open-code-review",
       "builtBy": [
         "@lizhengfeng101",
@@ -323,188 +385,60 @@
       ]
     },
     {
-      "name": "DietrichGebert /ponytail",
-      "description": "Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote.",
+      "name": "affaan-m /ECC",
+      "description": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
       "language": "JavaScript",
-      "stars": "139,828",
-      "forks": "7,513",
-      "starsToday": "7,499",
-      "url": "https://github.com/DietrichGebert/ponytail",
+      "stars": "260,360",
+      "forks": "38,970",
+      "starsToday": "5,292",
+      "url": "https://github.com/affaan-m/ECC",
       "builtBy": [
-        "@DietrichGebert",
+        "@affaan-m",
+        "@haelyra",
         "@claude",
-        "@Lakshya77089",
-        "@ousamabenyounes",
-        "@dhedhialy"
-      ]
-    },
-    {
-      "name": "obra /superpowers",
-      "description": "An agentic skills framework & software development methodology that works.",
-      "language": "Shell",
-      "stars": "287,385",
-      "forks": "25,702",
-      "starsToday": "4,170",
-      "url": "https://github.com/obra/superpowers",
-      "builtBy": [
-        "@obra",
-        "@arittr",
-        "@claude",
-        "@clkao",
-        "@jjshanks"
-      ]
-    },
-    {
-      "name": "max-sixty /worktrunk",
-      "description": "Worktrunk is a CLI for Git worktree management, designed for parallel AI agent workflows",
-      "language": "Rust",
-      "stars": "7,877",
-      "forks": "272",
-      "starsToday": "871",
-      "url": "https://github.com/max-sixty/worktrunk",
-      "builtBy": [
-        "@max-sixty",
-        "@claude",
-        "@worktrunk-bot",
         "@dependabot",
-        "@github-actions"
+        "@pangerlkr"
       ]
     },
     {
-      "name": "heygen-com /hyperframes",
-      "description": "Write HTML. Render video. Built for agents.",
-      "language": "TypeScript",
-      "stars": "50,539",
-      "forks": "4,609",
-      "starsToday": "3,002",
-      "url": "https://github.com/heygen-com/hyperframes",
-      "builtBy": [
-        "@miguel-heygen",
-        "@vanceingalls",
-        "@jrusso1020",
-        "@claude",
-        "@ukimsanov"
-      ]
-    },
-    {
-      "name": "microsoft /markitdown",
-      "description": "Python tool for converting files and office documents to Markdown.",
-      "language": "Python",
-      "stars": "184,614",
-      "forks": "13,601",
-      "starsToday": "3,046",
-      "url": "https://github.com/microsoft/markitdown",
-      "builtBy": [
-        "@afourney",
-        "@gagb",
-        "@sugatoray",
-        "@PetrAPConsulting",
-        "@dependabot"
-      ]
-    },
-    {
-      "name": "blader /humanizer",
-      "description": "Agent skill that removes signs of AI-generated writing from text",
-      "language": "Python",
-      "stars": "48,903",
-      "forks": "3,967",
-      "starsToday": "3,248",
-      "url": "https://github.com/blader/humanizer",
-      "builtBy": [
-        "@blader",
-        "@claude",
-        "@mvanhorn",
-        "@Scott-Emberson",
-        "@warp-agent"
-      ]
-    },
-    {
-      "name": "openai /skills",
-      "description": "Skills Catalog for Codex",
-      "language": "Python",
-      "stars": "27,323",
-      "forks": "1,826",
-      "starsToday": "985",
-      "url": "https://github.com/openai/skills",
-      "builtBy": [
-        "@dkundel-openai",
-        "@gverma-openai",
-        "@vb-openai",
-        "@ae-openai",
-        "@quuu"
-      ]
-    },
-    {
-      "name": "JustVugg /colibri",
-      "description": "Run frontier MoE models on hardware you already own — pure C, zero deps, experts streamed from disk. Tiny engine, immense model. 🐦",
-      "language": "C",
-      "stars": "34,470",
-      "forks": "3,611",
-      "starsToday": "6,095",
-      "url": "https://github.com/JustVugg/colibri",
-      "builtBy": [
-        "@JustVugg",
-        "@claude",
-        "@ZacharyZcR",
-        "@monotophic",
-        "@steve-m"
-      ]
-    },
-    {
-      "name": "tt-a1i /archify",
-      "description": "Agent skill for beautiful, verifiable architecture, workflow, sequence, data-flow, and lifecycle diagrams—self-contained HTML with motion and crisp export.",
+      "name": "openai /plugins",
+      "description": "OpenAI Plugins",
       "language": "JavaScript",
-      "stars": "64,215",
-      "forks": "4,261",
-      "starsToday": "9,077",
-      "url": "https://github.com/tt-a1i/archify",
+      "stars": "6,865",
+      "forks": "895",
+      "starsToday": "771",
+      "url": "https://github.com/openai/plugins",
       "builtBy": [
-        "@tt-a1i",
-        "@sunsunsun-java",
-        "@cursoragent",
-        "@YunyueLi",
-        "@claude"
+        "@cching-openai",
+        "@ashwinm-oai",
+        "@Aismit",
+        "@vb-openai",
+        "@gverma-openai"
       ]
     },
     {
-      "name": "TauricResearch /TradingAgents",
-      "description": "TradingAgents: Multi-Agents LLM Financial Trading Framework",
-      "language": "Python",
-      "stars": "106,861",
-      "forks": "20,409",
-      "starsToday": "3,364",
-      "url": "https://github.com/TauricResearch/TradingAgents",
-      "builtBy": [
-        "@Yijia-Xiao",
-        "@EdwardoSunny",
-        "@CadeYu",
-        "@luohy15",
-        "@claude"
-      ]
-    },
-    {
-      "name": "THU-MAIC /OpenMAIC",
-      "description": "Open Multi-Agent Interactive Classroom — Get an immersive, multi-agent learning experience in just one click",
+      "name": "mksglu /context-mode",
+      "description": "Context window optimization for AI coding agents. Sandboxes tool output (98% reduction), persists session memory, and enforces routing across 17 platforms via MCP + hooks.",
       "language": "TypeScript",
-      "stars": "37,255",
-      "forks": "5,874",
-      "starsToday": "3,698",
-      "url": "https://github.com/THU-MAIC/OpenMAIC",
+      "stars": "23,246",
+      "forks": "1,678",
+      "starsToday": "1,612",
+      "url": "https://github.com/mksglu/context-mode",
       "builtBy": [
-        "@wyuc",
+        "@mksglu",
         "@claude",
-        "@cosarah",
-        "@YizukiAme",
-        "@ly-wang19"
+        "@github-actions",
+        "@ipedro",
+        "@ousamabenyounes"
       ]
     },
     {
       "name": "Tencent /WeKnora",
       "description": "Open-source LLM knowledge platform: turn raw documents into a queryable RAG, an autonomous reasoning agent, and a self-maintaining Wiki.",
       "language": "Go",
-      "stars": "24,752",
-      "forks": "3,430",
-      "starsToday": "1,892",
+      "stars": "25,437",
+      "forks": "3,488",
+      "starsToday": "3,034",
       "url": "https://github.com/Tencent/WeKnora",
       "builtBy": [
         "@lyingbug",
@@ -515,12 +449,92 @@
       ]
     },
     {
+      "name": "obra /superpowers",
+      "description": "An agentic skills framework & software development methodology that works.",
+      "language": "Shell",
+      "stars": "287,663",
+      "forks": "25,731",
+      "starsToday": "4,023",
+      "url": "https://github.com/obra/superpowers",
+      "builtBy": [
+        "@obra",
+        "@arittr",
+        "@claude",
+        "@clkao",
+        "@jjshanks"
+      ]
+    },
+    {
+      "name": "DietrichGebert /ponytail",
+      "description": "Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote.",
+      "language": "JavaScript",
+      "stars": "140,454",
+      "forks": "7,547",
+      "starsToday": "7,218",
+      "url": "https://github.com/DietrichGebert/ponytail",
+      "builtBy": [
+        "@DietrichGebert",
+        "@claude",
+        "@Lakshya77089",
+        "@ousamabenyounes",
+        "@dhedhialy"
+      ]
+    },
+    {
+      "name": "max-sixty /worktrunk",
+      "description": "Worktrunk is a CLI for Git worktree management, designed for parallel AI agent workflows",
+      "language": "Rust",
+      "stars": "7,932",
+      "forks": "272",
+      "starsToday": "998",
+      "url": "https://github.com/max-sixty/worktrunk",
+      "builtBy": [
+        "@max-sixty",
+        "@claude",
+        "@worktrunk-bot",
+        "@dependabot",
+        "@github-actions"
+      ]
+    },
+    {
+      "name": "blader /humanizer",
+      "description": "Agent skill that removes signs of AI-generated writing from text",
+      "language": "Python",
+      "stars": "49,227",
+      "forks": "3,993",
+      "starsToday": "3,266",
+      "url": "https://github.com/blader/humanizer",
+      "builtBy": [
+        "@blader",
+        "@claude",
+        "@mvanhorn",
+        "@Scott-Emberson",
+        "@warp-agent"
+      ]
+    },
+    {
+      "name": "kunchenguid /firstmate",
+      "description": "Talk to one agent. Ship with a crew.",
+      "language": "Shell",
+      "stars": "6,212",
+      "forks": "1,920",
+      "starsToday": "873",
+      "url": "https://github.com/kunchenguid/firstmate",
+      "builtBy": [
+        "@kunchenguid",
+        "@karotkriss",
+        "@claude",
+        "@mremond",
+        "@tiago-peixoto"
+      ]
+    },
+    {
       "name": "petergyang /no-ai-slop",
       "description": "Removes 20+ patterns of AI slop from any piece of writing.",
       "language": "Python",
-      "stars": "9,987",
-      "forks": "705",
-      "starsToday": "2,160",
+      "stars": "10,163",
+      "forks": "709",
+      "starsToday": "2,320",
       "url": "https://github.com/petergyang/no-ai-slop",
       "builtBy": [
         "@petergyang",
@@ -531,44 +545,108 @@
       ]
     },
     {
-      "name": "earthtojake /text-to-cad",
-      "description": "A library of agent skills for CAD, CAE and CAM",
+      "name": "microsoft /markitdown",
+      "description": "Python tool for converting files and office documents to Markdown.",
       "language": "Python",
-      "stars": "15,945",
-      "forks": "1,656",
-      "starsToday": "1,141",
-      "url": "https://github.com/earthtojake/text-to-cad",
+      "stars": "184,864",
+      "forks": "13,620",
+      "starsToday": "2,733",
+      "url": "https://github.com/microsoft/markitdown",
       "builtBy": [
-        "@earthtojake",
-        "@claude",
-        "@github-actions",
-        "@warun7",
+        "@afourney",
+        "@gagb",
+        "@sugatoray",
+        "@PetrAPConsulting",
         "@dependabot"
       ]
     },
     {
-      "name": "decolua /9router",
-      "description": "Unlimited FREE AI coding. Connect Claude Code, Codex, Cursor, Cline, Copilot, Antigravity to FREE Claude/GPT/Gemini via 40+ providers. Auto-fallback, RTK -40% tokens, never hit limits.",
+      "name": "addyosmani /agent-skills",
+      "description": "Production-grade engineering skills for AI coding agents.",
       "language": "JavaScript",
-      "stars": "28,993",
-      "forks": "5,318",
-      "starsToday": "986",
-      "url": "https://github.com/decolua/9router",
+      "stars": "95,513",
+      "forks": "10,113",
+      "starsToday": "2,119",
+      "url": "https://github.com/addyosmani/agent-skills",
       "builtBy": [
-        "@cursoragent",
-        "@decolua",
+        "@addyosmani",
+        "@nucliweb",
+        "@federicobartoli",
         "@claude",
-        "@anuragg-saxenaa",
-        "@Jordannst"
+        "@HMAKT99"
+      ]
+    },
+    {
+      "name": "home-assistant /core",
+      "description": "🏡 Open source home automation that puts local control and privacy first.",
+      "language": "Python",
+      "stars": "90,581",
+      "forks": "38,672",
+      "starsToday": "236",
+      "url": "https://github.com/home-assistant/core",
+      "builtBy": [
+        "@bdraco",
+        "@balloob",
+        "@epenet",
+        "@frenck",
+        "@emontnemery"
+      ]
+    },
+    {
+      "name": "THU-MAIC /OpenMAIC",
+      "description": "Open Multi-Agent Interactive Classroom — Get an immersive, multi-agent learning experience in just one click",
+      "language": "TypeScript",
+      "stars": "37,420",
+      "forks": "5,890",
+      "starsToday": "3,214",
+      "url": "https://github.com/THU-MAIC/OpenMAIC",
+      "builtBy": [
+        "@wyuc",
+        "@claude",
+        "@cosarah",
+        "@YizukiAme",
+        "@ly-wang19"
+      ]
+    },
+    {
+      "name": "danny-avila /LibreChat",
+      "description": "Enhanced ChatGPT Clone: Features Agents, MCP, Skills, DeepSeek, Anthropic, AWS, OpenAI, Responses API, Azure, Groq, o1, GPT-5, Mistral, OpenRouter, Vertex AI, Gemini, Artifacts, AI model switching, message search, Code Interpreter, langchain, DALL-E-3, OpenAPI Actions, Functions, Secure Multi-User Auth, Presets, open-source for self-hosting. Active",
+      "language": "TypeScript",
+      "stars": "44,227",
+      "forks": "9,070",
+      "starsToday": "1,173",
+      "url": "https://github.com/danny-avila/LibreChat",
+      "builtBy": [
+        "@danny-avila",
+        "@berry-13",
+        "@github-actions",
+        "@dustinhealy",
+        "@wtlyu"
+      ]
+    },
+    {
+      "name": "openai /skills",
+      "description": "Skills Catalog for Codex",
+      "language": "Python",
+      "stars": "27,382",
+      "forks": "1,835",
+      "starsToday": "632",
+      "url": "https://github.com/openai/skills",
+      "builtBy": [
+        "@dkundel-openai",
+        "@gverma-openai",
+        "@vb-openai",
+        "@ae-openai",
+        "@quuu"
       ]
     },
     {
       "name": "github /spec-kit",
       "description": "💫 Toolkit to help you get started with Spec-Driven Development",
       "language": "Python",
-      "stars": "137,193",
-      "forks": "12,284",
-      "starsToday": "3,018",
+      "stars": "137,404",
+      "forks": "12,305",
+      "starsToday": "3,019",
       "url": "https://github.com/github/spec-kit",
       "builtBy": [
         "@mnriem",
@@ -577,6 +655,38 @@
         "@claude",
         "@github-actions"
       ]
+    },
+    {
+      "name": "heygen-com /hyperframes",
+      "description": "Write HTML. Render video. Built for agents.",
+      "language": "TypeScript",
+      "stars": "50,759",
+      "forks": "4,627",
+      "starsToday": "2,413",
+      "url": "https://github.com/heygen-com/hyperframes",
+      "builtBy": [
+        "@miguel-heygen",
+        "@vanceingalls",
+        "@jrusso1020",
+        "@claude",
+        "@ukimsanov"
+      ]
+    },
+    {
+      "name": "TauricResearch /TradingAgents",
+      "description": "TradingAgents: Multi-Agents LLM Financial Trading Framework",
+      "language": "Python",
+      "stars": "107,054",
+      "forks": "20,438",
+      "starsToday": "3,350",
+      "url": "https://github.com/TauricResearch/TradingAgents",
+      "builtBy": [
+        "@Yijia-Xiao",
+        "@EdwardoSunny",
+        "@CadeYu",
+        "@luohy15",
+        "@claude"
+      ]
     }
   ],
   "monthly": [
@@ -584,9 +694,9 @@
       "name": "omacom /omarchy",
       "description": "Beautiful, Modern & Opinionated Linux",
       "language": "Shell",
-      "stars": "41,394",
-      "forks": "4,680",
-      "starsToday": "16,763",
+      "stars": "41,556",
+      "forks": "4,717",
+      "starsToday": "16,707",
       "url": "https://github.com/omacom/omarchy",
       "builtBy": [
         "@dhh",
@@ -600,9 +710,9 @@
       "name": "tt-a1i /archify",
       "description": "Agent skill for beautiful, verifiable architecture, workflow, sequence, data-flow, and lifecycle diagrams—self-contained HTML with motion and crisp export.",
       "language": "JavaScript",
-      "stars": "64,216",
-      "forks": "4,261",
-      "starsToday": "50,700",
+      "stars": "64,969",
+      "forks": "4,319",
+      "starsToday": "51,755",
       "url": "https://github.com/tt-a1i/archify",
       "builtBy": [
         "@tt-a1i",
@@ -616,9 +726,9 @@
       "name": "anthropics /claude-plugins-community",
       "description": "Community plugin marketplace for Claude Cowork and Claude Code. Read-only mirror — submit plugins at clau.de/plugin-directory-submission.",
       "language": "Python",
-      "stars": "4,117",
-      "forks": "302",
-      "starsToday": "3,784",
+      "stars": "4,158",
+      "forks": "303",
+      "starsToday": "3,853",
       "url": "https://github.com/anthropics/claude-plugins-community",
       "builtBy": [
         "@github-actions",
@@ -629,28 +739,12 @@
       ]
     },
     {
-      "name": "AprilNEA /OpenLogi",
-      "description": "⚡️A native, local-first alternative to Logitech Options+, written in Rust 🦀 — remap buttons, DPI, and SmartShift over HID++. No account, no telemetry.",
-      "language": "Rust",
-      "stars": "21,265",
-      "forks": "685",
-      "starsToday": "12,792",
-      "url": "https://github.com/AprilNEA/OpenLogi",
-      "builtBy": [
-        "@AprilNEA",
-        "@davidbudnick",
-        "@aprilnea",
-        "@cserby",
-        "@github-actions"
-      ]
-    },
-    {
       "name": "cursor /plugins",
       "description": "Cursor plugin specification and official plugins",
       "language": "TypeScript",
-      "stars": "7,966",
-      "forks": "710",
-      "starsToday": "4,996",
+      "stars": "8,090",
+      "forks": "720",
+      "starsToday": "5,021",
       "url": "https://github.com/cursor/plugins",
       "builtBy": [
         "@cursoragent",
@@ -661,12 +755,28 @@
       ]
     },
     {
+      "name": "AprilNEA /OpenLogi",
+      "description": "⚡️A native, local-first alternative to Logitech Options+, written in Rust 🦀 — remap buttons, DPI, and SmartShift over HID++. No account, no telemetry.",
+      "language": "Rust",
+      "stars": "21,345",
+      "forks": "688",
+      "starsToday": "12,927",
+      "url": "https://github.com/AprilNEA/OpenLogi",
+      "builtBy": [
+        "@AprilNEA",
+        "@davidbudnick",
+        "@aprilnea",
+        "@cserby",
+        "@isleofgreg"
+      ]
+    },
+    {
       "name": "THU-MAIC /OpenMAIC",
       "description": "Open Multi-Agent Interactive Classroom — Get an immersive, multi-agent learning experience in just one click",
       "language": "TypeScript",
-      "stars": "37,255",
-      "forks": "5,874",
-      "starsToday": "16,497",
+      "stars": "37,420",
+      "forks": "5,890",
+      "starsToday": "16,773",
       "url": "https://github.com/THU-MAIC/OpenMAIC",
       "builtBy": [
         "@wyuc",
@@ -680,9 +790,9 @@
       "name": "freestylefly /awesome-gpt-image-2",
       "description": "Prompt as Code | GPT Image 2 / 2.5 提示词与案例库，530+ 个案例、20+ 套工业级模板与可复用 Skills，新增 2.5 同提示词对比专区，附完整提示词与生成记录，持续更新。",
       "language": "JavaScript",
-      "stars": "32,199",
-      "forks": "3,099",
-      "starsToday": "22,273",
+      "stars": "32,276",
+      "forks": "3,107",
+      "starsToday": "22,206",
       "url": "https://github.com/freestylefly/awesome-gpt-image-2",
       "builtBy": [
         "@freestylefly",
@@ -693,28 +803,12 @@
       ]
     },
     {
-      "name": "cathrynlavery /diagram-design",
-      "description": "38 editorial diagram types for Claude Code, Codex, and Pi. Self-contained HTML + SVG. No shadows. No Mermaid slop.",
-      "language": "HTML",
-      "stars": "40,365",
-      "forks": "2,569",
-      "starsToday": "22,368",
-      "url": "https://github.com/cathrynlavery/diagram-design",
-      "builtBy": [
-        "@cathrynlavery",
-        "@parveen0029",
-        "@claude",
-        "@mvanhorn",
-        "@github-actions"
-      ]
-    },
-    {
       "name": "ayghri /i-have-adhd",
       "description": "A skill to stop your coding agent from burying the answer. ADHD-friendly output.",
       "language": "Python",
-      "stars": "46,576",
-      "forks": "2,710",
-      "starsToday": "25,489",
+      "stars": "46,956",
+      "forks": "2,732",
+      "starsToday": "25,944",
       "url": "https://github.com/ayghri/i-have-adhd",
       "builtBy": [
         "@ayghri",
@@ -725,12 +819,28 @@
       ]
     },
     {
+      "name": "cathrynlavery /diagram-design",
+      "description": "38 editorial diagram types for Claude Code, Codex, and Pi. Self-contained HTML + SVG. No shadows. No Mermaid slop.",
+      "language": "HTML",
+      "stars": "40,539",
+      "forks": "2,583",
+      "starsToday": "21,458",
+      "url": "https://github.com/cathrynlavery/diagram-design",
+      "builtBy": [
+        "@cathrynlavery",
+        "@parveen0029",
+        "@github-actions",
+        "@claude",
+        "@mvanhorn"
+      ]
+    },
+    {
       "name": "vorssaint /vorssaint-utils",
       "description": "Free and open-source macOS menu bar toolkit.",
       "language": "Swift",
-      "stars": "19,346",
-      "forks": "696",
-      "starsToday": "13,875",
+      "stars": "19,488",
+      "forks": "704",
+      "starsToday": "14,080",
       "url": "https://github.com/vorssaint/vorssaint-utils",
       "builtBy": [
         "@vorssaint",
@@ -744,9 +854,9 @@
       "name": "debpalash /VoiceStudio",
       "description": "VoiceStudio is the open-source, fully-local ElevenLabs alternative — voice cloning, voice design, video dubbing, dictation, transcription & audiobook creation in 646 languages.",
       "language": "Python",
-      "stars": "31,624",
-      "forks": "3,750",
-      "starsToday": "20,417",
+      "stars": "32,091",
+      "forks": "3,799",
+      "starsToday": "21,946",
       "url": "https://github.com/debpalash/VoiceStudio",
       "builtBy": [
         "@debpalash",
@@ -757,44 +867,28 @@
       ]
     },
     {
-      "name": "volcengine /OpenViking",
-      "description": "Self-evolving Context Database for AI Agents. Unify Agent Memory, Knowledge RAG and Skills.",
-      "language": "Python",
-      "stars": "37,662",
-      "forks": "2,907",
-      "starsToday": "9,114",
-      "url": "https://github.com/volcengine/OpenViking",
+      "name": "chaitanyagiri /munder-difflin",
+      "description": "A local multi-agent harness that works with your existing Claude Code, Codex subscriptions, allows you to run an office of agents",
+      "language": "TypeScript",
+      "stars": "7,436",
+      "forks": "969",
+      "starsToday": "6,210",
+      "url": "https://github.com/chaitanyagiri/munder-difflin",
       "builtBy": [
-        "@qin-ctx",
-        "@ZaynJarvis",
+        "@chaitanyagiri",
         "@claude",
-        "@zhoujh01",
-        "@r266-tech"
-      ]
-    },
-    {
-      "name": "modular /modular",
-      "description": "The Modular Platform (includes MAX & Mojo)",
-      "language": "Mojo",
-      "stars": "29,775",
-      "forks": "3,173",
-      "starsToday": "3,058",
-      "url": "https://github.com/modular/modular",
-      "builtBy": [
-        "@abduld",
-        "@lattner",
-        "@JoeLoser",
-        "@atomicapple0",
-        "@keith"
+        "@github-actions",
+        "@gpechieu",
+        "@savvaskoualis"
       ]
     },
     {
       "name": "Lakr233 /vphone-cli",
       "description": "No description available",
       "language": "Swift",
-      "stars": "13,100",
-      "forks": "1,570",
-      "starsToday": "5,018",
+      "stars": "13,388",
+      "forks": "1,592",
+      "starsToday": "5,577",
       "url": "https://github.com/Lakr233/vphone-cli",
       "builtBy": [
         "@Lakr233",
@@ -805,28 +899,28 @@
       ]
     },
     {
-      "name": "akitaonrails /ai-memory",
-      "description": "Solution for long term memory for agent coding CLIs and to facilitate handoff between different agent vendors",
-      "language": "Rust",
-      "stars": "6,968",
-      "forks": "466",
-      "starsToday": "5,449",
-      "url": "https://github.com/akitaonrails/ai-memory",
+      "name": "modular /modular",
+      "description": "The Modular Platform (includes MAX & Mojo)",
+      "language": "Mojo",
+      "stars": "29,785",
+      "forks": "3,173",
+      "starsToday": "3,075",
+      "url": "https://github.com/modular/modular",
       "builtBy": [
-        "@akitaonrails",
-        "@claude",
-        "@djalmajr",
-        "@samirhvbr",
-        "@wblech"
+        "@abduld",
+        "@lattner",
+        "@JoeLoser",
+        "@atomicapple0",
+        "@keith"
       ]
     },
     {
       "name": "apache /maka",
       "description": "Apache Maka (Incubating) is a high-performance agent workspace that keeps a complete record of everything it did.",
       "language": "TypeScript",
-      "stars": "5,486",
-      "forks": "507",
-      "starsToday": "4,146",
+      "stars": "5,519",
+      "forks": "510",
+      "starsToday": "4,197",
       "url": "https://github.com/apache/maka",
       "builtBy": [
         "@jackwener",
@@ -837,12 +931,28 @@
       ]
     },
     {
+      "name": "volcengine /OpenViking",
+      "description": "Self-evolving Context Database for AI Agents. Unify Agent Memory, Knowledge RAG and Skills.",
+      "language": "Python",
+      "stars": "37,793",
+      "forks": "2,921",
+      "starsToday": "9,270",
+      "url": "https://github.com/volcengine/OpenViking",
+      "builtBy": [
+        "@qin-ctx",
+        "@ZaynJarvis",
+        "@claude",
+        "@zhoujh01",
+        "@r266-tech"
+      ]
+    },
+    {
       "name": "google-research /timesfm",
       "description": "TimesFM (Time Series Foundation Model) is a pretrained time-series foundation model developed by Google Research for time-series forecasting.",
       "language": "Python",
-      "stars": "32,669",
-      "forks": "3,130",
-      "starsToday": "5,202",
+      "stars": "32,878",
+      "forks": "3,166",
+      "starsToday": "5,249",
       "url": "https://github.com/google-research/timesfm",
       "builtBy": [
         "@rajatsen91",
@@ -851,8 +961,72 @@
         "@darkpowerxo",
         "@JustinGuese"
       ]
+    },
+    {
+      "name": "akitaonrails /ai-memory",
+      "description": "Solution for long term memory for agent coding CLIs and to facilitate handoff between different agent vendors",
+      "language": "Rust",
+      "stars": "7,026",
+      "forks": "470",
+      "starsToday": "5,445",
+      "url": "https://github.com/akitaonrails/ai-memory",
+      "builtBy": [
+        "@akitaonrails",
+        "@claude",
+        "@djalmajr",
+        "@samirhvbr",
+        "@wblech"
+      ]
+    },
+    {
+      "name": "tashfeenahmed /freellmapi",
+      "description": "7.4 billion tokens per month. 34 free LLM providers. 635 free model endpoints. All behind one /v1 endpoint, plus any custom OpenAI-compatible endpoint. Smart routing, automatic failover, encrypted keys. Personal experimentation only.",
+      "language": "TypeScript",
+      "stars": "26,698",
+      "forks": "3,644",
+      "starsToday": "8,153",
+      "url": "https://github.com/tashfeenahmed/freellmapi",
+      "builtBy": [
+        "@tashfeenahmed",
+        "@claude",
+        "@suantea",
+        "@OhOkThisIsFine",
+        "@jasnoorgill"
+      ]
+    },
+    {
+      "name": "tech-leads-club /agent-skills",
+      "description": "The secure, validated skill registry for professional AI coding agents. Extend Antigravity, Claude Code, Cursor, Copilot and more with absolute confidence.",
+      "language": "TypeScript",
+      "stars": "6,383",
+      "forks": "527",
+      "starsToday": "1,336",
+      "url": "https://github.com/tech-leads-club/agent-skills",
+      "builtBy": [
+        "@felipfr",
+        "@edmarpaulino",
+        "@tech-leads-club-release-bot",
+        "@waldemarnt",
+        "@may-santos"
+      ]
+    },
+    {
+      "name": "jingyaogong /minimind",
+      "description": "🧠 Train a 64M-parameter LLM from scratch in just 2h!",
+      "language": "Python",
+      "stars": "61,355",
+      "forks": "7,981",
+      "starsToday": "6,769",
+      "url": "https://github.com/jingyaogong/minimind",
+      "builtBy": [
+        "@jingyaogong",
+        "@iomgaa-ycz",
+        "@readlnh",
+        "@basil-k-aji-dev",
+        "@claude"
+      ]
     }
   ],
-  "lastUpdated": "2026-09-16T10:08:07.230367",
-  "totalRepositories": 53
+  "lastUpdated": "2026-09-17T02:44:52.997168",
+  "totalRepositories": 64
 }
