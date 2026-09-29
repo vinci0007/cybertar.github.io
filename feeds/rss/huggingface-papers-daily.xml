@@ -6,141 +6,358 @@
 <description>Daily picks from HuggingFace Papers, curated by Cybertar.</description>
 <language>en</language>
 <generator>Cybertar RSS Generator</generator>
-<lastBuildDate>Tue, 29 Sep 2026 03:34:19 +0000</lastBuildDate>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
+<lastBuildDate>Tue, 29 Sep 2026 11:28:15 +0000</lastBuildDate>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
 <atom:link href="https://cybertar.youngood.tech/feeds/rss/huggingface-papers-daily.xml" rel="self" type="application/rss+xml" />
 <item>
-<title>TraceDance: An Automated System for Building Agent Behavior Benchmarks from Real-World Agent Deployment Traces</title>
-<link>https://huggingface.co/papers/2609.33295</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.33295</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by ZhishanQ 35  ByteDance 1</p>]]></description>
+<title>Beyond Teacher Assignment: Domain-Normalized Multi-Teacher On-Policy Distillation</title>
+<link>https://huggingface.co/papers/2609.35347</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.35347</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by XINLI1997 89  Nanyang Technological University 5 1</p>]]></description>
+</item>
+<item>
+<title>Post-Training Leaves Behavioral Shadows on Unrelated Decisions</title>
+<link>https://huggingface.co/papers/2609.29233</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.29233</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Lines 70  Peking University 8 1</p>]]></description>
 </item>
 <item>
 <title>YuE2: Unifying Symbolic and Audio Music Generation at Frontier Quality</title>
 <link>https://huggingface.co/papers/2609.33757</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2609.33757</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by a43992899 22  Multimodal Art Projection 3</p>]]></description>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by a43992899 66  Multimodal Art Projection 3</p>]]></description>
 </item>
 <item>
-<title>EmbodiedMemory-Bench: Benchmarking Embodied Memory for Long-Horizon Embodied Tasks</title>
-<link>https://huggingface.co/papers/2609.28236</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.28236</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by lzLiang 16  ZJU-OmniAI 1</p>]]></description>
+<title>TraceDance: An Automated System for Building Agent Behavior Benchmarks from Real-World Agent Deployment Traces</title>
+<link>https://huggingface.co/papers/2609.33295</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33295</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by ZhishanQ 52  ByteDance 2 1</p>]]></description>
 </item>
 <item>
-<title>AdaTutoRank: Learning to Rerank Document Sets via Adaptive Tutoring Optimization for RAG and Deep Research</title>
-<link>https://huggingface.co/papers/2609.32472</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.32472</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by kailinjiang 15  Tencent 1 1</p>]]></description>
-</item>
-<item>
-<title>Diffusion Reward Models</title>
-<link>https://huggingface.co/papers/2609.33803</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.33803</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by hbx 11  Tsinghua NLP Group 4 1</p>]]></description>
-</item>
-<item>
-<title>Just MLPs: Efficient Visual State Reconstruction for Multimodal Language Models</title>
-<link>https://huggingface.co/papers/2609.34972</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.34972</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by huaXiaKyrie 8  Tencent 2 1</p>]]></description>
-</item>
-<item>
-<title>CompoWorld: Compositional Environment Scaling for General Agents</title>
-<link>https://huggingface.co/papers/2609.33665</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.33665</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by yangxw 7  AllSpark Research 0 1</p>]]></description>
-</item>
-<item>
-<title>Program-Verified Self-Evolution for Vision-Language Models</title>
-<link>https://huggingface.co/papers/2609.33855</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.33855</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by ahmedheakl 7  Mohamed Bin Zayed University of Artificial Intelligence 1 1</p>]]></description>
-</item>
-<item>
-<title>RoboFoundry: System-as-Policy Evolution for Self-Learning Embodied Agents</title>
-<link>https://huggingface.co/papers/2609.32862</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.32862</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by EthanTaylor 6  · 18 authors 1</p>]]></description>
-</item>
-<item>
-<title>SpatialSpeak: QA-Native Reconstruction with Local and Global Context for Spatial Chain-of-Thought Reasoning</title>
-<link>https://huggingface.co/papers/2609.33616</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.33616</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by YangCaoCS 6  The Hong Kong University of Science and Technology 3 2</p>]]></description>
-</item>
-<item>
-<title>Fewer Tokens, More Self-Teaching: On-Policy Self-Distillation for Extreme Visual Token Reduction</title>
-<link>https://huggingface.co/papers/2609.32353</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.32353</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Duke-de-Artois 6  Shanghai Jiao Tong University 5 1</p>]]></description>
-</item>
-<item>
-<title>Rethinking Training-Inference Mismatch in LLM Reinforcement Learning: Where It Arises and How to Correct It</title>
-<link>https://huggingface.co/papers/2609.32444</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.32444</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by kzhao5 6  · 7 authors 0 1</p>]]></description>
+<title>How Far Are We from Removing the Visual Encoder? Scaling Laws for Encoder-Free Multimodal Pretraining</title>
+<link>https://huggingface.co/papers/2609.35457</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.35457</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by YannQi 46  Tencent Hunyuan 1</p>]]></description>
 </item>
 <item>
 <title>Self-Evolving Coding Agents: From Digital Programs to Physical-World Intelligence</title>
 <link>https://huggingface.co/papers/2609.35432</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2609.35432</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by HongchengGao 5  · 13 authors 1</p>]]></description>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by HongchengGao 41  HexaFuture 17 2</p>]]></description>
 </item>
 <item>
-<title>CoWindow Attention: Full Causal Coverage Is a Collective Property</title>
-<link>https://huggingface.co/papers/2609.32704</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.32704</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by JingzeShi 3  Beijing Academy of Artificial Intelligence 1</p>]]></description>
+<title>Improving Test-Time Scaling with Adaptive Looped Transformers</title>
+<link>https://huggingface.co/papers/2609.35748</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.35748</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by youyc22 38  Tsinghua-NICS-EFC 85 1</p>]]></description>
 </item>
 <item>
 <title>MassAlloc Attention: Let Attention Allocate Its Own Compute</title>
 <link>https://huggingface.co/papers/2609.32712</link>
 <guid isPermaLink="true">https://huggingface.co/papers/2609.32712</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by JingzeShi 3  Beijing Academy of Artificial Intelligence 761 1</p>]]></description>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by JingzeShi 35  Beijing Academy of Artificial Intelligence 761 1</p>]]></description>
 </item>
 <item>
-<title>Beyond Timestamps: Decision-Aligned On-Policy Distillation for Long-Horizon Agents</title>
-<link>https://huggingface.co/papers/2609.33391</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.33391</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by mingju0303 2  · 6 authors 3 1</p>]]></description>
+<title>Duplex-MPE: Benchmarking Multi-Party Interaction in Full-Duplex Dialogue</title>
+<link>https://huggingface.co/papers/2609.31948</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.31948</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by ChengqianMa 33  Peking University 1</p>]]></description>
 </item>
 <item>
-<title>Adaptive Consistency Graph for Long-Horizon Agents</title>
-<link>https://huggingface.co/papers/2609.32754</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.32754</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by yunsaijc 2  Beihang University 1</p>]]></description>
+<title>Learning Native Reflection in Unified Models with Interleaved Reinforcement Learning</title>
+<link>https://huggingface.co/papers/2609.35767</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.35767</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Ziqi 29  MMLab@NTU 4 2</p>]]></description>
 </item>
 <item>
-<title>ControlScope: Workflow Revision and Reliability in LLM Agents</title>
-<link>https://huggingface.co/papers/2609.34313</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.34313</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by ethanning 1  Carnegie Mellon University 1</p>]]></description>
+<title>EmbodiedMemory-Bench: Benchmarking Embodied Memory for Long-Horizon Embodied Tasks</title>
+<link>https://huggingface.co/papers/2609.28236</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.28236</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by lzLiang 29  ZJU-OmniAI 1</p>]]></description>
 </item>
 <item>
-<title>Rolling-WAM: World Action Models with Rolling Imagination</title>
-<link>https://huggingface.co/papers/2609.30247</link>
-<guid isPermaLink="true">https://huggingface.co/papers/2609.30247</guid>
-<pubDate>Tue, 29 Sep 2026 03:34:10 +0000</pubDate>
-<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by zyinghua -  USC Physical Superintelligence (PSI) Lab 4 1</p>]]></description>
+<title>CompoWorld: Compositional Environment Scaling for General Agents</title>
+<link>https://huggingface.co/papers/2609.33665</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33665</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by yangxw 27  AllSpark Research 0 1</p>]]></description>
+</item>
+<item>
+<title>Knowing When Thinking Is Not Enough: Teaching Small Reasoning Models to Reason Beyond Their Parametric Knowledge</title>
+<link>https://huggingface.co/papers/2609.34327</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.34327</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by tally0818 26  KAIST AI 0 1</p>]]></description>
+</item>
+<item>
+<title>Surprising Success, Repeated Failure: Entropy-Guided Credit Assignment for Exploration in LLM Reasoning</title>
+<link>https://huggingface.co/papers/2609.33781</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33781</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by wgcyeo 24  KAIST AI 0 1</p>]]></description>
+</item>
+<item>
+<title>WorldPlay2: Extending Real-Time Interactive World Models in Control and Horizon</title>
+<link>https://huggingface.co/papers/2609.35560</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.35560</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by aejion 22  · 8 authors 9 1</p>]]></description>
+</item>
+<item>
+<title>DepthBench: Measuring How Residual Connections Enable More Computational Depth</title>
+<link>https://huggingface.co/papers/2609.32534</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.32534</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Shiweiliuiiiiiii 22  Max Planck Institute for Intelligent Systems 4 1</p>]]></description>
+</item>
+<item>
+<title>Learning to Learn from Context: Synthetic Training from Perturbed Public Documents</title>
+<link>https://huggingface.co/papers/2609.33642</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33642</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by YangXiao-nlp 21  AllSpark Research 1</p>]]></description>
+</item>
+<item>
+<title>Skill2Env: Capability-Oriented Environment Synthesis from Skills for General Agents</title>
+<link>https://huggingface.co/papers/2609.33772</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33772</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by yangxw 20  AllSpark Research 1</p>]]></description>
+</item>
+<item>
+<title>Diffusion Reward Models</title>
+<link>https://huggingface.co/papers/2609.33803</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33803</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by hbx 20  Tsinghua NLP Group 4 1</p>]]></description>
+</item>
+<item>
+<title>Recursive Harness Distillation across Agents for Robot Manipulation</title>
+<link>https://huggingface.co/papers/2609.33378</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33378</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by yeonn1e 19  Seoul National University 1</p>]]></description>
+</item>
+<item>
+<title>QwenGyre: An Elastic Reinforcement Learning Framework for Training xLong-Horizon Agents</title>
+<link>https://huggingface.co/papers/2609.33848</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33848</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by chenmouxiang 19  Qwen 1</p>]]></description>
+</item>
+<item>
+<title>Groupwise Agentic Grading and Advantage Redistribution for Code Agent RL</title>
+<link>https://huggingface.co/papers/2609.32577</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.32577</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by whatseeker 18  Xiaomi MiMo 1</p>]]></description>
+</item>
+<item>
+<title>SpatialSpeak: QA-Native Reconstruction with Local and Global Context for Spatial Chain-of-Thought Reasoning</title>
+<link>https://huggingface.co/papers/2609.33616</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33616</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by YangCaoCS 18  The Hong Kong University of Science and Technology 3 2</p>]]></description>
+</item>
+<item>
+<title>RoboFoundry: System-as-Policy Evolution for Self-Learning Embodied Agents</title>
+<link>https://huggingface.co/papers/2609.32862</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.32862</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by EthanTaylor 17  · 18 authors 1</p>]]></description>
+</item>
+<item>
+<title>REALM: A Coarse-to-Fine Generative Framework for Embodied Reactive Listening</title>
+<link>https://huggingface.co/papers/2609.33095</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33095</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Peizhen 16  Macquarie University 24 1</p>]]></description>
+</item>
+<item>
+<title>AdaTutoRank: Learning to Rerank Document Sets via Adaptive Tutoring Optimization for RAG and Deep Research</title>
+<link>https://huggingface.co/papers/2609.32472</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.32472</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by kailinjiang 16  Tencent 1 1</p>]]></description>
+</item>
+<item>
+<title>WideSWE: Can Coding Agents Coordinate Changes Across Repositories?</title>
+<link>https://huggingface.co/papers/2609.33382</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33382</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by wukeming11 15  · 6 authors 8 2</p>]]></description>
+</item>
+<item>
+<title>Just MLPs: Efficient Visual State Reconstruction for Multimodal Language Models</title>
+<link>https://huggingface.co/papers/2609.34972</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.34972</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by huaXiaKyrie 13  Tencent 2 1</p>]]></description>
+</item>
+<item>
+<title>CoWindow Attention: Full Causal Coverage Is a Collective Property</title>
+<link>https://huggingface.co/papers/2609.32704</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.32704</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by JingzeShi 13  Beijing Academy of Artificial Intelligence 1</p>]]></description>
+</item>
+<item>
+<title>Structured Residual Connectivity Matters for Diffusion Transformers</title>
+<link>https://huggingface.co/papers/2609.33203</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33203</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by linlinlinlinsdada 12  National University of Singapore 1</p>]]></description>
+</item>
+<item>
+<title>In-Flight KV Cache with Clean Anchors for Faster Autoregressive Video Diffusion</title>
+<link>https://huggingface.co/papers/2609.32540</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.32540</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by yikaiwang 11  Meta 1</p>]]></description>
+</item>
+<item>
+<title>SolveEdit: Benchmarking Visual Problem Solving in Generative Models</title>
+<link>https://huggingface.co/papers/2609.35504</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.35504</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Harold328 10  · 12 authors 3 1</p>]]></description>
+</item>
+<item>
+<title>Precise Editing and Flexible Referencing for Interactable Worlds</title>
+<link>https://huggingface.co/papers/2609.34470</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.34470</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by leoisufa 10  Nanyang Technological University 4 1</p>]]></description>
+</item>
+<item>
+<title>Program-Verified Self-Evolution for Vision-Language Models</title>
+<link>https://huggingface.co/papers/2609.33855</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33855</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by ahmedheakl 10  Mohamed Bin Zayed University of Artificial Intelligence 1 1</p>]]></description>
+</item>
+<item>
+<title>Imprint Reader: From Weight-Update Readout to Behavioral Intervention</title>
+<link>https://huggingface.co/papers/2609.35261</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.35261</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by quantumfr 9  · 3 authors 1 1</p>]]></description>
+</item>
+<item>
+<title>SciGen-Verifier: A Multimodal Reasoner for Explainable Verification in Scientific Image Generation</title>
+<link>https://huggingface.co/papers/2609.33399</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33399</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Garygedegege 9  · 9 authors 1</p>]]></description>
+</item>
+<item>
+<title>Rethinking Training-Inference Mismatch in LLM Reinforcement Learning: Where It Arises and How to Correct It</title>
+<link>https://huggingface.co/papers/2609.32444</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.32444</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by kzhao5 9  · 7 authors 0 1</p>]]></description>
+</item>
+<item>
+<title>FlowTool: Controlling Tool Parameter in Image Retouching via Flow Matching</title>
+<link>https://huggingface.co/papers/2609.35673</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.35673</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by laiviet 8  Adobe Research 1</p>]]></description>
+</item>
+<item>
+<title>InfiniHand: Streaming World-Space Hand Motion Estimation from Egocentric Video</title>
+<link>https://huggingface.co/papers/2609.35743</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.35743</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by cskrren 8  Shanghai AI Laboratory 2 1</p>]]></description>
+</item>
+<item>
+<title>TT-VidT: Decoupling the Temporal Axis for Efficient Motion-Centric Video Pretraining</title>
+<link>https://huggingface.co/papers/2609.33419</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33419</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by KBlueLeaf 8  NVIDIA 3 2</p>]]></description>
+</item>
+<item>
+<title>Residual Transferability in Neural Image Watermarking</title>
+<link>https://huggingface.co/papers/2609.32241</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.32241</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by LIQIIIII 6  · 3 authors 1</p>]]></description>
+</item>
+<item>
+<title>BaRe-Mem: Bayesian Reliability Memory for Robust and Adaptive Agent Consultation</title>
+<link>https://huggingface.co/papers/2609.35551</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.35551</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Sssunset 6  Nanyang Technological University 2 1</p>]]></description>
+</item>
+<item>
+<title>Fewer Tokens, More Self-Teaching: On-Policy Self-Distillation for Extreme Visual Token Reduction</title>
+<link>https://huggingface.co/papers/2609.32353</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.32353</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by Duke-de-Artois 6  Shanghai Jiao Tong University 5 1</p>]]></description>
+</item>
+<item>
+<title>Nereus: Adaptive Parallelism for LLM Post-Training</title>
+<link>https://huggingface.co/papers/2609.34645</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.34645</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by HollowMan6 5  · 6 authors 1</p>]]></description>
+</item>
+<item>
+<title>An RL View of OPD: Least Square Policy Distillation for Sample-Efficient LLM Reasoning</title>
+<link>https://huggingface.co/papers/2609.35505</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.35505</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by DVA13304 5  NVIDIA 1 2</p>]]></description>
+</item>
+<item>
+<title>GeoVerse: World-Consistent Novel View Synthesis in Geometric Latent Space</title>
+<link>https://huggingface.co/papers/2609.35734</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.35734</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by cskrren 5  Shanghai Jiao Tong University 2 1</p>]]></description>
+</item>
+<item>
+<title>RenderRank: Learning to Rerank Text with Compressed Visual Tokens</title>
+<link>https://huggingface.co/papers/2609.35069</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.35069</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by hongst 5  NLP &amp; AI - Korea University</p>]]></description>
+</item>
+<item>
+<title>Rethinking Automated Voice Similarity by Shifting from EER to Embedding Geometry</title>
+<link>https://huggingface.co/papers/2609.33999</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.33999</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by 47z 5  National Taiwan University 1</p>]]></description>
+</item>
+<item>
+<title>Change the Product, Keep the Parameters: Associative Algebra Layers for Transformers</title>
+<link>https://huggingface.co/papers/2609.32814</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.32814</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by inkoziev 4  · 2 authors 1</p>]]></description>
+</item>
+<item>
+<title>Measuring Collapse and Correction in Homogeneous-Panel LLM Debate</title>
+<link>https://huggingface.co/papers/2609.35279</link>
+<guid isPermaLink="true">https://huggingface.co/papers/2609.35279</guid>
+<pubDate>Tue, 29 Sep 2026 11:28:06 +0000</pubDate>
+<description><![CDATA[<p><strong>Authors:</strong> Unknown</p><p>Submitted by XINLI1997 4  Nanyang Technological University 0 1</p>]]></description>
 </item>
 </channel>
 </rss>
